@@ -1,0 +1,3 @@
+/secrets.nix                   filter=crypt diff=crypt
+/machines/**/secrets.nix       filter=crypt diff=crypt
+/machines/**/secrets/**        filter=crypt diff=crypt
