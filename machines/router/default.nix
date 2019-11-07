@@ -9,18 +9,22 @@ in {
     ./unbound.nix
   ];
 
-  networking.ppp = {
+  services.pppd = {
     enable = true;
 
     peers = {
       uplink = {
-        username = secrets.ppp.uplink.username;
-        password = secrets.ppp.uplink.password;
-        interface = "ext.dsl";
-        pppoe = true;
-        extraOptions = ''
-          lock
+        enable = true;
+        autostart = true;
 
+        config = with secrets.ppp.uplink; ''
+          plugin rp-pppoe.so dsl
+          
+          linkname uplink
+          
+          user "${username}"
+          password "${password}"
+          
           lcp-echo-interval 15
           lcp-echo-failure 3
 
