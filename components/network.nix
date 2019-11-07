@@ -16,5 +16,8 @@
     };
   };
 
+  # Enable debugging for systemd-networkd
+  systemd.services."systemd-networkd".environment.SYSTEMD_LOG_LEVEL = "debug";
+
   programs.mtr.enable = true;
 }

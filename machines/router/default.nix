@@ -6,11 +6,8 @@ in {
   imports = [
     ./hardware.nix
     ./network.nix
+    ./unbound.nix
   ];
-
-  networking.hostName = "router";
-  networking.interfaces."int.l".useDHCP = true;
-  networking.interfaces."int.r".useDHCP = true;
 
   networking.ppp = {
     enable = true;

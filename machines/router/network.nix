@@ -116,52 +116,154 @@
       "00-en-l" = {
         name = "en-l";
         bond = [ "int" ];
+        networkConfig = {
+          LinkLocalAddressing = "no";
+        };
       };
 
       "00-en-r" = {
         name = "en-r";
         bond = [ "int" ];
+        networkConfig = {
+          LinkLocalAddressing = "no";
+        };
       };
 
       "00-modem" = {
         name = "modem";
         bridge = [ "mngt" ];
         vlan = [ "dsl" ];
+        networkConfig = {
+          LinkLocalAddressing = "no";
+        };
       };
 
       "10-int" = {
         name = "int";
         vlan = [ "mngt-vlan" "priv-vlan" "guest-vlan" ];
+        networkConfig = {
+          LinkLocalAddressing = "no";
+        };
       };
 
       "20-mngt-vlan" = {
         name = "mngt-vlan";
         bridge = [ "mngt" ];
+        networkConfig = {
+          LinkLocalAddressing = "no";
+        };
       };
 
       "20-priv-vlan" = {
         name = "priv-vlan";
         bridge = [ "priv" ];
+        networkConfig = {
+          LinkLocalAddressing = "no";
+        };
       };
 
       "20-guest-vlan" = {
         name = "guest-vlan";
         bridge = [ "guest" ];
+        networkConfig = {
+          LinkLocalAddressing = "no";
+        };
       };
 
       "30-mngt" = {
         name = "mngt";
         address = [ "192.168.254.1/24" ];
+
+        networkConfig = {
+          DHCPServer = true;
+          IPv6PrefixDelegation = "dhcpv6";
+        };
+
+        dhcpServerConfig = {
+          PoolOffset = 100;
+          EmitDNS = true;
+          EmitNTP = true;
+          EmitRouter = true;
+          EmitTimezone = true;
+        };
+
+        extraConfig = ''
+          [IPv6PrefixDelegation]
+          Managed = true;
+          OtherInformation = true;
+
+          [IPv6Prefix]
+          AddressAutoconfiguration = true;
+        '';
       };
 
       "30-priv" = {
         name = "priv";
-        address = [ "172.200.172.129/25" ];
+        address = [ "172.23.200.129/25" ];
+
+        networkConfig = {
+          DHCPServer = true;
+          IPv6PrefixDelegation = "dhcpv6";
+        };
+
+        dhcpServerConfig = {
+          PoolOffset = 100;
+          EmitDNS = true;
+          EmitNTP = true;
+          EmitRouter = true;
+          EmitTimezone = true;
+        };
+
+        extraConfig = ''
+          [IPv6PrefixDelegation]
+          Managed = true;
+          OtherInformation = true;
+
+          [IPv6Prefix]
+          AddressAutoconfiguration = true;
+        '';
       };
 
       "30-guest" = {
-        name = "priv";
+        name = "guest";
         address = [ "203.0.113.1/24" ];
+
+        networkConfig = {
+          DHCPServer = true;
+          IPv6PrefixDelegation = "dhcpv6";
+        };
+
+        dhcpServerConfig = {
+          PoolOffset = 100;
+          EmitDNS = true;
+          EmitNTP = true;
+          EmitRouter = true;
+          EmitTimezone = true;
+        };
+
+        extraConfig = ''
+          [IPv6PrefixDelegation]
+          Managed = true;
+          OtherInformation = true;
+
+          [IPv6Prefix]
+          AddressAutoconfiguration = true;
+        '';
+      };
+
+      "40-uplink" = {
+        name = "uplink";
+        networkConfig = {
+          IPv6AcceptRA = true;
+          
+          IPMasquerade = true;
+          IPForward = "yes";
+
+          DHCP = "ipv6";
+        };
+        linkConfig = {
+          RequiredForOnline = "routable";
+        };
       };
     };
   };
