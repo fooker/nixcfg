@@ -179,9 +179,6 @@
           [IPv6PrefixDelegation]
           Managed = true;
           OtherInformation = true;
-
-          [IPv6Prefix]
-          AddressAutoconfiguration = true;
         '';
       };
 
@@ -206,9 +203,6 @@
           [IPv6PrefixDelegation]
           Managed = true;
           OtherInformation = true;
-
-          [IPv6Prefix]
-          AddressAutoconfiguration = true;
         '';
       };
 
@@ -233,9 +227,6 @@
           [IPv6PrefixDelegation]
           Managed = true;
           OtherInformation = true;
-
-          [IPv6Prefix]
-          AddressAutoconfiguration = true;
         '';
       };
 

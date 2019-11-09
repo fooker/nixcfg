@@ -21,7 +21,8 @@ in
           };
 
           deployment = {
-            targetHost = machineConfig.target;
+            targetHost = machineConfig.target.host;
+            targetUser = machineConfig.target.user;
           };
 
           imports = [

@@ -4,8 +4,11 @@
   imports = [
     ./modules
 
-    ./components/boot
-    ./components/root.nix
-    ./components/network.nix
+    ./modules/nix.nix
+    ./modules/boot
+    ./modules/root.nix
+    ./modules/network
   ];
+
+  system.stateVersion = "19.09";
 }
