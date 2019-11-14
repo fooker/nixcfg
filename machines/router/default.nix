@@ -12,7 +12,13 @@ in {
 
   environment.systemPackages = with pkgs; [
     wget vim
+
+    nmap tcpdump
+
+    ldns
   ];
 
-  services.openssh.enable = true;
+  boot.type = "grub";
+  serial.enable = true;
+  server.enable = true;
 }

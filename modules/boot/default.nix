@@ -1,9 +1,20 @@
 { config, lib, pkgs, machineConfig, ... }:
 
+with lib;
 {
   imports = [
-    ./x86_64-linux.nix # TODO: Import depending on the target platform identifier
+    ./grub.nix
+    ./systemd.nix
   ];
-  
-  boot.tmpOnTmpfs = true;
+
+  options.boot = {
+    type = mkOption {
+        type = types.enum [ "grub" "systemd" ];
+        default = "systemd";
+    };
+  };
+
+  config = {
+    boot.tmpOnTmpfs = true;
+  };
 }

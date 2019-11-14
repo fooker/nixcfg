@@ -7,9 +7,8 @@
     links = {
       "00-int-l" = {
         matchConfig = {
-          MACAddress = "52:54:00:58:89:b4";
-          #MACAddress = "00:0d:b9:34:db:e4";
-          #Path = "pci-0000:01:00.0";
+          MACAddress = "00:0d:b9:34:db:e4";
+          Path = "pci-0000:01:00.0";
         };
         linkConfig = {
           Name = "int-l";
@@ -18,9 +17,8 @@
       
       "00-int-r" = {
         matchConfig = {
-          MACAddress = "52:54:00:58:89:b5";
-          #MACAddress = "00:0d:b9:34:db:e5";
-          #Path = "pci-0000:02:00.0";
+          MACAddress = "00:0d:b9:34:db:e5";
+          Path = "pci-0000:02:00.0";
         };
         linkConfig = {
           Name = "int-r";
@@ -29,9 +27,8 @@
       
       "00-dsl" = {
         matchConfig = {
-          MACAddress = "52:54:00:58:89:b6";
-          #MACAddress = "00:0d:b9:34:db:e6";
-          #Path = "pci-0000:03:00.0";
+          MACAddress = "00:0d:b9:34:db:e6";
+          Path = "pci-0000:03:00.0";
         };
         linkConfig = {
           Name = "dsl";
@@ -73,6 +70,16 @@
       "10-guest-vlan" = {
         netdevConfig = {
           Name = "guest-vlan";
+          Kind = "vlan";
+        };
+        vlanConfig = {
+          Id = 3;
+        };
+      };
+      
+      "10-iot-vlan" = {
+        netdevConfig = {
+          Name = "iot-vlan";
           Kind = "vlan";
         };
         vlanConfig = {
@@ -128,7 +135,7 @@
 
       "10-int" = {
         name = "int";
-        vlan = [ "mngt-vlan" "priv-vlan" "guest-vlan" ];
+        vlan = [ "mngt-vlan" "priv-vlan" "guest-vlan" "iot-vlan" ];
         networkConfig = {
           LinkLocalAddressing = "no";
         };
@@ -158,27 +165,39 @@
         };
       };
 
+      "20-iot-vlan" = {
+        name = "iot-vlan";
+        bridge = [ "iot" ];
+        networkConfig = {
+          LinkLocalAddressing = "no";
+        };
+      };
+
       "30-mngt" = {
         name = "mngt";
-        address = [ "192.168.253.1/24" ];
+        address = [ "192.168.254.1/24" ];
 
         networkConfig = {
           DHCPServer = true;
           IPv6PrefixDelegation = "dhcpv6";
+          DNS = "192.168.254.1";
         };
 
         dhcpServerConfig = {
-          PoolOffset = 100;
+          PoolOffset = 128;
+
           EmitDNS = true;
           EmitNTP = true;
           EmitRouter = true;
           EmitTimezone = true;
+
+          DNS = "192.168.254.1";
         };
 
         extraConfig = ''
           [IPv6PrefixDelegation]
-          Managed = true;
-          OtherInformation = true;
+          Managed = true
+          OtherInformation = true
         '';
       };
 
@@ -189,20 +208,24 @@
         networkConfig = {
           DHCPServer = true;
           IPv6PrefixDelegation = "dhcpv6";
+          DNS = "172.23.200.129";
         };
 
         dhcpServerConfig = {
-          PoolOffset = 100;
+          PoolOffset = 32;
+
           EmitDNS = true;
           EmitNTP = true;
           EmitRouter = true;
           EmitTimezone = true;
+
+          DNS = "172.23.200.129";
         };
 
         extraConfig = ''
           [IPv6PrefixDelegation]
-          Managed = true;
-          OtherInformation = true;
+          Managed = true
+          OtherInformation = true
         '';
       };
 
@@ -213,30 +236,62 @@
         networkConfig = {
           DHCPServer = true;
           IPv6PrefixDelegation = "dhcpv6";
+          DNS = "203.0.113.1";
         };
 
         dhcpServerConfig = {
-          PoolOffset = 100;
+          PoolOffset = 16;
+
           EmitDNS = true;
           EmitNTP = true;
           EmitRouter = true;
           EmitTimezone = true;
+
+          DNS = "203.0.113.1";
         };
 
         extraConfig = ''
           [IPv6PrefixDelegation]
-          Managed = true;
-          OtherInformation = true;
+          Managed = true
+          OtherInformation = true
+        '';
+      };
+
+      "30-iot" = {
+        name = "iot";
+        address = [ "192.168.0.1/24" ];
+
+        networkConfig = {
+          DHCPServer = true;
+          IPv6PrefixDelegation = "dhcpv6";
+          DNS = "192.168.0.1";
+        };
+
+        dhcpServerConfig = {
+          PoolOffset = 16;
+
+          EmitDNS = true;
+          EmitNTP = true;
+          EmitRouter = true;
+          EmitTimezone = true;
+
+          DNS = "192.168.0.1";
+        };
+
+        extraConfig = ''
+          [IPv6PrefixDelegation]
+          Managed = true
+          OtherInformation = true
         '';
       };
 
       "40-uplink" = {
-        name = "uplink";
+        name = "ppp0";
         networkConfig = {
           IPv6AcceptRA = true;
           
-          IPMasquerade = true;
-          IPForward = "yes";
+          # IPMasquerade = true;
+          # IPForward = "yes";
 
           DHCP = "ipv6";
         };
@@ -245,5 +300,31 @@
         };
       };
     };
+  };
+
+  boot.kernel.sysctl = {
+    "net.ipv4.conf.all.forwarding" = 1;
+    "net.ipv6.conf.all.forwarding" = 1;
+  };
+
+  networking.firewall = {
+    interfaces = lib.genAttrs [ "mngt" "priv" "guest" "iot" ] (iface: {
+      allowedUDPPorts = [
+        67 # DHCP
+      ];
+    });
+    
+    checkReversePath = false;
+  };
+
+  networking.nat = {
+    enable = true;
+    externalInterface = "ppp0";
+    internalInterfaces = [
+      "mngt"
+      "priv"
+      "guest"
+      "iot"
+    ];
   };
 }

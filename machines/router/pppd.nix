@@ -40,4 +40,8 @@ in {
       };
     };
   };
+
+  networking.firewall.extraCommands = ''
+    iptables -A FORWARD -o ppp+ -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+  '';
 }

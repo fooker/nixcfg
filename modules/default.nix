@@ -2,5 +2,9 @@
 
 {
   imports = [
+    ./common/default.nix
+    ./boot/default.nix
+    ./server.nix
+    ./serial.nix
   ];
 }
