@@ -1,7 +1,44 @@
 { config, lib, pkgs, machine, ... }:
 
-{
-  systemd.network = {
+with lib;
+
+let
+  networks = {
+    mngt = {
+      vlan = 1;
+      
+      address = "192.168.254.1";
+      prefixLength = 24;
+
+      dhcpPoolOffset = 128;
+    };
+    priv = {
+      vlan = 2;
+
+      address = "172.23.200.129";
+      prefixLength = 25;
+
+      dhcpPoolOffset = 32;
+    };
+    guest = {
+      vlan = 3;
+
+      address = "203.0.113.1";
+      prefixLength = 24;
+
+      dhcpPoolOffset = 16;
+    };
+    iot = {
+      vlan = 4;
+
+      address = "192.168.0.1";
+      prefixLength = 24;
+
+      dhcpPoolOffset = 16;
+    };
+  };
+in {
+  systemd.network = foldl recursiveUpdate {
     enable = true;
 
     links = {
@@ -46,67 +83,6 @@
           Mode = "802.3ad";
         };
       };
-      
-      "10-mngt-vlan" = {
-        netdevConfig = {
-          Name = "mngt-vlan";
-          Kind = "vlan";
-        };
-        vlanConfig = {
-          Id = 1;
-        };
-      };
-      
-      "10-priv-vlan" = {
-        netdevConfig = {
-          Name = "priv-vlan";
-          Kind = "vlan";
-        };
-        vlanConfig = {
-          Id = 2;
-        };
-      };
-      
-      "10-guest-vlan" = {
-        netdevConfig = {
-          Name = "guest-vlan";
-          Kind = "vlan";
-        };
-        vlanConfig = {
-          Id = 3;
-        };
-      };
-      
-      "10-iot-vlan" = {
-        netdevConfig = {
-          Name = "iot-vlan";
-          Kind = "vlan";
-        };
-        vlanConfig = {
-          Id = 3;
-        };
-      };
-
-      "20-mngt" = {
-        netdevConfig = {
-          Name = "mngt";
-          Kind = "bridge";
-        };
-      };
-
-      "20-priv" = {
-        netdevConfig = {
-          Name = "priv";
-          Kind = "bridge";
-        };
-      };
-
-      "20-guest" = {
-        netdevConfig = {
-          Name = "guest";
-          Kind = "bridge";
-        };
-      };
     };
 
     networks = {
@@ -135,154 +111,10 @@
 
       "10-int" = {
         name = "int";
-        vlan = [ "mngt-vlan" "priv-vlan" "guest-vlan" "iot-vlan" ];
+        vlan = map (name: "${name}-vlan") (attrNames networks);
         networkConfig = {
           LinkLocalAddressing = "no";
         };
-      };
-
-      "20-mngt-vlan" = {
-        name = "mngt-vlan";
-        bridge = [ "mngt" ];
-        networkConfig = {
-          LinkLocalAddressing = "no";
-        };
-      };
-
-      "20-priv-vlan" = {
-        name = "priv-vlan";
-        bridge = [ "priv" ];
-        networkConfig = {
-          LinkLocalAddressing = "no";
-        };
-      };
-
-      "20-guest-vlan" = {
-        name = "guest-vlan";
-        bridge = [ "guest" ];
-        networkConfig = {
-          LinkLocalAddressing = "no";
-        };
-      };
-
-      "20-iot-vlan" = {
-        name = "iot-vlan";
-        bridge = [ "iot" ];
-        networkConfig = {
-          LinkLocalAddressing = "no";
-        };
-      };
-
-      "30-mngt" = {
-        name = "mngt";
-        address = [ "192.168.254.1/24" ];
-
-        networkConfig = {
-          DHCPServer = true;
-          IPv6PrefixDelegation = "dhcpv6";
-          DNS = "192.168.254.1";
-        };
-
-        dhcpServerConfig = {
-          PoolOffset = 128;
-
-          EmitDNS = true;
-          EmitNTP = true;
-          EmitRouter = true;
-          EmitTimezone = true;
-
-          DNS = "192.168.254.1";
-        };
-
-        extraConfig = ''
-          [IPv6PrefixDelegation]
-          Managed = true
-          OtherInformation = true
-        '';
-      };
-
-      "30-priv" = {
-        name = "priv";
-        address = [ "172.23.200.129/25" ];
-
-        networkConfig = {
-          DHCPServer = true;
-          IPv6PrefixDelegation = "dhcpv6";
-          DNS = "172.23.200.129";
-        };
-
-        dhcpServerConfig = {
-          PoolOffset = 32;
-
-          EmitDNS = true;
-          EmitNTP = true;
-          EmitRouter = true;
-          EmitTimezone = true;
-
-          DNS = "172.23.200.129";
-        };
-
-        extraConfig = ''
-          [IPv6PrefixDelegation]
-          Managed = true
-          OtherInformation = true
-        '';
-      };
-
-      "30-guest" = {
-        name = "guest";
-        address = [ "203.0.113.1/24" ];
-
-        networkConfig = {
-          DHCPServer = true;
-          IPv6PrefixDelegation = "dhcpv6";
-          DNS = "203.0.113.1";
-        };
-
-        dhcpServerConfig = {
-          PoolOffset = 16;
-
-          EmitDNS = true;
-          EmitNTP = true;
-          EmitRouter = true;
-          EmitTimezone = true;
-
-          DNS = "203.0.113.1";
-        };
-
-        extraConfig = ''
-          [IPv6PrefixDelegation]
-          Managed = true
-          OtherInformation = true
-        '';
-      };
-
-      "30-iot" = {
-        name = "iot";
-        address = [ "192.168.0.1/24" ];
-
-        networkConfig = {
-          DHCPServer = true;
-          IPv6PrefixDelegation = "dhcpv6";
-          DNS = "192.168.0.1";
-        };
-
-        dhcpServerConfig = {
-          PoolOffset = 16;
-
-          EmitDNS = true;
-          EmitNTP = true;
-          EmitRouter = true;
-          EmitTimezone = true;
-
-          DNS = "192.168.0.1";
-        };
-
-        extraConfig = ''
-          [IPv6PrefixDelegation]
-          Managed = true
-          OtherInformation = true
-        '';
       };
 
       "40-uplink" = {
@@ -300,7 +132,64 @@
         };
       };
     };
-  };
+  } (mapAttrsToList (name: config: {
+    netdevs = {
+      "10-${name}-vlan" = {
+        netdevConfig = {
+          Name = "${name}-vlan";
+          Kind = "vlan";
+        };
+        vlanConfig = {
+          Id = config.vlan;
+        };
+      };
+    
+      "20-${name}" = {
+        netdevConfig = {
+          Name = "${name}";
+          Kind = "bridge";
+        };
+      };
+    };
+
+    networks = {
+      "20-${name}-vlan" = {
+        name = "${name}-vlan";
+        bridge = [ "${name}" ];
+        networkConfig = {
+          LinkLocalAddressing = "no";
+        };
+      };
+
+      "30-${name}" = {
+        name = "${name}";
+        address = [ "${config.address}/${toString config.prefixLength}" ];
+
+        networkConfig = {
+          DHCPServer = true;
+          IPv6PrefixDelegation = "dhcpv6";
+          DNS = "${config.address}";
+        };
+
+        dhcpServerConfig = {
+          PoolOffset = config.dhcpPoolOffset;
+
+          EmitDNS = true;
+          EmitNTP = true;
+          EmitRouter = true;
+          EmitTimezone = true;
+
+          DNS = "${config.address}";
+        };
+
+        extraConfig = ''
+          [IPv6PrefixDelegation]
+          Managed = true
+          OtherInformation = true
+        '';
+      };
+    };
+  }) networks);
 
   boot.kernel.sysctl = {
     "net.ipv4.conf.all.forwarding" = 1;
@@ -308,7 +197,7 @@
   };
 
   networking.firewall = {
-    interfaces = lib.genAttrs [ "mngt" "priv" "guest" "iot" ] (iface: {
+    interfaces = lib.genAttrs (attrNames networks) (iface: {
       allowedUDPPorts = [
         67 # DHCP
       ];
@@ -320,11 +209,6 @@
   networking.nat = {
     enable = true;
     externalInterface = "ppp0";
-    internalInterfaces = [
-      "mngt"
-      "priv"
-      "guest"
-      "iot"
-    ];
+    internalInterfaces = attrNames networks;
   };
 }
