@@ -120,16 +120,21 @@ in {
       "40-uplink" = {
         name = "ppp0";
         networkConfig = {
-          IPv6AcceptRA = true;
-          
-          # IPMasquerade = true;
-          # IPForward = "yes";
+          DNS = "127.0.0.1";
 
+          IPv6AcceptRA = true;
           DHCP = "ipv6";
+
+          IPv6PrefixDelegation = "dhcpv6";
         };
         linkConfig = {
           RequiredForOnline = "routable";
         };
+        extraConfig = ''
+          [IPv6PrefixDelegation]
+          Managed = true
+          OtherInformation = true
+        '';
       };
     };
   } (mapAttrsToList (name: config: {
@@ -167,7 +172,7 @@ in {
 
         networkConfig = {
           DHCPServer = true;
-          IPv6PrefixDelegation = "dhcpv6";
+          # IPv6PrefixDelegation = "dhcpv6";
           DNS = "${config.address}";
         };
 
@@ -182,11 +187,11 @@ in {
           DNS = "${config.address}";
         };
 
-        extraConfig = ''
-          [IPv6PrefixDelegation]
-          Managed = true
-          OtherInformation = true
-        '';
+        # extraConfig = ''
+        #   [IPv6PrefixDelegation]
+        #   Managed = true
+        #   OtherInformation = true
+        # '';
       };
     };
   }) networks);
