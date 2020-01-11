@@ -18,7 +18,6 @@ in {
           linkname uplink
           
           user "${username}"
-          password "${password}"
           
           lcp-echo-interval 15
           lcp-echo-failure 3
@@ -36,10 +35,14 @@ in {
           defaultroute
           persist
 
-          +ipv6
+          +ipv6 ipv6cp-use-ipaddr
         '';
       };
     };
+  };
+
+  environment.etc = with secrets.ppp.uplink; {
+    "ppp/chap-secrets".text=''* * "${password}"'';
   };
 
   networking.firewall.extraCommands = ''

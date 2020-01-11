@@ -174,8 +174,13 @@ in {
           DHCPServer = true;
           # IPv6PrefixDelegation = "dhcpv6";
           DNS = "${config.address}";
+          Domains = [
+            "home.open-desk.net"
+            "${name}.home.open-desk.net"
+          ];
         };
 
+        # TODO: Search domain = home.open-desk.net
         dhcpServerConfig = {
           PoolOffset = config.dhcpPoolOffset;
 
@@ -202,11 +207,16 @@ in {
   };
 
   networking.firewall = {
-    interfaces = lib.genAttrs (attrNames networks) (iface: {
+    interfaces = (lib.genAttrs (attrNames networks) (iface: {
       allowedUDPPorts = [
         67 # DHCP
       ];
-    });
+    })) // {
+      uplink = {
+        # TODO: Limit to "daddr=fe80::/10 dport=546" and "saddr=fe80::/10 sport=547"
+        allowedUDPPorts = [ 546 547 ];
+      };
+    };
     
     checkReversePath = false;
   };
@@ -216,4 +226,11 @@ in {
     externalInterface = "ppp0";
     internalInterfaces = attrNames networks;
   };
+
+  networking.firewall.extraCommands = ''
+    iptables -t nat -A PREROUTING -i ppp+ -p tcp -m tcp --dport 6242 -j DNAT --to 172.23.200.130:6242
+    iptables -t filter -A FORWARD -i ppp+ -p tcp -m tcp --dport 6242 --destination 172.23.200.130 -j ACCEPT
+    iptables -t nat -A PREROUTING -i ppp+ -p udp -m udp --dport 6242 -j DNAT --to 172.23.200.130:6242
+    iptables -t filter -A FORWARD -i ppp+ -p udp -m udp --dport 6242 --destination 172.23.200.130 -j ACCEPT
+  '';
 }

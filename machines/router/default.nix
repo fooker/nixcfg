@@ -7,14 +7,15 @@ in {
     ./hardware.nix
     ./network.nix
     ./pppd.nix
-    ./unbound.nix
+    ./dns.nix
+    ./ddclient.nix
+
+    ./hass.nix
   ];
 
   environment.systemPackages = with pkgs; [
     wget vim
-
     nmap tcpdump
-
     ldns
   ];
 

@@ -1,10 +1,6 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [
-    <nixpkgs/nixos/modules/profiles/qemu-guest.nix>
-  ];
-
   hardware.enableRedistributableFirmware = true;
 
   fileSystems = {
