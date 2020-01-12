@@ -4,9 +4,10 @@
   services.kresd = {
     enable = true;
 
-    listenPlain = [
-      "53"
-    ];
+    interfaces = [ "::" "0.0.0.0" ];
+    #listenPlain = [
+    #  "53"
+    #];
 
     listenTLS = [
       "853"

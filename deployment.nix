@@ -1,8 +1,6 @@
 let
   lib = import ./lib.nix;
-  pkgs = import (builtins.fetchTarball (with import ./nixpkgs.nix; {
-      url = "https://github.com/${owner}/${repo}/archive/${rev}.tar.gz";
-    })) {};
+  pkgs = import ./nix;
 in
   {
     network = {

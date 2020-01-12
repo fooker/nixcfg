@@ -23,7 +23,7 @@
 
     package = pkgs.home-assistant.override {
       extraPackages = ps: with ps; [
-        ps.python37Packages.paho-mqtt
+        ps.pythonPackages.paho-mqtt
       ];
     };
   };
