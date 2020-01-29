@@ -4,7 +4,7 @@
   services.kresd = {
     enable = true;
 
-    interfaces = [ "::" "0.0.0.0" ];
+    interfaces = [ "::" ];
     #listenPlain = [
     #  "53"
     #];

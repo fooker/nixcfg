@@ -1,10 +1,16 @@
 let
   lib = import ./lib.nix;
-  pkgs = import ./nix;
+  sources = import ./nix/sources.nix;
 in
   {
     network = {
-      inherit pkgs;
+      pkgs = import sources.nixpkgs {
+        config = {};
+      };
+      nixConfig = {
+        "builders" = "ssh://nixos-builder i686-linux,x86_64-linux,aarch64-linux,armv6l-linux,armv7l-linux 8";
+        "builders-use-substitutes" = "true";
+      };
     };
   } // (
     let
@@ -15,7 +21,7 @@ in
           machineConfig = lib.config machine; 
         in {
           _module.args = {
-            inherit machine machineConfig;
+            inherit machine machineConfig sources;
           };
 
           deployment = {
@@ -23,11 +29,27 @@ in
             targetUser = machineConfig.target.user;
           };
 
+          nixpkgs.pkgs = import sources.nixpkgs {
+            config = {};
+            system = machineConfig.system;
+          };
+          nixpkgs.localSystem.system = machineConfig.system;
+
+          nix.distributedBuilds = true;
+
           imports = [
             ./common.nix
             machinePath
           ];
-        };
+        }
+        #  // (
+        #   if machineConfig.system != builtins.currentSystem
+        #   then {
+        #     nixpkgs.localSystem.system = machineConfig.system;
+        #   }
+        #   else {}
+        # )
+        ;
     in
       builtins.listToAttrs
         (builtins.map

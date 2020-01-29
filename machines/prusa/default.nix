@@ -6,14 +6,12 @@ in {
   imports = [
     ./hardware.nix
     ./network.nix
-    ./pppd.nix
-    ./dns.nix
-    ./ddclient.nix
-
-    ./hass.nix
+    ./octoprint.nix
   ];
 
-  boot.type = "grub";
+  boot.type = "extlinux";
   serial.enable = true;
   server.enable = true;
+
+  services.journald.extraConfig = "Storage=volatile";
 }

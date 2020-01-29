@@ -6,14 +6,8 @@ in {
   imports = [
     ./hardware.nix
     ./network.nix
-    ./pppd.nix
-    ./dns.nix
-    ./ddclient.nix
-
-    ./hass.nix
+    ./builder.nix
   ];
 
-  boot.type = "grub";
-  serial.enable = true;
   server.enable = true;
 }

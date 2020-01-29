@@ -2,14 +2,14 @@
 
 with lib;
 {
-  options.commons.network = {
+  options.common.network = {
     enable = mkOption {
         type = types.bool;
         default = true;
     };
   };
 
-  config = mkIf config.commons.network.enable {
+  config = mkIf config.common.network.enable {
     networking = {
       hostName = machine;
 

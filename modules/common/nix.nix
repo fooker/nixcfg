@@ -2,14 +2,14 @@
 
 with lib;
 {
-  options.commons.nix = {
+  options.common.nix = {
     enable = mkOption {
         type = types.bool;
         default = true;
     };
   };
 
-  config = mkIf config.commons.nix.enable {
+  config = mkIf config.common.nix.enable {
     # Take out the trash
     nix.gc = {
       automatic = true;

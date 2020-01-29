@@ -5,11 +5,12 @@ with lib;
   imports = [
     ./grub.nix
     ./systemd.nix
+    ./extlinux.nix
   ];
 
   options.boot = {
     type = mkOption {
-        type = types.enum [ "grub" "systemd" ];
+        type = types.enum [ "grub" "systemd" "extlinux" ];
         default = "systemd";
     };
   };
