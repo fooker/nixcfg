@@ -41,15 +41,7 @@ in
             ./common.nix
             machinePath
           ];
-        }
-        #  // (
-        #   if machineConfig.system != builtins.currentSystem
-        #   then {
-        #     nixpkgs.localSystem.system = machineConfig.system;
-        #   }
-        #   else {}
-        # )
-        ;
+        };
     in
       builtins.listToAttrs
         (builtins.map
