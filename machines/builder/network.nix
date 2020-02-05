@@ -5,7 +5,7 @@
     enable = true;
 
     links = {
-      "00-priv" = {
+      "00-ext" = {
         matchConfig = {
           MACAddress = "52:54:00:57:ff:27";
         };
@@ -16,7 +16,7 @@
     };
 
     networks = {
-      "30-priv" = {
+      "30-ext" = {
         name = "ext";
         # DHCP = "ipv4";
         address = [

@@ -5,6 +5,9 @@
     enable = true;
     host = "localhost";
 
+    plugins = [
+    ];
+
     extraConfig = {
       slicing = {
         enabled = false;
