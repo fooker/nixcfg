@@ -1,23 +1,16 @@
 { config, lib, pkgs, ... }:
 
-{
+let
+  secrets = import ./secrets.nix;
+in {
   services.kresd = {
     enable = true;
 
     interfaces = [ "::" ];
-    #listenPlain = [
-    #  "53"
-    #];
-
-    listenTLS = [
-      "853"
-    ];
+    listenTLS = [ "853" ];
 
     extraConfig = ''
-      modules = { 'hints > iterate' }
-
-      hints['mqtt.iot.home.open-desk.net'] = '192.168.0.1'
-      hints['hass.home.open-desk.net'] = '172.23.200.129'
+      modules.load('workarounds < iterate')
     '';
   };
 

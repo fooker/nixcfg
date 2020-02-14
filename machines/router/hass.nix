@@ -1,6 +1,8 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, sources, ... }:
 
-{
+let
+  qkgs = import sources.nixpkgs-unstable {};
+in {
   services.mosquitto = {
     enable = true;
 
@@ -21,9 +23,10 @@
     enable = true;
     port = 8123;
 
-    package = pkgs.home-assistant.override {
+    package = qkgs.home-assistant.override {
       extraPackages = ps: with ps; [
-        ps.pythonPackages.paho-mqtt
+        pythonPackages.paho-mqtt
+        pythonPackages.denonavr
       ];
     };
   };
@@ -42,13 +45,50 @@
       "hass" = {
         serverName = "hass.home.open-desk.net";
         serverAliases = [ "hass" ];
+        listen = [
+          { addr = "172.23.200.129"; port = 80; }
+          # { addr = "172.23.200.129"; port = 80; }
+        ];
         locations."/" = {
-          proxyPass = "http://127.0.0.1:8123/";
+          proxyPass = "http://[::1]:8123/";
           proxyWebsockets = true;
         };
       };
-    };
 
+      "deploy" = {
+        serverName = "deploy.home.open-desk.net";
+        serverAliases = [ "deploy" ];
+        listen = [
+          { addr = "192.168.0.1"; port = 80; }
+        ];
+        root = "/srv/http/deploy";
+      };
+    };
+  };
+
+  systemd.services.esper-heartbeat = {
+    after = [ "network.target" "mosquitto.service" ];
+    requires = [ "mosquitto.service" ];
+    description = "ESPer heartbeat";
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = ''${pkgs.mosquitto}/bin/mosquitto_pub \
+        -h localhost \
+        -t 'frisch/home/esper/heartbeat' \
+        -n \
+      '';
+    };
+  };
+
+  systemd.timers.eddie-heartbeat = {
+    wantedBy = [ "multi-user.target" ]; 
+    after = [ "network.target" "mosquitto.service" ];
+    requires = [ "mosquitto.service" ];
+    description = "ESPer heartbeat";
+    timerConfig = {
+      OnCalendar = "minutely";
+      Unit = "esper-heartbeat.service";
+    };
   };
 
   environment.systemPackages = [ pkgs.mosquitto ];
@@ -58,7 +98,7 @@
       allowedTCPPorts = [ 80 443 ];
     };
     "iot" = {
-      allowedTCPPorts = [ 1883 ];
+      allowedTCPPorts = [ 80 1883 ];
     };
   };
 }
