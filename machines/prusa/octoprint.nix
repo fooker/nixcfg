@@ -5,9 +5,6 @@
     enable = true;
     host = "localhost";
 
-    plugins = [
-    ];
-
     extraConfig = {
       slicing = {
         enabled = false;
@@ -30,6 +27,8 @@
     recommendedOptimisation = true;
     recommendedProxySettings = true;
     recommendedTlsSettings = true;
+
+    clientMaxBodySize = "100m";
 
     virtualHosts.default = {
       default = true;
