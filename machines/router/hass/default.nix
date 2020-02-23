@@ -1,7 +1,7 @@
 { config, lib, pkgs, sources, ... }:
 
 let
-  qkgs = import sources.nixpkgs-unstable {};
+  pkgs-unstable = import sources.nixpkgs-unstable {};
 in {
   services.mosquitto = {
     enable = true;
@@ -23,9 +23,12 @@ in {
     enable = true;
     port = 8123;
 
-    package = qkgs.home-assistant.override {
+    config = import ./config.nix;
+
+    autoExtraComponents = true;
+
+    package = pkgs-unstable.home-assistant.override {
       extraPackages = ps: with ps; [
-        pythonPackages.paho-mqtt
         pythonPackages.denonavr
       ];
     };

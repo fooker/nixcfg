@@ -10,7 +10,7 @@ in {
     ./dns.nix
     ./ddclient.nix
 
-    ./hass.nix
+    ./hass
   ];
 
   boot.type = "grub";
