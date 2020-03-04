@@ -27,21 +27,38 @@
   script = [];
   scene = import ./scenes.nix;
 
-  cover = [
+  switch = [
+    {
+      platform = "mqtt";
+
+      name = "projector";
+      icon = "mdi:projector";
+
+      command_topic = "frisch/home/esper/5b8477/projector/set";
+      payload_on = "1";
+      payload_off = "0";
+
+      state_topic = "frisch/home/esper/5b8477/screen";
+      state_on = "1";
+      state_off = "0";
+
+      availability_topic = "frisch/home/esper/5b8477/status";
+      payload_available = "ONLINE";
+      payload_not_available = "OFFLINE";
+    }
     {
       platform = "mqtt";
       
       name = "screen";
-      device_class = "shade";
+      icon = "mdi:projector-screen";
 
       command_topic = "frisch/home/esper/9e90e5/screen/set";
-      payload_open = "RAISE";
-      payload_close = "LOWER";
-      payload_stop = null;
+      payload_on = "LOWER";
+      payload_off = "RAISE";
       
       state_topic = "frisch/home/esper/9e90e5/screen";
-      state_open = "RAISE";
-      state_closed = "LOWER";
+      state_on = "LOWER";
+      state_off = "RAISE";
       
       availability_topic = "frisch/home/esper/9e90e5/status";
       payload_available = "ONLINE";
