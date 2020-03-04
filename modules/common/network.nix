@@ -1,4 +1,4 @@
-{ config, lib, pkgs, machine, ... }:
+{ config, lib, pkgs, name, ... }:
 
 with lib;
 {
@@ -11,7 +11,7 @@ with lib;
 
   config = mkIf config.common.network.enable {
     networking = {
-      hostName = machine;
+      hostName = name;
 
       domain = "open-desk.net";
       search = [ "open-desk.net" ];

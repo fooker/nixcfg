@@ -16,30 +16,29 @@ in
     let
       buildMachine = name: { config, pkgs, ...} : 
         let
-          machine = "${name}";
-          machinePath = lib.path machine;
-          machineConfig = lib.config machine; 
+          path = lib.path name;
+          machine = lib.config name; 
         in {
           _module.args = {
-            inherit machine machineConfig sources;
+            inherit machine path sources;
           };
 
           deployment = {
-            targetHost = machineConfig.target.host;
-            targetUser = machineConfig.target.user;
+            targetHost = machine.target.host;
+            targetUser = machine.target.user;
           };
 
           nixpkgs.pkgs = import sources.nixpkgs {
             config = {};
-            system = machineConfig.system;
+            system = machine.system;
           };
-          nixpkgs.localSystem.system = machineConfig.system;
+          nixpkgs.localSystem.system = machine.system;
 
           nix.distributedBuilds = true;
 
           imports = [
             ./common.nix
-            machinePath
+            path
           ];
         };
     in
