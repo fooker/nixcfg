@@ -41,6 +41,11 @@ in {
     };
   };
 
+  # Restart pppd if systemd-networkd restarts
+  systemd.services."pppd-uplink" = {
+    partOf = [ "systemd-networkd.service" ];
+  };
+
   environment.etc = with secrets.ppp.uplink; {
     "ppp/chap-secrets".text=''* * "${password}"'';
   };
@@ -50,24 +55,18 @@ in {
   '';
 
   # Enfore redial once a day
-  systemd = {
-    services = {
-      "pppd-uplink-redial" = {
-        requires = [ "pppd-uplink.service" ];
-        serviceConfig = {
-          Type = "simple";
-          ExecStart = "${pkgs.systemd}/bin/systemctl kill -s HUP --kill-who=main pppd-uplink";
-        };
-      };
+  systemd.services."pppd-uplink-redial" = {
+    requires = [ "pppd-uplink.service" ];
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${pkgs.systemd}/bin/systemctl kill -s HUP --kill-who=main pppd-uplink";
     };
-    timers = {
-      "pppd-uplink-redial" = {
-        bindsTo = [ "pppd-uplink.service" ];
-        partOf = [ "pppd-uplink.service" ];
-        timerConfig = {
-          OnCalendar = "*-*-* 05:00:00";
-        };
-      };
+  };
+  systemd.timers."pppd-uplink-redial" = {
+    bindsTo = [ "pppd-uplink.service" ];
+    partOf = [ "pppd-uplink.service" ];
+    timerConfig = {
+      OnCalendar = "*-*-* 05:00:00";
     };
   };
 }
