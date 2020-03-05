@@ -17,6 +17,13 @@ in {
     '';
 
     users = {};
+
+    extraConf = ''
+      persistence true
+      
+      autosave_interval 10
+      autosave_on_changes false
+    '';
   };
 
   services.home-assistant = {

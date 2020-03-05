@@ -2,8 +2,11 @@
   {
     name = "movie";
     entities = {
-      "cover.screen" = {
-        state = "closed";
+      "switch.screen" = {
+        state = "on";
+      };
+      "switch.projector" = {
+        state = "on";
       };
       "media_player.amp" = {
         state = "on";

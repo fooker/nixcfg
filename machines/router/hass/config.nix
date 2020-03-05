@@ -22,9 +22,9 @@
     client_id = "hass";
   };
 
-  group = [];
   automation = [];
   script = [];
+  group = import ./groups.nix;
   scene = import ./scenes.nix;
 
   switch = [
