@@ -20,7 +20,7 @@ in {
 
     extraConf = ''
       persistence true
-      
+
       autosave_interval 10
       autosave_on_changes false
     '';
@@ -83,6 +83,7 @@ in {
     serviceConfig = {
       Type = "oneshot";
       ExecStart = ''${pkgs.mosquitto}/bin/mosquitto_pub \
+        -i 'esper-heartbeat' \
         -h localhost \
         -t 'frisch/home/esper/heartbeat' \
         -n \
