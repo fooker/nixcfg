@@ -1,4 +1,4 @@
-{ config, lib, pkgs, machine, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   systemd.network = {

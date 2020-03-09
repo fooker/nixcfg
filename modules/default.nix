@@ -6,5 +6,6 @@
     ./boot/default.nix
     ./server.nix
     ./serial.nix
+    ./backhaul/default.nix
   ];
 }

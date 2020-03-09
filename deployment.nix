@@ -14,7 +14,7 @@ in
     };
   } // (
     let
-      buildMachine = name: { config, pkgs, ...} : 
+      buildMachine = name: { ... }: 
         let
           path = lib.path name;
           machine = lib.config name; 
@@ -37,9 +37,12 @@ in
           nix.distributedBuilds = true;
 
           imports = [
-            ./common.nix
+            ./tools
+            ./modules
             path
           ];
+
+          system.stateVersion = "19.09";
         };
     in
       builtins.listToAttrs

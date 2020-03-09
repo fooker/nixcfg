@@ -1,4 +1,16 @@
 {
+    "ipinfo": {
+        "branch": "master",
+        "description": "IP address info dumper",
+        "homepage": null,
+        "owner": "fooker",
+        "repo": "ipinfo",
+        "rev": "706ecbb0cc15d9944f3f65e6318f33aa25e1d188",
+        "sha256": "0071d926bbk7fx6n77ig70vifi16xylyhr3j382ryvrhganzgknd",
+        "type": "tarball",
+        "url": "https://github.com/fooker/ipinfo/archive/706ecbb0cc15d9944f3f65e6318f33aa25e1d188.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "morph": {
         "branch": "master",
         "description": "NixOS deployment tool",
@@ -25,14 +37,14 @@
     },
     "nixpkgs": {
         "branch": "nixos-19.09",
-        "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
+        "description": "Nixpkgs/NixOS branches that track the Nixpkgs/NixOS channels",
         "homepage": "https://github.com/NixOS/nixpkgs",
         "owner": "NixOS",
         "repo": "nixpkgs-channels",
-        "rev": "00115f2f9c7f491f64e137420e64af05405756fc",
-        "sha256": "1nm9f9w8qlxcppc3q93dhwgf2h9b8rv7sjb2fqzkndfvk9k6md5r",
+        "rev": "a81842b6994ce710ebad13303fde29438f610e8c",
+        "sha256": "0ch8mnx4iicsh8j6a2a6sgdshbgn6wxhzgf35pnq72avc9pdf2xi",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs-channels/archive/00115f2f9c7f491f64e137420e64af05405756fc.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs-channels/archive/a81842b6994ce710ebad13303fde29438f610e8c.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs-unstable": {

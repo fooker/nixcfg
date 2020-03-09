@@ -1,14 +1,26 @@
 {
+    "ipinfo": {
+        "branch": "master",
+        "description": "IP address info dumper",
+        "homepage": null,
+        "owner": "fooker",
+        "repo": "ipinfo",
+        "rev": "66bf591b85956f90ffb69628f1e83a58c67b27a3",
+        "sha256": "0inffwlmdiiny2cz7n82bmyf6c608ncacnz4mmnylfgmm6ck4nag",
+        "type": "tarball",
+        "url": "https://github.com/fooker/ipinfo/archive/66bf591b85956f90ffb69628f1e83a58c67b27a3.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "morph": {
         "branch": "master",
         "description": "NixOS deployment tool",
         "homepage": null,
         "owner": "DBCDK",
         "repo": "morph",
-        "rev": "3bade9f1f5faae3062040b9922b7efb3088740d1",
-        "sha256": "0kd8b3956gvcxvxhpza4lb00i9cqd8aaskm7ma74x37yskzq5d3q",
+        "rev": "0630d6bc83cd7bbad43628e2653ee65aeb357489",
+        "sha256": "1y6clzi8sfnrv4an26b44r24nnxds1kj9aw3lmjbgxl9yrxxsj1k",
         "type": "tarball",
-        "url": "https://github.com/DBCDK/morph/archive/3bade9f1f5faae3062040b9922b7efb3088740d1.tar.gz",
+        "url": "https://github.com/DBCDK/morph/archive/0630d6bc83cd7bbad43628e2653ee65aeb357489.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "niv": {
@@ -17,10 +29,34 @@
         "homepage": "https://github.com/nmattia/niv",
         "owner": "nmattia",
         "repo": "niv",
-        "rev": "c8f74f44b5f5df2c8f20a1834460d012e74d78f9",
-        "sha256": "0zmhxgl37f1p2aiqjmiccflpgga6phj6vmqs3jd33z0frj6hsy5c",
+        "rev": "98c74a80934123cb4c3bf3314567f67311eb711a",
+        "sha256": "1w8n54hapd4x9f1am33icvngkqns7m3hl9yair38yqq08ffwg0kn",
         "type": "tarball",
-        "url": "https://github.com/nmattia/niv/archive/c8f74f44b5f5df2c8f20a1834460d012e74d78f9.tar.gz",
+        "url": "https://github.com/nmattia/niv/archive/98c74a80934123cb4c3bf3314567f67311eb711a.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "nixpkgs": {
+        "branch": "nixos-19.09",
+        "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
+        "homepage": "https://github.com/NixOS/nixpkgs",
+        "owner": "NixOS",
+        "repo": "nixpkgs-channels",
+        "rev": "00115f2f9c7f491f64e137420e64af05405756fc",
+        "sha256": "1nm9f9w8qlxcppc3q93dhwgf2h9b8rv7sjb2fqzkndfvk9k6md5r",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs-channels/archive/00115f2f9c7f491f64e137420e64af05405756fc.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "nixpkgs-unstable": {
+        "branch": "nixos-unstable",
+        "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
+        "homepage": "https://github.com/NixOS/nixpkgs",
+        "owner": "NixOS",
+        "repo": "nixpkgs-channels",
+        "rev": "1459b34afa993f08e53e05d21dd2df73b2e90c78",
+        "sha256": "13a1fii6jr3mkxb2v1dqib45254l8443vvpd4xjnymslq7v1ahmp",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs-channels/archive/1459b34afa993f08e53e05d21dd2df73b2e90c78.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "qemu": {
@@ -29,22 +65,10 @@
         "homepage": null,
         "owner": "cleverca22",
         "repo": "nixos-configs",
-        "rev": "fde566fdd550c8c17361d3f871c7b20c03f54568",
-        "sha256": "0wlpcx703k8kqvjv51mhkfq1746ad0xi1a3l25ymxc0fs8x326gh",
+        "rev": "caf88290fb088f791ea0b090733902dc8a52d39c",
+        "sha256": "1x3gi361zj9g8xq96f9lqm7wp3gn9z1j0a4cfzh2l82cfqg4pra1",
         "type": "tarball",
-        "url": "https://github.com/cleverca22/nixos-configs/archive/fde566fdd550c8c17361d3f871c7b20c03f54568.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "nixpkgs": {
-        "branch": "release-19.09",
-        "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
-        "homepage": "https://github.com/NixOS/nixpkgs",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "0e7a9f737057a96463eeee3de09010dd6795d00a",
-        "sha256": "11v4xnjklnz3yrpa2hhzpfc2xapr5fp4hxr87fwiwrhzn0mia29r",
-        "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/0e7a9f737057a96463eeee3de09010dd6795d00a.tar.gz",
+        "url": "https://github.com/cleverca22/nixos-configs/archive/caf88290fb088f791ea0b090733902dc8a52d39c.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }
