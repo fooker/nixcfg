@@ -1,6 +1,42 @@
 let
-  lib = import ./lib.nix;
   sources = import ./nix/sources.nix;
+
+  buildMachine = name: { ... }: 
+    let
+      /* The path of the machine
+      */
+      path = ./. + "/machines/${name}";
+
+      /* Read the machine configuration from machine.nix in the machines directory
+      */
+      machine = import "${path}/machine.nix"; 
+
+    in {
+      _module.args = {
+        inherit machine path sources;
+      };
+
+      deployment = {
+        targetHost = machine.target.host;
+        targetUser = machine.target.user;
+      };
+
+      nixpkgs.pkgs = import sources.nixpkgs {
+        config = {};
+        system = machine.system;
+      };
+      nixpkgs.localSystem.system = machine.system;
+
+      nix.distributedBuilds = true;
+
+      imports = [
+        ./tools
+        ./modules
+        path
+      ];
+
+      system.stateVersion = "19.09";
+    };
 in
   {
     network = {
@@ -12,42 +48,6 @@ in
         "builders-use-substitutes" = "true";
       };
     };
-  } // (
-    let
-      buildMachine = name: { ... }: 
-        let
-          path = lib.path name;
-          machine = lib.config name; 
-        in {
-          _module.args = {
-            inherit machine path sources;
-          };
-
-          deployment = {
-            targetHost = machine.target.host;
-            targetUser = machine.target.user;
-          };
-
-          nixpkgs.pkgs = import sources.nixpkgs {
-            config = {};
-            system = machine.system;
-          };
-          nixpkgs.localSystem.system = machine.system;
-
-          nix.distributedBuilds = true;
-
-          imports = [
-            ./tools
-            ./modules
-            path
-          ];
-
-          system.stateVersion = "19.09";
-        };
-    in
-      builtins.listToAttrs
-        (builtins.map
-          (name: { name = name; value = buildMachine name; })
-          (builtins.attrNames (builtins.readDir ./machines))
-        )
-  )
+  } // (builtins.listToAttrs (builtins.map # Build machine config for each machine in machines directory
+      (name: { name = name; value = buildMachine name; })
+      (builtins.attrNames (builtins.readDir ./machines))))

@@ -252,7 +252,7 @@ with lib;
         wireguardPeers = [{
           wireguardPeerConfig = {
             Endpoint = "${cfg.remote.host}:${toString cfg.remote.port}";
-            AllowedIPs = "0.0.0.0/0";
+            AllowedIPs = "0.0.0.0/0, ::/0";
             PublicKey = "${cfg.remote.pubkey}";
             PersistentKeepalive = 25;
           };

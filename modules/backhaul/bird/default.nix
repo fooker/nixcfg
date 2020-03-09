@@ -164,15 +164,18 @@ in mkIf (domains != []) {
             (attrValues peer.domains));
       in concatStringsSep "\n" [
         (withProtocol "ospf" ''
-          iptables -A INPUT -i "${peer.netdev}" -p OSPFIGP -j ACCEPT
+          iptables -A nixos-fw -i "${peer.netdev}" -p OSPFIGP -j nixos-fw-accept
+          ip6tables -A nixos-fw -i "${peer.netdev}" -p OSPFIGP -j nixos-fw-accept
         '')
 
         (withProtocol "babel" ''
-          iptables -A INPUT -i "${peer.netdev}" -p udo -m udp --dport babel -j ACCEPT
+          iptables -A nixos-fw -i "${peer.netdev}" -p udp -m udp --dport babel -j nixos-fw-accept
+          ip6tables -A nixos-fw -i "${peer.netdev}" -p udp -m udp --dport babel -j nixos-fw-accept
         '')
 
         (withProtocol "bgp" ''
-          iptables -A INPUT -i "${peer.netdev}" -p tcp -m tcp --dport bgp -j ACCEPT
+          iptables -A nixos-fw -i "${peer.netdev}" -p tcp -m tcp --dport bgp -j nixos-fw-accept
+          ip6tables -A nixos-fw -i "${peer.netdev}" -p tcp -m tcp --dport bgp -j nixos-fw-accept
         '')
       ])
     (attrValues config.backhaul.peers);
