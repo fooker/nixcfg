@@ -1,8 +1,14 @@
-{ config, lib, pkgs, name, tools, ... }@args:
+{ config, lib, pkgs, name, tools, ... }:
 
 with lib;
 
+# TODO: Firewall rules for wireguard
+
 {
+  imports = [
+    ./bird
+  ];
+
   options.backhaul = {
     routerId = mkOption {
       description = "The router ID of the machine";
@@ -10,13 +16,19 @@ with lib;
     };
 
     domains = mkOption {
-      description = "Routing Domains this machine participate in";
+      description = "Routing Domains this machine participates in";
       type = types.attrsOf (types.submodule ({ name, ... }: {
         options = {
           name = mkOption {
             description = "Name of the domain";
             default = name;
             type = types.str;
+          };
+
+          netdev = mkOption {
+            description = "Name of the local network interface - keep undefined for dummy interface";
+            default = null;
+            type = types.nullOr types.str;
           };
 
           ipv4 = mkOption {
@@ -178,40 +190,42 @@ with lib;
           };
 
           domains = mkOption {
-            description = "Routing domains this peer participate in";
-            type = types.listOf types.str;
-          };
-
-          bgp = mkOption {
-            description = "Peer BGP configuration";
-            default = null;
-            type = types.nullOr (types.submodule {
+            description = "Routing Domains this peer participates in";
+            type = types.attrsOf (types.submodule ({ name, ... }: {
               options = {
-                as = mkOption {
-                  description = "The AS of the peer (or null for interior routing)";
+                bgp = mkOption {
+                  description = "Peer BGP configuration";
                   default = null;
-                  type = types.nullOr types.ints.unsigned;
+                  type = types.nullOr (types.submodule {
+                    options = {
+                      as = mkOption {
+                        description = "The AS of the peer (or null for interior routing)";
+                        default = null;
+                        type = types.nullOr types.ints.unsigned;
+                      };
+                    };
+                  });
+                };
+
+                ospf = mkOption {
+                  description = "Peer OSPF configuration";
+                  default = null;
+                  type = types.nullOr (types.submodule {
+                    options = {
+                    };
+                  });
+                };
+
+                babel = mkOption {
+                  description = "Peer Babel configuration";
+                  default = null;
+                  type = types.nullOr (types.submodule {
+                    options = {
+                    };
+                  });
                 };
               };
-            });
-          };
-
-          ospf = mkOption {
-            description = "Peer OSPF configuration";
-            default = null;
-            type = types.nullOr (types.submodule {
-              options = {
-              };
-            });
-          };
-
-          babel = mkOption {
-            description = "Peer Babel configuration";
-            default = null;
-            type = types.nullOr (types.submodule {
-              options = {
-              };
-            });
+            }));
           };
         };
       }));
@@ -274,41 +288,36 @@ with lib;
       };
     };
 
-    mkDomainNetwork = domain: 
-      let
-        ipv4 = tools.ipinfo domain.ipv4; # TODO: Inline using with
-        ipv6 = tools.ipinfo domain.ipv6;
-
-      in {
-        netdevs."70-backhaul-domain-${domain.name}" = {
-          netdevConfig = {
-            Description = "Domain ${domain.name}";
-            Name = "${domain.name}";
-            Kind = "dummy";
-          };
-        };
-
-        networks."70-backhaul-domain-${domain.name}" = {
-          matchConfig = {
-            Name = "${domain.name}";
-          };
-          networkConfig = {
-            Description = "Domain ${domain.name}";
-          };
-          addresses = [
-            { 
-              addressConfig = {
-                Address = "${ipv4.address}/${toString ipv4.netmask}";
-              };
-            }
-            {
-              addressConfig = {
-                Address = "${ipv6.address}/${toString ipv6.netmask}";
-              };
-            }
-          ];
+    mkDomainNetwork = domain: {
+      netdevs."70-backhaul-domain-${domain.name}" = {
+        netdevConfig = {
+          Description = "Domain ${domain.name}";
+          Name = "${domain.name}";
+          Kind = "dummy";
         };
       };
+
+      networks."70-backhaul-domain-${domain.name}" = {
+        matchConfig = {
+          Name = "${domain.name}";
+        };
+        networkConfig = {
+          Description = "Domain ${domain.name}";
+        };
+        addresses = [
+          {
+            addressConfig = with tools.ipinfo domain.ipv4; {
+              Address = "${address}/${toString netmask}";
+            };
+          }
+          {
+            addressConfig = with tools.ipinfo domain.ipv6; {
+              Address = "${address}/${toString netmask}";
+            };
+          }
+        ];
+      };
+    };
     
   in mkIf (config.backhaul.peers != {}) {
     boot.extraModulePackages = [ config.boot.kernelPackages.wireguard ];
@@ -318,18 +327,13 @@ with lib;
       (mapAttrsToList mkPeerNetwork config.backhaul.peers)
       (map
         mkDomainNetwork
-        (filter # Filter domains having at least one peer
-          (domain: any # Check if domain has any peer
-            (peer: any # Check if peer is associated with domain
-              (e: e == domain.name)
-              peer.domains)
-            (attrValues config.backhaul.peers))
+        (filter # Filter domains with standalone interface and having at least one peer
+          (domain: and
+            (any # Check if domain has any peer
+              (peer: hasAttr domain.name peer.domains) # Check if peer is associated with domain
+              (attrValues config.backhaul.peers))
+            (domain.netdev == null)) # Check if domain has associated local interface
           (attrValues config.backhaul.domains)))
     ]);
-
-    services.bird2 = {
-      enable = true;
-      config = import ./bird/default.nix args;
-    };
   };
 }

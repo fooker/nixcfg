@@ -1,10 +1,10 @@
-{ config, lib, peers, tools, ... }:
+{ config, lib, tools, ... }:
 
 # TODO: Log rejected routes
 
 with lib;
 
-domain: optionalString (domain.babel != null) (
+domain: peers:
   let
     interfaces = concatMapStringsSep "\n"
       (peer: ''
@@ -12,11 +12,11 @@ domain: optionalString (domain.babel != null) (
           type wired;
           check link on;
 
-          next hop ipv4 ${peer.transport.ipv4.peer };
-          next hop ipv6 ${peer.transport.ipv6.peer };
+          next hop ipv4 ${peer.transport.ipv4.addr };
+          next hop ipv6 ${peer.transport.ipv6.addr };
         };
       '')
-      (peers domain "babel");
+      peers;
     
     ipv4 = tools.ipinfo domain.ipv4;
     ipv6 = tools.ipinfo domain.ipv6;
@@ -64,4 +64,3 @@ domain: optionalString (domain.babel != null) (
       ${interfaces}
     }
   ''
-)

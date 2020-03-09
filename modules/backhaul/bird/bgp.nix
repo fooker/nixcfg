@@ -1,14 +1,14 @@
-{ config, lib, pkgs, name, peers, tools, ... }:
+{ config, lib, tools, ... }:
 
 with lib;
 
-domain: optionalString (domain.bgp != null) (
+domain: peers:
   let
     neighbors = concatMapStringsSep "\n"
       (peer: 
         let
           name = replaceStrings [ "." ] [ "_" ] peer.netdev;
-          as = toString (if peer.bgp.as != null then peer.bgp.as else domain.bgp.as);
+          as = toString (if peer.domains."${domain.name}".bgp.as != null then peer.domains."${domain.name}".bgp.as else domain.bgp.as);
 
         in ''
           protocol bgp ${domain.name}_bgp_${name}_4 from ${domain.name}_bgp_4 {
@@ -19,17 +19,19 @@ domain: optionalString (domain.bgp != null) (
             interface "${peer.netdev}";
           }
         '')
-      (peers domain "bgp");
+      (traceVal peers);
     
     ipv4 = tools.ipinfo domain.ipv4;
     ipv6 = tools.ipinfo domain.ipv6;
+
+    netdev = if (domain.netdev != null) then domain.netdev else domain.name;
 
   in ''
     ipv4 table ${domain.name}_egp_4;
     ipv6 table ${domain.name}_egp_6;
 
     protocol static ${domain.name}_static_4 {
-      ${concatMapStringsSep "\n" (export: "route ${export} via \"${domain.name}\";") domain.exports.ipv4}
+      ${concatMapStringsSep "\n" (export: "route ${export} via \"${netdev}\";") domain.exports.ipv4}
 
       ipv4 {
         table ${domain.name}_egp_4;
@@ -39,7 +41,7 @@ domain: optionalString (domain.bgp != null) (
     }
 
     protocol static ${domain.name}_static_6 {
-      ${concatMapStringsSep "\n" (export: "route ${export} via \"${domain.name}\";") domain.exports.ipv6}
+      ${concatMapStringsSep "\n" (export: "route ${export} via \"${netdev}\";") domain.exports.ipv6}
 
       ipv6 {
         table ${domain.name}_egp_6;
@@ -189,4 +191,3 @@ domain: optionalString (domain.bgp != null) (
       export all;
     }
   ''
-)

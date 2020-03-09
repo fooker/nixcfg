@@ -1,10 +1,10 @@
-{ config, lib, peers, tools, ... }:
+{ config, lib, tools, ... }:
 
 # TODO: Log rejected routes
 
 with lib;
 
-domain: optionalString (domain.ospf != null) (
+domain: peers:
   let
     interfaces = concatMapStringsSep "\n"
       (peer: ''
@@ -13,7 +13,7 @@ domain: optionalString (domain.ospf != null) (
           check link on;
         };
       '')
-      (peers domain "ospf");
+      peers;
     
     ipv4 = tools.ipinfo domain.ipv4;
     ipv6 = tools.ipinfo domain.ipv6;
@@ -76,4 +76,3 @@ domain: optionalString (domain.ospf != null) (
       };
     }
   ''
-)

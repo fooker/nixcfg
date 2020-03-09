@@ -3,131 +3,177 @@
 with lib;
 
 let
-  contains = x: l: any (e: e == x) l;
-   
-  peers = domain: protocol: filter 
-    (peer: (hasAttr protocol peer) && (contains domain.name peer.domains))
-    (attrValues config.backhaul.peers);
-
   exports.ipv4 = domain: concatMapStringsSep ", " (export: "${export}+") domain.exports.ipv4;
   exports.ipv6 = domain: concatMapStringsSep ", " (export: "${export}+") domain.exports.ipv6;
 
   filters.ipv4 = domain: concatStringsSep ", " domain.filters.ipv4;
   filters.ipv6 = domain: concatStringsSep ", " domain.filters.ipv6;
 
-  args' = args // { inherit peers; };
+  bgp = import ./bgp.nix args;
+  ospf = import ./ospf.nix args;
+  babel = import ./babel.nix args;
 
-  bgp = import ./bgp.nix args';
-  ospf = import ./ospf.nix args';
-  babel = import ./babel.nix args';
-
-  domains = concatMapStringsSep "\n"
-    (domain:
-      let
-        ipv4 = tools.ipinfo domain.ipv4;
-        ipv6 = tools.ipinfo domain.ipv6;
-      in ''
-        ipv4 table ${domain.name}_4;
-        ipv6 table ${domain.name}_6;
-
-        function ${domain.name}_exported_v4() {
-          return net ~ [ ${exports.ipv4 domain} ];
-        }
-        function ${domain.name}_filtered_v4() {
-          return net ~ [ ${filters.ipv4 domain} ];
-        }
-        function ${domain.name}_exported_v6() {
-          return net ~ [ ${exports.ipv6 domain} ];
-        }
-        function ${domain.name}_filtered_v6() {
-          return net ~ [ ${filters.ipv6 domain} ];
-        }
-
-        protocol direct ${domain.name}_direct {
-          interface "${domain.name}";
-          check link yes;
-
-          ipv4 {
-            table ${domain.name}_4;
-            import all;
-            export none;
-          };
-
-          ipv6 {
-            table ${domain.name}_6;
-            import all;
-            export none;
-          };
-        }
-
-        ${bgp domain}
-        ${ospf domain}
-        ${babel domain}
-
-        protocol pipe ${domain.name}_pipe_4 {
-          table ${domain.name}_4;
-          peer table output_4;
-
-          import none;
-          export filter {
-            krt_prefsrc = ${ipv4.address};
-            if net ~ [${ipv4.network}/${toString ipv4.netmask}+] then reject;
-
-            accept;
-          };
-        }
-
-        protocol pipe ${domain.name}_pipe_6 {
-          table ${domain.name}_6;
-          peer table output_6;
-
-          import none;
-          export filter {
-            krt_prefsrc = ${ipv6.address};
-            if net ~ [${ipv6.network}/${toString ipv6.netmask}+] then reject;
-
-            accept;
-          };
-        }
-      '')
-    (filter
-      # Check if domain is used by any peer
+  /* All domains which have at least one peer participating
+  */
+  domains = filter
       (domain: any
-        (peer: contains domain.name peer.domains)
+        (peer: hasAttr domain.name peer.domains)
         (attrValues config.backhaul.peers))
-      (attrValues config.backhaul.domains));
+      (attrValues config.backhaul.domains);
 
-in ''
-  router id ${config.backhaul.routerId};
+  domainConfig = domain:
+    let
+      ipv4 = tools.ipinfo domain.ipv4;
+      ipv6 = tools.ipinfo domain.ipv6;
 
-  protocol device {
-    scan time 10;
-  }
+      netdev = if (domain.netdev != null) then domain.netdev else domain.name;
 
-  ipv4 table output_4;
-  ipv6 table output_6;
+      /* Find all peers working in the current domain and having a
+        configuration for the given protocol.
 
-  protocol kernel output_kernel_4 {
-    persist;
-    learn;
+        The returned list of peers is empty, if the domain is not configured
+        for the protocol. Else, it will contian only peers wich are
+        configured for the current domain and the given protocol in this
+        domain.
+      */
+      peers = protocol: 
+        optionals (domain."${protocol}" != null) (filter
+          (peer: (attrByPath [ domain.name protocol ] null peer.domains) != null) # Peer is configured for proto
+          (attrValues config.backhaul.peers));
+      
+      /* Calls a protocol specific implementation if there are peers for this
+        protocol. The protocol implementation must accept the domain
+        configuration and the list of associated peer configurations.
+      */
+      callProtocol = protocol: impl:
+        let
+          peers' = peers protocol;
+        in
+          optionalString (peers' != []) (impl domain peers');
 
-    ipv4 {
-      table output_4;
-      import none;
-      export all;
-    };
-  }
+    in ''
+      ipv4 table ${domain.name}_4;
+      ipv6 table ${domain.name}_6;
 
-  protocol kernel output_kernel_6 {
-    persist;
-    learn;
+      function ${domain.name}_exported_v4() {
+        return net ~ [ ${exports.ipv4 domain} ];
+      }
+      function ${domain.name}_filtered_v4() {
+        return net ~ [ ${filters.ipv4 domain} ];
+      }
+      function ${domain.name}_exported_v6() {
+        return net ~ [ ${exports.ipv6 domain} ];
+      }
+      function ${domain.name}_filtered_v6() {
+        return net ~ [ ${filters.ipv6 domain} ];
+      }
 
-    ipv6 {
-      table output_6;
-      import none;
-      export all;
-    };
-  }
+      protocol direct ${domain.name}_direct {
+        interface "${netdev}";
+        check link yes;
 
-  ${domains}     
-''
+        ipv4 {
+          table ${domain.name}_4;
+          import all;
+          export none;
+        };
+
+        ipv6 {
+          table ${domain.name}_6;
+          import all;
+          export none;
+        };
+      }
+
+      ${callProtocol "bgp" bgp}
+      ${callProtocol "ospf" ospf}
+      ${callProtocol "babel" babel}
+
+      protocol pipe ${domain.name}_pipe_4 {
+        table ${domain.name}_4;
+        peer table output_4;
+
+        import none;
+        export filter {
+          krt_prefsrc = ${ipv4.address};
+          if net ~ [${ipv4.network}/${toString ipv4.netmask}+] then reject;
+
+          accept;
+        };
+      }
+
+      protocol pipe ${domain.name}_pipe_6 {
+        table ${domain.name}_6;
+        peer table output_6;
+
+        import none;
+        export filter {
+          krt_prefsrc = ${ipv6.address};
+          if net ~ [${ipv6.network}/${toString ipv6.netmask}+] then reject;
+
+          accept;
+        };
+      }
+    '';
+
+in mkIf (domains != []) {
+  services.bird2 = {
+    enable = true;
+    config = ''
+      router id ${config.backhaul.routerId};
+
+      protocol device {
+        scan time 10;
+      }
+
+      ipv4 table output_4;
+      ipv6 table output_6;
+
+      protocol kernel output_kernel_4 {
+        persist;
+        learn;
+
+        ipv4 {
+          table output_4;
+          import none;
+          export all;
+        };
+      }
+
+      protocol kernel output_kernel_6 {
+        persist;
+        learn;
+
+        ipv6 {
+          table output_6;
+          import none;
+          export all;
+        };
+      }
+
+      ${concatMapStringsSep "\n" domainConfig domains}
+    '';
+  };
+
+  networking.firewall.extraCommands = concatMapStringsSep "\n"
+    (peer:
+      let
+        withProtocol = protocol: optionalString
+          (any
+            (domain: domain."${protocol}" != null)
+            (attrValues peer.domains));
+      in concatStringsSep "\n" [
+        (withProtocol "ospf" ''
+          iptables -A INPUT -i "${peer.netdev}" -p OSPFIGP -j ACCEPT
+        '')
+
+        (withProtocol "babel" ''
+          iptables -A INPUT -i "${peer.netdev}" -p udo -m udp --dport babel -j ACCEPT
+        '')
+
+        (withProtocol "bgp" ''
+          iptables -A INPUT -i "${peer.netdev}" -p tcp -m tcp --dport bgp -j ACCEPT
+        '')
+      ])
+    (attrValues config.backhaul.peers);
+}

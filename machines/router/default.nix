@@ -45,6 +45,8 @@ in {
         ];
       };
       dn42 = {
+        netdev = "int.priv";
+
         ipv4 = "172.23.200.129/25";
         ipv6 = "fd79:300d:6056:0100::0/56";
 
@@ -99,11 +101,11 @@ in {
           ipv6.peer = "fe80::1";
         };
 
-        domains = [ "dn42" ];
-
-        bgp = {};
-        ospf = {};
-        babel = {};
+        domains = {
+          "dn42" = {
+            babel = {};
+          };
+        };
       };
 
       "zsouth" = {
@@ -122,11 +124,11 @@ in {
           ipv6.peer = "fe80::1";
         };
 
-        domains = [ "dn42" ];
-
-        bgp = {};
-        ospf = {};
-        babel = {};
+        domains = {
+          "dn42" = {
+            babel = {};
+          };
+        };
       };
     };
   };
