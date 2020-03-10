@@ -32,6 +32,7 @@ let
       imports = [
         ./tools
         ./modules
+        ./shared
         path
       ];
 
