@@ -31,25 +31,25 @@
     {
       platform = "mqtt";
 
-      name = "projector";
+      name = "Projector";
       icon = "mdi:projector";
 
-      command_topic = "frisch/home/esper/5b8477/projector/set";
+      command_topic = "frisch/home/esper/cc690b/projector/set";
       payload_on = "1";
       payload_off = "0";
 
-      state_topic = "frisch/home/esper/5b8477/screen";
+      state_topic = "frisch/home/esper/cc690b/projector/target";
       state_on = "1";
       state_off = "0";
 
-      availability_topic = "frisch/home/esper/5b8477/status";
+      availability_topic = "frisch/home/esper/cc690b/status";
       payload_available = "ONLINE";
       payload_not_available = "OFFLINE";
     }
     {
       platform = "mqtt";
       
-      name = "screen";
+      name = "Screen";
       icon = "mdi:projector-screen";
 
       command_topic = "frisch/home/esper/9e90e5/screen/set";
@@ -70,8 +70,8 @@
     {
       platform = "denonavr";
 
+      name = "Amp";
       host = "172.23.200.133";
-      name = "amp";
 
       show_all_sources = false;
     }
