@@ -1,5 +1,8 @@
 { config, lib, pkgs, ... }:
 
+# TODO: Make vx vlan config not so special
+# TODO: Make vxlan group address a real hex value...
+
 with lib;
 
 let
@@ -38,6 +41,17 @@ let
     };
   };
 in {
+  systemd.package = pkgs.systemd.overrideAttrs (oldAttrs: rec {
+    name = "systemd-vxlan";
+    patches = [
+      (pkgs.fetchpatch {
+        name = "systemd-vxlan-group.patch";
+        url = "https://github.com/systemd/systemd/pull/15397.patch";
+        sha256 = "1n9rv9wf0kbxrrzzb40hrqbs85crf9qkh1yl1pjpsf619w827kay";
+      })
+    ];
+  });
+
   systemd.network = foldl recursiveUpdate {
     enable = true;
 
@@ -74,13 +88,25 @@ in {
     };
 
     netdevs = {
-      "00-int" = {
+      "10-int" = {
         netdevConfig = {
           Name = "int";
           Kind = "bond";
         };
         bondConfig = {
           Mode = "802.3ad";
+        };
+      };
+
+      "15-vx" = {
+        netdevConfig = {
+          Name = "vx";
+          Kind = "vlan";
+          MTUBytes = "1550"; # Inner MTU (1500) + VXLAN overhead (50)
+        };
+
+        vlanConfig = {
+          Id = 100;
         };
       };
     };
@@ -111,9 +137,17 @@ in {
 
       "10-int" = {
         name = "int";
-        vlan = map (name: "${name}-vlan") (attrNames networks);
+        vlan = (map (name: "${name}-vlan") (attrNames networks)) ++ [ "vx" ];
         networkConfig = {
           LinkLocalAddressing = "no";
+        };
+      };
+
+      "15-vx" = {
+        name = "vx";
+        vxlan = (map (name: "${name}-vxlan") (attrNames networks));
+        networkConfig = {
+          LinkLocalAddressing = "ipv6";
         };
       };
 
@@ -139,7 +173,7 @@ in {
     };
   } (mapAttrsToList (name: config: {
     netdevs = {
-      "10-${name}-vlan" = {
+      "20-${name}-vlan" = {
         netdevConfig = {
           Name = "${name}-vlan";
           Kind = "vlan";
@@ -148,8 +182,23 @@ in {
           Id = config.vlan;
         };
       };
+
+      "25-${name}-vxlan" = {
+        netdevConfig = {
+          Name = "${name}-vxlan";
+          Kind = "vxlan";
+        };
+
+        extraConfig = ''
+          [VXLAN]
+          VNI = ${toString config.vlan}
+          Group = ff02::42:${toString config.vlan}
+          DestinationPort = 8472
+          MacLearning = true
+        '';
+      };
     
-      "20-${name}" = {
+      "30-${name}" = {
         netdevConfig = {
           Name = "${name}";
           Kind = "bridge";
@@ -160,6 +209,14 @@ in {
     networks = {
       "20-${name}-vlan" = {
         name = "${name}-vlan";
+        bridge = [ "${name}" ];
+        networkConfig = {
+          LinkLocalAddressing = "no";
+        };
+      };
+
+      "25-${name}-vxlan" = {
+        name = "${name}-vxlan";
         bridge = [ "${name}" ];
         networkConfig = {
           LinkLocalAddressing = "no";
@@ -215,6 +272,11 @@ in {
       uplink = {
         # TODO: Limit to "daddr=fe80::/10 dport=546" and "saddr=fe80::/10 sport=547"
         allowedUDPPorts = [ 546 547 ];
+      };
+      vx = {
+        allowedUDPPorts = [
+          8472 # VXLAN
+        ];
       };
     };
     
