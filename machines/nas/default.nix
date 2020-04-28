@@ -6,16 +6,15 @@ in {
   imports = [
     ./hardware.nix
     ./network.nix
-    ./pppd.nix
-    ./dns.nix
-    ./ddclient.nix
-    ./backhaul.nix
-    ./hass
+    ./vault.nix
+    ./shares.nix
+    ./deluge.nix
+    ./syncthing.nix
+    ./backup.nix
   ];
 
-  boot.type = "grub";
-  serial.enable = true;
   server.enable = true;
+  serial.enable = true;
 
   backup = {
     enable = true;

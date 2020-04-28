@@ -44,6 +44,8 @@ with lib;
         pciutils
         usbutils
 
+        # Filesystems
+        cryptsetup
       ];
     };
   };

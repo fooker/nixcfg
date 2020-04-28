@@ -1,7 +1,9 @@
 { config, lib, pkgs, name, ... }:
 
 with lib;
-{
+let
+  hostId = toString (import (pkgs.runCommandLocal "hostid-${ name }" {} "echo ${ name } | sha512sum | head -c4 | od -A none -t x4 > $out"));
+in {
   options.common.network = {
     enable = mkOption {
         type = types.bool;
@@ -11,6 +13,8 @@ with lib;
 
   config = mkIf config.common.network.enable {
     networking = {
+      inherit hostId;
+
       hostName = name;
 
       domain = "open-desk.net";

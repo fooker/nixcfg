@@ -95,6 +95,8 @@ in {
         };
         bondConfig = {
           Mode = "802.3ad";
+          TransmitHashPolicy = "layer3+4";
+          LACPTransmitRate = "fast";
         };
       };
 
@@ -102,7 +104,6 @@ in {
         netdevConfig = {
           Name = "vx";
           Kind = "vlan";
-          MTUBytes = "1550"; # Inner MTU (1500) + VXLAN overhead (50)
         };
 
         vlanConfig = {

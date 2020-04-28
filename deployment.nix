@@ -22,7 +22,9 @@ let
       };
 
       nixpkgs.pkgs = import sources.nixpkgs {
-        config = {};
+        config = {
+          allowUnfree = true;
+        };
         system = machine.system;
       };
       nixpkgs.localSystem.system = machine.system;

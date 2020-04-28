@@ -7,5 +7,6 @@
     ./server.nix
     ./serial.nix
     ./backhaul/default.nix
+    ./backup.nix
   ];
 }

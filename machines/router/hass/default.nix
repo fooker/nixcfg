@@ -112,4 +112,12 @@ in {
       allowedTCPPorts = [ 80 1883 ];
     };
   };
+
+  backup = {
+    enable = true;
+    paths = [
+      config.services.home-assistant.configDir
+      config.services.mosquitto.dataDir
+    ];
+  };
 }

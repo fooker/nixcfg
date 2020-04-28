@@ -6,6 +6,7 @@ with lib;
     ./grub.nix
     ./systemd.nix
     ./extlinux.nix
+    ./cryptroot.nix
   ];
 
   options.boot = {

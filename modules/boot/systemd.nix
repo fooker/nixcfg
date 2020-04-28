@@ -2,10 +2,6 @@
 
 with lib;
 {
-  imports = [
-    ./default.nix
-  ];
-
   config = mkIf (config.boot.type == "systemd") {
     boot.loader = {
       systemd-boot.enable = true;
