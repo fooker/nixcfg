@@ -43,7 +43,10 @@
     '';
   };
 
+  services.rpcbind.enable = true;
+
   # TODO: Limit to own subnet
+  # TODO: Is this complete?
   networking.firewall.interfaces = {
     "priv" = {
       allowedTCPPorts = [

@@ -2,10 +2,13 @@
 
 {
   hardware.enableRedistributableFirmware = true;
+  hardware.cpu.intel.updateMicrocode = true;
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usbhid" "usb_storage" "sd_mod" "sdhci_pci" ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [ "i915" ];
+
   boot.kernelModules = [ "kvm-intel" ];
+
   boot.extraModulePackages = [ ];
   
   fileSystems = {
@@ -22,6 +25,20 @@
   swapDevices = [ {
     device = "/dev/disk/by-label/swap";
   } ];
+
+  nixpkgs.config.packageOverrides = pkgs: {
+    vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
+  };
+
+  hardware.opengl = {
+    enable = true;
+    extraPackages = with pkgs; [
+      vaapiIntel
+      vaapiVdpau
+      libvdpau-va-gl
+      intel-media-driver
+    ];
+  };
 
   nix.maxJobs = lib.mkDefault 4;
 
