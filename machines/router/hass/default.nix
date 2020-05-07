@@ -113,11 +113,8 @@ in {
     };
   };
 
-  backup = {
-    enable = true;
-    paths = [
-      config.services.home-assistant.configDir
-      config.services.mosquitto.dataDir
-    ];
-  };
+  backup.paths = [
+    config.services.home-assistant.configDir
+    config.services.mosquitto.dataDir
+  ];
 }

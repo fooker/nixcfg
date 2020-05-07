@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, path, ... }:
 
 with lib;
 {
@@ -8,12 +8,30 @@ with lib;
         default = false;
     };
 
-    target = mkOption {
-      type = types.str;
-      description = ''
-        Host on which to store the backup.
-      '';
-      default = "backup@backup.home.open-desk.net";
+    repo = {
+      user = mkOption {
+        type = types.str;
+        description = ''
+          User with which to store the backup.
+        '';
+        default = "backup";
+      };
+
+      host = mkOption {
+        type = types.str;
+        description = ''
+          Host on which to store the backup.
+        '';
+        default = "backup.home.open-desk.net";
+      };
+
+      fingerprint = mkOption {
+        type = types.str;
+        description = ''
+          SSH fingerprint of the backup storage host.
+        '';
+        default = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ58kj0PhHZThJ00tXLwNCFfK8o4RArFcNqtWfaXWto3";
+      };
     };
 
     passphrase = mkOption {
@@ -46,8 +64,15 @@ with lib;
   };
 
   config = mkIf config.backup.enable {
+    services.openssh.knownHosts.backup = {
+      hostNames = [ config.backup.repo.host ];
+      publicKey = config.backup.repo.fingerprint;
+    };
+
     services.borgbackup.jobs.system = {
-      repo = "${config.backup.target}:";
+      repo = with config.backup.repo; "${user}@${host}:system";
+
+      doInit = true;
 
       archiveBaseName = "system";
       dateFormat = "+%Y-%m-%dT%H:%M";
@@ -58,16 +83,35 @@ with lib;
       };
 
       environment = {
-        # "BORG_RSH" = "ssh -i /var/lib/backup/id_ed25519 -o UserKnownHostsFile=/var/lib/backup/known_hosts";
+        "BORG_RSH" = "ssh -i /var/lib/backup/id_backup";
       };
 
       paths = concatLists [
         config.backup.paths
         (singleton ".")
-        (optionals config.backup.defaultPaths [ "/root" "/home" ])
+        (optionals config.backup.defaultPaths [ "/etc" "/root" ])
       ];
 
-      preHook = concatMapStringsSep "\n" (command: "${escapeShellArgs command}") config.backup.commands;
+      readWritePaths = [ "/tmp" ];
+
+      preHook = ''
+        mkdir /tmp/backup-$archiveName
+        cd /tmp/backup-$archiveName
+
+        ${concatMapStringsSep "\n" (command: "${escapeShellArgs command}") config.backup.commands}
+      '';
+    };
+
+    deployment.secrets = {
+      "backup-sshkey" = {
+        source = "${path}/secrets/id_backup";
+        destination = "/var/lib/backup/id_backup";
+        owner.user = "root";
+        owner.group = "root";
+        action = [ ''
+          ${pkgs.openssh}/bin/ssh-keygen -y -f /var/lib/backup/id_backup > /var/lib/backup/id_backup.pub
+        '' ];
+      };
     };
   };
 }
