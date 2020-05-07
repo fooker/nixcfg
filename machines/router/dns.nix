@@ -6,8 +6,8 @@ in {
   services.kresd = {
     enable = true;
 
-    interfaces = [ "::" ];
-    listenTLS = [ "853" ];
+    listenPlain = [ "[::]:53" "0.0.0.0:53" ];
+    listenTLS = [ "[::]:853" "0.0.0.0:853" ];
 
     extraConfig = ''
       modules.load('workarounds < iterate')
