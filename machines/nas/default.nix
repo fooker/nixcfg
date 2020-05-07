@@ -11,6 +11,7 @@ in {
     ./deluge.nix
     ./syncthing.nix
     ./backup.nix
+    ./mmv.nix
   ];
 
   server.enable = true;
@@ -20,4 +21,9 @@ in {
     enable = true;
     passphrase = secrets.backup.passphrase;
   };
+
+  environment.systemPackages = with pkgs; [
+    unrar
+    unzip
+  ];
 }

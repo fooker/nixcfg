@@ -35,6 +35,8 @@ with lib;
         file
         gnupg
         htop
+        iotop
+        iftop
         ripgrep
         psmisc
         socat
