@@ -7,6 +7,7 @@
       /mnt            *(rw,fsid=root,no_subtree_check,root_squash)
       /mnt/downloads  *(rw,no_subtree_check,root_squash)
       /mnt/media      *(rw,no_subtree_check,root_squash)
+      /mnt/scanner    *(rw,no_subtree_check,root_squash)
     '';
   };
 
@@ -25,6 +26,12 @@
         "guest ok" = "yes";
         "path" = "/mnt/media";
         "read only" = true;
+      };
+      "scanner" = {
+        "browseable" = "yes";
+        "guest ok" = "yes";
+        "path" = "/mnt/scanner";
+        "read only" = false;
       };
     };
 
