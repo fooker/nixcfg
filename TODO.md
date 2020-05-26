@@ -1,8 +1,10 @@
-## Router
-[x] pppd
-[x] dhcp
-[x] radv
-[x] dns
-[x] forwarding
-[ ] wiregauard
-[ ] babel
+# General
+[ ] Firewall with nftables
+
+# Scanner
+[ ] Activate Timer
+[ ] Do the real upload
+
+# Prusa
+[ ] Get the camera working
+[ ] Install plugin for bed leveling

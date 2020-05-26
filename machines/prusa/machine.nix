@@ -5,4 +5,6 @@
   };
 
   system = "aarch64-linux";
+  
+  stateVersion = "19.09";
 }

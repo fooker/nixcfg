@@ -38,7 +38,7 @@ let
         path
       ];
 
-      system.stateVersion = "19.09";
+      system.stateVersion = machine.stateVersion;
     };
 in
   {
