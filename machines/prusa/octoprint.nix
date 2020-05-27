@@ -1,6 +1,17 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, sources, machine, ... }:
 
-{
+let
+  pkgs-unstable = import sources.nixpkgs-unstable {
+    system = machine.system;
+  };
+in {
+  nixpkgs.overlays = [
+    (self: super: {
+      octoprint = pkgs-unstable.octoprint;
+      # mjpg-streamer = super.mjpg-streamer.override {};
+    })
+  ];
+
   services.octoprint = {
     enable = true;
     host = "localhost";
@@ -15,12 +26,28 @@
         baudrate = 115200;
         autoconnect = true;
       };
+
+      webcam = {
+        stream = "/webcam?action=stream";
+        snapshot = "/webcam?action=snapshot";
+      };
     };
+  };
+
+  services.mjpg-streamer = {
+    enable = true;
+    # inputPlugin = "input_raspicam.so -x 1280 -y 720 -fps 25 -ex antishake -vs -ev";
+    inputPlugin = "input_uvc.so --fps 25 --resolution 1280x720";
+    outputPlugin = "output_http.so -p 5050 -n -w @www@";
   };
 
   services.nginx = {
     enable = true;
     
+    package = pkgs.nginx.override {
+      modules = with pkgs.nginxModules; [ rtmp ];
+    };
+
     resolver.addresses = [ "[::1]" ];
 
     recommendedGzipSettings = true;
@@ -41,8 +68,12 @@
 
       locations = {
         "/" = {
-          proxyPass = "http://localhost:5000";
+          proxyPass = "http://localhost:5000/";
           proxyWebsockets = true;
+        };
+
+        "/webcam/" = {
+          proxyPass = "http://localhost:5050/";
         };
       };
     };

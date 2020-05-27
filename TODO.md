@@ -6,5 +6,7 @@
 [ ] Do the real upload
 
 # Prusa
-[ ] Get the camera working
+[ ] Use HLS / DASH streaming for camera
+    * Compile ffmepg with omx and omx_rpi support
+    * Patch Octoprint to support non-image video feeds
 [ ] Install plugin for bed leveling
