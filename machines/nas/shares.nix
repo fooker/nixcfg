@@ -47,6 +47,9 @@
       
       aio read size = 1
       aio write size = 1
+
+      load printers = no
+      printcap name = /dev/null
     '';
   };
 
