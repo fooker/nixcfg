@@ -7,7 +7,7 @@
     links = {
       "00-priv" = {
         matchConfig = {
-          MACAddress = "b8:27:eb:31:70:f9";
+          MACAddress = "b8:27:eb:38:ed:66";
         };
         linkConfig = {
           Name = "priv";
