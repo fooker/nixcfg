@@ -2,8 +2,8 @@
 
 with lib;
 {
-  options.boot.cryptroot = {
-    enable = mkEnableOption "Enable encrypted root";
+  options.platform.cryptroot = {
+    enable = mkEnableOption "encrypted root";
 
     device = mkOption {
       type = types.str;
@@ -17,12 +17,12 @@ with lib;
     # };
   };
 
-  config = mkIf config.boot.cryptroot.enable {
+  config = mkIf config.platform.cryptroot.enable {
     boot.initrd.availableKernelModules = [
       "aesni_intel"
     ];
 
-    boot.initrd.luks.devices."cryptroot".device = config.boot.cryptroot.device;
+    boot.initrd.luks.devices."cryptroot".device = config.platform.cryptroot.device;
 
     # boot.initrd.network = mkIf config.boot.cryptroot.network.enable {
     #   boot.initrd.network.enable = true;

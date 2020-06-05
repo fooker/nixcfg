@@ -9,7 +9,6 @@ in {
     ./octoprint.nix
   ];
 
-  boot.type = "extlinux";
   serial.enable = true;
   server.enable = true;
 

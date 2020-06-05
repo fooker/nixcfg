@@ -2,7 +2,7 @@
 
 with lib;
 {
-  config = mkIf (config.boot.type == "systemd") {
+  config = mkIf (config.boot.preset == "systemd") {
     boot.loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;

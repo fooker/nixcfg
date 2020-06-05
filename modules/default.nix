@@ -8,5 +8,6 @@
     ./serial.nix
     ./backhaul/default.nix
     ./backup.nix
+    ./platform/default.nix
   ];
 }

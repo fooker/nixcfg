@@ -2,7 +2,7 @@
 
 with lib;
 {
-  config = mkIf (config.boot.type == "grub") {
+  config = mkIf (config.boot.preset == "grub") {
     boot.loader = {
       grub.enable = true;
       grub.version = 2;

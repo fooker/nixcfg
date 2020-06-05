@@ -13,7 +13,6 @@ in {
     ./hass
   ];
 
-  boot.type = "grub";
   serial.enable = true;
   server.enable = true;
 

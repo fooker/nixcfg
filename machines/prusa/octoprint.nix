@@ -37,7 +37,7 @@ in {
   services.mjpg-streamer = {
     enable = true;
     # inputPlugin = "input_raspicam.so -x 1280 -y 720 -fps 25 -ex antishake -vs -ev";
-    inputPlugin = "input_uvc.so --fps 25 --resolution 1280x720";
+    inputPlugin = "input_uvc.so --fps 25 --resolution 1280x720 -rot 180";
     outputPlugin = "output_http.so -p 5050 -n -w @www@";
   };
 

@@ -1,28 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  hardware.enableRedistributableFirmware = true;
-
-  fileSystems = {
-    "/boot/firmware" = {
-      device = "/dev/disk/by-label/FIRMWARE";
-      fsType = "vfat";
-    };
-    "/" = {
-      device = "/dev/disk/by-label/NIXOS_SD";
-      fsType = "ext4";
-    };
-  };
-
-  nix.maxJobs = lib.mkDefault 2;
-
-  powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
-
-  boot.supportedFilesystems = lib.mkForce [ "vfat" ];
-  boot.kernelParams = [
-    "cma=64M"
-    "console=tty0"
-  ];
+  platform.rpi3 = true;
 
   # Extra kernel modules for RPi Camera 
   boot.kernelModules = [ "bcm2835_v4l2" "bcm2835_mmal_vchiq" "bcm2835_codec" ];
@@ -30,9 +9,21 @@
     options bcm2835-v4l2 max_video_width=1920 max_video_height=1080 debug=2
   '';
 
-  services.journald.extraConfig = "Storage=volatile";
+  # Add missing firmware file RPi Camera
+  hardware.firmware = [
+    (pkgs.stdenv.mkDerivation {
+      name = "broadcom-rpi3bplus-extra";
 
-  documentation.enable = false;
+      src = pkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/RPi-Distro/firmware-nonfree/b518de4/brcm/brcmfmac43455-sdio.txt";
+        sha256 = "0r4bvwkm3fx60bbpwd83zbjganjnffiq1jkaj0h20bwdj9ysawg9";
+      };
 
-  serial.unit = 1;
+      phases = [ "installPhase" ];
+      installPhase = ''
+        mkdir -p $out/lib/firmware/brcm
+        cp $src $out/lib/firmware/brcm/brcmfmac43455-sdio.txt
+      '';
+    })
+  ];
 }

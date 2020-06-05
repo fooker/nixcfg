@@ -1,6 +1,8 @@
 { config, lib, pkgs, ... }:
 
 {
+  boot.preset = "grub";
+  
   hardware.enableRedistributableFirmware = true;
 
   fileSystems = {

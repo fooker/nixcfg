@@ -17,9 +17,7 @@
     };
   };
 
-  boot.cryptroot = {
-    enable = true;
-  };
+  platform.cryptroot.enable = true;
 
   nix.maxJobs = lib.mkDefault 4;
 
