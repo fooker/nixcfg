@@ -7,6 +7,7 @@ in {
     ./hardware.nix
     ./network.nix
     ./jellyfin.nix
+    ./mopidy.nix
     ./user.nix
   ];
 
