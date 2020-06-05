@@ -2,7 +2,7 @@
 
 {
   boot.preset = "grub";
-  
+
   hardware.enableRedistributableFirmware = true;
 
   fileSystems = {
@@ -12,11 +12,9 @@
     };
   };
 
-  swapDevices = [
-    {
-      device = "/dev/disk/by-label/swap";
-    }
-  ];
+  swapDevices = [ {
+    label = "swap";
+  } ];
 
   nix.maxJobs = lib.mkDefault 2;
 

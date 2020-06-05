@@ -23,7 +23,7 @@
   };
 
   swapDevices = [ {
-    device = "/dev/disk/by-label/swap";
+    label = "swap";
   } ];
 
   nixpkgs.config.packageOverrides = pkgs: {

@@ -19,7 +19,7 @@
   };
 
   swapDevices = [ {
-    device = "/dev/disk/by-label/swap";
+    label = "swap";
   } ];
 
   nix.maxJobs = lib.mkDefault 4;
