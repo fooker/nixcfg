@@ -1,4 +1,9 @@
-{ pkgs, python3Packages, mopidy, ... }:
+args @ {
+  python3Packages,
+  mopidy,
+  websocket_client ? (args.python3Packages.callPackage ./websocket_client.nix {}),
+  ...
+}:
 
 python3Packages.buildPythonApplication rec {
   pname = "mopidy-jellyfin";
@@ -12,7 +17,7 @@ python3Packages.buildPythonApplication rec {
 
   propagatedBuildInputs = [
     mopidy
-    python3Packages.websocket-client
+    websocket_client
     python3Packages.unidecode
   ];
 

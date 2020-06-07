@@ -1,4 +1,4 @@
-{ pkgs, python3Packages, mopidy, ... }:
+{ python3Packages, mopidy, ... }:
 
 python3Packages.buildPythonApplication rec {
   pname = "mopidy-somafm";

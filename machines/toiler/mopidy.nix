@@ -2,6 +2,11 @@
 
 let
   secrets = import ./secrets.nix;
+
+  mopidy-jellyfin = pkgs.callPackage ../../packages/mopidy-jellyfin.nix {};
+  mopidy-mpd = pkgs.callPackage ../../packages/mopidy-mpd.nix {};
+  mopidy-muse = pkgs.callPackage ../../packages/mopidy-muse.nix {};
+  mopidy-somafm = pkgs.callPackage ../../packages/mopidy-somafm.nix {};
 in {
   services.mopidy = {
     enable = true;
@@ -74,21 +79,9 @@ in {
     '';
   };
 
-  hardware.pulseaudio = {
-    enable = true;
-    systemWide = true;
-    tcp = {
-      enable = true;
-      anonymousClients.allowedIpRanges = [ "172.23.200.128/25" ];
-    };
-    zeroconf = {
-      publish.enable = true;
-    };
-  };
-
   networking.firewall.interfaces = {
     "priv" = {
-      allowedTCPPorts = [ 6600 6680 4713 ];
+      allowedTCPPorts = [ 6600 6680 ];
     };
   };
 

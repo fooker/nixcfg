@@ -8,6 +8,7 @@ in {
     ./network.nix
     ./jellyfin.nix
     ./mopidy.nix
+    ./pulseaudio.nix
     ./user.nix
   ];
 
