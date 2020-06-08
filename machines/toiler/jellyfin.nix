@@ -1,8 +1,13 @@
-{ config, lib, pkgs, ... }:
+{ pkgs, sources, ... }:
 
 let
   secrets = import ./secrets.nix;
+  pkgs-unstable = import sources.nixpkgs-unstable {};
 in {
+  nixpkgs.overlays = [ (self: super: {
+    jellyfin = pkgs-unstable.jellyfin;
+  }) ];
+
   services.jellyfin = {
     enable = true;
   };
