@@ -7,8 +7,9 @@ in {
     ./hardware.nix
     ./network.nix
     ./jellyfin.nix
-    ./mopidy.nix
     ./pulseaudio.nix
+    ./mopidy.nix
+    ./spotifyd.nix
     ./user.nix
   ];
 

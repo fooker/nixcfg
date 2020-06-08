@@ -10,3 +10,6 @@
     * Compile ffmepg with omx and omx_rpi support
     * Patch Octoprint to support non-image video feeds
 [ ] Install plugin for bed leveling
+
+# Toiler
+[ ] Fix the spotifyd workaround

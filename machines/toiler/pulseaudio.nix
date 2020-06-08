@@ -1,6 +1,8 @@
 { config, lib, pkgs, ... }:
 
 {
+  nixpkgs.config.pulseaudio = true;
+
   hardware.pulseaudio = {
     enable = true;
     systemWide = true;
