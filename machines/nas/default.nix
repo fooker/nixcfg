@@ -2,6 +2,8 @@
 
 let
   secrets = import ./secrets.nix;
+
+  mmv = pkgs.callPackage ../../packages/mmv.nix {};
 in {
   imports = [
     ./hardware.nix
@@ -11,7 +13,6 @@ in {
     ./deluge.nix
     ./syncthing.nix
     ./backup.nix
-    ./mmv.nix
   ];
 
   server.enable = true;
@@ -23,6 +24,8 @@ in {
   };
 
   environment.systemPackages = with pkgs; [
+    mmv
+
     unrar
     unzip
   ];
