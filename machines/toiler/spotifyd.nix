@@ -26,7 +26,7 @@ in {
   # HACK: the provided service uses a dynamic user which can not authenticate to the pulse daemon
   # This is mitigated by using a static user
   users.users.spotifyd = {
-    group = "spotifyd";
+    group = "audio";
     extraGroups = [ "audio" ];
     description = "spotifyd daemon user";
     home = "/var/lib/spotifyd";
@@ -42,7 +42,8 @@ in {
 
   networking.firewall.interfaces = {
     "priv" = {
-      allowedTCPPorts = [ 4713 ];
+      allowedTCPPorts = [ 4713 5353 ];
+      allowedUDPPorts = [ 4713 38519 ];
     };
   };
 }
