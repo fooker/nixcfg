@@ -1,61 +1,40 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, path, ... }:
 
 with lib;
 
 let
+  qd = pkgs.callPackage ../../packages/qd.nix {};
+
   driver = "fujitsu";
 
-  scanScript = pkgs.writeShellScript "script" ''
+  scanScript = pkgs.writeShellScript "scan" ''
     set -e -u -o pipefail
 
-    # Generate a document ID
-    DID="$(${pkgs.utillinux}/bin/uuidgen)"
-
-    TARGET="/mnt/tmp/$DID"
-
-    # Generate the target document directory
-    mkdir -p "$TARGET"
-
     # Scan the document
-    ${pkgs.sane-frontends}/bin/scanadf \
-      --device-name "$SCANBD_DEVICE" \
-      --verbose \
-      --output-file "$TARGET/scan-%03d.ppm" \
-      --resolution 300 \
-      --mode 'Color' \
-      --source 'ADF Duplex'
-    
-    # Move to spool
-    mkdir -p /mnt/spool
-    mv $TARGET /mnt/spool/$DID
-
-    # Trigger upload
-    ${pkgs.systemd}/bin/systemctl start \
-      --no-block \
-      upload
+    ${qd}/bin/qd -v -v -p /mnt/spool push \
+      ${pkgs.sane-frontends}/bin/scanadf \
+        --device-name "$SCANBD_DEVICE" \
+        --verbose \
+        --output-file 'scan-%03d.ppm' \
+        --resolution 300 \
+        --mode 'Color' \
+        --source 'ADF Duplex'
   '';
 
   uploadScript = pkgs.writeShellScript "upload" ''
     set -e -u -o pipefail
+    shopt -s failglob
 
-    cd /mnt/spool
-    for DID in *; do (cd "$DID"
-      for PPM in *.ppm; do
-        ${pkgs.imagemagick}/bin/convert "$PPM" "$(basename "$PPM").jpg"
-      done
+    for PPM in *.ppm; do
+      ${pkgs.imagemagick}/bin/convert "$PPM" "''${PPM%.*}.jpg"
+    done
 
-      ${pkgs.img2pdf}/bin/img2pdf \
-        --verbose \
-        --output scan.pdf \
-        *.jpg
+    ${pkgs.img2pdf}/bin/img2pdf \
+      --verbose \
+      --output scan.pdf \
+      *.jpg
 
-        scp ./scan.pdf scanner@adacta.open-desk.net:"$DID.pdf"
-
-        rm "$(pwd)" \
-          --verbose \
-          --force \
-          --recursive
-    ); done
+      ${pkgs.openssh}/bin/scp -i /var/lib/scanner/id_scanner ./scan.pdf scanner@nas.home.open-desk.net:"$QD_JOB_ID.pdf"
   '';
 
   scanbdConfigDir = pkgs.linkFarm "scanbd-conf" [
@@ -165,6 +144,10 @@ in {
   users = {
     users.scanner = {
       uid = config.ids.uids.scanner;
+
+      home = "/var/lib/scanner";
+      createHome = true;
+      
       group = "scanner";
     };
     groups.scanner = {
@@ -247,11 +230,11 @@ in {
     description = "Upload scans for further processing";
 
     unitConfig = {
-      RequiresMountsFor = "/mnt";
+      RequiresMountsFor = "/mnt/spool";
     };
 
     serviceConfig = {
-      Type = "oneshot";
+      Type = "simple";
 
       User = "scanner";
       Group = "scanner";
@@ -260,11 +243,29 @@ in {
       StandardOutput = "syslog";
       StandardError = "syslog";
 
-      ExecStart = "${uploadScript}";
+      ExecStart = "${qd}/bin/qd -v -v -p /mnt/spool daemon ${uploadScript}";
+    };
+
+    wantedBy = [ "multi-user.target" ];
+  };
+
+  # Add upload target to known hosts
+  services.openssh.knownHosts = {
+    "nas" = {
+      hostNames = [ "nas.home.open-desk.net" "172.23.200.130" ];
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ58kj0PhHZThJ00tXLwNCFfK8o4RArFcNqtWfaXWto3";
     };
   };
 
-  systemd.timers."upload" = {
-    description = "Upload scans for further processing";
+  deployment.secrets = {
+    "scanner-sshkey" = {
+      source = "${path}/secrets/id_scanner";
+      destination = "/var/lib/scanner/id_scanner";
+      owner.user = "scanner";
+      owner.group = "scanner";
+      action = [ ''
+        ${pkgs.openssh}/bin/ssh-keygen -y -f /var/lib/backup/id_scanner > /var/lib/backup/id_scanner.pub
+      '' ];
+    };
   };
 }
