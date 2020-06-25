@@ -10,7 +10,7 @@ in {
     ./dns.nix
     ./ddclient.nix
     ./backhaul.nix
-    ./hass
+    ./hass.nix
   ];
 
   serial.enable = true;

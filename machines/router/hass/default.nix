@@ -1,120 +1,99 @@
-{ config, lib, pkgs, sources, ... }:
+{ lib, pkgs, ... }:
 
 let
-  pkgs-unstable = import sources.nixpkgs-unstable {};
+  secrets = import ../secrets.nix;
 in {
-  services.mosquitto = {
-    enable = true;
+  default_config = {};
+  homeassistant = {
+    latitude = 50.55216;
+    longitude = 9.68617;
+    unit_system = "metric";
+    time_zone = "Europe/Berlin";
+    name = "Home";
+  };
 
-    host = "0.0.0.0";
+  http = {
+    server_host = "::1";
+    server_port = 8123;
+    base_url = "http://hass.home.open-desk.net";
+    use_x_forwarded_for = true;
+    trusted_proxies = "::1";
+  };
+
+  mqtt = {
+    broker = "127.0.0.1";
     port = 1883;
-
-    allowAnonymous = true;
-    
-    # TODO: Use real ACLs (with patterns and users) here
-    aclExtraConf = ''
-      topic readwrite #
-    '';
-
-    users = {};
-
-    extraConf = ''
-      persistence true
-
-      autosave_interval 10
-      autosave_on_changes false
-    '';
+    client_id = "hass";
   };
 
-  services.home-assistant = {
-    enable = true;
-    port = 8123;
+  esphome = {};
 
-    config = import ./config.nix;
+  camera = [
+    {
+      platform = "mjpeg";
+      mjpeg_url = "http://prusa.home.open-desk.net/webcam?action=stream";
+      still_image_url = "http://prusa.home.open-desk.net/webcam?action=snapshot";
+    }
+  ];
 
-    autoExtraComponents = true;
-
-    package = pkgs-unstable.home-assistant.override {
-      extraPackages = ps: with ps; [
-        pythonPackages.denonavr
-      ];
-    };
+  octoprint = {
+    host = "prusa.home.open-desk.net";
+    api_key = secrets.prusa.api_key;
+    bed = true;
   };
 
-  services.nginx = {
-    enable = true;
-    
-    resolver.addresses = [ "[::1]" ];
+  automation = [];
+  script = [];
+  group = import ./groups.nix;
+  scene = import ./scenes.nix;
 
-    recommendedGzipSettings = true;
-    recommendedOptimisation = true;
-    recommendedProxySettings = true;
-    recommendedTlsSettings = true;
+  switch = [
+    {
+      platform = "mqtt";
 
-    virtualHosts = {
-      "hass" = {
-        serverName = "hass.home.open-desk.net";
-        serverAliases = [ "hass" ];
-        listen = [
-          { addr = "172.23.200.129"; port = 80; }
-          # { addr = "172.23.200.129"; port = 80; }
-        ];
-        locations."/" = {
-          proxyPass = "http://[::1]:8123/";
-          proxyWebsockets = true;
-        };
-      };
+      name = "Projector";
+      icon = "mdi:projector";
 
-      "deploy" = {
-        serverName = "deploy.home.open-desk.net";
-        serverAliases = [ "deploy" ];
-        listen = [
-          { addr = "192.168.0.1"; port = 80; }
-        ];
-        root = "/srv/http/deploy";
-      };
-    };
-  };
+      command_topic = "frisch/home/esper/cc690b/projector/set";
+      payload_on = "1";
+      payload_off = "0";
 
-  systemd.services.esper-heartbeat = {
-    after = [ "network.target" "mosquitto.service" ];
-    requires = [ "mosquitto.service" ];
-    description = "ESPer heartbeat";
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = ''${pkgs.mosquitto}/bin/mosquitto_pub \
-        -i 'esper-heartbeat' \
-        -h localhost \
-        -t 'frisch/home/esper/heartbeat' \
-        -n \
-      '';
-    };
-  };
+      state_topic = "frisch/home/esper/cc690b/projector/target";
+      state_on = "1";
+      state_off = "0";
 
-  systemd.timers.eddie-heartbeat = {
-    wantedBy = [ "multi-user.target" ]; 
-    after = [ "network.target" "mosquitto.service" ];
-    requires = [ "mosquitto.service" ];
-    description = "ESPer heartbeat";
-    timerConfig = {
-      OnCalendar = "minutely";
-      Unit = "esper-heartbeat.service";
-    };
-  };
+      availability_topic = "frisch/home/esper/cc690b/status";
+      payload_available = "ONLINE";
+      payload_not_available = "OFFLINE";
+    }
+    {
+      platform = "mqtt";
+      
+      name = "Screen";
+      icon = "mdi:projector-screen";
 
-  environment.systemPackages = [ pkgs.mosquitto ];
+      command_topic = "frisch/home/esper/9e90e5/screen/set";
+      payload_on = "LOWER";
+      payload_off = "RAISE";
+      
+      state_topic = "frisch/home/esper/9e90e5/screen";
+      state_on = "LOWER";
+      state_off = "RAISE";
+      
+      availability_topic = "frisch/home/esper/9e90e5/status";
+      payload_available = "ONLINE";
+      payload_not_available = "OFFLINE";
+    }
+  ];
 
-  networking.firewall.interfaces = {
-    "priv" = {
-      allowedTCPPorts = [ 80 443 ];
-    };
-    "iot" = {
-      allowedTCPPorts = [ 80 1883 ];
-    };
-  };
+  media_player = [
+    {
+      platform = "denonavr";
 
-  backup.paths = [
-    config.services.home-assistant.configDir
-    config.services.mosquitto.dataDir
+      name = "Amp";
+      host = "172.23.200.133";
+
+      show_all_sources = false;
+    }
   ];
 }
