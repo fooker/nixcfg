@@ -18,8 +18,18 @@ in {
     DNSStubListener=no
   '';
 
+  services.avahi = {
+    enable = true;
+    publish = {
+      enable = true;
+      addresses = true;
+      domain = true;
+    };
+    reflector = true;
+  };
+
   networking.firewall.interfaces = lib.genAttrs [ "mngt" "priv" "guest" "iot" ] (iface: {
     allowedTCPPorts = [ 53 853 ];
-    allowedUDPPorts = [ 53 ];
+    allowedUDPPorts = [ 53 5353 ];
   });
 }
