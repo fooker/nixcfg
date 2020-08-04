@@ -15,40 +15,6 @@ with lib;
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK2nkarN0+uSuP5sGwDCb9KRu+FCjO/+da4VypGanPUZ fooker@k-2so"
       ];
-      packages = with pkgs; [
-        # Editor
-        vim
-
-        # Network
-        wget
-        curl
-        nmap
-        tcpdump
-        ldns
-        whois
-        mtr
-        iw
-        sipcalc
-        openssl
-
-        # Utils
-        file
-        gnupg
-        htop
-        iotop
-        iftop
-        ripgrep
-        psmisc
-        socat
-        tmux
-
-        # Hardware
-        pciutils
-        usbutils
-
-        # Filesystems
-        cryptsetup
-      ];
     };
   };
 }

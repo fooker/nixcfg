@@ -1,7 +1,7 @@
 let
   sources = import ./nix/sources.nix;
 
-  buildMachine = name: { ... }: 
+  buildMachine = name: { config, ... }: 
     let
       /* The path of the machine
       */
@@ -24,9 +24,17 @@ let
       nixpkgs.pkgs = import sources.nixpkgs {
         config = {
           allowUnfree = true;
+
+          packageOverrides = pkgs: {
+            unstable = import sources.nixpkgs-unstable {
+              config = config.nixpkgs.config;
+            };
+          };
         };
+
         system = machine.system;
       };
+      
       nixpkgs.localSystem.system = machine.system;
 
       nix.distributedBuilds = true;

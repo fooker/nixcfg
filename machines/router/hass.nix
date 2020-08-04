@@ -1,8 +1,6 @@
-args @ { config, lib, pkgs, sources, ... }:
+args @ { config, lib, pkgs, ... }:
 
-let
-  pkgs-unstable = import sources.nixpkgs-unstable {};
-in {
+{
   services.mosquitto = {
     enable = true;
 
@@ -34,7 +32,7 @@ in {
 
     autoExtraComponents = true;
 
-    package = pkgs-unstable.home-assistant.override {
+    package = pkgs.unstable.home-assistant.override {
       extraPackages = ps: with ps; [
         pythonPackages.denonavr
       ];

@@ -22,5 +22,8 @@ with lib;
       automatic = true;
       dates = [ "weekly" ];
     };
+
+    # Who cares about licenses?
+    nixpkgs.config.allowUnfree = true;
   };
 }

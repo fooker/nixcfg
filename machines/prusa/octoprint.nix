@@ -1,14 +1,9 @@
-{ config, lib, pkgs, sources, machine, ... }:
+{ config, lib, pkgs, machine, ... }:
 
-let
-  pkgs-unstable = import sources.nixpkgs-unstable {
-    system = machine.system;
-  };
-in {
+{
   nixpkgs.overlays = [
     (self: super: {
-      octoprint = pkgs-unstable.octoprint;
-      # mjpg-streamer = super.mjpg-streamer.override {};
+      octoprint = pkgs.unstable.octoprint;
     })
   ];
 
@@ -32,6 +27,21 @@ in {
         snapshot = "/webcam?action=snapshot";
       };
     };
+
+    plugins = plugins: [
+      (pkgs.python3Packages.buildPythonPackage rec {
+        pname = "OctoPrintPlugin-ConsolidateTempControl";
+        version = "0.1.7";
+        src = pkgs.fetchFromGitHub {
+          owner = "jneilliii";
+          repo = pname;
+          rev = version;
+          sha256 = "0l78xrabn5hcly2mgxwi17nwgnp2s6jxi9iy4wnw8k8icv74ag7k";
+        };
+        propagatedBuildInputs = [ pkgs.octoprint ];
+        doCheck = false;
+      })
+    ];
   };
 
   services.mjpg-streamer = {

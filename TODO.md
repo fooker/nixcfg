@@ -1,5 +1,6 @@
 # General
 [ ] Firewall with nftables
+[ ] Roll out `services.openssh.knownHosts` for all hosts on all hosts
 
 # Scanner
 [ ] Activate Timer

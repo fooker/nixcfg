@@ -1,11 +1,10 @@
-{ pkgs, sources, ... }:
+{ pkgs, ... }:
 
 let
   secrets = import ./secrets.nix;
-  pkgs-unstable = import sources.nixpkgs-unstable {};
 in {
   nixpkgs.overlays = [ (self: super: {
-    jellyfin = pkgs-unstable.jellyfin;
+    jellyfin = pkgs.unstable.jellyfin;
   }) ];
 
   services.jellyfin = {

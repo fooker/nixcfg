@@ -12,8 +12,6 @@ in {
   serial.enable = true;
   server.enable = true;
 
-  services.journald.extraConfig = "Storage=volatile";
-
   backup = {
     enable = true;
     passphrase = secrets.backup.passphrase;

@@ -15,7 +15,7 @@ in {
     networking = {
       inherit hostId;
 
-      hostName = name;
+      hostName = mkDefault name;
 
       domain = "open-desk.net";
       search = [ "open-desk.net" ];
@@ -30,7 +30,9 @@ in {
     };
 
     # Enable debugging for systemd-networkd
-    systemd.services."systemd-networkd".environment.SYSTEMD_LOG_LEVEL = "debug";
+    systemd.services = mkIf config.systemd.network.enable {
+      "systemd-networkd".environment.SYSTEMD_LOG_LEVEL = "debug";
+    };
 
     programs.mtr.enable = true;
   };
