@@ -51,6 +51,8 @@ with lib;
     psmisc
     socat
     tmux
+    fd
+    ripgrep
 
     # Hardware
     pciutils
