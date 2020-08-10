@@ -2,6 +2,7 @@
 
 let
   secrets = import ./secrets.nix;
+
 in {
   services.spotifyd = {
     enable = true;
@@ -20,6 +21,8 @@ in {
       normalisation_pregain = -10
 
       device_type = stb
+
+      zeroconf_port = 4444
     '';
   };
 
@@ -42,8 +45,8 @@ in {
 
   networking.firewall.interfaces = {
     "priv" = {
-      allowedTCPPorts = [ 4713 5353 ];
-      allowedUDPPorts = [ 4713 38519 ];
+      allowedUDPPorts = [ 5353 ];
+      allowedTCPPorts = [ 4444 ];
     };
   };
 }
