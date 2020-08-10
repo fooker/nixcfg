@@ -8,7 +8,7 @@
 
   home.keyboard = {
     layout = "de";
-    variant = "latin1";
+    variant = "nodeadkeys";
   };
 
   home.packages = with pkgs; [
@@ -54,25 +54,30 @@
     tdesktop
     thunderbird
     mumble
+
+    # Remote Desktop
+    parsecgaming
+
+    # Xorg stuff
+    xorg.xdriinfo
+    xorg.xkill
   ];
 
   imports = [
     ./autorandr.nix
     ./bat.nix
+    ./dunst.nix
     ./firefox.nix
     ./git.nix
     ./gpg.nix
-    ./kanshi.nix
+    ./i3wm.nix
     ./lorri.nix
-    ./mako.nix
     ./pass.nix
     ./redshift.nix
-    ./rofi.nix
     ./scripts.nix
     ./skim.nix
     ./sound.nix
     ./ssh.nix
-    ./sway.nix
     ./syncthing.nix
     ./udiskie.nix
     ./vim.nix

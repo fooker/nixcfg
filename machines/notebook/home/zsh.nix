@@ -15,6 +15,7 @@
     history = {
       ignoreDups = true;
       ignoreSpace = true;
+      share = false;
     };
 
     shellAliases = {

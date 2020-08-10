@@ -1,19 +1,19 @@
 { pkgs, ... }:
 
 let
-  waybar-config = pkgs.writeText "waybar-config.json" (builtins.toJSON {
-    layer = "top";
+  # waybar-config = pkgs.writeText "waybar-config.json" (builtins.toJSON {
+  #   layer = "top";
 
-    width = 1920;
+  #   width = 1920;
 
-    modules-left = [];
-    modules-center = [];
-    modules-right = [];
+  #   modules-left = [];
+  #   modules-center = [];
+  #   modules-right = [];
 
-    clock = {
-      format-alt = "%F %a %T";
-    };
-  });
+  #   clock = {
+  #     format-alt = "%F %a %T";
+  #   };
+  # });
 
   i3status-rs-config = pkgs.writeText "i3status-rs.toml" ''
     theme = "slick"
@@ -105,38 +105,15 @@ let
   };
 
 in {
-  wayland = {
-    windowManager.sway = {
+  xsession = {
+    enable = true;
+
+    scriptPath = ".xinitrc";
+
+    windowManager.i3 = {
       enable = true;
 
       config = {
-        input = {
-          "*" = {
-            xkb_layout = "de";
-            xkb_variant = "nodeadkeys";
-          };
-
-          "2:10:TPPS/2_Elan_TrackPoint" = {
-            accel_profile = "adaptive";
-            pointer_accel = "-0.4";
-          };
-
-          "1133:16495:Logitech_MX_Ergo" = {
-            scroll_button = "button2";
-            scroll_method = "on_button_down";
-          };
-        };
-
-        output = {
-          "*" = {
-            scale = "1.0";
-            bg = "${wallpaper} fill";
-          };
-          "eDP-1" = {
-            scale = "2";
-          };
-        };
-
         modifier = "Mod4";
 
         floating = {
@@ -147,26 +124,15 @@ in {
 
         focus = {
           followMouse = true;
-          mouseWarping = false;
+          mouseWarping = true;
           newWindow = "none";
         };
 
         fonts = [ "Hack 10.5" ];
 
-        # gaps = {
-        #   inner = 12;
-        #   outer = 0;
-        #   smartBorders = "on";
-        #   smartGaps = true;
-        # };
-
         window = {
           border = 2;
           titlebar = true;
-
-          # commands = [
-          #   { criteria = { app_id = "ate"; }; command = "border pixel"; }
-          # ];
         };
 
         workspaceAutoBackAndForth = true;
@@ -195,7 +161,7 @@ in {
             "${mod}+Right" = "focus right";
             "${mod}+Up" = "focus up";
             "${mod}+Down" = "focus down";
-            "${mod}+Period" = "focus parent";
+            "${mod}+period" = "focus parent";
 
             "${mod}+Shift+Left" = "move left";
             "${mod}+Shift+Right" = "move right";
@@ -231,16 +197,16 @@ in {
              # Reload and exit
             "${mod}+w" = "reload";
             "${mod}+Shift+w" = "restart";
-            "${mod}+Shift+q" = "exec swaynag -t warning -m 'Do you really want to exit?' -b 'Yes' 'swaymsg exit'";
+            "${mod}+Shift+q" = "exec ${pkgs.i3}/bin/i3-nagbar -t warning -m 'Do you really want to exit?' -b 'Yes' '${pkgs.i3}/bin/i3-msg exit'";
 
              # Start some things
             "${mod}+Return" = "exec ${pkgs.ate}/bin/ate";
             "${mod}+Shift+Return" = "exec ${ate}/bin/ate /run/wrappers/bin/sudo --shell";
 
-            "${mod}+Space" = "exec ${pkgs.dmenu}/bin/dmenu_run -i -l 10 -p 'Run:' -fn 'Hack-10.5'";
+            "${mod}+space" = "exec ${pkgs.dmenu}/bin/dmenu_run -i -l 10 -p 'Run:' -fn 'Hack-10.5'";
 
-            "${mod}+P" = "exec ${pkgs.pass}/bin/passmenu -i -l 10 -p 'Password:' -fn 'Hack-10.5'";
-            "${mod}+Shift+P" = "exec ${pkgs.pass}/bin/passmenu --type -i -l 10 -p 'Password:' -fn 'Hack-10.5'";
+            "${mod}+p" = "exec ${pkgs.pass}/bin/passmenu -i -l 10 -p 'Password:' -fn 'Hack-10.5'";
+            "${mod}+Shift+p" = "exec ${pkgs.pass}/bin/passmenu --type -i -l 10 -p 'Password:' -fn 'Hack-10.5'";
 
             "${mod}+Shift+x" = "exec ${pkgs.systemd}/bin/loginctl lock-session";
             "${mod}+Shift+l" = "exec ${pkgs.systemd}/bin/loginctl lock-session";
@@ -257,20 +223,9 @@ in {
             XF86AudioPause = "exec ${playerctl}/bin/playerctl pause";
             XF86AudioNext = "exec ${playerctl}/bin/playerctl next";
             XF86AudioPrev = "exec ${playerctl}/bin/playerctl previous";
-          };
 
-        startup = [
-          {
-            command = ''${pkgs.swayidle}/bin/swayidle -w \
-                            timeout 1200 "${pkgs.swaylock}/bin/swaylock -f" \
-                                  resume "${pkgs.sway}/bin/swaymsg 'output * dpms on'" \
-                            timeout  600 "${pkgs.sway}/bin/swaymsg 'output * dpms off'" \
-                                  resume "${pkgs.sway}/bin/swaymsg 'output * dpms on'" \
-                            before-sleep "${pkgs.swaylock}/bin/swaylock -f" \
-                                    lock "${pkgs.swaylock}/bin/swaylock -f" \
-                      '';
-          }
-        ];
+            XF86Display = "exec ${xorg.xrandr}/bin/xrandr --auto";
+          };
 
         bars = [
           {
@@ -298,26 +253,6 @@ in {
           placeholder     = { border = "#000000"; background = "#0c0c0c"; text = "#ffffff"; indicator = "#000000"; childBorder = "#0c0c0c"; };
         };
       };
-
-      wrapperFeatures = {
-        base = true;
-        gtk = true;
-      };
-
-      extraConfig = ''
-        seat seat0 xcursor_theme Adwaita
-      '';
-
-      extraOptions = [
-        "--verbose"
-        "--unsupported-gpu"
-        "--my-next-gpu-wont-be-nvidia" 
-      ];
-
-      extraSessionCommands = ''
-        export SDL_VIDEODRIVER=wayland
-        export _JAVA_AWT_WM_NONREPARENTING=1
-      '';
     };
   };
 
@@ -337,15 +272,15 @@ in {
   #   name = "Adwaita";
   # };
 
-  xresources.properties = {
-    "Xft.dpi" = 144;
-    "Xft.autohint" = 0;
-    "Xft.lcdfilter" = "lcddefault";
-    "Xft.hintstyle" = "hintfull";
-    "Xft.hinting" = 1;
-    "Xft.antialias" = 1;
-    "Xft.rgba" = "rgb";
-  };
+  # xresources.properties = {
+  #   "Xft.dpi" = 144;
+  #   "Xft.autohint" = 0;
+  #   "Xft.lcdfilter" = "lcddefault";
+  #   "Xft.hintstyle" = "hintfull";
+  #   "Xft.hinting" = 1;
+  #   "Xft.antialias" = 1;
+  #   "Xft.rgba" = "rgb";
+  # };
 
   gtk = {
     enable = true;
@@ -354,4 +289,11 @@ in {
   home.packages = with pkgs; [
     gnome3.adwaita-icon-theme
   ];
+
+  services.screen-locker = {
+    enable = true;
+    enableDetectSleep = true;
+    inactiveInterval = 5;
+    lockCmd = "${pkgs.i3lock}/bin/i3lock --nofork --color=000000 --ignore-empty-password --show-failed-attempts";
+  };
 }

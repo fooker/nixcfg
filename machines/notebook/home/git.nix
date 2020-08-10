@@ -7,14 +7,13 @@
     userEmail = "fooker@lab.sh";
     userName = "Dustin Frisch";
     
-    # delta = {
-    #   enable = true;
-    #   options = [ "--dark" ];
-    # };
-
     extraConfig = {
       core = {
         whitespace = "trailing-space,space-before-tab";
+      };
+
+      pull = {
+        rebase = true;
       };
     };
 

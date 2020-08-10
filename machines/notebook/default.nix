@@ -11,6 +11,10 @@ in {
     ./fonts.nix
     ./ate.nix
     ./docker.nix
+    ./postgresql.nix
+    ./parsecgaming.nix
+    ./opennms.nix
+    ./xserver.nix
   ];
 
   networking.hostName = "ig-11";
@@ -79,8 +83,6 @@ in {
     '';
   };
 
-  programs.sway.enable = true;
-
   programs.dconf.enable = true;
   
   programs.mosh.enable = true;
@@ -97,6 +99,8 @@ in {
 
   environment.systemPackages = with pkgs; [
     intel-gpu-tools
+    libva-utils
+    vdpauinfo
     blueman
 
     picocom
@@ -114,4 +118,9 @@ in {
     cifs-utils
     nfs-utils
   ];
+
+  boot.kernel.sysctl = {
+    # Required by IDEA
+    "fs.inotify.max_user_watches" = 524288;
+  };
 }

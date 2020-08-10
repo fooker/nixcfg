@@ -7,39 +7,51 @@
     "splash"
     "vga=current"
     "i195.fastboot=1"
+    "i915.enable_guc=3"
+    "i915.enable_fbc=1"
   ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
   boot.initrd.kernelModules = [ ];
   
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = [ "kvm-intel" "i915" ];
   boot.extraModulePackages = [ ];
 
   hardware.enableAllFirmware = true;
 
   hardware.cpu.intel.updateMicrocode = true;
 
-  # hardware.nvidiaOptimus.disable = true;
+  hardware.nvidiaOptimus.disable = true;
   
-  hardware.nvidia = {
-    modesetting.enable = true;
+  # hardware.nvidia = {
+  #   modesetting.enable = true;
+  # 
+  #   # prime = {
+  #   #   offload.enable = true;
 
-    # prime = {
-    #   offload.enable = true;
+  #   #   intelBusId = "PCI:0:2:0";
+  #   #   nvidiaBusId = "PCI:45:0:0";
+  #   # };
+  # };
 
-    #   intelBusId = "PCI:0:2:0";
-    #   nvidiaBusId = "PCI:45:0:0";
-    # };
+  nixpkgs.config.packageOverrides = pkgs: {
+    vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
   };
-
 
   hardware.opengl = {
     enable = true;
     driSupport32Bit = true;
+    extraPackages = with pkgs; [
+      vaapiIntel
+      vaapiVdpau
+      libvdpau-va-gl
+      intel-media-driver
+    ];
   };
 
   hardware.trackpoint = {
     enable = true;
+    device = "TPPS/2 Elan TrackPoint";
     emulateWheel = true;
   };
 
@@ -55,7 +67,7 @@
 
     extraModules = [ pkgs.pulseaudio-modules-bt ];
 
-    package = pkgs.pulseaudioFull;
+    package = pkgs.unstable.pulseaudioFull;
 
     daemon.config = {
       avoid-resampling = "yes";

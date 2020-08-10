@@ -10,11 +10,18 @@
     xkbModel = "pc105";
     xkbVariant = "nodeadkeys";
 
-    videoDrivers = [ "modesetting" "nvidia" ];
+    # videoDrivers = [ "modesetting" ];
+    videoDrivers = [ "intel" ];
     useGlamor = true;
 
-    deviceSection = ''
+    modules = with pkgs; [ 
+      xorg.xf86inputlibinput
+    ];
 
+    deviceSection = ''
+      Option      "AccelMethod" "SNA"
+      Option      "TearFree"    "true"
+      Option      "DRI"         "3"
     '';
 
     inputClassSections = [
@@ -27,7 +34,7 @@
         Identifier      "Trackpoint"
         MatchProduct    "TPPS/2 IBM TrackPoint"
         Driver          "libinput"
-        Option          "Accel Speed"   "-0.2"
+        Option          "Accel Speed"   "-0.4"
         Option          "Accel Profile" "adaptive"
       ''
       ''
@@ -48,21 +55,12 @@
       ''
     ];
 
-    libinput = {
-      enable = true;
-    };
+    updateDbusEnvironment = true;
 
-    displayManager = {
-      lightdm = {
-        enable = true;
-        greeters.gtk = {
-          enable = true;
-        };
-      };
-    };
+    displayManager.startx.enable = true;
 
-    # desktopManager.defaultSession = "xterm";
-      
-    # desktopManager.xterm.enable = true;
+    verbose = 7;
   };
+
+  services.udev.packages = [ pkgs.libinput.out ];
 }
