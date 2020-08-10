@@ -28,6 +28,11 @@ in {
 
   esphome = {};
 
+  spotify = {
+    client_id = secrets.spotify.client.id;
+    client_secret = secrets.spotify.client.secret;
+  };
+
   camera = [
     {
       platform = "mjpeg";

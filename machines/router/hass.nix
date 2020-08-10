@@ -89,7 +89,7 @@ args @ { config, lib, pkgs, ... }:
     };
   };
 
-  systemd.timers.eddie-heartbeat = {
+  systemd.timers.esper-heartbeat = {
     wantedBy = [ "multi-user.target" ]; 
     after = [ "network.target" "mosquitto.service" ];
     requires = [ "mosquitto.service" ];

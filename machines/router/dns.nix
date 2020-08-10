@@ -1,22 +1,27 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let
   secrets = import ./secrets.nix;
+
+  interfaces = [
+    "192.168.0.1"
+    "192.168.254.1"
+    "172.23.200.129"
+    "203.0.113.1"
+  ];
 in {
   services.kresd = {
     enable = true;
 
-    listenPlain = [ "[::]:53" "0.0.0.0:53" ];
-    listenTLS = [ "[::]:853" "0.0.0.0:853" ];
+    listenPlain = map (iface: "${iface}:53") interfaces;
+    listenTLS = map (iface: "${iface}:853") interfaces;
 
     extraConfig = ''
       modules.load('workarounds < iterate')
     '';
   };
-
-  services.resolved.extraConfig = ''
-    DNSStubListener=no
-  '';
 
   services.avahi = {
     enable = true;
