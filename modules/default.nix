@@ -9,5 +9,6 @@
     ./backhaul/default.nix
     ./backup.nix
     ./platform/default.nix
+    ./letsencrypt.nix
   ];
 }

@@ -32,11 +32,18 @@ args @ { config, lib, pkgs, ... }:
 
     autoExtraComponents = true;
 
-    package = pkgs.unstable.home-assistant.override {
+    package = pkgs.home-assistant.override {
       extraPackages = ps: with ps; [
         pythonPackages.denonavr
       ];
     };
+  };
+
+  letsencrypt.production = true;
+  letsencrypt.certs.hass = {
+    domains = [ "hass.home.open-desk.net" ];
+    owner = "nginx";
+    trigger = "${pkgs.systemd}/bin/systemctl reload nginx.service";
   };
 
   services.nginx = {
@@ -53,10 +60,16 @@ args @ { config, lib, pkgs, ... }:
       "hass" = {
         serverName = "hass.home.open-desk.net";
         serverAliases = [ "hass" ];
+
         listen = [
           { addr = "172.23.200.129"; port = 80; }
-          # { addr = "172.23.200.129"; port = 80; }
+          { addr = "172.23.200.129"; port = 443; ssl = true; }
         ];
+
+        forceSSL = true;
+        sslCertificate = config.letsencrypt.certs.hass.path.cert;
+        sslCertificateKey = config.letsencrypt.certs.hass.path.key;
+
         locations."/" = {
           proxyPass = "http://[::1]:8123/";
           proxyWebsockets = true;
