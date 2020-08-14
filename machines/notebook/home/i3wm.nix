@@ -1,20 +1,6 @@
 { pkgs, ... }:
 
 let
-  # waybar-config = pkgs.writeText "waybar-config.json" (builtins.toJSON {
-  #   layer = "top";
-
-  #   width = 1920;
-
-  #   modules-left = [];
-  #   modules-center = [];
-  #   modules-right = [];
-
-  #   clock = {
-  #     format-alt = "%F %a %T";
-  #   };
-  # });
-
   i3status-rs-config = pkgs.writeText "i3status-rs.toml" ''
     theme = "slick"
     icons = "awesome"
@@ -253,18 +239,17 @@ in {
           placeholder     = { border = "#000000"; background = "#0c0c0c"; text = "#ffffff"; indicator = "#000000"; childBorder = "#0c0c0c"; };
         };
       };
-    };
-  };
 
-  xdg.configFile.swaylock = {
-    target = "swaylock/config";
-    text = ''
-      ignore-empty-password
-      image=${wallpaper}
-      indicator-caps-lock
-      scaling=fill
-      show-failed-attempts
-    '';
+      extraConfig = ''
+        workspace 0 output DP2-2
+        workspace 1 output DP2-2
+        workspace 2 output DP2-2
+        workspace 3 output DP2-1
+        workspace 4 output DP2-1
+        workspace 5 output DP2-1
+        workspace 6 output DP2-1
+      '';
+    };
   };
 
   # xsession.pointerCursor = {
@@ -293,7 +278,7 @@ in {
   services.screen-locker = {
     enable = true;
     enableDetectSleep = true;
-    inactiveInterval = 5;
+    inactiveInterval = 10;
     lockCmd = "${pkgs.i3lock}/bin/i3lock --nofork --color=000000 --ignore-empty-password --show-failed-attempts";
   };
 }

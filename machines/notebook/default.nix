@@ -52,21 +52,26 @@ in {
 
   services.tlp = {
     enable = true;
-    extraConfig = ''
-      CPU_SCALING_GOVERNOR_ON_AC=performance
-      CPU_SCALING_GOVERNOR_ON_BAT=powersave
+    settings = {
+      "CPU_SCALING_GOVERNOR_ON_AC" = "performance";
+      "CPU_SCALING_GOVERNOR_ON_BAT" = "powersave";
 
-      START_CHARGE_THRESH_BAT0=60
-      STOP_CHARGE_THRESH_BAT0=100
+      "START_CHARGE_THRESH_BAT0" = 60;
+      "STOP_CHARGE_THRESH_BAT0" = 100;
       
-      WIFI_PWR_ON_AC=off
-      WIFI_PWR_ON_BAT=off
-    '';
+      "WIFI_PWR_ON_AC" = false;
+      "WIFI_PWR_ON_BAT" = false;
+    };
   };
 
   services.gvfs.enable = true;
 
   services.printing.enable = true;
+
+  services.autorandr = {
+    enable = true;
+    defaultTarget = "mobile";
+  };
 
   services.udev = {
     extraRules = ''

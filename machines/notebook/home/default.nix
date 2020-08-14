@@ -44,11 +44,11 @@
     magic-wormhole
 
     # Development
-    unstable.jetbrains.idea-ultimate
-    unstable.jetbrains.clion
-    unstable.vscodium
-    unstable.rustup
-    unstable.gcc
+    jetbrains.idea-ultimate
+    jetbrains.clion
+    vscodium
+    rustup
+    gcc
     
     # Comm
     tdesktop

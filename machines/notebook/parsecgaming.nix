@@ -37,7 +37,6 @@ let
       vulkan-loader
       wayland
 
-
       xorg.libX11
       xorg.libXScrnSaver
       xorg.libXcursor
@@ -48,14 +47,6 @@ let
       xorg.libXrender
       xorg.libXxf86vm
       xorg.libxcb
-
-      # Those libraries are missing from buildInputs
-      # libGLES_CM.so.1        # Can't find in my /nix/store
-      # libudev.so.0           # Covered by libudev.so.1
-      # libva.so.1             # Covered by libva.so.2
-      # libwayland-client.so.0 # No wayland support
-      # libwayland-cursor.so.0 # No wayland support
-      # libwayland-egl.so.1    # No wayland support
     ];
     runScript = "/usr/bin/parsecd";
 

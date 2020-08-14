@@ -1,7 +1,12 @@
 let
   sources = import ./nix/sources.nix;
 
-  buildMachine = name: { config, ... }: 
+  /* Find the nixpkgs path for the machine with the given name
+  */
+  nixpkgsPath = name:
+    (sources."nixpkgs-${name}" or sources.nixpkgs);
+
+  mkMachine = name: { config, ... }: 
     let
       /* The path of the machine
       */
@@ -10,7 +15,7 @@ let
       /* Read the machine configuration from machine.nix in the machines directory
       */
       machine = import "${path}/machine.nix"; 
-
+  
     in {
       _module.args = {
         inherit machine path sources;
@@ -21,7 +26,7 @@ let
         targetUser = machine.target.user;
       };
 
-      nixpkgs.pkgs = import sources.nixpkgs {
+      nixpkgs.pkgs = import (nixpkgsPath name) {
         config = {
           allowUnfree = true;
 
@@ -58,7 +63,9 @@ in
         "builders" = "ssh://nixos-builder i686-linux,x86_64-linux,aarch64-linux,armv6l-linux,armv7l-linux 8";
         "builders-use-substitutes" = "true";
       };
+
+      evalConfig = name: (import "${nixpkgsPath name}/nixos/lib/eval-config.nix");
     };
   } // (builtins.listToAttrs (builtins.map # Build machine config for each machine in machines directory
-      (name: { name = name; value = buildMachine name; })
+      (name: { name = name; value = mkMachine name; })
       (builtins.attrNames (builtins.readDir ./machines))))

@@ -53,6 +53,10 @@
 
       # Enable git prompt on right side
       RPROMPT='$(git_super_status)'
+
+      # Search only for first word
+      bindkey '^[[A' up-line-or-search
+      bindkey '^[[B' down-line-or-search
     '';
   };
 }

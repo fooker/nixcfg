@@ -5,7 +5,7 @@
     enable = true;
     package = pkgs.firefox;
 
-    enableAdobeFlash = true;
+    # enableAdobeFlash = true;
   };
 
   programs.browserpass = {

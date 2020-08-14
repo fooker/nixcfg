@@ -4,8 +4,6 @@
   boot.kernelPackages = pkgs.linuxPackages_5_7;
   boot.kernelParams = [
     "quiet"
-    "splash"
-    "vga=current"
     "i195.fastboot=1"
     "i915.enable_guc=3"
     "i915.enable_fbc=1"
@@ -21,18 +19,18 @@
 
   hardware.cpu.intel.updateMicrocode = true;
 
-  hardware.nvidiaOptimus.disable = true;
+  # hardware.nvidiaOptimus.disable = true;
   
-  # hardware.nvidia = {
-  #   modesetting.enable = true;
-  # 
-  #   # prime = {
-  #   #   offload.enable = true;
+  hardware.nvidia = {
+    modesetting.enable = true;
+  
+    prime = {
+      offload.enable = true;
 
-  #   #   intelBusId = "PCI:0:2:0";
-  #   #   nvidiaBusId = "PCI:45:0:0";
-  #   # };
-  # };
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:45:0:0";
+    };
+  };
 
   nixpkgs.config.packageOverrides = pkgs: {
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
@@ -42,7 +40,6 @@
     enable = true;
     driSupport32Bit = true;
     extraPackages = with pkgs; [
-      vaapiIntel
       vaapiVdpau
       libvdpau-va-gl
       intel-media-driver
@@ -67,7 +64,7 @@
 
     extraModules = [ pkgs.pulseaudio-modules-bt ];
 
-    package = pkgs.unstable.pulseaudioFull;
+    package = pkgs.pulseaudioFull;
 
     daemon.config = {
       avoid-resampling = "yes";
