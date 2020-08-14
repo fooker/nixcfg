@@ -55,8 +55,8 @@
       RPROMPT='$(git_super_status)'
 
       # Search only for first word
-      bindkey '^[[A' up-line-or-search
-      bindkey '^[[B' down-line-or-search
+      bindkey '^[OA' up-line-or-search
+      bindkey '^[OB' down-line-or-search
     '';
   };
 }
