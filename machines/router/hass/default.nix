@@ -10,12 +10,13 @@ in {
     unit_system = "metric";
     time_zone = "Europe/Berlin";
     name = "Home";
+    external_url = "https://hass.home.open-desk.net";
+    internal_url = "https://hass.home.open-desk.net";
   };
 
   http = {
     server_host = "::1";
     server_port = 8123;
-    base_url = "http://hass.home.open-desk.net";
     use_x_forwarded_for = true;
     trusted_proxies = "::1";
   };
@@ -91,14 +92,14 @@ in {
     }
   ];
 
-  media_player = [
-    {
-      platform = "denonavr";
+  # media_player = [
+  #   {
+  #     platform = "denon";
 
-      name = "Amp";
-      host = "172.23.200.133";
+  #     name = "Amp";
+  #     host = "172.23.200.133";
 
-      show_all_sources = false;
-    }
-  ];
+  #     #show_all_sources = false;
+  #   }
+  # ];
 }

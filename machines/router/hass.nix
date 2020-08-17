@@ -24,6 +24,10 @@ args @ { config, lib, pkgs, ... }:
     '';
   };
 
+  nixpkgs.overlays = [ (self: super: {
+
+  }) ];
+
   services.home-assistant = {
     enable = true;
     port = 8123;
@@ -32,9 +36,21 @@ args @ { config, lib, pkgs, ... }:
 
     autoExtraComponents = true;
 
-    package = pkgs.home-assistant.override {
+    package = pkgs.unstable.home-assistant.override {
+      # Disable tests for spotipy as test library is missing
+      packageOverrides = self: super: {
+        spotipy = super.spotipy.overrideAttrs (_: {
+          doCkeck = false;
+          doInstallCheck = false;
+        });
+      };
+
       extraPackages = ps: with ps; [
+        # Reauired vor Denon AVR integration
         pythonPackages.denonavr
+
+        # Required for zeroconf
+        pythonPackages.getmac
       ];
     };
   };
@@ -113,7 +129,7 @@ args @ { config, lib, pkgs, ... }:
     };
   };
 
-  environment.systemPackages = [ pkgs.mosquitto ];
+  environment.systemPackages = with pkgs; [ mosquitto ];
 
   networking.firewall.interfaces = {
     "priv" = {
