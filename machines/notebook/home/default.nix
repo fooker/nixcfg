@@ -58,6 +58,9 @@
     # Remote Desktop
     parsecgaming
 
+    # Others
+    prusa-slicer
+
     # Xorg stuff
     xorg.xdriinfo
     xorg.xkill
@@ -72,6 +75,7 @@
     ./gpg.nix
     ./i3wm.nix
     ./lorri.nix
+    ./nextcloud.nix
     ./pass.nix
     ./redshift.nix
     ./scripts.nix

@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 let
-  i3status-rs-config = pkgs.writeText "i3status-rs.toml" ''
+  i3status-rust-config = pkgs.writeText "i3status-rs.toml" ''
     theme = "slick"
     icons = "awesome"
 
@@ -26,6 +26,7 @@ let
 
     [[block]]
     block = "temperature"
+    collapsed = false
     interval = 5
     format = "{max}°"    
 
@@ -217,7 +218,7 @@ in {
           {
             workspaceButtons = false;
 
-            statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ${i3status-rs-config}";
+            statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ${i3status-rust-config}";
             
             trayOutput = "*";
 
@@ -241,13 +242,13 @@ in {
       };
 
       extraConfig = ''
-        workspace 0 output DP2-2
-        workspace 1 output DP2-2
-        workspace 2 output DP2-2
-        workspace 3 output DP2-1
-        workspace 4 output DP2-1
-        workspace 5 output DP2-1
-        workspace 6 output DP2-1
+        workspace 0 output DP-2-3
+        workspace 1 output DP-2-3
+        workspace 2 output DP-2-3
+        workspace 3 output DP-2-2
+        workspace 4 output DP-2-2
+        workspace 5 output DP-2-2
+        workspace 6 output DP-2-2
       '';
     };
   };

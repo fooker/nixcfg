@@ -1,14 +1,6 @@
 { pkgs, sources, ... }:
 
-let
-  nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
-    export __NV_PRIME_RENDER_OFFLOAD=1
-    export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
-    export __GLX_VENDOR_LIBRARY_NAME=nvidia
-    export __VK_LAYER_NV_optimus=NVIDIA_only
-    exec -a "$0" "$@"
-  '';
-in {
+{
   services.xserver = {
     enable = true;
 
@@ -18,19 +10,14 @@ in {
     xkbModel = "pc105";
     xkbVariant = "nodeadkeys";
 
-    # videoDrivers = [ "modesetting" ];
-    videoDrivers = [ "nvidia" ];
+    videoDrivers = [
+      "modesetting"
+    ];
     useGlamor = true;
 
     modules = with pkgs; [ 
       xorg.xf86inputlibinput
     ];
-
-#    deviceSection = ''
-#      Driver      "intel"
-#      Option      "DRI"          "3"
-##      Option      "VirtualHeads" "1"
-#    '';
 
     inputClassSections = [
       ''
@@ -73,8 +60,6 @@ in {
   services.udev.packages = [ pkgs.libinput.out ];
 
   environment.systemPackages = with pkgs; [
-  #   (pkgs.callPackage (import ../../packages/ultraGrid.nix) {})
     glxinfo
-    nvidia-offload
   ];
 }

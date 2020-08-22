@@ -59,10 +59,6 @@ in
       pkgs = import sources.nixpkgs {
         config = {};
       };
-      nixConfig = {
-        "builders" = "ssh://nixos-builder i686-linux,x86_64-linux,aarch64-linux,armv6l-linux,armv7l-linux 8";
-        "builders-use-substitutes" = "true";
-      };
 
       evalConfig = name: (import "${nixpkgsPath name}/nixos/lib/eval-config.nix");
     };

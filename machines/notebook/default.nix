@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, sources, ... }:
 
 let
   secrets = import ./secrets.nix;
@@ -6,6 +6,7 @@ in {
   imports = [
     ./hardware.nix
     ./network.nix
+    ./nix.nix
     ./user.nix
     ./docker.nix
     ./fonts.nix
@@ -16,6 +17,8 @@ in {
     ./opennms.nix
     ./xserver.nix
   ];
+
+  nixpkgs.pkgs.overlays = [ sources.nixpkgs-mozilla ];
 
   networking.hostName = "ig-11";
 
@@ -47,22 +50,6 @@ in {
   };
 
   services.blueman.enable = true;
-
-  services.hardware.bolt.enable = true;
-
-  services.tlp = {
-    enable = true;
-    settings = {
-      "CPU_SCALING_GOVERNOR_ON_AC" = "performance";
-      "CPU_SCALING_GOVERNOR_ON_BAT" = "powersave";
-
-      "START_CHARGE_THRESH_BAT0" = 60;
-      "STOP_CHARGE_THRESH_BAT0" = 100;
-      
-      "WIFI_PWR_ON_AC" = false;
-      "WIFI_PWR_ON_BAT" = false;
-    };
-  };
 
   services.gvfs.enable = true;
 
@@ -107,6 +94,7 @@ in {
     libva-utils
     vdpauinfo
     blueman
+    lm_sensors
 
     picocom
 

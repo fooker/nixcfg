@@ -1,36 +1,27 @@
 { config, lib, pkgs, ... }:
 
 {
-  boot.kernelPackages = pkgs.linuxPackages_5_7;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   boot.kernelParams = [
     "quiet"
     "i195.fastboot=1"
-    "i915.enable_guc=3"
+    "i915.enable_guc=2"
     "i915.enable_fbc=1"
+    "mitigations=off"
   ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
   boot.initrd.kernelModules = [ ];
   
-  boot.kernelModules = [ "kvm-intel" "i915" ];
-  boot.extraModulePackages = [ ];
+  boot.kernelModules = [ "kvm-intel" "i915" "acpi_call" ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
 
   hardware.enableAllFirmware = true;
 
   hardware.cpu.intel.updateMicrocode = true;
 
-  # hardware.nvidiaOptimus.disable = true;
-  
-  hardware.nvidia = {
-    modesetting.enable = true;
-  
-    prime = {
-      offload.enable = true;
-
-      intelBusId = "PCI:0:2:0";
-      nvidiaBusId = "PCI:45:0:0";
-    };
-  };
+  hardware.nvidiaOptimus.disable = true;
 
   nixpkgs.config.packageOverrides = pkgs: {
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
@@ -40,8 +31,6 @@
     enable = true;
     driSupport32Bit = true;
     extraPackages = with pkgs; [
-      vaapiVdpau
-      libvdpau-va-gl
       intel-media-driver
     ];
   };
@@ -85,6 +74,8 @@
     mediaKeys.enable = true;
   };
 
+  services.udev.packages = [ pkgs.stlink ];
+
   fileSystems."/" = {
     device = "/dev/disk/by-label/nixos";
     fsType = "btrfs";
@@ -118,5 +109,42 @@
     device = "/dev/disk/by-uuid/8807b3fe-4359-4d80-b8a0-b85b98693859";
   } ];
 
-  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
+  services.hardware.bolt.enable = true;
+
+  powerManagement.cpuFreqGovernor = "powersave";
+
+  services.tlp = {
+    enable = true;
+    settings = {
+      "CPU_SCALING_GOVERNOR_ON_AC" = "performance";
+      "CPU_SCALING_GOVERNOR_ON_BAT" = "performance";
+
+      "START_CHARGE_THRESH_BAT0" = 60;
+      "STOP_CHARGE_THRESH_BAT0" = 100;
+    
+      "WIFI_PWR_ON_AC" = false;
+      "WIFI_PWR_ON_BAT" = false;
+    };
+  };
+
+  services.throttled = {
+    enable = true;
+  };
+
+  services.thinkfan = {
+    enable = true;
+    # sensors = ''
+    #   hwmon /sys/devices/platform/thinkpad_hwmon/hwmon/hwmon4/temp1_input
+    #   hwmon /sys/devices/platform/thinkpad_hwmon/hwmon/hwmon4/temp3_input
+    #   hwmon /sys/devices/platform/thinkpad_hwmon/hwmon/hwmon4/temp5_input
+    #   hwmon /sys/devices/platform/thinkpad_hwmon/hwmon/hwmon4/temp6_input
+    #   hwmon /sys/devices/platform/thinkpad_hwmon/hwmon/hwmon4/temp7_input
+
+    #   hwmon /sys/devices/platform/coretemp.0/hwmon/hwmon6/temp1_input
+    #   hwmon /sys/devices/platform/coretemp.0/hwmon/hwmon6/temp2_input
+    #   hwmon /sys/devices/platform/coretemp.0/hwmon/hwmon6/temp3_input
+    #   hwmon /sys/devices/platform/coretemp.0/hwmon/hwmon6/temp4_input
+    #   hwmon /sys/devices/platform/coretemp.0/hwmon/hwmon6/temp5_input
+    # '';
+  };
 }

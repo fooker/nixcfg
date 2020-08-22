@@ -38,8 +38,4 @@ in {
       "wireshark"
     ];
   };
-
-  nix.trustedUsers = lib.mkOptionDefault [ "fooker" ];
-
-  nixpkgs.pkgs.overlays = [ sources.nixpkgs-mozilla ];
 }
