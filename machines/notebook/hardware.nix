@@ -117,7 +117,7 @@
     enable = true;
     settings = {
       "CPU_SCALING_GOVERNOR_ON_AC" = "performance";
-      "CPU_SCALING_GOVERNOR_ON_BAT" = "performance";
+      "CPU_SCALING_GOVERNOR_ON_BAT" = "powersave";
 
       "START_CHARGE_THRESH_BAT0" = 60;
       "STOP_CHARGE_THRESH_BAT0" = 100;
@@ -133,18 +133,18 @@
 
   services.thinkfan = {
     enable = true;
-    # sensors = ''
-    #   hwmon /sys/devices/platform/thinkpad_hwmon/hwmon/hwmon4/temp1_input
-    #   hwmon /sys/devices/platform/thinkpad_hwmon/hwmon/hwmon4/temp3_input
-    #   hwmon /sys/devices/platform/thinkpad_hwmon/hwmon/hwmon4/temp5_input
-    #   hwmon /sys/devices/platform/thinkpad_hwmon/hwmon/hwmon4/temp6_input
-    #   hwmon /sys/devices/platform/thinkpad_hwmon/hwmon/hwmon4/temp7_input
+    sensors = ''
+      hwmon /sys/devices/platform/thinkpad_hwmon/hwmon/hwmon3/temp1_input
+      hwmon /sys/devices/platform/thinkpad_hwmon/hwmon/hwmon3/temp3_input
+      hwmon /sys/devices/platform/thinkpad_hwmon/hwmon/hwmon3/temp5_input
+      hwmon /sys/devices/platform/thinkpad_hwmon/hwmon/hwmon3/temp6_input
+      hwmon /sys/devices/platform/thinkpad_hwmon/hwmon/hwmon3/temp7_input
 
-    #   hwmon /sys/devices/platform/coretemp.0/hwmon/hwmon6/temp1_input
-    #   hwmon /sys/devices/platform/coretemp.0/hwmon/hwmon6/temp2_input
-    #   hwmon /sys/devices/platform/coretemp.0/hwmon/hwmon6/temp3_input
-    #   hwmon /sys/devices/platform/coretemp.0/hwmon/hwmon6/temp4_input
-    #   hwmon /sys/devices/platform/coretemp.0/hwmon/hwmon6/temp5_input
-    # '';
+      hwmon /sys/devices/platform/coretemp.0/hwmon/hwmon5/temp1_input
+      hwmon /sys/devices/platform/coretemp.0/hwmon/hwmon5/temp2_input
+      hwmon /sys/devices/platform/coretemp.0/hwmon/hwmon5/temp3_input
+      hwmon /sys/devices/platform/coretemp.0/hwmon/hwmon5/temp4_input
+      hwmon /sys/devices/platform/coretemp.0/hwmon/hwmon5/temp5_input
+    '';
   };
 }
