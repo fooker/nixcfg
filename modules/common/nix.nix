@@ -25,5 +25,11 @@ with lib;
 
     # Who cares about licenses?
     nixpkgs.config.allowUnfree = true;
+
+    # Use our current nixpkgs for local commands
+    nix.nixPath = lib.mkForce [
+      "nixpkgs=${pkgs.path}"
+      "nixpkgs-unstable=${pkgs.unstable.path}"
+    ];
   };
 }
