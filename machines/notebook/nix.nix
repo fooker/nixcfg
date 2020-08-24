@@ -2,6 +2,8 @@
 
 {
   nix = {
+    buildCores = 8;
+
     buildMachines = [ {
       hostName = "builder";
       systems = [ "i686-linux" "x86_64-linux" "aarch64-linux" "armv6l-linux" "armv7l-linux"];
