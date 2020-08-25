@@ -40,7 +40,7 @@
           "DP-2-2" = {
             enable = true;
             mode = "2560x1440";
-            position = "2560x1440x0";
+            position = "2560x0";
           };
           "DP-2-3" = {
             enable = true;
