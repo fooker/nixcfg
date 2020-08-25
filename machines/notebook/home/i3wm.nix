@@ -43,7 +43,7 @@ let
 
     [[block]]
     block = "net"
-    device = "en.br"
+    device = "en"
     ssid = true
     ip = true
     speed_up = true

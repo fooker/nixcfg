@@ -16,7 +16,7 @@
     };
 
     netdevs = {
-      "30-priv-br" = {
+      "30-priv" = {
         netdevConfig = {
           Name = "priv";
           Kind = "bridge";

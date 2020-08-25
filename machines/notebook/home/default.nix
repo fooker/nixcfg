@@ -26,7 +26,6 @@
 
     # GUI tools
     qalculate-gtk
-    networkmanagerapplet
     evince
 
     # CLI tools

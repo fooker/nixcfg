@@ -33,7 +33,6 @@ in {
       "render"
       "video"
       "dialout"
-      "networkmanager"
       "docker"
       "wireshark"
     ];
