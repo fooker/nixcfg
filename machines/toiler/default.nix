@@ -11,6 +11,7 @@ in {
     ./mopidy.nix
     ./spotifyd.nix
     ./user.nix
+    ./libvirt.nix
     # ./concourse.nix
   ];
 

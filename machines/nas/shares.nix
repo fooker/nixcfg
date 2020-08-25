@@ -8,6 +8,7 @@
       /mnt/downloads  *(rw,no_subtree_check,root_squash)
       /mnt/media      *(rw,no_subtree_check,root_squash)
       /mnt/scanner    *(rw,no_subtree_check,root_squash)
+      /mnt/machines   *(rw,no_subtree_check,root_squash)
     '';
   };
 

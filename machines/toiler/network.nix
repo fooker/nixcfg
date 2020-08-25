@@ -5,17 +5,33 @@
     enable = true;
 
     links = {
-      "00-priv" = {
+      "00-priv-raw" = {
         matchConfig = {
           MACAddress = "b8:ae:ed:7d:69:ab";
         };
         linkConfig = {
+          Name = "priv-raw";
+        };
+      };
+    };
+
+    netdevs = {
+      "30-priv-br" = {
+        netdevConfig = {
           Name = "priv";
+          Kind = "bridge";
         };
       };
     };
 
     networks = {
+      "30-priv-raw" = {
+        name = "priv-raw";
+        bridge = [ "priv" ];
+        networkConfig = {
+          LinkLocalAddressing = "no";
+        };
+      };
       "30-priv" = {
         name = "priv";
         address = [
