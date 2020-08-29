@@ -258,13 +258,13 @@ in {
   };
 
   deployment.secrets = {
-    "scanner-sshkey" = {
+    "scanner-sshkey" = rec {
       source = "${path}/secrets/id_scanner";
       destination = "/var/lib/scanner/id_scanner";
       owner.user = "scanner";
       owner.group = "scanner";
       action = [ ''
-        ${pkgs.openssh}/bin/ssh-keygen -y -f /var/lib/backup/id_scanner > /var/lib/backup/id_scanner.pub
+        ${pkgs.openssh}/bin/ssh-keygen -y -f ${destination} > ${destination}.pub
       '' ];
     };
   };
