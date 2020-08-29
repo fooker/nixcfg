@@ -10,7 +10,7 @@ let
     let
       /* The path of the machine
       */
-      path = ./. + "/machines/${name}";
+      path = "${toString ./.}/machines/${name}";
 
       /* Read the machine configuration from machine.nix in the machines directory
       */
