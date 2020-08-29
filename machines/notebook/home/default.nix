@@ -48,6 +48,8 @@
     jetbrains.clion
     vscodium
     rustup
+    (callPackage ../../../packages/cargo-embed.nix {})
+    (callPackage ../../../packages/cargo-flash.nix {})
     gcc
     
     # Comm
