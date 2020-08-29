@@ -12,7 +12,7 @@ in {
     ./spotifyd.nix
     ./user.nix
     ./libvirt.nix
-    # ./concourse.nix
+    ./concourse.nix
   ];
 
   server.enable = true;
