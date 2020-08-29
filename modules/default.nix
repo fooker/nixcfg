@@ -10,5 +10,6 @@
     ./backup.nix
     ./platform/default.nix
     ./letsencrypt.nix
+    ./reverse-proxy.nix
   ];
 }

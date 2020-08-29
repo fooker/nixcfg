@@ -62,36 +62,18 @@ args @ { config, lib, pkgs, ... }:
     trigger = "${pkgs.systemd}/bin/systemctl reload nginx.service";
   };
 
-  services.nginx = {
+  reverse-proxy = {
     enable = true;
-    
-    resolver.addresses = [ "[::1]" ];
-
-    recommendedGzipSettings = true;
-    recommendedOptimisation = true;
-    recommendedProxySettings = true;
-    recommendedTlsSettings = true;
-
-    virtualHosts = {
+    hosts = {
       "hass" = {
-        serverName = "hass.home.open-desk.net";
-        serverAliases = [ "hass" ];
-
-        listen = [
-          { addr = "172.23.200.129"; port = 80; }
-          { addr = "172.23.200.129"; port = 443; ssl = true; }
-        ];
-
-        forceSSL = true;
-        sslCertificate = config.letsencrypt.certs.hass.path.cert;
-        sslCertificateKey = config.letsencrypt.certs.hass.path.key;
-
-        locations."/" = {
-          proxyPass = "http://[::1]:8123/";
-          proxyWebsockets = true;
-        };
+        domains = [ "hass.home.open-desk.net" ];
+        target = "http://[::1]:8123/";
       };
+    };
+  };
 
+  services.nginx = {
+    virtualHosts = {
       "deploy" = {
         serverName = "deploy.home.open-desk.net";
         serverAliases = [ "deploy" ];

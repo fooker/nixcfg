@@ -17,6 +17,16 @@ in {
     options = ["x-systemd.automount" "noauto"];
   };
 
+  reverse-proxy = {
+    enable = true;
+    hosts = {
+      "jellyfin" = {
+        domains = [ "jellyfin.home.open-desk.net" ];
+        target = "http://[::1]:8096";
+      };
+    };
+  };
+
   networking.firewall.interfaces = {
     "priv" = {
       allowedTCPPorts = [ 8096 ];

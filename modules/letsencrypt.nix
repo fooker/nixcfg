@@ -11,7 +11,7 @@ in {
     letsencrypt = {
       production = mkOption {
         type = types.bool;
-        default = false;
+        default = true;
       };
 
       certs = mkOption {
