@@ -103,13 +103,13 @@ with lib;
     };
 
     deployment.secrets = {
-      "backup-sshkey" = {
+      "backup-sshkey" = rec {
         source = "${path}/secrets/id_backup";
         destination = "/var/lib/backup/id_backup";
         owner.user = "root";
         owner.group = "root";
         action = [ ''
-          ${pkgs.openssh}/bin/ssh-keygen -y -f /var/lib/backup/id_backup > /var/lib/backup/id_backup.pub
+          ${pkgs.openssh}/bin/ssh-keygen -y -f ${destination} > ${destination}.pub
         '' ];
       };
     };

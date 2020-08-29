@@ -32,7 +32,7 @@ let
 
     [[block]]
     block = "net"
-    device = "wlan0"
+    device = "wl"
     ssid = true
     signal_strength = true
     bitrate = true

@@ -12,7 +12,7 @@
           MACAddress = "00:2b:67:5f:55:13";
         };
         linkConfig = {
-          Name = "en";
+          Name = "en-raw";
         };
       };
 
@@ -29,7 +29,7 @@
     netdevs = {
       "30-en" = {
         netdevConfig = {
-          Name = "priv";
+          Name = "en";
           Kind = "bridge";
         };
       };

@@ -36,13 +36,13 @@
   '';
 
   deployment.secrets = {
-    "builder-sshkey" = {
+    "builder-sshkey" = rec {
       source = "${path}/secrets/id_builder";
       destination = "/var/lib/id_builder";
       owner.user = "root";
       owner.group = "nixbld";
       action = [ ''
-        ${pkgs.openssh}/bin/ssh-keygen -y -f /var/lib/id_builder > /var/lib/id_builder.pub
+        ${pkgs.openssh}/bin/ssh-keygen -y -f ${destination} > ${destination}.pub
       '' ];
     };
   };

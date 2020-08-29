@@ -20,7 +20,7 @@ with lib;
         "192.168.33.2/32"
         "192.168.33.3/32"
       ];
-      filters.ip6 = [
+      filters.ipv6 = [
         "fd4c:8f0:aff2::1/128"
         "fd4c:8f0:aff2::2/128"
         "fd4c:8f0:aff2::3/128"

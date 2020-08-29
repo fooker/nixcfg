@@ -36,6 +36,7 @@
     tmux
     tree
     jq
+    unzip unrar
 
     # Networking
     wireshark
@@ -56,9 +57,11 @@
 
     # Remote Desktop
     parsecgaming
+    remmina
 
     # Others
     prusa-slicer
+    virt-manager
 
     # Xorg stuff
     xorg.xdriinfo

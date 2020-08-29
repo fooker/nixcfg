@@ -16,6 +16,7 @@ in {
     ./parsecgaming.nix
     ./opennms.nix
     ./xserver.nix
+    ./backhaul.nix
   ];
 
   nixpkgs.pkgs.overlays = [ sources.nixpkgs-mozilla ];

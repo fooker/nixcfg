@@ -32,12 +32,12 @@ with lib;
           };
 
           ipv4 = mkOption {
-            description = "IPv4 address/network (CIDR notation)";
+            description = "IPv4 address/network of the node in this domain (CIDR notation)";
             type = types.str;
           };
 
           ipv6 = mkOption {
-            description = "IPv6 address/network (CIDR notation)";
+            description = "IPv6 address/network of the node in this domain (CIDR notation)";
             type = types.str;
           };
 
@@ -105,12 +105,12 @@ with lib;
 
           exports = {
             ipv4 = mkOption {
-              description = ""; # TODO
+              description = "The IPv4 routes exported by this node to this domain";
               default = [];
               type = types.listOf types.str;
             };
             ipv6 = mkOption {
-              description = ""; # TODO
+              description = "The IPv4 routes exported by this node to this domain";
               default = [];
               type = types.listOf types.str;
             };
@@ -118,12 +118,12 @@ with lib;
 
           filters = {
             ipv4 = mkOption {
-              description = ""; # TODO
+              description = "The IPv4 routes to import by this node in this domain";
               default = [];
               type = types.listOf types.str;
             };
             ipv6 = mkOption {
-              description = ""; # TODO
+              description = "The IPv6 routes to import by this node in this domain";
               default = [];
               type = types.listOf types.str;
             };
@@ -320,7 +320,7 @@ with lib;
     };
     
   in mkIf (config.backhaul.peers != {}) {
-    boot.extraModulePackages = [ config.boot.kernelPackages.wireguard ];
+    boot.extraModulePackages = mkIf (versionOlder config.boot.kernelPackages.kernel.version "5.6") [ config.boot.kernelPackages.wireguard ];
     environment.systemPackages = [ pkgs.wireguard-tools ];
 
     systemd.network = mkMerge (flatten [
