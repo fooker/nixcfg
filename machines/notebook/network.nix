@@ -10,6 +10,7 @@
       "00-en" = {
         matchConfig = {
           MACAddress = "00:2b:67:5f:55:13";
+          Type = "ether";
         };
         linkConfig = {
           Name = "en-raw";
@@ -19,6 +20,7 @@
       "00-wl" = {
         matchConfig = {
           MACAddress = "cc:f9:e4:f4:90:11";
+          Type = "wlan";
         };
         linkConfig = {
           Name = "wl";

@@ -11,6 +11,7 @@
     xkbVariant = "nodeadkeys";
 
     videoDrivers = [
+      "displaylink"
       "modesetting"
     ];
     useGlamor = true;
