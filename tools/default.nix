@@ -1,8 +1,13 @@
-{ lib, pkgs, name, sources, ... }@args:
+{ sources, ... }:
 
 let
+  # Use the unmodified host nixpkgs for all tools
+  pkgs = import sources.nixpkgs {
+    config = {};
+  };
+
   tools = {
-    ipinfo = import ./ipinfo.nix args;
+    ipinfo = pkgs.callPackage ./ipinfo.nix {}#;
   };
 in {
   _module.args = {
