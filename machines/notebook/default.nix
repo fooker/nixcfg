@@ -17,6 +17,7 @@ in {
     ./opennms.nix
     ./xserver.nix
     ./backhaul.nix
+    ./mounts.nix
   ];
 
   nixpkgs.pkgs.overlays = [ sources.nixpkgs-mozilla ];
