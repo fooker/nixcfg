@@ -62,11 +62,11 @@
     "priv" = {
       allowedTCPPorts = [
         2049 # NFS
-        127 138 139 # SMB
+        137 138 139 445 # SMB
       ];
       allowedUDPPorts =[
         2049 # NFS
-        127 138 139 # SMB
+        137 138 139 445 # SMB
       ];
     };
   };
