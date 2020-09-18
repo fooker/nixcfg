@@ -1,12 +1,6 @@
 { config, lib, pkgs, machine, ... }:
 
 {
-  nixpkgs.overlays = [
-    (self: super: {
-      octoprint = pkgs.unstable.octoprint;
-    })
-  ];
-
   services.octoprint = {
     enable = true;
     host = "localhost";
@@ -29,24 +23,11 @@
     };
 
     plugins = plugins: [
-      (pkgs.python3Packages.buildPythonPackage rec {
-        pname = "OctoPrintPlugin-ConsolidateTempControl";
-        version = "0.1.7";
-        src = pkgs.fetchFromGitHub {
-          owner = "jneilliii";
-          repo = pname;
-          rev = version;
-          sha256 = "0l78xrabn5hcly2mgxwi17nwgnp2s6jxi9iy4wnw8k8icv74ag7k";
-        };
-        propagatedBuildInputs = [ pkgs.octoprint ];
-        doCheck = false;
-      })
     ];
   };
 
   services.mjpg-streamer = {
     enable = true;
-    # inputPlugin = "input_raspicam.so -x 1280 -y 720 -fps 25 -ex antishake -vs -ev";
     inputPlugin = "input_uvc.so --fps 25 --resolution 1280x720 -rot 180";
     outputPlugin = "output_http.so -p 5050 -n -w @www@";
   };
@@ -54,10 +35,6 @@
   services.nginx = {
     enable = true;
     
-    package = pkgs.nginx.override {
-      modules = with pkgs.nginxModules; [ rtmp ];
-    };
-
     resolver.addresses = [ "[::1]" ];
 
     recommendedGzipSettings = true;

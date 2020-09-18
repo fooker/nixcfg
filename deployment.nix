@@ -33,6 +33,7 @@ let
           packageOverrides = pkgs: {
             unstable = import sources.nixpkgs-unstable {
               config = config.nixpkgs.config;
+              system = machine.system;
             };
           };
         };
