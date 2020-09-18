@@ -7,7 +7,7 @@ let
   };
 
   tools = {
-    ipinfo = pkgs.callPackage ./ipinfo.nix {}#;
+    ipinfo = pkgs.callPackage ./ipinfo.nix {};
   };
 in {
   _module.args = {
