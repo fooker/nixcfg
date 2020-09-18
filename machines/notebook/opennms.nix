@@ -14,11 +14,16 @@
   };
 
   deployment.secrets = {
-      "openvpn-opennms" = {
-        source = toString ./secrets/opennms.ovpn;
-        destination = "/etc/openvpn/opennms.ovpn";
-        owner.user = "root";
-        owner.group = "root";
-      };
+    "openvpn-opennms" = {
+      source = toString ./secrets/opennms.ovpn;
+      destination = "/etc/openvpn/opennms.ovpn";
+      owner.user = "root";
+      owner.group = "root";
     };
+  };
+
+  networking.firewall = {
+    allowedTCPPorts = [ 8980 ];
+    allowedUDPPorts = [ 9999 ];
+  };
 }
