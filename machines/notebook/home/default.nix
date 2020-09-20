@@ -27,6 +27,8 @@
     # GUI tools
     qalculate-gtk
     evince
+    mate.eom
+    gimp
 
     # CLI tools
     ripgrep
@@ -47,10 +49,6 @@
     jetbrains.idea-ultimate
     jetbrains.clion
     vscodium
-    rustup
-    (callPackage ../../../packages/cargo-embed.nix {})
-    (callPackage ../../../packages/cargo-flash.nix {})
-    gcc
     
     # Comm
     tdesktop
