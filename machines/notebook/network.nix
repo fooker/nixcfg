@@ -3,6 +3,11 @@
 {
   networking.wireless.iwd.enable = true;
 
+  boot.kernel.sysctl = {
+    "net.ipv4.conf.all.ignore_routes_with_linkdown" = 1;
+    "net.ipv6.conf.all.ignore_routes_with_linkdown" = 1;
+  };
+
   systemd.network = {
     enable = true;
 
