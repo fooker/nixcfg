@@ -29,6 +29,7 @@
     evince
     mate.eom
     gimp
+    libreoffice
 
     # CLI tools
     ripgrep
