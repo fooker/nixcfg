@@ -63,4 +63,9 @@
   environment.systemPackages = with pkgs; [
     glxinfo
   ];
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  };
 }
