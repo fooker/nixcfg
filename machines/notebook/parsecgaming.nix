@@ -4,7 +4,7 @@ let
   parsecgamingPkg = pkgs.stdenv.mkDerivation {
     name = "parsecgaming-pkg";
     src = pkgs.fetchurl {
-      url = "https://s3.amazonaws.com/parsec-build/package/parsec-linux.deb";
+      url = "https://builds.parsecgaming.com/package/parsec-linux.deb";
       sha256 = "1hfdzjd8qiksv336m4s4ban004vhv00cv2j461gc6zrp37s0fwhc";
       };
     phases = [ "buildPhase" ];
