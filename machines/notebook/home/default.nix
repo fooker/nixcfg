@@ -29,6 +29,7 @@
     evince
     mate.eom
     gimp
+    inkscape
     libreoffice
 
     # CLI tools
@@ -81,6 +82,7 @@
     ./nextcloud.nix
     ./pass.nix
     ./redshift.nix
+    ./retro.nix
     ./scripts.nix
     ./skim.nix
     ./sound.nix
