@@ -33,8 +33,20 @@ in {
     reflector = true;
   };
 
-  networking.firewall.interfaces = lib.genAttrs [ "mngt" "priv" "guest" "iot" ] (iface: {
-    allowedTCPPorts = [ 53 853 ];
-    allowedUDPPorts = [ 53 5353 ];
-  });
+  firewall.rules = dag: with dag; {
+    inet.filter.input = {
+      dns-tcp = between ["established"] ["drop"] ''
+        meta iifname { mngt, priv, guest, iot }
+        tcp
+        dport { 53, 853 }
+        accept
+      '';
+      dns-udp = between ["established"] ["drop"] ''
+        meta iifname { mngt, priv, guest, iot }
+        udp
+        dport { 53, 5353 }
+        accept
+      '';
+    };
+  };
 }

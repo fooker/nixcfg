@@ -155,28 +155,41 @@ in mkIf (domains != []) {
     '';
   };
 
-  networking.firewall.extraCommands = concatMapStringsSep "\n"
-    (peer:
+  firewall.rules = dag: with dag; {
+    inet.filter.input =
       let
-        withProtocol = protocol: optionalString
-          (any
-            (domain: domain."${protocol}" != null)
-            (attrValues peer.domains));
-      in concatStringsSep "\n" [
-        (withProtocol "ospf" ''
-          iptables -A nixos-fw -i "${peer.netdev}" -p OSPFIGP -j nixos-fw-accept
-          ip6tables -A nixos-fw -i "${peer.netdev}" -p OSPFIGP -j nixos-fw-accept
-        '')
+        mkProto = peer: proto: rule:
+          optional
+            (any
+              (domain: hasAttr proto domain)
+              (attrValues peer.domains))
+            (nameValuePair
+              "bird-${peer.name}-${proto}"
+              (between ["established"] ["drop"] rule)
+            );
 
-        (withProtocol "babel" ''
-          iptables -A nixos-fw -i "${peer.netdev}" -p udp -m udp --dport babel -j nixos-fw-accept
-          ip6tables -A nixos-fw -i "${peer.netdev}" -p udp -m udp --dport babel -j nixos-fw-accept
-        '')
+        mkPeer = peer: concatLists [
+          (mkProto peer "ospf" ''
+            meta iifname "${peer.netdev}"
+            ip protocol OSPFIGP
+            accept
+          '')
+          (mkProto peer "babel" ''
+            meta iifname "${peer.netdev}"
+            udp dport babel
+            accept
+          '')
+          (mkProto peer "bgp" ''
+          meta iifname "${peer.netdev}"
+            tcp dport bgp
+            accept
+          '')
+        ];
 
-        (withProtocol "bgp" ''
-          iptables -A nixos-fw -i "${peer.netdev}" -p tcp -m tcp --dport bgp -j nixos-fw-accept
-          ip6tables -A nixos-fw -i "${peer.netdev}" -p tcp -m tcp --dport bgp -j nixos-fw-accept
-        '')
-      ])
-    (attrValues config.backhaul.peers);
+      in
+        listToAttrs (concatMap
+          mkPeer
+          (attrValues config.backhaul.peers)
+        );
+  };
 }

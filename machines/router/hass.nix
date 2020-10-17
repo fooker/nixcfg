@@ -113,12 +113,14 @@ args @ { config, lib, pkgs, ... }:
 
   environment.systemPackages = with pkgs; [ mosquitto ];
 
-  networking.firewall.interfaces = {
-    "priv" = {
-      allowedTCPPorts = [ 80 443 ];
-    };
-    "iot" = {
-      allowedTCPPorts = [ 80 1883 ];
+  firewall.rules = dag: with dag; {
+    inet.filter.input = {
+      mqtt = between ["established"] ["drop"] ''
+        meta iifname iot
+        tcp
+        dport 1883
+        accept
+      '';
     };
   };
 

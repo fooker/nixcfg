@@ -6,7 +6,7 @@ let
   nixpkgsPath = name:
     (sources."nixpkgs-${name}" or sources.nixpkgs);
 
-  mkMachine = name: { config, ... }: 
+  mkMachine = name: { config, lib, ... }: 
     let
       /* The path of the machine
       */
@@ -36,6 +36,10 @@ let
               system = machine.system;
             };
           };
+
+          overlays = [
+            (import ./lib)
+          ];
         };
 
         system = machine.system;
@@ -46,6 +50,7 @@ let
       nix.distributedBuilds = true;
 
       imports = [
+        ./ext
         ./tools
         ./modules
         ./shared

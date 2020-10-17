@@ -138,7 +138,7 @@ let
 
 in {
   # Allow scanning over network
-  networking.firewall.connectionTrackingModules = [ "sane" ];
+  boot.kernelModules = [ "nf_conntrack_sane" ];
 
   # Define user for scanning
   users = {

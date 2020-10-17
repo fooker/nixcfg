@@ -22,8 +22,13 @@
     };
   };
 
-  networking.firewall = {
-    allowedTCPPorts = [ 8980 ];
-    allowedUDPPorts = [ 9999 ];
+  firewall.rules = dag: with dag; {
+    inet.filter.input = {
+      opennms = between ["established"] ["drop"] ''
+        tcp
+        dport { 8980, 9999 }
+        accept
+      '';
+    };
   };
 }

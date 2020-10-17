@@ -34,7 +34,7 @@ in {
 
       [http]
       enabled = true
-      hostname = ::
+      hostname = ::1
       port = 6680
       zeroconf = Mopidy HTTP Server
       csrf_protection = true
@@ -79,9 +79,23 @@ in {
     '';
   };
 
-  networking.firewall.interfaces = {
-    "priv" = {
-      allowedTCPPorts = [ 6600 6680 ];
+  firewall.rules = dag: with dag; {
+    inet.filter.input = {
+      mopidy = between ["established"] ["drop"] ''
+        ip saddr 172.23.200.0/24
+        tcp dport 6600
+        accept
+      '';
+    };
+  };
+
+  reverse-proxy = {
+    enable = true;
+    hosts = {
+      "mopidy" = {
+        domains = [ "mopidy.home.open-desk.net" ];
+        target = "http://[::1]:6680";
+      };
     };
   };
 

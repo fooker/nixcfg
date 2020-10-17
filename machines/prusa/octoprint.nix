@@ -66,13 +66,13 @@
     };
   };
 
-  services.avahi = {
-    enable = true;
-  };
-
-  networking.firewall.interfaces = {
-    "priv" = {
-      allowedTCPPorts = [ 80 443 ];
+  firewall.rules = dag: with dag; {
+    inet.filter.input = {
+      octoprint = between ["established"] ["drop"] ''
+        ip saddr 172.23.200.0/24
+        tcp dport { 80, 443 }
+        accept
+      '';
     };
   };
 

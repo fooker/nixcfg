@@ -56,18 +56,30 @@
 
   services.rpcbind.enable = true;
 
-  # TODO: Limit to own subnet
   # TODO: Is this complete?
-  networking.firewall.interfaces = {
-    "priv" = {
-      allowedTCPPorts = [
-        2049 # NFS
-        137 138 139 445 # SMB
-      ];
-      allowedUDPPorts =[
-        2049 # NFS
-        137 138 139 445 # SMB
-      ];
+  firewall.rules = dag: with dag; {
+    inet.filter.input = {
+      nfs-tcp = between ["established"] ["drop"] ''
+        ip saddr 172.23.200.0/24
+        tcp dport 2049
+        accept
+      '';
+      nfs-udp = between ["established"] ["drop"] ''
+        ip saddr 172.23.200.0/24
+        udp dport 2049
+        accept
+      '';
+
+      smb-tcp = between ["established"] ["drop"] ''
+        ip saddr 172.23.200.0/24
+        tcp dport { 137, 138, 139, 445 }
+        accept
+      '';
+      smb-udp = between ["established"] ["drop"] ''
+        ip saddr 172.23.200.0/24
+        udp dport { 137, 138, 139, 445 }
+        accept
+      '';
     };
   };
 }

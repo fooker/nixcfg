@@ -50,9 +50,25 @@ in {
     "ppp/chap-secrets".text=''* * "${password}"'';
   };
 
-  networking.firewall.extraCommands = ''
-    iptables -A FORWARD -o ppp+ -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
-  '';
+  firewall.rules = dag: with dag; {
+    inet.filter.forward = {
+      ppp-clamp = before ["drop"] ''
+        meta oifname "ppp*"
+        ip version 4
+        tcp flags syn
+        tcp option maxseg
+        size set rt mtu
+      '';
+    };
+    
+    inet.nat.postrouting = {
+      uplink = anywhere ''
+        meta oifname "ppp*"
+        ip version 4
+        masquerade
+      '';
+    };
+  };
 
   # Enfore redial once a day
   systemd.services."pppd-uplink-redial" = {

@@ -137,6 +137,12 @@ with lib;
       default = {};
       type = types.attrsOf (types.submodule ({ name, ... }: {
         options = {
+          name = mkOption {
+            description = "Name of the peer";
+            default = name;
+            type = types.str;
+          };
+
           netdev = mkOption {
             description = "Name of the network interface";
             default = "peer.x.${name}";

@@ -27,12 +27,6 @@ in {
     };
   };
 
-  networking.firewall.interfaces = {
-    "priv" = {
-      allowedTCPPorts = [ 8096 ];
-    };
-  };
-
   backup.paths = [
     "/var/lib/jellyfin"
   ];

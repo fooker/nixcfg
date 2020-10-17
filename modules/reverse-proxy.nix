@@ -4,8 +4,13 @@ with lib;
 {
   options.reverse-proxy = {
     enable = mkOption {
-        type = types.bool;
-        default = false;
+      type = types.bool;
+      default = false;
+    };
+
+    protected = mkOption {
+      type = types.bool;
+      default = false;
     };
 
     hosts = mkOption {
@@ -47,10 +52,13 @@ with lib;
         serverName = head host.domains;
         serverAliases = tail host.domains;
 
-        listen = [
-          { addr = "*"; port = 80; }
-          { addr = "*"; port = 443; ssl = true; }
-        ];
+        listen =
+          let
+            addr = "*";
+          in [
+            { inherit addr; port = 80; }
+            { inherit addr; port = 443; ssl = true; }
+          ];
 
         forceSSL = true;
         sslCertificate = config.letsencrypt.certs."${name}".path.cert;
@@ -63,6 +71,14 @@ with lib;
       }) config.reverse-proxy.hosts;
     };
 
-    networking.firewall.allowedTCPPorts = [ 80 443 ];
+    firewall.rules = dag: with dag; {
+      inet.filter.input = {
+        reverse-proxy = between ["established"] ["drop"] ''
+          tcp
+          dport { 80, 443 }
+          accept
+        '';
+      };
+    };
   };
 }

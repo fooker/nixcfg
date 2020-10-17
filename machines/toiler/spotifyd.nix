@@ -43,10 +43,18 @@ in {
   };
   # End of hack...
 
-  networking.firewall.interfaces = {
-    "priv" = {
-      allowedUDPPorts = [ 5353 ];
-      allowedTCPPorts = [ 4444 ];
+  firewall.rules = dag: with dag; {
+    inet.filter.input = {
+      spotify-tcp = between ["established"] ["drop"] ''
+        ip saddr 172.23.200.0/24
+        tcp dport 4444
+        accept
+      '';
+      spotify-udp = between ["established"] ["drop"] ''
+        ip saddr 172.23.200.0/24
+        udp dport 5353
+        accept
+      '';
     };
   };
 }

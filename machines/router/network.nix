@@ -264,36 +264,74 @@ in {
     "net.ipv6.conf.all.forwarding" = 1;
   };
 
-  networking.firewall = {
-    interfaces = (lib.genAttrs (attrNames networks) (iface: {
-      allowedUDPPorts = [
-        67 # DHCP
-      ];
-    })) // {
-      uplink = {
-        # TODO: Limit to "daddr=fe80::/10 dport=546" and "saddr=fe80::/10 sport=547"
-        allowedUDPPorts = [ 546 547 ];
-      };
-      vx = {
-        allowedUDPPorts = [
-          8472 # VXLAN
-        ];
-      };
+  firewall.rules = dag: with dag; {
+    inet.nat.prerouting = {
+      forward-torrent-tcp = anywhere ''
+        meta iifname "ppp*"
+        tcp dport 6242
+        dnat ip to 172.23.200.130:6242
+      '';
+
+      forward-torrent-udp = anywhere ''
+        meta iifname "ppp*"
+        udp dport 6242
+        dnat ip to 172.23.200.130:6242
+      '';
     };
-    
-    checkReversePath = false;
-  };
 
-  networking.nat = {
-    enable = true;
-    externalInterface = "ppp0";
-    internalInterfaces = attrNames networks;
-  };
+    inet.filter.forward = {
+      established = before ["drop"] ''
+        ct state {
+          established,
+          related
+        }
+        accept
+      '';
 
-  networking.firewall.extraCommands = ''
-    iptables -t nat -A PREROUTING -i ppp+ -p tcp -m tcp --dport 6242 -j DNAT --to 172.23.200.130:6242
-    iptables -t filter -A FORWARD -i ppp+ -p tcp -m tcp --dport 6242 --destination 172.23.200.130 -j ACCEPT
-    iptables -t nat -A PREROUTING -i ppp+ -p udp -m udp --dport 6242 -j DNAT --to 172.23.200.130:6242
-    iptables -t filter -A FORWARD -i ppp+ -p udp -m udp --dport 6242 --destination 172.23.200.130 -j ACCEPT
-  '';
+      uplink = between ["established"] ["drop"] ''
+        meta iifname { mngt, priv, guest }
+        meta oifname "ppp*"
+        accept
+      '';
+
+      priv2guest = between ["established"] ["drop"] ''
+        meta iifname priv
+        meta oifname guest
+        accept
+      '';
+
+      forward-torrent-tcp = before ["drop"] ''
+        meta iifname "ppp*"
+        ip daddr "172.23.200.130"
+        tcp dport 6242
+        accept
+      '';
+
+      forward-torrent-udp = before ["drop"] ''
+        meta iifname "ppp*"
+        ip daddr "172.23.200.130"
+        udp dport 6242
+        accept
+      '';
+    };
+
+    inet.filter.input = {
+      dhcp = between ["established"] ["drop"] ''
+        meta iifname { mngt, priv, guest, iot }
+        udp dport bootps
+        accept
+      '';
+
+      # TODO: Limit to "daddr=fe80::/10 dport=546" and "saddr=fe80::/10 sport=547"
+      uplink-dhcpv6 = between ["established"] ["drop"] ''
+        udp dport { dhcpv6-client, dhcpv6-server }
+        accept
+      '';
+
+      vx = between ["established"] ["drop"] ''
+        meta iifname mngt
+        udp dport vxlan
+      '';
+    };
+  };
 }
