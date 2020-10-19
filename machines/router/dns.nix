@@ -12,11 +12,18 @@ let
     "203.0.113.1"
   ];
 in {
+  /* Let systemd-resolved no listen on 127.0.0.53:53 to avoid conflicts with
+     kresd listening on wildcard.
+  */
+  services.resolved.extraConfig = ''
+    DNSStubListener=no
+  '';
+
   services.kresd = {
     enable = true;
 
-    listenPlain = map (iface: "${iface}:53") interfaces;
-    listenTLS = map (iface: "${iface}:853") interfaces;
+    listenPlain = [ "0.0.0.0:53" "[::]:53" ];
+    listenTLS = [ "0.0.0.0:853" "[::]:853" ];
 
     extraConfig = ''
       modules.load('workarounds < iterate')
@@ -38,13 +45,25 @@ in {
       dns-tcp = between ["established"] ["drop"] ''
         meta iifname { mngt, priv, guest, iot }
         tcp
-        dport { 53, 853 }
+        dport 53
+        accept
+      '';
+      dns-tls = between ["established"] ["drop"] ''
+        meta iifname { mngt, priv, guest, iot }
+        tcp
+        dport 853
         accept
       '';
       dns-udp = between ["established"] ["drop"] ''
         meta iifname { mngt, priv, guest, iot }
         udp
-        dport { 53, 5353 }
+        dport 53
+        accept
+      '';
+      dns-avahi = between ["established"] ["drop"] ''
+        meta iifname { mngt, priv, guest, iot }
+        udp
+        dport 5353
         accept
       '';
     };

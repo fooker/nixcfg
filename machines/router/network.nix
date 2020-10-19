@@ -10,32 +10,35 @@ let
     mngt = {
       vlan = 1;
       
-      address = "192.168.254.1";
-      prefixLength = 24;
+      ipv4.address = "192.168.254.1";
+      ipv4.prefixLength = 24;
 
       dhcpPoolOffset = 128;
     };
     priv = {
       vlan = 2;
 
-      address = "172.23.200.129";
-      prefixLength = 25;
+      ipv4.address = "172.23.200.129";
+      ipv4.prefixLength = 25;
+
+      ipv6.address = "fd79:300d:6056:100::";
+      ipv6.prefixLength = 64;
 
       dhcpPoolOffset = 32;
     };
     guest = {
       vlan = 3;
 
-      address = "203.0.113.1";
-      prefixLength = 24;
+      ipv4.address = "203.0.113.1";
+      ipv4.prefixLength = 24;
 
       dhcpPoolOffset = 16;
     };
     iot = {
       vlan = 4;
 
-      address = "192.168.0.1";
-      prefixLength = 24;
+      ipv4.address = "192.168.0.1";
+      ipv4.prefixLength = 24;
 
       dhcpPoolOffset = 16;
     };
@@ -226,12 +229,15 @@ in {
 
       "30-${name}" = {
         name = "${name}";
-        address = [ "${config.address}/${toString config.prefixLength}" ];
+        address = concatLists [
+          (optional (hasAttr "ipv4" config) "${config.ipv4.address}/${toString config.ipv4.prefixLength}")
+          (optional (hasAttr "ipv6" config) "${config.ipv6.address}/${toString config.ipv6.prefixLength}")
+        ];
 
         networkConfig = {
           DHCPServer = true;
           # IPv6PrefixDelegation = "dhcpv6";
-          DNS = "${config.address}";
+          DNS = "${config.ipv4.address}";
           Domains = [
             "home.open-desk.net"
             "${name}.home.open-desk.net"
@@ -247,7 +253,7 @@ in {
           EmitRouter = true;
           EmitTimezone = true;
 
-          DNS = "${config.address}";
+          DNS = "${config.ipv4.address}";
         };
 
         # extraConfig = ''

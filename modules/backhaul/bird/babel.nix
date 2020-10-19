@@ -23,6 +23,8 @@ domain: peers:
 
   in ''
     protocol babel ${domain.name}_babel {
+      randomize router id yes;
+
       ipv4 {
         table ${domain.name}_4;
 
