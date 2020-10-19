@@ -3,14 +3,12 @@
 with lib;
 {
   options.serial = {
-    enable = mkOption {
-        type = types.bool;
-        default = false;
-    };
+    enable = mkEnableOption "Serial Console";
 
     unit = mkOption {
       type = types.int;
       default = 0;
+      description = "Serial Unit to use";
     };
   };
 
