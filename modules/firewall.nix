@@ -188,7 +188,21 @@ with lib;
             accept
           '';
 
+          mdns-ipv6 = between ["established"] ["drop"] ''
+            udp dport mdns
+            ip6 daddr ff02::fb
+            accept
+          '';
+
+          mdns-ipv4 = between ["established"] ["drop"] ''
+            udp dport mdns
+            ip daddr 224.0.0.251
+            accept
+          '';
+
           drop = anywhere ''
+            log level debug prefix "DROP: filter.input: "
+            counter
             drop
           '';
         };
@@ -201,6 +215,8 @@ with lib;
 
         inet.filter.forward = {
           drop = anywhere ''
+            log level debug prefix "DROP: filter.forward: "
+            counter
             drop
           '';
         };
