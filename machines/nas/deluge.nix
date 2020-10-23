@@ -54,11 +54,26 @@ in {
       localclient:${secrets.deluge.auth.localclient}:10
     '';
 
-    openFirewall = false; # Via web-interface only
-
     web = {
       enable = true;
-      openFirewall = true; # TODO: Limit to own subnet
+    };
+  };
+
+  firewall.rules = dag: with dag; {
+    inet.filter.input = {
+      deluge-web = between ["established"] ["drop"] ''
+        ip saddr 172.23.200.0/24
+        tcp dport 8112
+        accept
+      '';
+      deluge-torrent-udp = between ["established"] ["drop"] ''
+        udp dport 6242
+        accept
+      '';
+      deluge-torrent-tcp = between ["established"] ["drop"] ''
+        tcp dport 6242
+        accept
+      '';
     };
   };
 }
