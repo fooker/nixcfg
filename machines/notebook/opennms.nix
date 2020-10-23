@@ -24,9 +24,13 @@
 
   firewall.rules = dag: with dag; {
     inet.filter.input = {
-      opennms = between ["established"] ["drop"] ''
-        tcp
-        dport { 8980, 9999 }
+      opennms-ui = between ["established"] ["drop"] ''
+        tcp dport { 8980 }
+        accept
+      '';
+
+      opennms-flows = between ["established"] ["drop"] ''
+        udp dport { 9999 }
         accept
       '';
     };
