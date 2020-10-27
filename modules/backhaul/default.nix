@@ -341,5 +341,46 @@ with lib;
             (domain.netdev == null)) # Check if domain has associated local interface
           (attrValues config.backhaul.domains)))
     ]);
+
+    firewall.rules = dag: with dag; {
+      inet.filter.forward =
+        let
+          /* All domains having at least one peer
+          */
+          domains = filter
+            (domain: (any
+              (peer: hasAttr domain.name peer.domains) # Check if peer is associated with domain
+              (attrValues config.backhaul.peers)
+            ))
+            (attrValues config.backhaul.domains);
+
+          mkDomain = domain: nameValuePair
+            "backhaul-${domain.name}"
+            (let
+              /* List of all peers participating in this domain
+              */
+              peers = filter
+                (peer: hasAttr domain.name peer.domains) # Check if peer is associated with domain
+                (attrValues config.backhaul.peers);
+
+              /* All network devices participating in this domain
+
+                  This includes the network interface for all participating
+                  peers and the local interface, if it's not a dummy interface.
+              */
+              netdevs = (optional (domain.netdev != null) domain.netdev) ++
+                        (map (peer: peer.netdev) peers);
+
+              netdevs' = concatMapStringsSep "," (netdev: "\"${netdev}\"") netdevs;
+            in
+              between ["established"] ["drop"] ''
+                meta iifname { ${ netdevs' } }
+                meta oifname { ${ netdevs' } }
+                accept
+              ''
+            );
+        in
+          listToAttrs (map mkDomain domains);
+    };
   };
 }

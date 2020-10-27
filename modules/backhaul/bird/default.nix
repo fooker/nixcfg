@@ -164,7 +164,7 @@ in mkIf (domains != []) {
               (domain: hasAttr proto domain)
               (attrValues peer.domains))
             (nameValuePair
-              "bird-${peer.name}-${proto}"
+              "backhaul-${peer.name}-${proto}"
               (between ["established"] ["drop"] rule)
             );
 
@@ -180,7 +180,7 @@ in mkIf (domains != []) {
             accept
           '')
           (mkProto peer "bgp" ''
-          meta iifname "${peer.netdev}"
+            meta iifname "${peer.netdev}"
             tcp dport bgp
             accept
           '')
