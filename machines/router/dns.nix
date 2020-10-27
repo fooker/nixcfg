@@ -27,6 +27,13 @@ in {
 
     extraConfig = ''
       modules.load('workarounds < iterate')
+      modules.load('stats')
+      modules.load('predict')
+
+      predict.config {
+        window = 15,
+        period = 6 * (60 / 15),
+      }
     '';
   };
 
@@ -44,26 +51,22 @@ in {
     inet.filter.input = {
       dns-tcp = between ["established"] ["drop"] ''
         meta iifname { mngt, priv, guest, iot }
-        tcp
-        dport 53
+        tcp dport 53
         accept
       '';
       dns-tls = between ["established"] ["drop"] ''
         meta iifname { mngt, priv, guest, iot }
-        tcp
-        dport 853
+        tcp dport 853
         accept
       '';
       dns-udp = between ["established"] ["drop"] ''
         meta iifname { mngt, priv, guest, iot }
-        udp
-        dport 53
+        udp dport 53
         accept
       '';
       dns-avahi = between ["established"] ["drop"] ''
         meta iifname { mngt, priv, guest, iot }
-        udp
-        dport 5353
+        udp dport 5353
         accept
       '';
     };
