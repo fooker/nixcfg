@@ -44,17 +44,6 @@ let
     };
   };
 in {
-  systemd.package = pkgs.systemd.overrideAttrs (oldAttrs: rec {
-    name = "systemd-vxlan";
-    patches = [
-      (pkgs.fetchpatch {
-        name = "systemd-vxlan-group.patch";
-        url = "https://github.com/systemd/systemd/pull/15397.patch";
-        sha256 = "1n9rv9wf0kbxrrzzb40hrqbs85crf9qkh1yl1pjpsf619w827kay";
-      })
-    ];
-  });
-
   systemd.network = foldl recursiveUpdate {
     enable = true;
 
@@ -162,16 +151,23 @@ in {
 
           IPv6AcceptRA = true;
           DHCP = "ipv6";
-
-          IPv6PrefixDelegation = "dhcpv6";
         };
         linkConfig = {
           RequiredForOnline = "routable";
         };
         extraConfig = ''
-          [IPv6PrefixDelegation]
-          Managed = true
-          OtherInformation = true
+          [Network]
+          KeepConfiguration = static
+
+          IPv6PrivacyExtensions = kernel
+          IPv6DuplicateAddressDetection = 1
+
+          [DHCPv6]
+          UseDNS = false
+          UseNTP = false
+
+          ForceDHCPv6PDOtherInformation = yes
+          PrefixDelegationHint = 56
         '';
       };
     };
@@ -236,7 +232,9 @@ in {
 
         networkConfig = {
           DHCPServer = true;
-          # IPv6PrefixDelegation = "dhcpv6";
+
+          IPv6PrefixDelegation = "dhcpv6";
+
           DNS = "${config.ipv4.address}";
           Domains = [
             "home.open-desk.net"
@@ -256,11 +254,18 @@ in {
           DNS = "${config.ipv4.address}";
         };
 
-        # extraConfig = ''
-        #   [IPv6PrefixDelegation]
-        #   Managed = true
-        #   OtherInformation = true
-        # '';
+        extraConfig = ''
+          [Network]
+          IPv6DuplicateAddressDetection = 1
+          IPv6PrivacyExtensions = no
+
+          [IPv6PrefixDelegation]
+          RouterLifetimeSec = 60
+          OtherInformation = true
+
+          [DHCPv6PrefixDelegation]
+          Assign = yes
+        '';
       };
     };
   }) networks);
@@ -328,9 +333,9 @@ in {
         accept
       '';
 
-      # TODO: Limit to "daddr=fe80::/10 dport=546" and "saddr=fe80::/10 sport=547"
       uplink-dhcpv6 = between ["established"] ["drop"] ''
-        udp dport { dhcpv6-client, dhcpv6-server }
+        udp sport dhcpv6-server
+        udp dport dhcpv6-client
         accept
       '';
 
