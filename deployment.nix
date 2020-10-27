@@ -3,8 +3,10 @@ let
 
   /* Find the nixpkgs path for the machine with the given name
   */
-  nixpkgsPath = name:
+  nixpkgs = name:
     (sources."nixpkgs-${name}" or sources.nixpkgs);
+
+  nixpkgs-unstable = sources.nixpkgs-unstable;
 
   mkMachine = name: { config, lib, ... }: 
     let
@@ -14,8 +16,8 @@ let
 
       /* Read the machine configuration from machine.nix in the machines directory
       */
-      machine = import "${path}/machine.nix"; 
-  
+      machine = import "${path}/machine.nix";
+
     in {
       _module.args = {
         inherit machine path sources;
@@ -26,12 +28,14 @@ let
         targetUser = machine.target.user;
       };
 
-      nixpkgs.pkgs = import (nixpkgsPath name) {
+      nixpkgs.pkgs = import (nixpkgs name) {
         config = {
           allowUnfree = true;
 
           packageOverrides = pkgs: {
-            unstable = import sources.nixpkgs-unstable {
+            /* Make nixpkgs-unstable available as subtree
+            */
+            unstable = import nixpkgs-unstable {
               config = config.nixpkgs.config;
               system = machine.system;
             };
@@ -66,7 +70,7 @@ in
         config = {};
       };
 
-      evalConfig = name: (import "${nixpkgsPath name}/nixos/lib/eval-config.nix");
+      evalConfig = name: (import "${nixpkgs name}/nixos/lib/eval-config.nix");
     };
   } // (builtins.listToAttrs (builtins.map # Build machine config for each machine in machines directory
       (name: { name = name; value = mkMachine name; })
