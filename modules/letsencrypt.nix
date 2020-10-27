@@ -75,7 +75,7 @@ in {
 
       certs = mapAttrs (name: cert: {
         domain = head cert.domains;
-        extraDomains = listToAttrs (map (domain: nameValuePair domain null) (tail cert.domains));
+        extraDomainNames = (tail cert.domains);
         
         dnsProvider = "rfc2136";
         credentialsFile = pkgs.writeText "acme-credentials" ''
@@ -88,7 +88,6 @@ in {
         '';
 
         group = cert.owner;
-        allowKeysForGroup = true;
         
         postRun = cert.trigger; 
       }) config.letsencrypt.certs;
