@@ -57,10 +57,18 @@
         "/" = {
           proxyPass = "http://localhost:5000/";
           proxyWebsockets = true;
+          extraConfig = ''
+            proxy_set_header Accept-Encoding "$http_accept_encoding";
+          '';
         };
 
         "/webcam/" = {
           proxyPass = "http://localhost:5050/";
+          
+          # Workaround for https://github.com/NixOS/nixpkgs/pull/100708
+          extraConfig = ''
+            proxy_set_header Accept-Encoding "$http_accept_encoding";
+          '';
         };
       };
     };

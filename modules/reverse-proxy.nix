@@ -67,6 +67,11 @@ with lib;
         locations."/" = {
           proxyPass = host.target;
           proxyWebsockets = true;
+
+          # Workaround for https://github.com/NixOS/nixpkgs/pull/100708
+          extraConfig = ''
+            proxy_set_header Accept-Encoding "$http_accept_encoding";
+          '';
         };
       }) config.reverse-proxy.hosts;
     };
