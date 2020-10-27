@@ -32,6 +32,7 @@ in {
     # Enable debugging for systemd-networkd
     systemd.services = mkIf config.systemd.network.enable {
       "systemd-networkd".environment.SYSTEMD_LOG_LEVEL = "debug";
+      #"systemd-resolved".environment.SYSTEMD_LOG_LEVEL = "debug";
     };
 
     programs.mtr.enable = true;
