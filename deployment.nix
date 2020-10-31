@@ -26,6 +26,8 @@ let
       deployment = {
         targetHost = machine.target.host;
         targetUser = machine.target.user;
+
+        substituteOnDestination = true;
       };
 
       nixpkgs.pkgs = import (nixpkgs name) {
