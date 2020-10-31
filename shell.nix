@@ -5,7 +5,9 @@ let
     (_: pkgs: {
       inherit (import sources.niv {}) niv;
 
-      morph = (unstable.callPackage (sources.morph + "/nix-packaging") {});
+      morph = (unstable.callPackage (sources.morph + "/nix-packaging") {}).overrideAttrs (_: {
+        patches = [ ./patches/morph-evalConfig-machineName.patch ];
+      });
     })
   ];
   pkgs = import sources.nixpkgs {
@@ -19,9 +21,7 @@ in pkgs.mkShell {
     git
     gnutar
     gzip
-    (morph.overrideAttrs (_: {
-        patches = [ ./patches/morph-evalConfig-machineName.patch ];
-      }))
+    morph
     niv
     nix
     openssh
