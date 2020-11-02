@@ -10,8 +10,10 @@
         monospace = [ "Hack 10.5" ];
       };
     };
+    
+    fontDir.enable = true;
+
     enableDefaultFonts = true;
-    enableFontDir = true;
     fonts = with pkgs; [
       hack-font
       noto-fonts

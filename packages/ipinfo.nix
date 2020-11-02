@@ -11,7 +11,7 @@ rustPlatform.buildRustPackage {
     sha256 = "0071d926bbk7fx6n77ig70vifi16xylyhr3j382ryvrhganzgknd";
   };
 
-  cargoSha256 = "01igp9rymmhqfp5ys2cv9pay0w81jd3957bflvvv5ccyic5r103p";
+  cargoSha256 = "06gybhg805s2wq72jk428c4hn7qchk8hx99yh86hf09a496zndh1";
 
   meta = with stdenv.lib; {
     description = "IP address info dumper";

@@ -1,7 +1,8 @@
 { config, lib, pkgs, ... }:
 
 {
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # TODO: change to linuxPackages_latest
+  boot.kernelPackages = pkgs.linuxPackages_5_8;
 
   boot.kernelParams = [
     "quiet"

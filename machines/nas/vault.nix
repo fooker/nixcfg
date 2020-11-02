@@ -18,8 +18,6 @@ let
 in {
   boot.supportedFilesystems = [ "zfs" ];
 
-  systemd.packages = [ pkgs.systemd-cryptsetup-generator ];
-
   systemd.services = listToAttrs
     (map
       (name: nameValuePair "cryptsetup@${ (utils.escapeSystemdPath "vault-${ name }") }" {

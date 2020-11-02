@@ -8,5 +8,5 @@ rustPlatform.buildRustPackage rec {
     ref = "master";
   };
 
-  cargoSha256 = "1mp7hzxi1dx2mirhb1bbi5maxyz5azvdd1xi9sr1z3ap4gpqjpgm";
+  cargoSha256 = "1hakklx7yjkcmmlig5whdhz9xx7lic69mw5n3xlqk7wx3fwaby5x";
 }
