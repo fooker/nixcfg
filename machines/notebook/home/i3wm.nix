@@ -218,7 +218,7 @@ in {
           {
             workspaceButtons = false;
 
-            statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ${i3status-rust-config}";
+            statusCommand = "${pkgs.master.i3status-rust}/bin/i3status-rs ${i3status-rust-config}";
             
             trayOutput = "*";
 

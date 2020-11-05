@@ -7,6 +7,7 @@ let
     (sources."nixpkgs-${name}" or sources.nixpkgs);
 
   nixpkgs-unstable = sources.nixpkgs-unstable;
+  nixpkgs-master = sources.nixpkgs-master;
 
   mkMachine = name: { config, lib, ... }: 
     let
@@ -38,6 +39,13 @@ let
             /* Make nixpkgs-unstable available as subtree
             */
             unstable = import nixpkgs-unstable {
+              config = config.nixpkgs.config;
+              system = machine.system;
+            };
+
+            /* Make nixpkgs-master available as subtree
+            */
+            master = import nixpkgs-master {
               config = config.nixpkgs.config;
               system = machine.system;
             };
