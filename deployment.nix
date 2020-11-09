@@ -9,7 +9,7 @@ let
   nixpkgs-unstable = sources.nixpkgs-unstable;
   nixpkgs-master = sources.nixpkgs-master;
 
-  mkMachine = name: { config, lib, ... }: 
+  mkMachine = name: { config, lib, ... }:
     let
       /* The path of the machine
       */

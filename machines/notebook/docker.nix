@@ -5,7 +5,7 @@
     enable = true;
     storageDriver = "btrfs";
 
-    extraOptions = "--debug --iptables=false";
+    extraOptions = "--debug --iptables=False";
 
     autoPrune = {
       enable = true;

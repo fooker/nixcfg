@@ -11,7 +11,6 @@ in {
     ./docker.nix
     ./fonts.nix
     ./ate.nix
-    ./docker.nix
     ./postgresql.nix
     ./parsecgaming.nix
     ./opennms.nix
