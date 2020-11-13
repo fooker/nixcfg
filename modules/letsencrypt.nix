@@ -97,8 +97,8 @@ in {
       "acme-update-tsig-secret" = {
         source = toString ../secrets/acme_update.tsig;
         destination = "/var/lib/acme/update.tsig";
-        owner.user = "root";
-        owner.group = "root";
+        owner.user = "acme";
+        owner.group = "acme";
       };
     };
   };
