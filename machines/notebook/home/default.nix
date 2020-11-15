@@ -50,6 +50,8 @@
     # Development
     jetbrains.idea-ultimate
     jetbrains.clion
+    jetbrains.goland
+    jetbrains.pycharm-professional
     vscodium
     
     # Comm
