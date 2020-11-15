@@ -27,6 +27,21 @@ in {
     };
   };
 
+  firewall.rules = dag: with dag; {
+    inet.filter.input = {
+      jellyfin-ssdp = between ["established"] ["drop"] ''
+        ip saddr 172.23.200.0/24
+        udp dport 1900
+        accept
+      '';
+      jellyfin-disocovery = between ["established"] ["drop"] ''
+        ip saddr 172.23.200.0/24
+        udp dport 7359
+        accept
+      '';
+    };
+  };
+
   backup.paths = [
     "/var/lib/jellyfin"
   ];
