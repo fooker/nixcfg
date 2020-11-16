@@ -1,4 +1,4 @@
-{ pkgs, sources, ... }:
+{ pkgs, ... }:
 
 {
   services.xserver = {
@@ -11,7 +11,6 @@
     xkbVariant = "nodeadkeys";
 
     videoDrivers = [
-      "displaylink"
       "modesetting"
     ];
     useGlamor = true;
