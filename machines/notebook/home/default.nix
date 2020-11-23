@@ -66,6 +66,7 @@
     # Others
     prusa-slicer
     virt-manager
+    steam-run
 
     # Xorg stuff
     xorg.xdriinfo

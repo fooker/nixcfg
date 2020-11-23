@@ -24,15 +24,15 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "morph": {
-        "branch": "master",
+        "branch": "fix-lib-src",
         "description": "NixOS deployment tool",
         "homepage": null,
-        "owner": "DBCDK",
+        "owner": "fooker",
         "repo": "morph",
-        "rev": "c048d6339f18613a1544bc62ff852cb4c6de1042",
-        "sha256": "0yb8prji2nqjsj1aiiqnbqaajbi5l17rg8k78ry7pl3a8sqa3h1x",
+        "rev": "60900a5c4a0f4c66e349f72f08e61ee9a78e832f",
+        "sha256": "1cphxrdpw8x3i3q9gli96vj8kgjqi2669xm8hkh0vic5ann78fbl",
         "type": "tarball",
-        "url": "https://github.com/DBCDK/morph/archive/c048d6339f18613a1544bc62ff852cb4c6de1042.tar.gz",
+        "url": "https://github.com/fooker/morph/archive/60900a5c4a0f4c66e349f72f08e61ee9a78e832f.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "niv": {
@@ -101,10 +101,10 @@
         "homepage": "https://github.com/NixOS/nixpkgs",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "34ad166a830d3ac1541dcce571c52231f2f0865a",
-        "sha256": "1jvi1562x3kq65w642vfimpszv65zbc7c2nv8gakhzcx4n3f47xq",
+        "rev": "2deeb58f49480f468adca6b08291322de4dbce6b",
+        "sha256": "0fx2car6dcd1yz6jjkifcan0amwzhs3170h0r69k0wfwiaadpvjv",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/34ad166a830d3ac1541dcce571c52231f2f0865a.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs/archive/2deeb58f49480f468adca6b08291322de4dbce6b.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs-unstable": {
