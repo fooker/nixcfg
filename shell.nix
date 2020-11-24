@@ -18,14 +18,15 @@ let
 in pkgs.mkShell {
   buildInputs = with pkgs; [
     bash
-    git
+    gitAndTools.git
+    gitAndTools.transcrypt
     gnutar
     gzip
     morph
     niv
     nix
     openssh
-    drone
+    drone-cli
   ];
 }
 

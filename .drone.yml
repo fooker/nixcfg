@@ -1,0 +1,63 @@
+---
+kind: pipeline
+type: exec
+name: build
+
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: build
+    environment:
+      TRANSCRYPT_PASSWORD:
+        from_secret: transcrypt-password
+    commands:
+      - nix-shell shell.nix --command "transcrypt --yes --cipher=aes-256-cbc --password=$TRANSCRYPT_PASSWORD"
+      - nix-shell shell.nix --command "morph build deployment.nix"
+      - nix-shell shell.nix --command "transcrypt --yes --flush-credentials"
+
+---
+kind: pipeline
+type: docker
+name: sync-gh
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: push
+    image: appleboy/drone-git-push
+    settings:
+      branch: master
+      remote_name: git@github.com:fooker/nixcfg.git
+      force: true
+      commit: false
+      ssh_key:
+        from_secret: ssh-key
+    commands:
+      - env
+
+when:
+  branch:
+    - master
+  event:
+    - push
+
+---
+kind: secret
+name: ssh-key
+data: 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
+
+---
+kind: secret
+name: transcrypt-password
+data: yNDfKEnQOCTqJ2iG4g9r1sPrj35Tw4CgVlgJmgWNQbWpgGNh8iyoBs4Zc/Ra9yb9O1h8CNzxFHzRF7hhEjN0RqBgMDE=
+
+---
+kind: signature
+hmac: d8754c843329ba95a161262fa684341c1fe9f06aa59e71eef78b21fc57cd381c
+
+...
