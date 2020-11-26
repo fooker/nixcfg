@@ -54,7 +54,18 @@ in {
 
   services.gvfs.enable = true;
 
-  services.printing.enable = true;
+  services.avahi.enable = true;
+
+  programs.system-config-printer.enable = true;
+  services.printing = {
+    enable = true;
+    drivers = with pkgs; [
+      gutenprint
+      gutenprintBin
+      hplip
+      splix
+    ];
+  };
 
   services.autorandr = {
     enable = true;
