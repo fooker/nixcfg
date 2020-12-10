@@ -25,6 +25,7 @@ in pkgs.mkShell {
     niv
     nix
     openssh
+    drone
   ];
 }
 

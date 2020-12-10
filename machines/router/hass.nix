@@ -24,10 +24,6 @@ args @ { config, lib, pkgs, ... }:
     '';
   };
 
-  nixpkgs.overlays = [ (self: super: {
-
-  }) ];
-
   services.home-assistant = {
     enable = true;
     port = 8123;

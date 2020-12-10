@@ -291,14 +291,6 @@ in {
     };
 
     inet.filter.forward = {
-      established = before ["drop"] ''
-        ct state {
-          established,
-          related
-        }
-        accept
-      '';
-
       uplink = between ["established"] ["drop"] ''
         meta iifname { mngt, priv, guest }
         meta oifname "ppp*"

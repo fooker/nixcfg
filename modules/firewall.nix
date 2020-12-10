@@ -214,6 +214,14 @@ with lib;
         };
 
         inet.filter.forward = {
+          established = before ["drop"] ''
+            ct state {
+              established,
+              related
+            }
+            accept
+          '';
+
           drop = anywhere ''
             log level debug prefix "DROP: filter.forward: "
             counter
@@ -221,6 +229,11 @@ with lib;
           '';
         };
       };
+
+      # Disable loading of iptables even harder
+      boot.extraModprobeConfig = ''
+        install ip_tables ${pkgs.coreutils}/bin/false
+      '';
 
       assertions = 
         let

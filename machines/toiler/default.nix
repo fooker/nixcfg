@@ -11,8 +11,9 @@ in {
     ./mopidy.nix
     ./spotifyd.nix
     ./user.nix
-    ./libvirt.nix
-    ./concourse.nix
+    # ./libvirt.nix
+    ./gitea.nix
+    ./drone.nix
   ];
 
   server.enable = true;

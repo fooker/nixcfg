@@ -12,5 +12,6 @@
     ./letsencrypt.nix
     ./reverse-proxy.nix
     ./firewall.nix
+    ./docker.nix
   ];
 }
