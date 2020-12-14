@@ -95,4 +95,6 @@
     ./vim.nix
     ./zsh.nix
   ];
+
+  home.stateVersion = "21.03";
 }
