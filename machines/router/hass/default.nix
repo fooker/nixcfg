@@ -91,15 +91,4 @@ in {
       payload_not_available = "OFFLINE";
     }
   ];
-
-  # media_player = [
-  #   {
-  #     platform = "denon";
-
-  #     name = "Amp";
-  #     host = "172.23.200.133";
-
-  #     #show_all_sources = false;
-  #   }
-  # ];
 }

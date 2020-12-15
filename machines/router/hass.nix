@@ -32,17 +32,9 @@ args @ { config, lib, pkgs, ... }:
 
     autoExtraComponents = true;
 
-    package = pkgs.unstable.home-assistant.override {
-      # Disable tests for spotipy as test library is missing
-      packageOverrides = self: super: {
-        spotipy = super.spotipy.overrideAttrs (_: {
-          doCkeck = false;
-          doInstallCheck = false;
-        });
-      };
-
+    package = pkgs.home-assistant.override {
       extraPackages = ps: with ps; [
-        # Reauired vor Denon AVR integration
+        # Required vor Denon AVR integration
         pythonPackages.denonavr
 
         # Required for zeroconf
