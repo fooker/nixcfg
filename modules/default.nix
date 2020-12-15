@@ -13,5 +13,6 @@
     ./reverse-proxy.nix
     ./firewall.nix
     ./docker.nix
+    ./builder.nix
   ];
 }

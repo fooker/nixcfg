@@ -6,8 +6,8 @@ in {
   imports = [
     ./hardware.nix
     ./network.nix
-    ./builder.nix
   ];
 
   server.enable = true;
+  builder.enable = true;
 }

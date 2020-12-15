@@ -11,12 +11,12 @@ in {
     ./mopidy.nix
     ./spotifyd.nix
     ./user.nix
-    # ./libvirt.nix
     ./gitea.nix
     ./drone.nix
   ];
 
   server.enable = true;
+  builder.enable = true;
 
   backup = {
     enable = true;

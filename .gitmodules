@@ -1,3 +1,0 @@
-[submodule "machines/builder/qemu"]
-	path = machines/builder/qemu
-	url = https://github.com/cleverca22/nixos-configs
