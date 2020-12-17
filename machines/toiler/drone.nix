@@ -2,6 +2,9 @@
 
 let
   secrets = import ./secrets.nix;
+
+  drone-runner-docker = pkgs.callPackage ../../packages/drone-runner-docker.nix {};
+  drone-runner-exec = pkgs.callPackage ../../packages/drone-runner-exec.nix {};
 in {
   systemd.services.drone-server = {
     wantedBy = [ "multi-user.target" ];
@@ -24,7 +27,11 @@ in {
     };
   };
 
-  systemd.services.drone-agent = {
+  virtualisation.docker = {
+    enable = true;
+  };
+
+  systemd.services.drone-runner-docker = {
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Environment = [
@@ -32,20 +39,66 @@ in {
         "DRONE_RPC_PROTO=https"
         "DRONE_RPC_SECRET=${secrets.drone.rpc.secret}"
         "DRONE_RUNNER_CAPACITY=10"
-        "DRONE_RUNNER_NAME=${config.networking.hostName}"
+        "DRONE_RUNNER_NAME=${config.networking.hostName}-docker"
       ];
-      ExecStart = "${pkgs.drone}/bin/drone-agent";
-      User = "drone-agent";
-      Group = "drone-agent";
+      ExecStart = "${drone-runner-docker}/bin/drone-runner-docker";
+      User = "drone-runner";
+      Group = "drone-runner";
       SupplementaryGroups = [ "docker" ];
-      DynamicUser = true;
     };
   };
 
-  virtualisation.docker = {
-    enable = true;
+  systemd.services.drone-runner-exec = {
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Environment = [
+        "DRONE_RPC_HOST=ci.home.open-desk.net"
+        "DRONE_RPC_PROTO=https"
+        "DRONE_RPC_SECRET=${secrets.drone.rpc.secret}"
+        "DRONE_RUNNER_CAPACITY=10"
+        "DRONE_RUNNER_NAME=${config.networking.hostName}-exec"
+      ];
+      ExecStart = "${drone-runner-exec}/bin/drone-runner-exec";
+      User = "drone-runner";
+      Group = "drone-runner";
+      BindPaths = [
+        "/nix/var/nix/daemon-socket/socket"
+      ];
+      BindReadOnlyPaths = [
+        "/usr/bin/env"
+        "/bin/sh"
+        "/etc/passwd"
+        "/etc/group"
+        "/etc/resolv.conf"
+        "/nix/var/nix/profiles/system/etc/nix:/etc/nix"
+        "${config.environment.etc."ssl/certs/ca-certificates.crt".source}:/etc/ssl/certs/ca-certificates.crt"
+        "${config.environment.etc."ssh/ssh_known_hosts".source}:/etc/ssh/ssh_known_hosts"
+        "/etc/machine-id"
+        "/nix/"
+      ];
+    };
+    
+    path = with pkgs; [
+      git
+      gnutar
+      bash
+      nixUnstable
+      gzip
+    ];
+
+    confinement = {
+      enable = true;
+      packages = with pkgs; [
+        git
+        gnutar
+        bash
+        nixUnstable
+        gzip
+      ];
+    };
   };
-  environment.systemPackages = [ pkgs.drone ];
+
+  environment.systemPackages = [ pkgs.drone-cli ];
 
   services.postgresql = {
     ensureDatabases = [ "drone" ];
@@ -64,6 +117,12 @@ in {
       group = "drone";
     };
     groups."drone" = {};
+
+    users."drone-runner" = {
+      isSystemUser = true;
+      group = "drone-runner";
+    };
+    groups."drone-runner" = {};
   };
 
   reverse-proxy = {
