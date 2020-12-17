@@ -1,8 +1,8 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, modulesPath, ... }:
 
 {
   imports = [
-    <nixpkgs/nixos/modules/profiles/qemu-guest.nix>
+    "${modulesPath}/profiles/qemu-guest.nix"
   ];
 
   hardware.enableRedistributableFirmware = true;
