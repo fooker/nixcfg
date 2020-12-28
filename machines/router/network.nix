@@ -299,7 +299,7 @@ in {
 
       priv2guest = between ["established"] ["drop"] ''
         meta iifname priv
-        meta oifname guest
+        meta oifname { guest, iot }
         accept
       '';
 
