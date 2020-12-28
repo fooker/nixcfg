@@ -25,6 +25,8 @@ in {
     broker = "127.0.0.1";
     port = 1883;
     client_id = "hass";
+    discovery = true;
+    discovery_prefix = "homeassistant";
   };
 
   esphome = {};
