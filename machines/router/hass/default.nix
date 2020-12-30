@@ -58,24 +58,6 @@ in {
   switch = [
     {
       platform = "mqtt";
-
-      name = "Projector";
-      icon = "mdi:projector";
-
-      command_topic = "frisch/home/esper/cc690b/projector/set";
-      payload_on = "1";
-      payload_off = "0";
-
-      state_topic = "frisch/home/esper/cc690b/projector/target";
-      state_on = "1";
-      state_off = "0";
-
-      availability_topic = "frisch/home/esper/cc690b/status";
-      payload_available = "ONLINE";
-      payload_not_available = "OFFLINE";
-    }
-    {
-      platform = "mqtt";
       
       name = "Screen";
       icon = "mdi:projector-screen";
