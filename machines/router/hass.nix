@@ -32,15 +32,28 @@ args @ { config, lib, pkgs, ... }:
 
     autoExtraComponents = true;
 
-    package = pkgs.home-assistant.override {
+    package = (pkgs.home-assistant
+    .override {
       extraPackages = ps: with ps; [
-        # Required vor Denon AVR integration
+        # # Required vor Denon AVR integration
         pythonPackages.denonavr
 
         # Required for zeroconf
         pythonPackages.getmac
+
+        # Required for pulseaudio
+        pythonPackages.pulsectl
       ];
-    };
+    })
+    .overrideAttrs (old: {
+      patches = old.patches ++ [ ../../patches/home-assistant-pr44371.patch ];
+      
+      doCheck = false;
+      doInstallCheck = false;
+
+      dontStrip = true;
+    })
+    ;
   };
 
   letsencrypt.production = true;
