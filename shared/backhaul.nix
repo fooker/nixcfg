@@ -2,7 +2,7 @@
 
 with lib;
 {
-  config.backhaul.domains = {
+  backhaul.domains = {
     hive = {
       ospf = {
         instanceId = 23;
@@ -15,17 +15,11 @@ with lib;
       exports.ipv6 = [
         "fd4c:8f0:aff2::/64"
       ];
-      filters.ipv4 = [
-        "192.168.33.1/32"
-        "192.168.33.2/32"
-        "192.168.33.3/32"
-      ];
-      filters.ipv6 = [
-        "fd4c:8f0:aff2::1/128"
-        "fd4c:8f0:aff2::2/128"
-        "fd4c:8f0:aff2::3/128"
-      ];
+
+      filters.ipv4 = mapAttrsToList (name: node: "${node.address.ipv4}/32") config.hive.nodes;
+      filters.ipv6 = mapAttrsToList (name: node: "${node.address.ipv6}/128") config.hive.nodes;
     };
+
     dn42 = {
       bgp = {
         as = 4242421271;

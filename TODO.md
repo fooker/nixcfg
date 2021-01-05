@@ -1,6 +1,19 @@
 # General
 [ ] Firewall with nftables
 [ ] Roll out `services.openssh.knownHosts` for all hosts on all hosts
+[ ] Declarative config for syncthing (see https://git.darmstadt.ccc.de/maralorn/nixos-config/-/blob/master/common/common.nix)
+[ ] Open firewall ports for syncthing
+[ ] Log rejected routes in backhaul
+[ ] Move around some services
+    * home-assistant + mosquitto on toiler (ACLs on router)
+    * gitea on brueckenkopf
+
+# Hive
+[ ] Deploy monitoring user for mariadb
+[ ] Declarative config of glusterfs
+
+# NAS
+[ ] Get rid of NFS (or make it secure)
 
 # Scanner
 [ ] Activate Timer

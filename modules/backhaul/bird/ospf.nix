@@ -1,7 +1,5 @@
 { config, lib, tools, ... }:
 
-# TODO: Log rejected routes
-
 with lib;
 
 domain: peers:

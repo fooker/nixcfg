@@ -98,7 +98,7 @@ with lib;
         mkdir /tmp/backup-$archiveName
         cd /tmp/backup-$archiveName
 
-        ${concatMapStringsSep "\n" (command: "${escapeShellArgs command}") config.backup.commands}
+        ${concatMapStringsSep "\n" (command: "${command}") config.backup.commands}
       '';
     };
 

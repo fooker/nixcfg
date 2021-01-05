@@ -56,7 +56,6 @@
 
   services.rpcbind.enable = true;
 
-  # TODO: Is this complete?
   firewall.rules = dag: with dag; {
     inet.filter.input = {
       nfs-tcp = between ["established"] ["drop"] ''

@@ -18,16 +18,11 @@
     networks = {
       "30-ext" = {
         name = "ext";
-        # DHCP = "ipv4";
         address = [
           "192.168.42.2/24"
         ];
         gateway = [ "192.168.42.1" ];
         dns = [ "1.0.0.1" "1.1.1.1" ];
-        # domains = [
-        #   "home.open-desk.net"
-        #   "priv.home.open-desk.net"
-        # ];
       };
     };
   };

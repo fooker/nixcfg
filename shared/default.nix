@@ -4,5 +4,6 @@ with lib;
 {
   imports = [
     ./backhaul.nix
+    ./hive.nix
   ];
 }

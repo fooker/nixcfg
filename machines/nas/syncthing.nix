@@ -1,7 +1,5 @@
 { config, lib, pkgs, ... }:
 
-# TODO: Open firewall
-
 with lib;
 let
   secrets = import ./secrets.nix;
