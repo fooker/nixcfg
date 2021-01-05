@@ -1,8 +1,5 @@
 { config, lib, pkgs, ... }:
 
-# TODO: Make vx vlan config not so special
-# TODO: Make vxlan group address a real hex value...
-
 with lib;
 
 let
@@ -136,14 +133,6 @@ in {
         };
       };
 
-      "15-vx" = {
-        name = "vx";
-        vxlan = (map (name: "${name}-vxlan") (attrNames networks));
-        networkConfig = {
-          LinkLocalAddressing = "ipv6";
-        };
-      };
-
       "40-uplink" = {
         name = "ppp0";
         networkConfig = {
@@ -183,21 +172,6 @@ in {
         };
       };
 
-      "25-${name}-vxlan" = {
-        netdevConfig = {
-          Name = "${name}-vxlan";
-          Kind = "vxlan";
-        };
-
-        extraConfig = ''
-          [VXLAN]
-          VNI = ${toString config.vlan}
-          Group = ff02::42:${toString config.vlan}
-          DestinationPort = 8472
-          MacLearning = true
-        '';
-      };
-    
       "30-${name}" = {
         netdevConfig = {
           Name = "${name}";
@@ -209,14 +183,6 @@ in {
     networks = {
       "20-${name}-vlan" = {
         name = "${name}-vlan";
-        bridge = [ "${name}" ];
-        networkConfig = {
-          LinkLocalAddressing = "no";
-        };
-      };
-
-      "25-${name}-vxlan" = {
-        name = "${name}-vxlan";
         bridge = [ "${name}" ];
         networkConfig = {
           LinkLocalAddressing = "no";
@@ -329,11 +295,6 @@ in {
         udp sport dhcpv6-server
         udp dport dhcpv6-client
         accept
-      '';
-
-      vx = between ["established"] ["drop"] ''
-        meta iifname mngt
-        udp dport vxlan
       '';
     };
   };
