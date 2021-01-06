@@ -35,6 +35,7 @@ in {
       "dialout"
       "docker"
       "wireshark"
+      "libvirtd"
     ];
   };
 }

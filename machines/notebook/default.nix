@@ -17,6 +17,7 @@ in {
     ./xserver.nix
     ./backhaul.nix
     ./mounts.nix
+    ./libvirt.nix
   ];
 
   nixpkgs.pkgs.overlays = [ sources.nixpkgs-mozilla ];
