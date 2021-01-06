@@ -2,6 +2,7 @@
 
 {
   boot.preset = "grub";
+  boot.device = "/dev/sda";
 
   hardware.enableRedistributableFirmware = true;
 
