@@ -30,8 +30,18 @@
   hardware.opengl = {
     enable = true;
     driSupport32Bit = true;
+
     extraPackages = with pkgs; [
       intel-media-driver
+      vaapiIntel
+      vaapiVdpau
+      libvdpau-va-gl
+    ];
+
+    extraPackages32 = with pkgs.pkgsi686Linux; [
+      vaapiIntel
+      vaapiVdpau
+      libvdpau-va-gl
     ];
   };
 
@@ -129,22 +139,5 @@
 
   services.throttled = {
     enable = true;
-  };
-
-  services.thinkfan = {
-    enable = true;
-    sensors = ''
-      hwmon /sys/devices/platform/thinkpad_hwmon/hwmon/hwmon3/temp1_input
-      hwmon /sys/devices/platform/thinkpad_hwmon/hwmon/hwmon3/temp3_input
-      hwmon /sys/devices/platform/thinkpad_hwmon/hwmon/hwmon3/temp5_input
-      hwmon /sys/devices/platform/thinkpad_hwmon/hwmon/hwmon3/temp6_input
-      hwmon /sys/devices/platform/thinkpad_hwmon/hwmon/hwmon3/temp7_input
-
-      hwmon /sys/devices/platform/coretemp.0/hwmon/hwmon5/temp1_input
-      hwmon /sys/devices/platform/coretemp.0/hwmon/hwmon5/temp2_input
-      hwmon /sys/devices/platform/coretemp.0/hwmon/hwmon5/temp3_input
-      hwmon /sys/devices/platform/coretemp.0/hwmon/hwmon5/temp4_input
-      hwmon /sys/devices/platform/coretemp.0/hwmon/hwmon5/temp5_input
-    '';
   };
 }
