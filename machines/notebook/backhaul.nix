@@ -14,15 +14,17 @@ in {
     };
 
     peers = {
-      "znorth" = {
+      "zitadelle-north" = {
+        netdev = "peer.x.znorth";
+
         local.port = null;
-        local.privkey = secrets.backhaul.peers."znorth".privkey;
+        local.privkey = secrets.backhaul.peers."zitadelle-north".privkey;
 
         remote.host = "north.zitadelle.dev.open-desk.net";
         remote.port = 23239;
         remote.pubkey = "2ZBSeB/L6FFuThB91uL0R1UCkUmJiIz7SAHXOGnxIng=";
 
-        transport = {
+        transfer = {
           ipv4.addr = "192.168.67.255";
           ipv4.peer = "192.168.67.254";
 
@@ -37,15 +39,17 @@ in {
         };
       };
 
-      "zsouth" = {
+      "zitadelle-south" = {
+        netdev = "peer.x.zsouth";
+
         local.port = null;
-        local.privkey = secrets.backhaul.peers."zsouth".privkey;
+        local.privkey = secrets.backhaul.peers."zitadelle-south".privkey;
 
         remote.host = "south.zitadelle.dev.open-desk.net";
         remote.port = 23239;
         remote.pubkey = "2PoSn8qP90dQm/5Y9t93KWaRyWK+QP/ZgIZ6XFrF+gs=";
 
-        transport = {
+        transfer = {
           ipv4.addr = "192.168.67.253";
           ipv4.peer = "192.168.67.252";
 

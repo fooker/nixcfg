@@ -12,14 +12,14 @@ domain: peers:
 
         in ''
           protocol bgp ${domain.name}_bgp_${name}_4 from ${domain.name}_bgp_4 {
-            neighbor ${peer.transport.ipv4.peer} as ${as};
+            neighbor ${peer.transfer.ipv4.peer} as ${as};
           }
           protocol bgp ${domain.name}_bgp_${name}_6 from ${domain.name}_bgp_6 {
-            neighbor ${peer.transport.ipv4.peer} as ${as};
+            neighbor ${peer.transfer.ipv4.peer} as ${as};
             interface "${peer.netdev}";
           }
         '')
-      (traceVal peers);
+      peers;
     
     ipv4 = tools.ipinfo domain.ipv4;
     ipv6 = tools.ipinfo domain.ipv6;

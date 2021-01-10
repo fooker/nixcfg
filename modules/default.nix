@@ -14,5 +14,6 @@
     ./firewall.nix
     ./docker.nix
     ./builder.nix
+    ./hive/default.nix
   ];
 }

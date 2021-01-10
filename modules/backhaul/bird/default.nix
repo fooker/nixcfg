@@ -171,7 +171,7 @@ in mkIf (domains != []) {
         mkPeer = peer: concatLists [
           (mkProto peer "ospf" ''
             meta iifname "${peer.netdev}"
-            ip protocol OSPFIGP
+            meta l4proto OSPFIGP
             accept
           '')
           (mkProto peer "babel" ''

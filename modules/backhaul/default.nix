@@ -162,7 +162,8 @@ with lib;
 
           remote.host = mkOption {
             description = "Remote host";
-            type = types.str;
+            type = types.nullOr types.str;
+            default = null;
           };
 
           remote.port = mkOption {
@@ -175,22 +176,22 @@ with lib;
             type = types.str;
           };
 
-          transport.ipv4.addr = mkOption {
+          transfer.ipv4.addr = mkOption {
             description = "Local IPv4 address";
             type = types.str;
           };
 
-          transport.ipv4.peer = mkOption {
+          transfer.ipv4.peer = mkOption {
             description = "Remote IPv4 address";
             type = types.str;
           };
 
-          transport.ipv6.addr = mkOption {
+          transfer.ipv6.addr = mkOption {
             description = "Local IPv6 address";
             type = types.str;
           };
 
-          transport.ipv6.peer = mkOption {
+          transfer.ipv6.peer = mkOption {
             description = "Remote IPv6 address";
             type = types.str;
           };
@@ -257,7 +258,7 @@ with lib;
         };
         wireguardPeers = [{
           wireguardPeerConfig = {
-            Endpoint = "${cfg.remote.host}:${toString cfg.remote.port}";
+            Endpoint = mkIf (cfg.remote.host != null) "${cfg.remote.host}:${toString cfg.remote.port}";
             AllowedIPs = "0.0.0.0/0, ::/0";
             PublicKey = "${cfg.remote.pubkey}";
             PersistentKeepalive = 25;
@@ -278,15 +279,15 @@ with lib;
         addresses = [
           { 
             addressConfig = {
-              Address = "${cfg.transport.ipv4.addr}/32";
-              Peer = "${cfg.transport.ipv4.peer}/32";
+              Address = "${cfg.transfer.ipv4.addr}/32";
+              Peer = "${cfg.transfer.ipv4.peer}/32";
               Scope = "link";
             };
           }
           {
             addressConfig = {
-              Address = "${cfg.transport.ipv6.addr}/128";
-              Peer = "${cfg.transport.ipv6.peer}/128";
+              Address = "${cfg.transfer.ipv6.addr}/128";
+              Peer = "${cfg.transfer.ipv6.peer}/128";
               Scope = "link";
             };
           }

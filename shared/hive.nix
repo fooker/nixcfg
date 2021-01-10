@@ -3,12 +3,12 @@
 with lib;
 {
   hive.nodes = {
-    "north-zitadelle" = {
+    "zitadelle-north" = {
       address.ipv4 = "192.168.33.1";
       address.ipv6 = "fd4c:8f0:aff2::1";
     };
 
-    "south-zitadelle" = {
+    "zitadelle-south" = {
       address.ipv4 = "192.168.33.2";
       address.ipv6 = "fd4c:8f0:aff2::2";
     };

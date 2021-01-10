@@ -1,0 +1,24 @@
+$ORIGIN frisch.cloud.
+$TTL 3600
+
+@	SOA	ns.inwx.de. hostmaster.inwx.de. (
+		2019121514
+		10800
+		3600
+		604800
+		3600 )
+
+	NS	ns.inwx.de.
+	NS	ns2.inwx.de.
+	NS	ns3.inwx.eu.
+
+	MX	0 mail.svc.open-desk.net.
+
+	A	37.120.172.177
+	A	37.120.172.185
+	AAAA	2a03:4000:6:701d::
+	AAAA	2a03:4000:6:701e::
+
+dyn	NS	ns.inwx.de.
+dyn	NS	ns2.inwx.de.
+dyn	NS	ns3.inwx.eu.

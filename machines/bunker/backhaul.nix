@@ -4,14 +4,17 @@ let
   secrets = import ./secrets.nix;
 in {
   backhaul = {
-    routerId = "1.2.3.4";
+    routerId = "37.120.161.15";
 
     domains = {
       "dn42" = {
-        netdev = "priv";
+        ipv4 = "172.23.200.3/32";
+        ipv6 = "fd79:300d:6056::3/128";
+      };
 
-        ipv4 = "172.23.200.129/25";
-        ipv6 = "fd79:300d:6056:100::0/64";
+      "hive" = {
+        ipv4 = "192.168.33.3/32";
+        ipv6 = "fd4c:8f0:aff2::3/128";
       };
     };
 
@@ -19,16 +22,16 @@ in {
       "zitadelle-north" = {
         netdev = "peer.x.znorth";
 
-        local.port = null;
+        local.port = 23232;
         local.privkey = secrets.backhaul.peers."zitadelle-north".privkey;
 
         remote.host = "north.zitadelle.dev.open-desk.net";
-        remote.port = 23230;
-        remote.pubkey = "T9YqMKM8Jp+sFvwJN5Y2MV2aWQdIVJ7WhEsKMm9NUmI=";
+        remote.port = 23232;
+        remote.pubkey = "RMqnHRdIdLU8sfeh/8Rb2aenclhYjyFwlCGcKkL28gw=";
 
         transfer = {
-          ipv4.addr = "192.168.67.7";
-          ipv4.peer = "192.168.67.6";
+          ipv4.addr = "192.168.67.5";
+          ipv4.peer = "192.168.67.4";
 
           ipv6.addr = "fe80::2";
           ipv6.peer = "fe80::1";
@@ -38,22 +41,25 @@ in {
           "dn42" = {
             babel = {};
           };
+          "hive" = {
+            ospf = {};
+          };
         };
       };
 
       "zitadelle-south" = {
         netdev = "peer.x.zsouth";
 
-        local.port = null;
+        local.port = 23233;
         local.privkey = secrets.backhaul.peers."zitadelle-south".privkey;
 
         remote.host = "south.zitadelle.dev.open-desk.net";
-        remote.port = 23230;
-        remote.pubkey = "nLwhi0ikvoZ6kze+m+CP5wP0hsP4NgigHMMMiGrXung=";
+        remote.port = 23233;
+        remote.pubkey = "8SFQts6atZ4GKLuEFKYuwqjKFqkx1UzVCk74iB9htG8=";
 
         transfer = {
-          ipv4.addr = "192.168.67.9";
-          ipv4.peer = "192.168.67.8";
+          ipv4.addr = "192.168.67.3";
+          ipv4.peer = "192.168.67.2";
 
           ipv6.addr = "fe80::2";
           ipv6.peer = "fe80::1";
@@ -62,6 +68,9 @@ in {
         domains = {
           "dn42" = {
             babel = {};
+          };
+          "hive" = {
+            ospf = {};
           };
         };
       };

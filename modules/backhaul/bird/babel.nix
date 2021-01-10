@@ -10,8 +10,8 @@ domain: peers:
           type wired;
           check link on;
 
-          next hop ipv4 ${peer.transport.ipv4.addr };
-          next hop ipv6 ${peer.transport.ipv6.addr };
+          next hop ipv4 ${peer.transfer.ipv4.addr };
+          next hop ipv6 ${peer.transfer.ipv6.addr };
         };
       '')
       peers;
