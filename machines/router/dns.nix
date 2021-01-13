@@ -12,7 +12,7 @@ let
     "203.0.113.1"
   ];
 in {
-  /* Let systemd-resolved no listen on 127.0.0.53:53 to avoid conflicts with
+  /* Let systemd-resolved not listen on 127.0.0.53:53 to avoid conflicts with
      kresd listening on wildcard.
   */
   services.resolved.extraConfig = ''

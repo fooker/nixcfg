@@ -1,25 +1,25 @@
 let
   sources = import ./nix/sources.nix;
 
+  pkgs = import sources.nixpkgs {
+    config = {};
+  };
+
   /* Find the nixpkgs path for the machine with the given name
   */
-  nixpkgs = name:
+  findNixpkgs = name:
     (sources."nixpkgs-${name}" or sources.nixpkgs);
 
   nixpkgs-unstable = sources.nixpkgs-unstable;
   nixpkgs-master = sources.nixpkgs-master;
 
-  mkMachine = name: { config, lib, ... }:
+  mkMachine = path:
     let
-      /* The path of the machine
-      */
-      path = "${toString ./.}/machines/${name}";
-
       /* Read the machine configuration from machine.nix in the machines directory
       */
       machine = import "${path}/machine.nix";
 
-    in {
+    in { config, lib, name, ... }: {
       _module.args = {
         inherit machine path sources;
       };
@@ -31,7 +31,7 @@ let
         substituteOnDestination = true;
       };
 
-      nixpkgs.pkgs = import (nixpkgs name) {
+      nixpkgs.pkgs = import (findNixpkgs name) {
         config = {
           allowUnfree = true;
 
@@ -73,15 +73,32 @@ let
 
       system.stateVersion = machine.stateVersion;
     };
+
+  machines = name:
+    with pkgs.lib;
+    let
+      # Path of a (potential) machine
+      path = "${toString ./machines}/${concatStringsSep "/" name}";
+    in
+      # Machines must have a machine.nix file
+      if (builtins.pathExists "${path}/machine.nix" )
+      then {
+        name = "${concatStringsSep "-" (name)}"; # Build the name of the machine
+        value = mkMachine path; # Build the machine config
+      }
+      else flatten
+        (mapAttrsToList
+          (entry: type:
+            # Filter for entries which are sub-directories and recurse into sub-directory while append sub-directory name to machine name
+            if type == "directory"
+              then machines (name ++ [entry]) 
+              else [])
+          (builtins.readDir path)); # Read entries in path
+
 in
   {
     network = {
-      pkgs = import sources.nixpkgs {
-        config = {};
-      };
-
-      evalConfig = name: (import "${nixpkgs name}/nixos/lib/eval-config.nix");
+      inherit pkgs;
+      evalConfig = name: (import "${findNixpkgs name}/nixos/lib/eval-config.nix");
     };
-  } // (builtins.listToAttrs (builtins.map # Build machine config for each machine in machines directory
-      (name: { name = name; value = mkMachine name; })
-      (builtins.attrNames (builtins.readDir ./machines))))
+  } // (builtins.listToAttrs (machines []))

@@ -1,5 +1,4 @@
 # General
-[ ] Firewall with nftables
 [ ] Roll out `services.openssh.knownHosts` for all hosts on all hosts
 [ ] Declarative config for syncthing (see https://git.darmstadt.ccc.de/maralorn/nixos-config/-/blob/master/common/common.nix)
 [ ] Open firewall ports for syncthing
@@ -9,6 +8,9 @@
     * home-assistant + mosquitto on toiler (ACLs on router)
     * gitea on brueckenkopf
 [ ] Collect backup keys from defined machines
+[ ] Avoid double import of `findNixpkgs name` in deployment.nix
+[ ] Make backhaul.peer.remote a optional submodule
+[ ] Only enable forwarding on specific interfaces (backhaul and router)
 
 # Hive
 [ ] Deploy monitoring user for mariadb

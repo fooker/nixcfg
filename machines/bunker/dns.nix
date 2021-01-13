@@ -5,14 +5,14 @@ with lib;
 let
   mkDynZone = domain: pkgs.writeText "${domain}.zone" ''
     $ORIGIN ${domain}.
-    $TTL 3600
+    $TTL 60
 
     @ SOA	ns.inwx.de. hostmaster.inwx.de. (
-        2019121514
-        10800
-        3600
-        604800
-        3600 )
+        2021011300
+        200
+        300
+        1814400
+        300 )
 
       NS	ns.inwx.de.
       NS	ns2.inwx.de.
@@ -20,6 +20,13 @@ let
   '';
 
 in {
+  /* Let systemd-resolved not listen on 127.0.0.53:53 to avoid conflicts with
+     kresd listening on wildcard.
+  */
+  services.resolved.extraConfig = ''
+    DNSStubListener=no
+  '';
+
   services.knot = {
     enable = true;
 

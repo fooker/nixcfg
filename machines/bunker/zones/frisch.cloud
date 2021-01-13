@@ -18,7 +18,3 @@ $TTL 3600
 	A	37.120.172.185
 	AAAA	2a03:4000:6:701d::
 	AAAA	2a03:4000:6:701e::
-
-dyn	NS	ns.inwx.de.
-dyn	NS	ns2.inwx.de.
-dyn	NS	ns3.inwx.eu.

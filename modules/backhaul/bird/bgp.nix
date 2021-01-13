@@ -10,15 +10,19 @@ domain: peers:
           name = replaceStrings [ "." ] [ "_" ] peer.netdev;
           as = toString (if peer.domains."${domain.name}".bgp.as != null then peer.domains."${domain.name}".bgp.as else domain.bgp.as);
 
-        in ''
-          protocol bgp ${domain.name}_bgp_${name}_4 from ${domain.name}_bgp_4 {
-            neighbor ${peer.transfer.ipv4.peer} as ${as};
-          }
-          protocol bgp ${domain.name}_bgp_${name}_6 from ${domain.name}_bgp_6 {
-            neighbor ${peer.transfer.ipv4.peer} as ${as};
-            interface "${peer.netdev}";
-          }
-        '')
+        in
+          (optionalString (peer.transfer.ipv4 != null) ''
+            protocol bgp ${domain.name}_bgp_${name}_4 from ${domain.name}_bgp_4 {
+              neighbor ${peer.transfer.ipv4.peer} as ${as};
+              interface "${peer.netdev}";
+            }
+          '') +
+          (optionalString (peer.transfer.ipv6 != null) ''
+            protocol bgp ${domain.name}_bgp_${name}_6 from ${domain.name}_bgp_6 {
+              neighbor ${peer.transfer.ipv6.peer} as ${as};
+              interface "${peer.netdev}";
+            }
+          ''))
       peers;
     
     ipv4 = tools.ipinfo domain.ipv4;

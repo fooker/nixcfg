@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, name, ... }:
 
 let
   secrets = import ./secrets.nix;
@@ -13,8 +13,8 @@ in {
       };
 
       "hive" = {
-        ipv4 = "192.168.33.3/32";
-        ipv6 = "fd4c:8f0:aff2::3/128";
+        ipv4 = "${config.hive.self.address.ipv4}/32";
+        ipv6 = "${config.hive.self.address.ipv6}/128";
       };
     };
 

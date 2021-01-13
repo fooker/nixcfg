@@ -176,24 +176,36 @@ with lib;
             type = types.str;
           };
 
-          transfer.ipv4.addr = mkOption {
-            description = "Local IPv4 address";
-            type = types.str;
+          transfer.ipv4 = mkOption {
+            type = types.nullOr (types.submodule ({ ... }: {
+              options = {
+                addr = mkOption {
+                  description = "Local IPv4 address";
+                  type = types.str;
+                };
+
+                peer = mkOption {
+                  description = "Remote IPv4 address";
+                  type = types.str;
+                };
+              };
+            }));
           };
 
-          transfer.ipv4.peer = mkOption {
-            description = "Remote IPv4 address";
-            type = types.str;
-          };
+          transfer.ipv6 = mkOption {
+            type = types.nullOr (types.submodule ({ ... }: {
+              options = {
+                addr = mkOption {
+                  description = "Local IPv6 address";
+                  type = types.str;
+                };
 
-          transfer.ipv6.addr = mkOption {
-            description = "Local IPv6 address";
-            type = types.str;
-          };
-
-          transfer.ipv6.peer = mkOption {
-            description = "Remote IPv6 address";
-            type = types.str;
+                peer = mkOption {
+                  description = "Remote IPv6 address";
+                  type = types.str;
+                };
+              };
+            }));
           };
 
           domains = mkOption {
@@ -276,22 +288,22 @@ with lib;
           LinkLocalAddressing = "no";
           IPv6AcceptRA = false;
         };
-        addresses = [
-          { 
+        addresses = 
+          (optional (cfg.transfer.ipv4 != null) { 
             addressConfig = {
               Address = "${cfg.transfer.ipv4.addr}/32";
               Peer = "${cfg.transfer.ipv4.peer}/32";
               Scope = "link";
             };
-          }
-          {
+          })
+          ++
+          (optional (cfg.transfer.ipv6 != null) {
             addressConfig = {
               Address = "${cfg.transfer.ipv6.addr}/128";
               Peer = "${cfg.transfer.ipv6.peer}/128";
               Scope = "link";
             };
-          }
-        ];
+          });
       };
     };
 
@@ -343,7 +355,23 @@ with lib;
           (attrValues config.backhaul.domains)))
     ]);
 
+    boot.kernel.sysctl = {
+      "net.ipv4.conf.all.forwarding" = 1;
+      "net.ipv6.conf.all.forwarding" = 1;
+    };
+
     firewall.rules = dag: with dag; {
+      inet.filter.input =
+        let
+          mkTunnel = peer: cfg: nameValuePair
+            "backhaul-${peer}-wg"
+            (between ["established"] ["drop"] ''
+              udp dport ${toString cfg.local.port}
+              accept
+            '');
+        in
+          mapAttrs' mkTunnel config.backhaul.peers;
+
       inet.filter.forward =
         let
           /* All domains having at least one peer

@@ -7,6 +7,7 @@ in {
     ./hardware.nix
     ./network.nix
     ./backhaul.nix
+    ../.
   ];
 
   server.enable = true;
