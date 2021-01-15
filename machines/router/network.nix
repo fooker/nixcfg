@@ -237,8 +237,10 @@ in {
   }) networks);
 
   boot.kernel.sysctl = {
-    "net.ipv4.conf.all.forwarding" = 1;
-    "net.ipv6.conf.all.forwarding" = 1;
+    "net.ipv4.conf.all.forwarding" = mkForce true;
+    "net.ipv4.conf.default.forwarding" = mkForce true;
+    "net.ipv6.conf.all.forwarding" = mkForce true;
+    "net.ipv6.conf.default.forwarding" = mkForce true;
   };
 
   firewall.rules = dag: with dag; {

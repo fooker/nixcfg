@@ -356,8 +356,10 @@ with lib;
     ]);
 
     boot.kernel.sysctl = {
-      "net.ipv4.conf.all.forwarding" = 1;
-      "net.ipv6.conf.all.forwarding" = 1;
+      "net.ipv4.conf.all.forwarding" = mkOverride 100 true;
+      "net.ipv4.conf.default.forwarding" = mkOverride 100 true;
+      "net.ipv6.conf.all.forwarding" = mkOverride 100 true;
+      "net.ipv6.conf.default.forwarding" = mkOverride 100 true;
     };
 
     firewall.rules = dag: with dag; {
