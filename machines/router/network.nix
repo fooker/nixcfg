@@ -140,6 +140,8 @@ in {
 
           IPv6AcceptRA = true;
           DHCP = "ipv6";
+
+          IPForward = "yes";
         };
         linkConfig = {
           RequiredForOnline = "routable";
@@ -206,6 +208,8 @@ in {
             "home.open-desk.net"
             "${name}.home.open-desk.net"
           ];
+
+          IPForward = "yes";
         };
 
         # TODO: Search domain = home.open-desk.net
@@ -235,13 +239,6 @@ in {
       };
     };
   }) networks);
-
-  boot.kernel.sysctl = {
-    "net.ipv4.conf.all.forwarding" = mkForce true;
-    "net.ipv4.conf.default.forwarding" = mkForce true;
-    "net.ipv6.conf.all.forwarding" = mkForce true;
-    "net.ipv6.conf.default.forwarding" = mkForce true;
-  };
 
   firewall.rules = dag: with dag; {
     inet.nat.prerouting = {

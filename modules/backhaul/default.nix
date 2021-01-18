@@ -287,6 +287,8 @@ with lib;
 
           LinkLocalAddressing = "no";
           IPv6AcceptRA = false;
+
+          IPForward = "yes";
         };
         addresses = 
           (optional (cfg.transfer.ipv4 != null) { 
@@ -322,6 +324,8 @@ with lib;
         };
         networkConfig = {
           Description = "Domain ${domain.name}";
+          
+          IPForward = "yes";
         };
         addresses = [
           {
@@ -354,13 +358,6 @@ with lib;
             (domain.netdev == null)) # Check if domain has associated local interface
           (attrValues config.backhaul.domains)))
     ]);
-
-    boot.kernel.sysctl = {
-      "net.ipv4.conf.all.forwarding" = mkOverride 100 true;
-      "net.ipv4.conf.default.forwarding" = mkOverride 100 true;
-      "net.ipv6.conf.all.forwarding" = mkOverride 100 true;
-      "net.ipv6.conf.default.forwarding" = mkOverride 100 true;
-    };
 
     firewall.rules = dag: with dag; {
       inet.filter.input =

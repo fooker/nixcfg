@@ -10,7 +10,6 @@
 [ ] Collect backup keys from defined machines
 [ ] Avoid double import of `findNixpkgs name` in deployment.nix
 [ ] Make backhaul.peer.remote a optional submodule
-[ ] Only enable forwarding on specific interfaces (backhaul and router)
 
 # Hive
 [ ] Deploy monitoring user for mariadb
