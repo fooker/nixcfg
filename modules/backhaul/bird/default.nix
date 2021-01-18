@@ -161,7 +161,7 @@ in mkIf (domains != []) {
         mkProto = peer: proto: rule:
           optional
             (any
-              (domain: hasAttr proto domain)
+              (domain: (domain.${proto} or null) != null)
               (attrValues peer.domains))
             (nameValuePair
               "backhaul-${peer.name}-${proto}"

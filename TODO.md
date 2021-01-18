@@ -3,7 +3,6 @@
 [ ] Declarative config for syncthing (see https://git.darmstadt.ccc.de/maralorn/nixos-config/-/blob/master/common/common.nix)
 [ ] Open firewall ports for syncthing
 [ ] Log rejected routes in backhaul
-[ ] Backhaul opens ports for unused protocols in firewall
 [ ] Move around some services
     * home-assistant + mosquitto on toiler (ACLs on router)
     * gitea on brueckenkopf
