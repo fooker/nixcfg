@@ -362,14 +362,16 @@ with lib;
     firewall.rules = dag: with dag; {
       inet.filter.input =
         let
-          mkTunnel = peer: cfg: nameValuePair
-            "backhaul-${peer}-wg"
-            (between ["established"] ["drop"] ''
-              udp dport ${toString cfg.local.port}
-              accept
-            '');
+          mkTunnel = peer: cfg: optional
+            (cfg.local.port != null)
+            (nameValuePair
+              "backhaul-${peer}-wg"
+              (between ["established"] ["drop"] ''
+                udp dport ${toString cfg.local.port}
+                accept
+              ''));
         in
-          mapAttrs' mkTunnel config.backhaul.peers;
+          listToAttrs (concatLists (mapAttrsToList mkTunnel config.backhaul.peers));
 
       inet.filter.forward =
         let
