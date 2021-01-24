@@ -54,7 +54,6 @@ in {
     inet.filter.forward = {
       ppp-clamp = before ["drop"] ''
         meta oifname "ppp*"
-        ip version 4
         tcp flags syn
         tcp option maxseg
         size set rt mtu
