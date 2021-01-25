@@ -32,10 +32,12 @@ args @ { config, lib, pkgs, ... }:
 
     autoExtraComponents = true;
 
-    package = (pkgs.home-assistant
+    package = (pkgs.unstable.home-assistant
     .override {
       extraPackages = ps: with ps; [
-        # # Required vor Denon AVR integration
+        pythonPackages.pyipp
+
+        # Required vor Denon AVR integration
         pythonPackages.denonavr
 
         # Required for zeroconf
@@ -43,6 +45,9 @@ args @ { config, lib, pkgs, ... }:
 
         # Required for pulseaudio
         pythonPackages.pulsectl
+
+        # Required for vacuum
+        pythonPackages.python-miio
       ];
     })
     .overrideAttrs (old: {
