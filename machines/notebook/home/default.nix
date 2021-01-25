@@ -56,6 +56,8 @@
     
     # Comm
     tdesktop
+    signal-desktop
+    ferdi
     thunderbird
     mumble
 
