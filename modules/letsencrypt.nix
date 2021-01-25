@@ -54,7 +54,7 @@ in {
               dir = config.security.acme.certs."${name}".directory;
             in {
               cert = "${dir}/cert.pem";
-              chain = "${dir}/chain.pem";
+              chain = "${dir}/chain.pem"denonavr;
               fullchain = "${dir}/fullchain.pem";
               full = "${dir}/full.pem";
               key = "${dir}/key.pem";
@@ -99,6 +99,7 @@ in {
         destination = "/var/lib/acme/update.tsig";
         owner.user = "acme";
         owner.group = "acme";
+        permissions = "0444";
       };
     };
   };
