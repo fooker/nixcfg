@@ -27,7 +27,7 @@ in {
 
         remote.host = "north.zitadelle.dev.open-desk.net";
         remote.port = 23231;
-        remote.pubkey = "RMqnHRdIdLU8sfeh/8Rb2aenclhYjyFwlCGcKkL28gw=";
+        remote.pubkey = "XNmZSMVWQeC6eR8P/XIfCEPnuaCbNq4d8lTOH+/QTQw=";
 
         transfer = {
           ipv4.addr = "192.168.67.5";
