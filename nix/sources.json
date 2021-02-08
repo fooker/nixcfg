@@ -11,6 +11,12 @@
         "url": "https://github.com/andir/ate/archive/d6e1c1a007f1c9616153e160bcc3ffa5330dac7c.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "blog": {
+        "branch": "master",
+        "repo": "https://git.home.open-desk.net/fooker/blog.git",
+        "rev": "41e9edab467e509719b789c1ce8c11f278232902",
+        "type": "git"
+    },
     "home-manager": {
         "branch": "master",
         "description": "Manage a user environment using Nix",

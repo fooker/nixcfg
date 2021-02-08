@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, sources, ... }:
 
 with lib;
 
@@ -9,6 +9,7 @@ let
     };
     "blog" = {
       domains = [ "open-desk.org" ];
+      root = pkgs.callPackage sources.blog {};
     };
   };
 in {
@@ -33,7 +34,11 @@ in {
         sslCertificate = config.letsencrypt.certs."${name}".path.cert;
         sslCertificateKey = config.letsencrypt.certs."${name}".path.key;
 
-        root = "/srv/http/${name}";
+        root = app.root or "/srv/http/${name}";
+        
+        extraConfig = ''
+          default_type application/octet-stream;
+        '';
       }) apps;
    };
 
