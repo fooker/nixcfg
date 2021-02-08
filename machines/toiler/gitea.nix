@@ -15,7 +15,7 @@ in {
     lfs.enable = true;
 
     httpPort = 4000;
-    httpAddress = "[::1]";
+    httpAddress = "::1";
 
     database = {
       type = "postgres";
@@ -40,7 +40,7 @@ in {
     hosts = {
       "git" = {
         domains = [ "git.home.open-desk.net" ];
-        target = "http://${config.services.gitea.httpAddress}:${toString config.services.gitea.httpPort}";
+        target = "http://[${config.services.gitea.httpAddress}]:${toString config.services.gitea.httpPort}";
       };
     };
   };
