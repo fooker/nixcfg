@@ -1,4 +1,4 @@
-{ pkgs, sources, ... }:
+{ pkgs, ... }:
 
 let
   parsecgamingPkg = pkgs.stdenv.mkDerivation {

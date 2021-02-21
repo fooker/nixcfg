@@ -1,6 +1,8 @@
-{ sources, ... }:
+{ ... }:
 
 let
+  sources = import ../nix/sources.nix;
+
   # Use the unmodified host nixpkgs for all tools
   pkgs = import sources.nixpkgs {
     config = {};

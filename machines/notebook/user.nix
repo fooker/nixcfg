@@ -1,11 +1,11 @@
-{ config, lib, pkgs, sources, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   username = "fooker";
-  home-manager = (import ../../nix/sources.nix).home-manager;
+  sources = import ../../nix/sources.nix;
 in {
   imports = [
-    "${home-manager}/nixos"
+    "${sources.home-manager}/nixos"
   ];
 
   home-manager = {

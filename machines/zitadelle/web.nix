@@ -1,8 +1,9 @@
-{ config, lib, pkgs, sources, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 
 let
+  sources = import ../../nix/sources.nix;
   apps = {
     "box" = {
       domains = [ "box.open-desk.net" ];

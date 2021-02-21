@@ -1,4 +1,4 @@
-{ config, lib, pkgs, sources, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   secrets = import ./secrets.nix;
@@ -19,8 +19,6 @@ in {
     ./mounts.nix
     ./libvirt.nix
   ];
-
-  nixpkgs.pkgs.overlays = [ sources.nixpkgs-mozilla ];
 
   networking.hostName = "ig-11";
 

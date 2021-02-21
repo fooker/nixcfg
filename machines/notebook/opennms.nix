@@ -1,4 +1,4 @@
-{ pkgs, sources, ... }:
+{ pkgs, ... }:
 
 {
   # Hack required to get running nodejs downloaded by maven (who even things this is a god idea?)

@@ -1,6 +1,8 @@
-{ pkgs, sources, ... }:
+{ pkgs,  ... }:
 
-{
+let
+  sources = import ../../nix/sources.nix;
+in {
   nixpkgs.overlays = [
     (self: super: {
       ate = pkgs.callPackage sources.ate {};

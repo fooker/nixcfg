@@ -1,4 +1,4 @@
-{ pkgs, sources, ... }:
+{ pkgs, ... }:
 
 {
   services.postgresql = {

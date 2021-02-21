@@ -1,4 +1,4 @@
-{ pkgs, sources, lib, path, ... }:
+{ pkgs, lib, path, ... }:
 
 {
   nix = {

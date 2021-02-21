@@ -21,7 +21,7 @@ let
 
     in { config, lib, name, ... }: {
       _module.args = {
-        inherit machine path sources;
+        inherit machine path;
       };
 
       deployment = {
