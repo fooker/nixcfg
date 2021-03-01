@@ -50,10 +50,6 @@ let
               system = machine.system;
             };
           };
-
-          overlays = [
-            (import ./lib)
-          ];
         };
 
         system = machine.system;
