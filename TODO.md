@@ -9,6 +9,8 @@
 [ ] Collect backup keys from defined machines
 [ ] Avoid double import of `findNixpkgs name` in deployment.nix
 [ ] Make backhaul.peer.remote a optional submodule
+[ ] Deploy ROA checks for eBGP sessions
+[ ] Use niv for packages like ipinfo, qd and mmv
 
 # Hive
 [ ] Deploy monitoring user for mariadb

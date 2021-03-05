@@ -15,5 +15,6 @@
     ./docker.nix
     ./builder.nix
     ./hive/default.nix
+    ./dns/default.nix
   ];
 }

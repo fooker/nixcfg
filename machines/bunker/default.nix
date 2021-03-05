@@ -7,7 +7,7 @@ in {
     ./hardware.nix
     ./network.nix
     ./backhaul.nix
-    ./dns.nix
+    ./dns/default.nix
     ./syncthing.nix
   ];
 

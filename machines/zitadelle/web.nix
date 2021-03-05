@@ -6,14 +6,32 @@ let
   sources = import ../../nix/sources.nix;
   apps = {
     "box" = {
-      domains = [ "box.open-desk.net" ];
+      domains = [ "box.open-desk.net" "frisch.cloud" "www.frisch.cloud" ];
     };
     "blog" = {
-      domains = [ "open-desk.org" ];
+      domains = [ "open-desk.org" "www.open-desk.org" ];
       root = pkgs.callPackage sources.blog {};
     };
   };
 in {
+  dns.zones = let
+    # All domains that we serve for
+    domains = concatMap
+      (app: app.domains)
+      (attrValues apps);
+  in mkMerge (concatMap
+    (domain: let
+      path = reverseList (splitString "." domain);
+    in [
+      (setAttrByPath path {
+        A = config.hive.self.address.ipv4;
+      })
+      (setAttrByPath path {
+        AAAA = config.hive.self.address.ipv6;
+      })
+    ])
+    domains);
+
    services.nginx = {
       enable = true;
       
