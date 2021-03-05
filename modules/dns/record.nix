@@ -3,6 +3,20 @@
 with lib;
 
 let
+  # Like types.uniq but merge equal definitions
+  # This is used to allow multiple nodes to define equla records even if the record is a singleton
+  equi = elemType: mkOptionType rec {
+    name = "equi";
+    inherit (elemType) description check;
+    merge = mergeEqualOption;
+    emptyValue = elemType.emptyValue;
+    getSubOptions = elemType.getSubOptions;
+    getSubModules = elemType.getSubModules;
+    substSubModules = m: equi (elemType.substSubModules m);
+    functor = (defaultFunctor name) // { wrapped = elemType; };
+  };
+
+  # Builder for record type options
   mkRecordOption = { type, singleton }: mkOption {
     type = if singleton
       then type
@@ -46,7 +60,7 @@ in rec {
     };
 
     data = mkOption {
-      type = types.uniq (types.nonEmptyListOf types.str);
+      type = equi (types.nonEmptyListOf types.str);
       internal = true;
     };
   };
@@ -59,7 +73,7 @@ in rec {
       (types.submodule ({ config, ... }: {
         options = recordOptions // {
           value = mkOption {
-            type = types.uniq type;
+            type = equi type;
             description = "The value of the record";
           };
         };

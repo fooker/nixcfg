@@ -93,6 +93,18 @@ in {
       }) config.letsencrypt.certs;
     };
 
+    dns.zones = let
+      domains = concatMap
+        (cert: cert.domains)
+        (attrValues config.letsencrypt.certs);
+    in mkMerge (map
+      (domain: setAttrByPath (reverseList (splitString "." domain)) {
+        "_acme-challenge" = {
+          CNAME = "${ domain }.acme.dyn.open-desk.net.";
+        };
+      })
+      domains);
+
     deployment.secrets = {
       "acme-update-tsig-secret" = {
         source = toString ../secrets/acme_update.tsig;
