@@ -97,6 +97,10 @@ let
     });
 
 in {
+  imports = [
+    ./host.nix
+  ];
+
   options.dns = {
     zones = mkOption {
       type = zone 0;
@@ -179,7 +183,7 @@ in {
         domainConfig = resolve config.dns.global domain;
 
         # If this domain has a SOA record, we found a new (sub) zone
-        zone' = if elem "SOA" domainConfig.records.defined != null then domain else zone;
+        zone' = if elem "SOA" domainConfig.records.defined then domain else zone;
 
         # If the domain has defined a TTL we use it as default for all records and sub-zones
         ttl' = if domainConfig.ttl != null then domainConfig.ttl else ttl;

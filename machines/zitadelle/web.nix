@@ -17,19 +17,13 @@ in {
   dns.zones = let
     # All domains that we serve for
     domains = concatMap
-      (app: app.domains)
+      (app: map (domain: reverseList (splitString "." domain)) app.domains)
       (attrValues apps);
-  in mkMerge (concatMap
-    (domain: let
-      path = reverseList (splitString "." domain);
-    in [
-      (setAttrByPath path {
-        A = config.hive.self.address.ipv4;
-      })
-      (setAttrByPath path {
-        AAAA = config.hive.self.address.ipv6;
-      })
-    ])
+  in mkMerge (map
+    (domain: setAttrByPath domain {
+      A = config.hive.self.address.ipv4;
+      AAAA = config.hive.self.address.ipv6;
+    })
     domains);
 
    services.nginx = {

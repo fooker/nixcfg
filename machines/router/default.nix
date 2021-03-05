@@ -20,4 +20,17 @@ in {
     enable = true;
     passphrase = secrets.backup.passphrase;
   };
+
+  dns.host = {
+    realm = "home";
+    ipv4 = "172.23.200.129";
+    ipv6 = "fd79:300d:6056:100::0";
+  };
+
+  # Legacy host entry for "basis"
+  dns.zones = {
+    net.open-desk.dev.basis = {
+      CNAME = "basis.ddserver.org";
+    };
+  };
 }

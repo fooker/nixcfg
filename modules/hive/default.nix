@@ -58,6 +58,9 @@ with lib;
   config = mkIf config.hive.enable {
     hive.self = config.hive.nodes."${config.hive.id}";
     hive.others = filterAttrs (_: node: node.id != config.hive.id) config.hive.nodes;
+
+    dns.host.ipv4 = config.hive.self.address.ipv4;
+    dns.host.ipv6 = config.hive.self.address.ipv6;
   };
 
   imports = [

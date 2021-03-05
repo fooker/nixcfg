@@ -43,16 +43,39 @@ with lib;
           "ns3.inwx.de."
         ];
       };
+
+      # Legacy host records
+      dev = {
+        "zitadelle"."bak" = {
+          A = "37.221.196.84";
+        };
+        "brueckenkopf" = {
+          A = "193.174.29.6";
+          AAAA = "2001:638:301:11a3::6";
+        };
+        "fliegerhorst" = {
+          A = "193.34.144.95";
+          AAAA = "2a02:c205:3002:2452::1";
+        };
+        "raketensilo" = {
+          AAAA = "2001:638:301:11a3::64";
+        };
+      };
+
+      # Legacy host records
+      home.dev = {
+        "amp" = {
+          A = "172.23.200.133";
+        };
+        "printer" = {
+          A = "172.23.200.160";
+        };
+      };
     };
 
     org.open-desk = zone // {};
     
-    cloud.frisch = zone // {
-      MX = {
-        preference = 0;
-        exchange = "mail.svc.open-desk.net.";
-      };
-    };
+    cloud.frisch = zone // {};
 
     sh.lab = zone // {};
     
