@@ -30,7 +30,7 @@ in {
   # Legacy host entry for "basis"
   dns.zones = {
     net.open-desk.dev.basis = {
-      CNAME = "basis.ddserver.org";
+      CNAME = "basis.ddserver.org.";
     };
   };
 }

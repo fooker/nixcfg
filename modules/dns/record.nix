@@ -1,9 +1,10 @@
-{ lib, ... }:
+{ lib, ... }@args:
 
 with lib;
+with import ./types.nix args;
 
 let
-  # Like types.uniq but merge equal definitions
+  # Like types.uniq but merges equal definitions
   # This is used to allow multiple nodes to define equla records even if the record is a singleton
   equi = elemType: mkOptionType rec {
     name = "equi";
@@ -15,20 +16,9 @@ let
     substSubModules = m: equi (elemType.substSubModules m);
     functor = (defaultFunctor name) // { wrapped = elemType; };
   };
-
-  # Builder for record type options
-  mkRecordOption = { type, singleton }: mkOption {
-    type = if singleton
-      then type
-      else types.either type (types.listOf type);
-    apply = if singleton
-      then id
-      else toList;
-  };
-
-in rec {
+in {
   # The base options for all record types
-  recordOptions = {
+  options = {
     ttl = mkOption {
       type = types.nullOr (types.ints.between 0 2147483647);
       default = null;
@@ -62,37 +52,6 @@ in rec {
     data = mkOption {
       type = equi (types.nonEmptyListOf types.str);
       internal = true;
-    };
-  };
-
-  mkValueRecord = rtype: { type, singleton ? false }: mkRecordOption {
-    inherit singleton;
-
-    type = types.coercedTo type
-      (value: { inherit value; })
-      (types.submodule ({ config, ... }: {
-        options = recordOptions // {
-          value = mkOption {
-            type = equi type;
-            description = "The value of the record";
-          };
-        };
-        config = {
-          type = rtype;
-          data = [ config.value ];
-        };
-      }));
-  };
-
-  mkModuleRecord = rtype: mod: { singleton ? false }: mkRecordOption {
-    inherit singleton;
-
-    type = types.submodule {
-      imports = [ mod ];
-      options = recordOptions;
-      config = {
-        type = rtype;
-      };
     };
   };
 }

@@ -68,10 +68,9 @@ let
         };
 
         records = mkOption {
-          type = types.submodule ({ config, options, ... }: let
-            records = import ./records { inherit lib; };
-          in {
-            options = records // {
+          type = types.submodule ({ config, options, ... }: {
+            imports = [ ./records ];
+            options = {
               defined = mkOption {
                 type = types.listOf types.str;
                 description = "The list of defined record types";
@@ -132,7 +131,8 @@ in {
 
           records = mkOption {
             type = types.listOf (types.submodule {
-              options = recordOptions // {
+              imports = [ ./record.nix ];
+              options = {
                 domain = mkOption {
                   type = types.str;
                   readOnly = true;
