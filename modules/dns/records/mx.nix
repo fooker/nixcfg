@@ -1,6 +1,7 @@
-{ config, lib, ... }:
+{ config, lib, ext, ... }:
 
 with lib;
+with ext;
 
 {
   options = {
@@ -14,7 +15,7 @@ with lib;
     };
 
     exchange = mkOption {
-      type = types.str;
+      type = types.domain;
       description = ''
         A domain name which specifies a host willing to act as a mail exchange
         for the owner name.

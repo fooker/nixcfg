@@ -4,8 +4,8 @@ with lib;
 
 let
   zones = let
-    mkRecord = {domain, ttl, type, class, data}: concatStringsSep " " ([
-      "${domain}."
+    mkRecord = { domain, ttl, type, class, data }: concatStringsSep " " ([
+      (toString domain)
       (toString ttl)
       class
       type
@@ -13,12 +13,12 @@ let
 
   in map
     (zone: {
-      inherit (zone) domain;
+      inherit (zone) name;
 
       notify = "inwx";
-      acl = [ "inwx_transfer" ] ++ optional (hasPrefix "dyn." zone.domain) "acme_update";
+      acl = [ "inwx_transfer" ] ++ optional ((last zone.name.labels) == "dyn") "acme_update";
 
-      file = pkgs.writeText "${ zone.domain }.zone"
+      file = pkgs.writeText "${ zone.name.toSimpleString }.zone"
         (concatMapStringsSep "\n" mkRecord zone.records);
     })
     config.dns.zoneList;
@@ -38,8 +38,8 @@ in {
 
     # Use stable paths for zone files so there are less config changes to knot
     environment.etc = listToAttrs (map
-      (zone: nameValuePair "knot-zone-${ zone.domain }" {
-        target = "knot/zones/${ zone.domain }.zone";
+      (zone: nameValuePair "knot-zone-${ zone.name.toSimpleString }" {
+        target = "knot/zones/${ zone.name.toSimpleString }.zone";
         source = zone.file;
       }) zones);
 
@@ -83,10 +83,10 @@ in {
 
         zone:
         ${ concatMapStringsSep "\n" (zone: ''
-          - domain: "${ zone.domain }"
+          - domain: "${ zone.name }"
             notify: ${ zone.notify }
             acl: [ ${ concatStringsSep ", " zone.acl } ]
-            file: "/etc/knot/zones/${ zone.domain }.zone"
+            file: "/etc/knot/zones/${ zone.name }.zone"
         '') zones }
       '';
     };

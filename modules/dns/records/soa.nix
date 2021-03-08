@@ -1,11 +1,12 @@
-{ config, lib, ... }:
+{ config, lib, ext, ... }:
 
 with lib;
+with ext;
 
 {
   options = {
     mname = mkOption {
-      type = types.str;
+      type = types.domain;
       default = "ns";
       description = ''
         The domain name of the name server that was the original or primary
@@ -14,7 +15,7 @@ with lib;
     };
 
     rname = mkOption {
-      type = types.str;
+      type = types.domain;
       default = "hostmaster";
       description = ''
         A domain name which specifies the mailbox of the person responsible

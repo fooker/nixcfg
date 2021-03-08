@@ -13,4 +13,10 @@ in {
     user = "backup";
     group = "backup";
   }) secrets.backup.repos;
+
+  dns.zones = {
+    net.open-desk.backup = {
+      CNAME = config.dns.host.domain;
+    };
+  };
 }

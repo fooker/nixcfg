@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ext, pkgs, ... }:
 
 with lib;
 
@@ -17,10 +17,10 @@ in {
   dns.zones = let
     # All domains that we serve for
     domains = concatMap
-      (app: map (domain: reverseList (splitString "." domain)) app.domains)
+      (app: app.domains)
       (attrValues apps);
   in mkMerge (map
-    (domain: setAttrByPath domain {
+    (domain: (ext.domain.absolute domain).mkZone {
       A = config.hive.self.address.ipv4;
       AAAA = config.hive.self.address.ipv6;
     })
@@ -63,7 +63,7 @@ in {
 
    firewall.rules = dag: with dag; {
     inet.filter.input = {
-      reverse-proxy = between ["established"] ["drop"] ''
+      web = between ["established"] ["drop"] ''
         tcp
         dport { 80, 443 }
         accept

@@ -1,57 +1,97 @@
-{ lib, ... }@args:
+{ lib, ext, ... }:
 
 with lib;
-with import ./types.nix args;
+with ext;
 
-let
-  # Like types.uniq but merges equal definitions
-  # This is used to allow multiple nodes to define equla records even if the record is a singleton
-  equi = elemType: mkOptionType rec {
-    name = "equi";
-    inherit (elemType) description check;
-    merge = mergeEqualOption;
-    emptyValue = elemType.emptyValue;
-    getSubOptions = elemType.getSubOptions;
-    getSubModules = elemType.getSubModules;
-    substSubModules = m: equi (elemType.substSubModules m);
-    functor = (defaultFunctor name) // { wrapped = elemType; };
+rec {
+  # Builder for record type options
+  mkRecordOption = { type, singleton }: mkOption {
+    type = if singleton
+      then type
+      else types.either type (types.listOf type);
+    apply = if singleton
+      then id
+      else toList;
   };
-in {
-  # The base options for all record types
-  options = {
-    ttl = mkOption {
-      type = types.nullOr (types.ints.between 0 2147483647);
-      default = null;
-      description = "Time interval (in seconds) that the resource record may be cached";
-    };
 
-    class = lib.mkOption {
-      type = types.enum [
-        # https://www.iana.org/assignments/dns-parameters/#dns-parameters-2
-        "IN" "CH" "HS" "NONE" "ANY"
-      ];
-      default = "IN";
-      description = "The class to use for this record";
-    };
+  # A simple record type containing a single value
+  mkValueRecord = rtype: { type, singleton ? false }: mkRecordOption {
+    inherit singleton;
 
-    type = lib.mkOption {
-      type = types.enum [
-        # https://www.iana.org/assignments/dns-parameters/#dns-parameters-4
-        "A" "NS" "CNAME" "SOA" "MB" "MG" "MR" "NULL" "WKS" "PTR" "HINFO"
-        "MINFO" "MX" "TXT" "RP" "AFSDB" "X25" "ISDN" "RT" "NSAP" "NSAP-PTR"
-        "SIG" "KEY" "PX" "GPOS" "AAAA" "LOC" "EID" "NIMLOC" "SRV" "ATMA"
-        "NAPTR" "KX" "CERT" "DNAME" "SINK" "OPT" "APL" "DS" "SSHFP" "IPSECKEY"
-        "RRSIG" "NSEC" "DNSKEY" "DHCID" "NSEC3" "NSEC3PARAM" "TLSA" "SMIMEA"
-        "HIP" "NINFO" "RKEY" "TALINK" "CDS" "CDNSKEY" "OPENPGPKEY" "CSYNC"
-        "SPF" "UINFO" "UID" "GID" "UNSPEC" "NID" "L32" "L64" "LP" "EUI48"
-        "EUI64" "TKEY" "TSIG" "URI" "CAA" "AVC" "DOA" "TA" "DLV"
-      ];
-      description = "The record type";
-    };
+    type = types.coercedTo type
+      (value: { inherit value; })
+      (types.submodule ({ config, ... }: {
+        imports = [ module ];
+        options = {
+          value = mkOption {
+            type = types.equi type;
+            description = "The value of the record";
+          };
+        };
+        config = {
+          type = rtype;
+          data = [ config.value ];
 
-    data = mkOption {
-      type = equi (types.nonEmptyListOf types.str);
-      internal = true;
+          _module.args = {
+            inherit ext;
+          };
+        };
+      }));
+  };
+
+  # A record type containing whereas the data is defined by a module
+  mkModuleRecord = rtype: mod: { singleton ? false }: mkRecordOption {
+    inherit singleton;
+
+    type = types.submodule {
+      imports = [ module mod ];
+      config = {
+        type = rtype;
+        
+        _module.args = {
+            inherit ext;
+          };
+      };
+    };
+  };
+
+  # The base module for all record types
+  module = {
+    options = {
+      ttl = mkOption {
+        type = types.nullOr (types.ints.between 0 2147483647);
+        default = null;
+        description = "Time interval (in seconds) that the resource record may be cached";
+      };
+
+      class = mkOption {
+        type = types.enum [
+          # https://www.iana.org/assignments/dns-parameters/#dns-parameters-2
+          "IN" "CH" "HS" "NONE" "ANY"
+        ];
+        default = "IN";
+        description = "The class to use for this record";
+      };
+
+      type = mkOption {
+        type = types.enum [
+          # https://www.iana.org/assignments/dns-parameters/#dns-parameters-4
+          "A" "NS" "CNAME" "SOA" "MB" "MG" "MR" "NULL" "WKS" "PTR" "HINFO"
+          "MINFO" "MX" "TXT" "RP" "AFSDB" "X25" "ISDN" "RT" "NSAP" "NSAP-PTR"
+          "SIG" "KEY" "PX" "GPOS" "AAAA" "LOC" "EID" "NIMLOC" "SRV" "ATMA"
+          "NAPTR" "KX" "CERT" "DNAME" "SINK" "OPT" "APL" "DS" "SSHFP" "IPSECKEY"
+          "RRSIG" "NSEC" "DNSKEY" "DHCID" "NSEC3" "NSEC3PARAM" "TLSA" "SMIMEA"
+          "HIP" "NINFO" "RKEY" "TALINK" "CDS" "CDNSKEY" "OPENPGPKEY" "CSYNC"
+          "SPF" "UINFO" "UID" "GID" "UNSPEC" "NID" "L32" "L64" "LP" "EUI48"
+          "EUI64" "TKEY" "TSIG" "URI" "CAA" "AVC" "DOA" "TA" "DLV"
+        ];
+        description = "The record type";
+      };
+
+      data = mkOption {
+        type = types.equi (types.nonEmptyListOf types.str);
+        internal = true;
+      };
     };
   };
 }

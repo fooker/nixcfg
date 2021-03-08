@@ -1,9 +1,11 @@
-{ config, options, lib, pkgs, nodes, ... }:
+{ config, options, lib, ext, pkgs, nodes, ... }@args:
 
 with lib;
-with import ./record.nix { inherit lib; };
+with ext;
 
 let
+  record = (import ./record.nix args);
+
   # Match every name that is all-upercase
   isRecord = name: (builtins.match "[A-Z]+" name) != null;
   
@@ -82,6 +84,8 @@ let
               defined = filter
                 (name: isRecord name && options.${ name }.isDefined)
                 (attrNames config);
+
+              _module.args = { inherit ext record; };
             };
           });
           description = "Records of this zone";
@@ -123,18 +127,18 @@ in {
     zoneList = mkOption {
       type = types.listOf (types.submodule {
         options = {
-          domain = mkOption {
-            type = types.str;
+          name = mkOption {
+            type = types.domain.absolute;
             readOnly = true;
             description = "The domain name of the zone";
           };
 
           records = mkOption {
             type = types.listOf (types.submodule {
-              imports = [ ./record.nix ];
+              imports = [ record.module ];
               options = {
                 domain = mkOption {
-                  type = types.str;
+                  type = types.domain;
                   readOnly = true;
                   description = "The domain name of the record";
                 };
@@ -174,26 +178,20 @@ in {
     # Build the zone list from the zones. This is an list where each element is
     # just the zone name and a list of records in the zone.
     zoneList = let
-      walk = { domain, zone, ttl, ... }: let
-        resolve = set: domain:
-          if domain == []
-          then set
-          else (resolve set (tail domain)).zones.${ head domain };
-
-        domainConfig = resolve config.dns.global domain;
-
+      walk = { domain, zone, ttl, config }: let
         # If this domain has a SOA record, we found a new (sub) zone
-        zone' = if elem "SOA" domainConfig.records.defined then domain else zone;
+        zone' = if elem "SOA" config.records.defined then domain else zone;
 
         # If the domain has defined a TTL we use it as default for all records and sub-zones
-        ttl' = if domainConfig.ttl != null then domainConfig.ttl else ttl;
+        ttl' = if config.ttl != null then config.ttl else ttl;
 
         # Build the resulting record type from a record in a zone
         mkRecord = record: {
-          "${ concatStringsSep "." zone' }" = {
+          zone = zone';
+          record = {
+            inherit domain;
             inherit (record) class type data;
 
-            domain = concatStringsSep "." domain;
             ttl = if record.ttl != null then record.ttl else ttl';
           };
         };
@@ -203,32 +201,40 @@ in {
           (record: if isList record
             then map mkRecord record
             else singleton (mkRecord record))
-          (attrVals domainConfig.records.defined domainConfig.records);
+          (attrVals config.records.defined config.records);
 
         # Recurse into all sub-domain
         next = concatLists (
           mapAttrsToList
             (name: value: walk {
-              domain = [ name ] ++ domain;
+              domain = domain.resolve (ext.domain.relative name);
               zone = zone';
               ttl = ttl';
+              config = value;
             })
-            domainConfig.zones);
+            config.zones);
 
       in curr ++ next;
 
-      # Walk the tree and collect all records grouped by defining zone
-      collected = zipAttrs (walk {
-        domain = [];
-        zone = [];
+      # Walk the tree and collect all records
+      collected = walk {
+        domain = ext.domain.root;
+        zone = null;
         ttl = config.dns.defaultTTL;
-      });
+        config = config.dns.global;
+      };
 
-      # Flatten the collected attrset to a list with en entry for each zone
-      transformed = mapAttrsToList
-        (domain: records: { inherit domain records; })
-        collected;
+      # Group the collected record by zone they are defined in
+      # [ { zone, record } ... ] -> [ { zone, records = [ ... ]} ... ]
+      grouped = attrValues (groupBy'
+        (group: entry: {
+          name = entry.zone;
+          records = group.records ++ [ entry.record ];
+        })
+        { records = []; }
+        (entry: toString entry.zone)
+        collected);
 
-    in transformed;
+    in grouped;
   };
 }

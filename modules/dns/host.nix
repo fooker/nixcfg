@@ -1,6 +1,7 @@
-{ config, lib, id, ... }:
+{ config, lib, ext, id, ... }:
 
 with lib;
+with ext;
 
 {
   options = {
@@ -8,26 +9,25 @@ with lib;
       type = types.nullOr (types.submodule {
         options = {
           zone = mkOption {
-            type = types.listOf types.str;
+            type = types.domain.absolute;
             description = "The zone the host is exposted to";
-            default = [ "net" "open-desk" ];
+            default = domain.absolute "open-desk.net";
           };
 
           realm = mkOption {
-            type = types.either types.str (types.listOf types.str);
+            type = types.domain.relative;
             description = "The realm in the zone the host is exposted to";
-            default = [];
-            apply = toList;
+            default = domain.relative [];
           };
 
           name = mkOption {
-            type = types.listOf types.str;
-            description = "The host name to exposte";
-            default = id;
+            type = types.domain.relative;
+            description = "The host name to expose";
+            default = domain.relative id;
           };
 
           domain = mkOption {
-            type = types.listOf types.str;
+            type = types.domain.absolute;
             description = "The full qualified domain of the exposed host";
             readOnly = true;
           };
@@ -44,10 +44,9 @@ with lib;
         };
 
         config = {
-          domain = concatLists [
-            config.dns.host.zone
+          domain = foldl (domain: domain.resolve) config.dns.host.zone [
             config.dns.host.realm
-            [ "dev" ]
+            (domain.relative "dev")
             config.dns.host.name
           ];
         };
@@ -57,7 +56,7 @@ with lib;
   };
 
   config = {
-    dns.zones = mkIf (config.dns.host != null) (setAttrByPath (config.dns.host.domain) {
+    dns.zones = mkIf (config.dns.host != null) (config.dns.host.domain.mkZone {
       A = config.dns.host.ipv4;
       AAAA = config.dns.host.ipv6;
     });

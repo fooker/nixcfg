@@ -1,20 +1,22 @@
-{ lib, ... }@args:
+{ lib, ext, record, ... }:
 
 with lib;
-with import ../types.nix args;
+with ext;
 
-{
+let
+  inherit (record) mkValueRecord mkModuleRecord;
+in {
   options = {
     SOA = mkModuleRecord "SOA" ./soa.nix {
       singleton = true;
     };
 
     NS = mkValueRecord "NS" {
-      type = types.str;
+      type = types.domain;
     };
 
     CNAME = mkValueRecord "CNAME" {
-      type = types.str;
+      type = types.domain;
       singleton = true;
     };
 

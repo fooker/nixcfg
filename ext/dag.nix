@@ -14,7 +14,6 @@
 with lib;
 
 {
-
   types = {
     dagOf = subType: types.attrsOf (types.submodule {
       options = {

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ext, pkgs, ... }:
 
 with lib;
 
@@ -98,7 +98,7 @@ in {
         (cert: cert.domains)
         (attrValues config.letsencrypt.certs);
     in mkMerge (map
-      (domain: setAttrByPath (reverseList (splitString "." domain)) {
+      (domain: (ext.domain.absolute domain).mkZone {
         "_acme-challenge" = {
           CNAME = "${ domain }.acme.dyn.open-desk.net.";
         };

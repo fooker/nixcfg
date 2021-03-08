@@ -71,6 +71,9 @@ with lib;
           A = "172.23.200.160";
         };
       };
+
+      # Other legacy records
+      aurblobs = { CNAME = "brueckenkopf.dev.open-desk.net."; };
     };
 
     org.open-desk = zone // {};

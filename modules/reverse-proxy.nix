@@ -1,4 +1,4 @@
-{ config, lib, pkgs, path, ... }:
+{ config, lib, ext, pkgs, path, ... }:
 
 with lib;
 {
@@ -75,6 +75,16 @@ with lib;
         };
       }) config.reverse-proxy.hosts;
     };
+
+    dns.zones = let
+      domains = concatMap
+        (host: host.domains)
+        (attrValues config.reverse-proxy.hosts);
+    in mkMerge (map
+      (domain: (ext.domain.absolute domain).mkZone {
+        CNAME = config.dns.host.domain;
+      })
+      domains);
 
     firewall.rules = dag: with dag; {
       inet.filter.input = {

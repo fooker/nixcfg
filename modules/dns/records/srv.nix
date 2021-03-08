@@ -1,6 +1,7 @@
-{ config, lib, ... }:
+{ config, lib, ext, ... }:
 
 with lib;
+with ext;
 
 {
   options = {
@@ -34,7 +35,7 @@ with lib;
     };
 
     target = mkOption {
-      type = types.str;
+      type = types.domain;
       description = ''
         The domain name of the target host.
         A target of <literal>.</literal> means that the service is decidedly not
