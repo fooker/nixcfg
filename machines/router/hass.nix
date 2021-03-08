@@ -130,6 +130,13 @@ args @ { config, lib, pkgs, ... }:
     };
   };
 
+  dns.zones = {
+    net.open-desk.home.iot = {
+      mqtt = { A = "192.168.0.1"; };
+      deploy = { A = "192.168.0.1"; };
+    };
+  };
+
   backup.paths = [
     config.services.home-assistant.configDir
     config.services.mosquitto.dataDir

@@ -15,7 +15,7 @@ in {
   }) secrets.backup.repos;
 
   dns.zones = {
-    net.open-desk.backup = {
+    net.open-desk.home.backup = {
       CNAME = config.dns.host.domain;
     };
   };

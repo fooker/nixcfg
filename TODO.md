@@ -11,10 +11,12 @@
 [ ] Make backhaul.peer.remote a optional submodule
 [ ] Deploy ROA checks for eBGP sessions
 [ ] Use niv for packages like ipinfo, qd and mmv
+[ ] Deploy CAA and SSHFP records per host
 
 # Hive
 [ ] Deploy monitoring user for mariadb
 [ ] Declarative config of glusterfs
+[ ] SPF and DKIM records for mail
 
 # NAS
 [ ] Get rid of NFS (or make it secure)

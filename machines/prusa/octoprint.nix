@@ -84,6 +84,10 @@
     };
   };
 
+  dns.zones = {
+    net.open-desk.home.prusa = { CNAME = config.dns.host.domain; };
+  };
+
   users.users.octoprint = {
     extraGroups = [ "dialout" ];
   };

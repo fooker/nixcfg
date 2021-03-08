@@ -16,11 +16,6 @@ with lib;
         "ns3.inwx.de."
       ];
     };
-
-    hive = {
-      A = [ "37.120.172.177" "37.120.172.185" ];
-      AAAA = [ "2a03:4000:6:701d::" "2a03:4000:6:701e::" ];
-    };
   in {
     net.open-desk = zone // {
 
@@ -74,6 +69,11 @@ with lib;
 
       # Other legacy records
       aurblobs = { CNAME = "brueckenkopf.dev.open-desk.net."; };
+      grafana = { CNAME = "brueckenkopf.dev.open-desk.net."; };
+      magnetico = { CNAME = "fliegerhorst.dev.open-desk.net."; };
+      prometheus = { CNAME = "brueckenkopf.dev.open-desk.net."; };
+      salt = { CNAME = "brueckenkopf.dev.open-desk.net."; };
+      weechat = { CNAME = "brueckenkopf.dev.open-desk.net."; };
     };
 
     org.open-desk = zone // {};
