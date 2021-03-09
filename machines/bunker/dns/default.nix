@@ -83,10 +83,10 @@ in {
 
         zone:
         ${ concatMapStringsSep "\n" (zone: ''
-          - domain: "${ zone.name }"
+          - domain: "${ zone.name.toSimpleString }"
             notify: ${ zone.notify }
             acl: [ ${ concatStringsSep ", " zone.acl } ]
-            file: "/etc/knot/zones/${ zone.name }.zone"
+            file: "/etc/knot/zones/${ zone.name.toSimpleString }.zone"
         '') zones }
       '';
     };
