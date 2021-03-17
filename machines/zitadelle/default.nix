@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, options, lib, pkgs, ... }:
 
 with lib;
 
@@ -7,6 +7,11 @@ with lib;
     ./web.nix
     ./mail.nix
   ];
+
+  options = {
+    # The significant other for every member of the cluster
+    hive.spouse = options.hive.self;
+  };
 
   # Add a fake "host" entry representing all hosts in this cluster
   config = {

@@ -14,6 +14,7 @@ in {
 
   hive = {
     enable = true;
+    spouse = config.hive.nodes.zitadelle-north;
   };
 
   backup = {

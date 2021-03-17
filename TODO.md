@@ -12,6 +12,7 @@
 [ ] Deploy ROA checks for eBGP sessions
 [ ] Use niv for packages like ipinfo, qd and mmv
 [ ] Deploy CAA and SSHFP records per host
+[ ] Roll out DNSSEC
 
 # Hive
 [ ] Deploy monitoring user for mariadb
