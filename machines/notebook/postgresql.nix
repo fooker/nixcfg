@@ -3,7 +3,7 @@
 {
   services.postgresql = {
     enable = true;
-    package = pkgs.postgresql_10;
+    package = pkgs.postgresql_12;
     enableTCPIP = true;
 
     authentication = ''
