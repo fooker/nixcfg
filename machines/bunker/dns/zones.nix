@@ -28,7 +28,7 @@ with lib;
           rname = "hostmaster";
           refresh = 200;
           retry = 300;
-          expire = 1814400;
+          expire = 1209600;
           minimum = 300;
         };
         

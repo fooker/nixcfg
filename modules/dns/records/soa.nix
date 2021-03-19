@@ -26,7 +26,7 @@ with ext;
     serial = mkOption {
       type = types.int;
       default = 0;
-      example = 19700101;
+      example = 1209600;
       description = ''
         The unsigned 32 bit version number of the original copy of the
         zone. Zone transfers preserve this value. This value wraps and will
