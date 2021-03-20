@@ -15,7 +15,7 @@ rec {
   };
 
   # A simple record type containing a single value
-  mkValueRecord = rtype: { type, singleton ? false }: mkRecordOption {
+  mkValueRecord = rtype: { type, apply ? id, singleton ? false }: mkRecordOption {
     inherit singleton;
 
     type = types.coercedTo type
@@ -30,7 +30,7 @@ rec {
         };
         config = {
           type = rtype;
-          data = [ config.value ];
+          data = [ (apply config.value) ];
 
           _module.args = {
             inherit ext;
@@ -47,7 +47,7 @@ rec {
       imports = [ module mod ];
       config = {
         type = rtype;
-        
+
         _module.args = {
             inherit ext;
           };

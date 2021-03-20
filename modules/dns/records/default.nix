@@ -36,6 +36,7 @@ in {
 
     TXT = mkValueRecord "TXT" {
       type = types.str;
+      apply = value: "\"${ value }\"";
     };
 
     MX = mkModuleRecord "MX" ./mx.nix {
