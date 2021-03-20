@@ -127,4 +127,10 @@ in {
     # Required by IDEA
     "fs.inotify.max_user_watches" = 524288;
   };
+
+  # No delay for failed login
+  security.pam.services.login.nodelay = true;
+  security.pam.services.i3lock.nodelay = true;
+  security.pam.services.i3lock-color.nodelay = true;
+  security.pam.services.xscreensaver.nodelay = true;
 }
