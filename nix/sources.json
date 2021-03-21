@@ -53,6 +53,12 @@
         "url": "https://github.com/nmattia/niv/archive/ba57d5a29b4e0f2085917010380ef3ddc3cf380f.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "nixos-mailserver": {
+        "branch": "master",
+        "repo": "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver.git",
+        "rev": "0c4b9a898527dcaf9a3491ad1cb37a6c3a7b1b63",
+        "type": "git"
+    },
     "nixpkgs": {
         "branch": "nixos-20.09",
         "description": "Nix Packages collection",
