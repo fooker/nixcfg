@@ -34,7 +34,7 @@ let
       --output scan.pdf \
       *.jpg
 
-      ${pkgs.openssh}/bin/scp -i /var/lib/scanner/id_scanner ./scan.pdf scanner@nas.home.open-desk.net:"$QD_JOB_ID.pdf"
+      ${pkgs.openssh}/bin/scp -i /var/lib/scanner/id_scanner ./scan.pdf scanner@nas.dev.home.open-desk.net:"$QD_JOB_ID.pdf"
   '';
 
   scanbdConfigDir = pkgs.linkFarm "scanbd-conf" [
@@ -252,7 +252,7 @@ in {
   # Add upload target to known hosts
   services.openssh.knownHosts = {
     "nas" = {
-      hostNames = [ "nas.home.open-desk.net" "172.23.200.130" ];
+      hostNames = [ "nas.dev.home.open-desk.net" "172.23.200.130" ];
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ58kj0PhHZThJ00tXLwNCFfK8o4RArFcNqtWfaXWto3";
     };
   };

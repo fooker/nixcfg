@@ -4,7 +4,7 @@ let
   secrets = import ./secrets.nix;
 in {
   fileSystems."/mnt/vault" = {
-    device = "nas.home.open-desk.net:/";
+    device = "nas.dev.home.open-desk.net:/";
     fsType = "nfs4";
     options = ["x-systemd.automount" "noauto"];
   };

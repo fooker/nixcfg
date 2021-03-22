@@ -6,7 +6,7 @@
   };
 
   fileSystems."/mnt/machines" = {
-    device = "nas.home.open-desk.net:/machines";
+    device = "nas.dev.home.open-desk.net:/machines";
     fsType = "nfs4";
     options = ["x-systemd.automount" "noauto"];
   };

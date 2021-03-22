@@ -12,7 +12,7 @@ in {
   };
 
   fileSystems."/mnt/media" = {
-    device = "nas.home.open-desk.net:/media";
+    device = "nas.dev.home.open-desk.net:/media";
     fsType = "nfs4";
     options = ["x-systemd.automount" "noauto"];
   };
