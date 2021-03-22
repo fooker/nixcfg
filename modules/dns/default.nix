@@ -161,6 +161,8 @@ in {
       cleanupRecord = def: removeAttrs def [ "data" ];
 
       walk = cfg: path: {
+        inherit (cfg) ttl;
+
         # Use all defined records while stripping out the data element as it is re-created from the definition
         records = mapAttrs
           (type: record: if isList record
