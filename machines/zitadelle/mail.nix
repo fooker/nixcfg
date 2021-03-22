@@ -43,6 +43,8 @@ in {
             aliases)
           config.mailserver.domains);
 
+    forwards = secrets.mail.forwards;
+
     enableSubmission = true;
     enableSubmissionSsl = true;
     enableImap = true;
@@ -176,11 +178,14 @@ in {
   ];
 
   deployment.secrets = {
-    "mail-fooker-password" = {
-      source = toString ./secrets/opennms.ovpn;
-      destination = "/etc/openvpn/opennms.ovpn";
-      owner.user = "root";
-      owner.group = "root";
+    "mail-dkim" = {
+      source = toString ./secrets/dkim;
+      destination = "/var/dkim";
+      owner.user = config.services.opendkim.user;
+      owner.group = config.services.opendkim.group;
+      action = [
+        "${pkgs.systemd}/bin/systemctl reload opendkim.service"
+      ];
     };
   };
 }
