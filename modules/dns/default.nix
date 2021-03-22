@@ -18,7 +18,7 @@ let
     known = getAttrs
       (filter
         (name: hasAttr name attrs)
-        [ "ttl" ])
+        [ "ttl" "includes" ])
       attrs;
     
     # Partititon all attr names that are not well-know by being a record or not
@@ -67,6 +67,12 @@ let
           type = types.nullOr types.int;
           description = "The default TTL for all records in this zone";
           default = null;
+        };
+
+        includes = mkOption {
+          type = types.listOf types.path;
+          description = "Other zone files to include";
+          default = [];
         };
 
         records = mkOption {
@@ -147,6 +153,26 @@ in {
             readOnly = true;
             description = "The records in the zone";
           };
+
+          includes = mkOption {
+            type = types.listOf (types.submodule {
+              options = {
+                file = mkOption {
+                  type = types.path;
+                  readOnly = true;
+                  description = "Path of the file to include";
+                };
+
+                domain = mkOption {
+                  type = types.domain;
+                  readOnly = true;
+                  description = "The domain name of the record";
+                };
+              };
+            });
+            readOnly = true;
+            description = "The includes in the zone";
+          };
         };
       });
       description = "The internal representation of the zones";
@@ -161,7 +187,7 @@ in {
       cleanupRecord = def: removeAttrs def [ "data" ];
 
       walk = cfg: path: {
-        inherit (cfg) ttl;
+        inherit (cfg) ttl includes;
 
         # Use all defined records while stripping out the data element as it is re-created from the definition
         records = mapAttrs
@@ -187,23 +213,34 @@ in {
         # If the domain has defined a TTL we use it as default for all records and sub-zones
         ttl' = if config.ttl != null then config.ttl else ttl;
 
-        # Build the resulting record type from a record in a zone
-        mkRecord = record: {
+        # Build an entry for some element in the zone
+        mkEntry = type: value: {
           zone = zone';
-          record = {
-            inherit domain;
-            inherit (record) class type data;
+          ${ type } = value;
+        };
 
-            ttl = if record.ttl != null then record.ttl else ttl';
-          };
+        # Build the resulting record type from a record in a zone
+        mkRecord = record: mkEntry "record" {
+          inherit domain;
+          inherit (record) class type data;
+
+          ttl = if record.ttl != null then record.ttl else ttl';
         };
 
         # Build the list of records in the current domain
-        curr = concatMap
+        records = concatMap
           (record: if isList record
             then map mkRecord record
             else singleton (mkRecord record))
           (attrVals config.records.defined config.records);
+
+        # Build an include element from the include in a zone
+        mkInclude = file: mkEntry "include" {
+          inherit domain file;
+        };
+
+        # Build the list of includes in the current domain
+        includes = map mkInclude config.includes;
 
         # Recurse into all sub-domain
         next = concatLists (
@@ -216,7 +253,7 @@ in {
             })
             config.zones);
 
-      in curr ++ next;
+      in records ++ includes ++ next;
 
       # Walk the tree and collect all records
       collected = walk {
@@ -227,13 +264,14 @@ in {
       };
 
       # Group the collected record by zone they are defined in
-      # [ { zone, record } ... ] -> [ { zone, records = [ ... ]} ... ]
+      # [ { zone, record }, { zone, include } ... ] -> [ { zone, records = [ ... ], includes = [ ... ]} ... ]
       grouped = attrValues (groupBy'
         (group: entry: {
           name = entry.zone;
-          records = group.records ++ [ entry.record ];
+          records = group.records ++ (optional (hasAttr "record" entry) entry.record);
+          includes = group.includes ++ (optional (hasAttr "include" entry) entry.include);
         })
-        { records = []; }
+        { records = []; includes = []; }
         (entry: toString entry.zone)
         collected);
 

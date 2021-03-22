@@ -11,6 +11,8 @@ let
       type
     ] ++ data);
 
+    mkInclude = { domain, file }: "$INCLUDE \"${ file }\" ${ domain.toString }";
+
   in map
     (zone: {
       inherit (zone) name;
@@ -18,8 +20,10 @@ let
       notify = "inwx";
       acl = [ "inwx_transfer" ] ++ optional ((last zone.name.labels) == "dyn") "acme_update";
 
-      file = pkgs.writeText "${ zone.name.toSimpleString }.zone"
-        (concatMapStringsSep "\n" mkRecord zone.records);
+      file = pkgs.writeText "${ zone.name.toSimpleString }.zone" ''
+          ${ concatMapStringsSep "\n" mkRecord zone.records }
+          ${ concatMapStringsSep "\n" mkInclude zone.includes }
+        '';
     })
     config.dns.zoneList;
 
