@@ -142,17 +142,28 @@ in {
   };
 
   dns.zones = mkMerge [
-    # MX and SFP records for all domains we serve for
+    # MX and related security records for all domains we serve for
     (let
       domains = config.mailserver.domains;
     in mkMerge (map
       (domain: (ext.domain.absolute domain).mkZone {
+
+        # MX record for this server
         MX = {
           preference = 0;
           exchange = ext.domain.absolute config.mailserver.fqdn;
         };
 
+        # SPF record
         TXT = "v=spf1 mx -all";
+
+        # DKIM record
+        includes = [ (./secrets/dkim/. + "/${ domain }.mail.txt") ];
+
+        # DMARK record
+        _dmarc = {
+          TXT = "v=DMARC1; p=none; rua=mailto:postmaster@open-desk.net; ruf=mailto:postmaster@open-desk.net; sp=none; fo=1; aspf=s; adkim=s; ri=86400";
+        };
       })
       domains))
 
@@ -177,15 +188,27 @@ in {
     "/var/sieve"
   ];
 
-  deployment.secrets = {
-    "mail-dkim" = {
-      source = toString ./secrets/dkim;
-      destination = "/var/dkim";
-      owner.user = config.services.opendkim.user;
-      owner.group = config.services.opendkim.group;
-      action = [
-        "${pkgs.systemd}/bin/systemctl reload opendkim.service"
-      ];
-    };
-  };
+  deployment.secrets = listToAttrs (concatMap
+    (domain: [
+      (nameValuePair "dkim-mail-${ domain }-key" {
+        source = toString ./secrets/dkim + "/${ domain }.mail.key";
+        destination = "/var/dkim/${ domain }.mail.key";
+        owner.user = config.services.opendkim.user;
+        owner.group = config.services.opendkim.group;
+        action = [
+          "${pkgs.systemd}/bin/systemctl reload opendkim.service"
+        ];
+      })
+      (nameValuePair "dkim-mail-${ domain }-txt" {
+        source = toString ./secrets/dkim + "/${ domain }.mail.txt";
+        destination = "/var/dkim/${ domain }.mail.txt";
+        owner.user = config.services.opendkim.user;
+        owner.group = config.services.opendkim.group;
+        action = [
+          "${pkgs.systemd}/bin/systemctl restart opendkim.service"
+        ];
+      })
+    ])
+    config.mailserver.domains
+  );
 }
