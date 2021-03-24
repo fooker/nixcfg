@@ -17,7 +17,6 @@
 # Hive
 [ ] Deploy monitoring user for mariadb
 [ ] Declarative config of glusterfs
-[ ] SPF and DKIM records for mail
 
 # NAS
 [ ] Get rid of NFS (or make it secure)

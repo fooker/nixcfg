@@ -14,9 +14,12 @@ let
 in {
   config = mkIf config.virtualisation.docker.enable {
     virtualisation.docker = {
-      package = (pkgs.callPackage "${pkgs.path}/pkgs/applications/virtualization/docker" {
-        iptables = pkgs.iptables-nftables-compat;
-      }).docker_19_03;
+      package = if config.system.nixos.release == "20.09"
+        then
+          (pkgs.callPackage "${pkgs.path}/pkgs/applications/virtualization/docker" {
+            iptables = pkgs.iptables-nftables-compat;
+          }).docker_19_03
+        else (pkgs.docker.override { iptables = pkgs.iptables-nftables-compat; });
 
       extraOptions = "--iptables=false --config-file ${ toString daemon-config }";
 

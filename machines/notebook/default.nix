@@ -30,7 +30,6 @@ in {
     earlySetup = true;
     font = "${pkgs.terminus_font}/share/consolefonts/ter-u28n.psf.gz";
     keyMap = "de-latin1-nodeadkeys";
-
   };
 
   time.timeZone = "Europe/Berlin";
