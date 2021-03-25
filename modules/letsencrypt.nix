@@ -105,6 +105,10 @@ in {
       })
       domains);
 
+    backup.paths = [
+      "/var/lib/acme"
+    ];
+
     deployment.secrets = {
       "acme-update-tsig-secret" = {
         source = toString ../secrets/acme_update.tsig;
