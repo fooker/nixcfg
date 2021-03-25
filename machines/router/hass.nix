@@ -49,16 +49,7 @@ args @ { config, lib, pkgs, ... }:
         # Required for vacuum
         pythonPackages.python-miio
       ];
-    })
-    .overrideAttrs (old: {
-      patches = old.patches ++ [ ../../patches/home-assistant-pr44371.patch ];
-      
-      doCheck = false;
-      doInstallCheck = false;
-
-      dontStrip = true;
-    })
-    ;
+    });
   };
 
   letsencrypt.production = true;
