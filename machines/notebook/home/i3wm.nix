@@ -11,7 +11,7 @@ let
     [[block]]
     block = "cpu"
     interval = 1
-    format = "{utilization}% [{frequency}GHz] "
+    format = "{utilization}% [{frequency}] "
 
     [[block]]
     block = "load"
