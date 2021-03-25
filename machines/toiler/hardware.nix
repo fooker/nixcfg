@@ -4,15 +4,11 @@
   hardware.enableRedistributableFirmware = true;
   hardware.cpu.intel.updateMicrocode = true;
 
-  boot.kernelPackages = pkgs.linuxPackages_5_8;
-
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usbhid" "usb_storage" "sd_mod" "sdhci_pci" ];
   boot.initrd.kernelModules = [ "i915" ];
 
   boot.kernelModules = [ "kvm-intel" ];
 
-  boot.extraModulePackages = [ ];
-  
   fileSystems = {
     "/" = {
       device = "/dev/disk/by-label/nixos";

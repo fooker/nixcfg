@@ -135,6 +135,11 @@ in {
 
       "40-uplink" = {
         name = "ppp0";
+
+        linkConfig = {
+          RequiredForOnline = "routable";
+        };
+        
         networkConfig = {
           DNS = "127.0.0.1";
 
@@ -142,24 +147,20 @@ in {
           DHCP = "ipv6";
 
           IPForward = "yes";
+
+          IPv6PrivacyExtensions = "kernel";
+          IPv6DuplicateAddressDetection = 1;
+
+          KeepConfiguration = "static";
         };
-        linkConfig = {
-          RequiredForOnline = "routable";
+
+        dhcpV6Config = {
+          UseDNS = false;
+          UseNTP = false;
+
+          ForceDHCPv6PDOtherInformation = true;
+          PrefixDelegationHint = 56;
         };
-        extraConfig = ''
-          [Network]
-          KeepConfiguration = static
-
-          IPv6PrivacyExtensions = kernel
-          IPv6DuplicateAddressDetection = 1
-
-          [DHCPv6]
-          UseDNS = false
-          UseNTP = false
-
-          ForceDHCPv6PDOtherInformation = yes
-          PrefixDelegationHint = 56
-        '';
       };
     };
   } (mapAttrsToList (name: config: {
@@ -201,7 +202,11 @@ in {
         networkConfig = {
           DHCPServer = true;
 
-          IPv6PrefixDelegation = "dhcpv6";
+          DHCPv6PrefixDelegation = true;
+          IPv6SendRA = true;
+
+          IPv6DuplicateAddressDetection = 1;
+          IPv6PrivacyExtensions = false;
 
           DNS = "${config.ipv4.address}";
           Domains = [
@@ -224,18 +229,19 @@ in {
           DNS = "${config.ipv4.address}";
         };
 
-        extraConfig = ''
-          [Network]
-          IPv6DuplicateAddressDetection = 1
-          IPv6PrivacyExtensions = no
+        ipv6SendRAConfig = {
+          RouterLifetimeSec = 300;
 
-          [IPv6PrefixDelegation]
-          RouterLifetimeSec = 60
-          OtherInformation = true
+          EmitDNS = true;
+          EmitDomains = true;
 
-          [DHCPv6PrefixDelegation]
-          Assign = yes
-        '';
+          OtherInformation = true;
+        };
+
+        dhcpV6PrefixDelegationConfig = {
+          Assign = true;
+          Announce = true;
+        };
       };
     };
   }) networks);
