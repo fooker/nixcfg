@@ -3,18 +3,12 @@
 with lib;
 {
   options.backup = {
-    enable = mkOption {
-        type = types.bool;
-        default = false;
-    };
-
     repo = {
       user = mkOption {
         type = types.str;
         description = ''
           User with which to store the backup.
         '';
-        default = "backup";
       };
 
       host = mkOption {
@@ -22,7 +16,6 @@ with lib;
         description = ''
           Host on which to store the backup.
         '';
-        default = "backup.home.open-desk.net";
       };
 
       fingerprint = mkOption {
@@ -30,14 +23,20 @@ with lib;
         description = ''
           SSH fingerprint of the backup storage host.
         '';
-        default = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ58kj0PhHZThJ00tXLwNCFfK8o4RArFcNqtWfaXWto3";
       };
+    };
+
+    publicKey = mkOption {
+      type = types.str;
+      description = ''
+        Publick SSH key used by the backup client.
+      '';
     };
 
     passphrase = mkOption {
       type = types.str;
       description = ''
-        The passphrase the backups are encrypted with
+        The passphrase the backups are encrypted with.
       '';
     };
 
@@ -63,7 +62,7 @@ with lib;
     };
   };
 
-  config = mkIf config.backup.enable {
+  config = {
     services.openssh.knownHosts.backup = {
       hostNames = [ config.backup.repo.host ];
       publicKey = config.backup.repo.fingerprint;
@@ -86,11 +85,7 @@ with lib;
         "BORG_RSH" = "ssh -i /var/lib/backup/id_backup";
       };
 
-      paths = concatLists [
-        config.backup.paths
-        (singleton ".")
-        (optionals config.backup.defaultPaths [ "/etc" "/root" ])
-      ];
+      paths = config.backup.paths ++ [ "." ];
 
       readWritePaths = [ "/tmp" ];
 
@@ -101,6 +96,10 @@ with lib;
         ${concatMapStringsSep "\n" (command: "${command}") config.backup.commands}
       '';
     };
+
+    backup.paths = [ "/etc" "/root" "/home" ];
+
+    backup.publicKey = mkDefault (builtins.readFile "${path}/secrets/id_backup.pub");
 
     deployment.secrets = {
       "backup-sshkey" = rec {

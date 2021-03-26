@@ -18,10 +18,7 @@ in {
   server.enable = true;
   serial.enable = true;
 
-  backup = {
-    enable = true;
-    passphrase = secrets.backup.passphrase;
-  };
+  backup.passphrase = secrets.backup.passphrase;
 
   dns.host = {
     realm = "home";
@@ -49,6 +46,6 @@ in {
   };
 
   backup.paths = [
-    "/mnt/files/scans"
+    config.users.users."scanner".home
   ];
 }

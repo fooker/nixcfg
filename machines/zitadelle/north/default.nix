@@ -17,10 +17,7 @@ in {
     spouse = config.hive.nodes.zitadelle-south;
   };
 
-  backup = {
-    enable = true;
-    passphrase = secrets.backup.passphrase;
-  };
+  backup.passphrase = secrets.backup.passphrase;
 
   dns.host = {
     ipv4 = "37.120.172.185";

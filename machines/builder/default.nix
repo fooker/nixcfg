@@ -10,4 +10,6 @@ in {
 
   server.enable = true;
   builder.enable = true;
+
+  backup.passphrase = secrets.backup.passphrase;
 }

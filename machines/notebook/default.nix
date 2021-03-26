@@ -36,6 +36,8 @@ in {
 
   security.rtkit.enable = true;
 
+  backup.passphrase = secrets.backup.passphrase;
+
   services.openssh = {
     enable = true;
   };

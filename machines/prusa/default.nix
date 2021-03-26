@@ -12,6 +12,8 @@ in {
   serial.enable = true;
   server.enable = true;
 
+  backup.passphrase = secrets.backup.passphrase;
+
   dns.host = {
     realm = "home";
     ipv4 = "172.23.200.132";

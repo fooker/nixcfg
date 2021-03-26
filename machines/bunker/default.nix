@@ -17,10 +17,7 @@ in {
     enable = true;
   };
 
-  backup = {
-    enable = true;
-    passphrase = secrets.backup.passphrase;
-  };
+  backup.passphrase = secrets.backup.passphrase;
 
   dns.host = {
     ipv4 = "37.120.161.15";

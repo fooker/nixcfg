@@ -18,10 +18,7 @@ in {
   server.enable = true;
   builder.enable = true;
 
-  backup = {
-    enable = true;
-    passphrase = secrets.backup.passphrase;
-  };
+  backup.passphrase = secrets.backup.passphrase;
 
   dns.host = {
     realm = "home";
