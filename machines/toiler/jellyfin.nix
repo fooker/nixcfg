@@ -22,7 +22,7 @@ in {
     hosts = {
       "jellyfin" = {
         domains = [ "jellyfin.home.open-desk.net" ];
-        target = "http://[::1]:8096";
+        target = "http://127.0.0.1:8096";
       };
     };
   };
