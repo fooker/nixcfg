@@ -6,13 +6,15 @@
 [ ] Move around some services
     * home-assistant + mosquitto on toiler (ACLs on router)
     * gitea on brueckenkopf
-[ ] Collect backup keys from defined machines
 [ ] Avoid double import of `findNixpkgs name` in deployment.nix
 [ ] Make backhaul.peer.remote a optional submodule
 [ ] Deploy ROA checks for eBGP sessions
-[ ] Use niv for packages like ipinfo, qd and mmv
 [ ] Deploy CAA and SSHFP records per host
 [ ] Roll out DNSSEC
+[ ] Unify dns.host and network config
+
+# Router
+[ ] Remove systemd patch after systemd-v248 is upstream
 
 # Hive
 [ ] Deploy monitoring user for mariadb

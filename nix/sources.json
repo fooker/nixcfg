@@ -29,6 +29,30 @@
         "url": "https://github.com/rycee/home-manager/archive/ddcd476603dfd3388b1dc8234fa9d550156a51f5.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "ipinfo": {
+        "branch": "master",
+        "description": "IP address info dumper",
+        "homepage": null,
+        "owner": "fooker",
+        "repo": "ipinfo",
+        "rev": "706ecbb0cc15d9944f3f65e6318f33aa25e1d188",
+        "sha256": "0071d926bbk7fx6n77ig70vifi16xylyhr3j382ryvrhganzgknd",
+        "type": "tarball",
+        "url": "https://github.com/fooker/ipinfo/archive/706ecbb0cc15d9944f3f65e6318f33aa25e1d188.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "mmv": {
+        "branch": "master",
+        "description": "linux mass media rename / mover",
+        "homepage": null,
+        "owner": "fooker",
+        "repo": "mmv",
+        "rev": "dac48b2bd00fcd982278c22a90b1374025eaa75d",
+        "sha256": "10s1k77f92bbsa096m6ymlf4ld0vx29fv45m9xi9x63pqq6707p2",
+        "type": "tarball",
+        "url": "https://github.com/fooker/mmv/archive/dac48b2bd00fcd982278c22a90b1374025eaa75d.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "morph": {
         "branch": "fix-lib-src",
         "description": "NixOS deployment tool",
@@ -129,6 +153,18 @@
         "sha256": "1fmwkb2wjfrpx8fis4x457vslam0x8vqlpfwqii6p9vm33dyxhzk",
         "type": "tarball",
         "url": "https://github.com/NixOS/nixpkgs/archive/f5e8bdd07d1afaabf6b37afc5497b1e498b8046f.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "qd": {
+        "branch": "master",
+        "description": "Local filesystem job queue",
+        "homepage": null,
+        "owner": "fooker",
+        "repo": "qd",
+        "rev": "b8f5b271aa07bdb98e6eaee2681ca7f58adafce0",
+        "sha256": "0fdsgv4pxqnhc86lvp787knnjffwchwvpfx4dzjacggshgibmcy1",
+        "type": "tarball",
+        "url": "https://github.com/fooker/qd/archive/b8f5b271aa07bdb98e6eaee2681ca7f58adafce0.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }

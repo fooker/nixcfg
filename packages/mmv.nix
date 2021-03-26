@@ -1,12 +1,12 @@
 { rustPlatform, ... }:
 
-rustPlatform.buildRustPackage rec {
+let
+  sources = import ../nix/sources.nix;
+
+in rustPlatform.buildRustPackage rec {
   name = "mmv";
 
-  src = builtins.fetchGit {
-    url = "https://github.com/fooker/mmv.git";
-    ref = "master";
-  };
+  src = sources.mmv;
 
   cargoSha256 = "1vy6jidhwv14gf7zqll9fa1p3asin798zgavyn7rk9m2583p1bx4";
 }

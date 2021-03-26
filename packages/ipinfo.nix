@@ -1,22 +1,12 @@
 { stdenv, rustPlatform, fetchFromGitHub, ... }:
 
-rustPlatform.buildRustPackage {
-  pname = "ipinfo";
-  version = "master";
+let
+  sources = import ../nix/sources.nix;
 
-  src = fetchFromGitHub {
-    owner = "fooker";
-    repo = "ipinfo";
-    rev = "master";
-    sha256 = "0071d926bbk7fx6n77ig70vifi16xylyhr3j382ryvrhganzgknd";
-  };
+in rustPlatform.buildRustPackage {
+  name = "ipinfo";
 
-  cargoSha256 = "06gybhg805s2wq72jk428c4hn7qchk8hx99yh86hf09a496zndh1";
+  src = sources.ipinfo;
 
-  meta = with stdenv.lib; {
-    description = "IP address info dumper";
-    homepage = "https://github.com/fooker/ipinfo";
-    license = licenses.wtfpl;
-    platforms = platforms.all;
-  };
+  cargoSha256 = "19rvnxxj4rp88zj2fr1i8s980sybq2g3c77m9ql4baqd5sldcfrc";
 }
