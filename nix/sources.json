@@ -13,8 +13,14 @@
     },
     "blog": {
         "branch": "master",
-        "repo": "https://git.home.open-desk.net/fooker/blog.git",
+        "repo": "gitea@git.home.open-desk.net:fooker/blog.git",
         "rev": "41e9edab467e509719b789c1ce8c11f278232902",
+        "type": "git"
+    },
+    "schoen-und-gut": {
+        "branch": "master",
+        "repo": "gitea@git.home.open-desk.net:schoen-und-gut/website.git",
+        "rev": "9b283ce75cecbf6f586f43cd484c5180d27bb81c",
         "type": "git"
     },
     "home-manager": {

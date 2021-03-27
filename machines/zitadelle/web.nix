@@ -12,6 +12,10 @@ let
       domains = [ "open-desk.org" "www.open-desk.org" ];
       root = pkgs.callPackage sources.blog {};
     };
+    "schoen-und-gut" = {
+      domains = [ "schoen-und-gut.org" "www.schoen-und-gut.org" ];
+      root = sources.schoen-und-gut;
+    };
   };
 in {
   dns.zones = let

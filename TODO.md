@@ -13,9 +13,6 @@
 [ ] Roll out DNSSEC
 [ ] Unify dns.host and network config
 
-# Router
-[ ] Remove systemd patch after systemd-v248 is upstream
-
 # Hive
 [ ] Deploy monitoring user for mariadb
 [ ] Declarative config of glusterfs
@@ -35,4 +32,3 @@
 
 # Toiler
 [ ] Fix the spotifyd workaround
-[ ] Bump stateVersion to 20.09 to update jellyfin
