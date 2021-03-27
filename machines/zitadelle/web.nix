@@ -25,8 +25,8 @@ in {
       (attrValues apps);
   in mkMerge (map
     (domain: (ext.domain.absolute domain).mkZone {
-      A = config.hive.self.address.ipv4;
-      AAAA = config.hive.self.address.ipv6;
+      A = config.dns.host.ipv4;
+      AAAA = config.dns.host.ipv6;
     })
     domains);
 
