@@ -17,12 +17,6 @@
         "rev": "41e9edab467e509719b789c1ce8c11f278232902",
         "type": "git"
     },
-    "schoen-und-gut": {
-        "branch": "master",
-        "repo": "gitea@git.home.open-desk.net:schoen-und-gut/website.git",
-        "rev": "9b283ce75cecbf6f586f43cd484c5180d27bb81c",
-        "type": "git"
-    },
     "home-manager": {
         "branch": "master",
         "description": "Manage a user environment using Nix",
@@ -172,5 +166,11 @@
         "type": "tarball",
         "url": "https://github.com/fooker/qd/archive/b8f5b271aa07bdb98e6eaee2681ca7f58adafce0.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "schoen-und-gut": {
+        "branch": "master",
+        "repo": "gitea@git.home.open-desk.net:schoen-und-gut/website.git",
+        "rev": "786579a923314567e4f3063f86acd8dd78688954",
+        "type": "git"
     }
 }

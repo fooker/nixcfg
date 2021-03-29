@@ -4,19 +4,43 @@ with lib;
 
 let
   sources = import ../../nix/sources.nix;
+
   apps = {
     "box" = {
       domains = [ "box.open-desk.net" "frisch.cloud" "www.frisch.cloud" ];
     };
+
     "blog" = {
       domains = [ "open-desk.org" "www.open-desk.org" ];
       root = pkgs.callPackage sources.blog {};
     };
-    "schoen-und-gut" = {
+
+    "schoen-und-gut" = let
+      php = pkgs.php.buildEnv {};
+      site = pkgs.applyPatches {
+        name = "schoen-und-gut-patched";
+        src = sources.schoen-und-gut;
+        postPatch = ''
+          sed -i '1s;^;#!${ php }/bin/php-cgi\n;' ./mail.php
+        '';
+      };
+    in {
       domains = [ "schoen-und-gut.org" "www.schoen-und-gut.org" ];
-      root = sources.schoen-und-gut;
+      root = site;
+
+      config = {
+        locations."/mail.php" = {
+          extraConfig = ''
+            include ${pkgs.nginx}/conf/fastcgi.conf;
+            include ${pkgs.nginx}/conf/fastcgi_params;
+
+            fastcgi_pass unix:${config.services.fcgiwrap.socketAddress};
+          '';
+        };
+      };
     };
   };
+
 in {
   dns.zones = let
     # All domains that we serve for
@@ -30,15 +54,16 @@ in {
     })
     domains);
 
-   services.nginx = {
-      enable = true;
-      
-      recommendedGzipSettings = true;
-      recommendedOptimisation = true;
-      recommendedProxySettings = true;
-      recommendedTlsSettings = true;
+  services.nginx = {
+    enable = true;
+    
+    recommendedGzipSettings = true;
+    recommendedOptimisation = true;
+    recommendedProxySettings = true;
+    recommendedTlsSettings = true;
 
-      virtualHosts = mapAttrs (name: app: {
+    virtualHosts = mapAttrs (name: app: mkMerge [
+      {
         serverName = head app.domains;
         serverAliases = tail app.domains;
 
@@ -56,16 +81,23 @@ in {
         extraConfig = ''
           default_type application/octet-stream;
         '';
-      }) apps;
-   };
+      }
+      (app.config or {})
+    ]) apps;
+  };
 
-   letsencrypt.certs = mapAttrs (name: app: {
-      domains = app.domains;
-      owner = "nginx";
-      trigger = "${pkgs.systemd}/bin/systemctl reload nginx.service";
-    }) apps;
+  services.fcgiwrap = {
+    enable = true;
+    user = config.services.nginx.user;
+  };
 
-   firewall.rules = dag: with dag; {
+  letsencrypt.certs = mapAttrs (name: app: {
+    domains = app.domains;
+    owner = "nginx";
+    trigger = "${pkgs.systemd}/bin/systemctl reload nginx.service";
+  }) apps;
+
+  firewall.rules = dag: with dag; {
     inet.filter.input = {
       web = between ["established"] ["drop"] ''
         tcp
