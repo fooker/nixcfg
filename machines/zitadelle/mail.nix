@@ -141,11 +141,18 @@ in {
     };
   };
 
-  dns.zones = mkMerge [
-    # MX and related security records for all domains we serve for
-    (let
-      domains = config.mailserver.domains;
-    in mkMerge (map
+  dns.zones = let
+    mx = {
+      A = config.dns.host.ipv4;
+      AAAA = config.dns.host.ipv6;
+    };
+  in mkMerge [
+    {
+      net.open-desk.mx = mx;
+    }
+
+    # MX and related security and service records for all domains we serve for
+    (mkMerge (map
       (domain: (ext.domain.absolute domain).mkZone {
 
         # MX record for this server
@@ -164,22 +171,13 @@ in {
         _dmarc = {
           TXT = "v=DMARC1; p=none; rua=mailto:postmaster@open-desk.net; ruf=mailto:postmaster@open-desk.net; sp=none; fo=1; aspf=s; adkim=s; ri=86400";
         };
-      })
-      domains))
 
-    # Host records for the MX and related services
-    {
-      net.open-desk = let
-        mx = {
-          A = config.dns.host.ipv4;
-          AAAA = config.dns.host.ipv6;
-        };
-      in {
+        # Host records for the related services
         mail = mx;
         smtp = mx;
         imap = mx;
-      };
-    }
+      })
+      config.mailserver.domains))
   ];
 
   backup.paths = [
