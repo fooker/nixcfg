@@ -52,13 +52,6 @@ args @ { config, lib, pkgs, ... }:
     });
   };
 
-  letsencrypt.production = true;
-  letsencrypt.certs.hass = {
-    domains = [ "hass.home.open-desk.net" ];
-    owner = "nginx";
-    trigger = "${pkgs.systemd}/bin/systemctl reload nginx.service";
-  };
-
   reverse-proxy = {
     enable = true;
     hosts = {
