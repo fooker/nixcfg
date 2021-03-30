@@ -59,11 +59,21 @@ in {
     };
   };
 
+  reverse-proxy = {
+    enable = true;
+    hosts = {
+      "deluge" = {
+        domains = [ "deluge.home.open-desk.net" ];
+        target = "http://[::1]:${ toString config.services.deluge.web.port }/";
+      };
+    };
+  };
+
   firewall.rules = dag: with dag; {
     inet.filter.input = {
       deluge-web = between ["established"] ["drop"] ''
         ip saddr 172.23.200.0/24
-        tcp dport 8112
+        tcp dport ${ toString config.services.deluge.web.port }
         accept
       '';
       deluge-torrent-udp = between ["established"] ["drop"] ''
