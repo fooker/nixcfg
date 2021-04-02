@@ -6,7 +6,7 @@ in {
   imports = [
     ./hardware.nix
     ./network.nix
-    ./backhaul.nix
+    ./peering.nix
     ./dns/default.nix
     ./syncthing.nix
   ];

@@ -18,8 +18,8 @@ let
   domains = filter
       (domain: any
         (peer: hasAttr domain.name peer.domains)
-        (attrValues config.backhaul.peers))
-      (attrValues config.backhaul.domains);
+        (attrValues config.peering.peers))
+      (attrValues config.peering.domains);
 
   domainConfig = domain:
     let
@@ -39,7 +39,7 @@ let
       peers = protocol: 
         optionals (domain."${protocol}" != null) (filter
           (peer: (attrByPath [ domain.name protocol ] null peer.domains) != null) # Peer is configured for proto
-          (attrValues config.backhaul.peers));
+          (attrValues config.peering.peers));
       
       /* Calls a protocol specific implementation if there are peers for this
         protocol. The protocol implementation must accept the domain
@@ -120,7 +120,7 @@ in mkIf (domains != []) {
   services.bird2 = {
     enable = true;
     config = ''
-      router id ${config.backhaul.routerId};
+      router id ${config.peering.routerId};
 
       protocol device {
         scan time 10;
@@ -164,7 +164,7 @@ in mkIf (domains != []) {
               (domain: (domain.${proto} or null) != null)
               (attrValues peer.domains))
             (nameValuePair
-              "backhaul-${peer.name}-${proto}"
+              "peering-${peer.name}-${proto}"
               (between ["established"] ["drop"] rule)
             );
 
@@ -189,7 +189,7 @@ in mkIf (domains != []) {
       in
         listToAttrs (concatMap
           mkPeer
-          (attrValues config.backhaul.peers)
+          (attrValues config.peering.peers)
         );
   };
 }

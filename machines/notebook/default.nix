@@ -15,7 +15,7 @@ in {
     ./parsecgaming.nix
     ./opennms.nix
     ./xserver.nix
-    ./backhaul.nix
+    ./peering.nix
     ./mounts.nix
     ./libvirt.nix
   ];

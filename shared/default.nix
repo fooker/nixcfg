@@ -3,7 +3,7 @@
 with lib;
 {
   imports = [
-    ./backhaul.nix
+    ./peering.nix
     ./backup.nix
     ./hive.nix
   ];

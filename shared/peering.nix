@@ -2,7 +2,7 @@
 
 with lib;
 {
-  backhaul.domains = {
+  peering.domains = {
     hive = {
       ospf = {
         instanceId = 23;

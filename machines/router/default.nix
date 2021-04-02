@@ -9,7 +9,7 @@ in {
     ./pppd.nix
     ./dns.nix
     ./ddclient.nix
-    ./backhaul.nix
+    ./peering.nix
     ./hass.nix
   ];
 

@@ -3,7 +3,7 @@
 let
   secrets = import ./secrets.nix;
 in {
-  backhaul = {
+  peering = {
     routerId = "37.120.172.185";
 
     domains = {
@@ -23,7 +23,7 @@ in {
         netdev = "peer.x.zsouth";
 
         local.port = 23231;
-        local.privkey = secrets.backhaul.peers."zitadelle-south".privkey;
+        local.privkey = secrets.peering.peers."zitadelle-south".privkey;
 
         remote.host = "south.zitadelle.dev.open-desk.net";
         remote.port = 23231;
@@ -52,7 +52,7 @@ in {
         netdev = "peer.x.bunker";
 
         local.port = 23232;
-        local.privkey = secrets.backhaul.peers."bunker".privkey;
+        local.privkey = secrets.peering.peers."bunker".privkey;
 
         remote.host = "bunker.dev.open-desk.net";
         remote.port = 23232;
@@ -80,7 +80,7 @@ in {
         netdev = "peer.x.router";
 
         local.port = 23230;
-        local.privkey = secrets.backhaul.peers."router".privkey;
+        local.privkey = secrets.peering.peers."router".privkey;
 
         remote.pubkey = "vjjnr+4LzQfbgSon0/ADFEc3+kppB9hoD3vXnXf77Cs=";
 
@@ -103,7 +103,7 @@ in {
         netdev = "peer.x.mobile";
 
         local.port = 23239;
-        local.privkey = secrets.backhaul.peers."mobile".privkey;
+        local.privkey = secrets.peering.peers."mobile".privkey;
 
         remote.pubkey = "dj9ooKzq0dFJIxnt6BKJ5Qz0akg0E44BXVbrQL0GHCs=";
 
@@ -126,7 +126,7 @@ in {
       #   netdev = "peer.major1";
 
       #   local.port = 23423;
-      #   local.privkey = secrets.backhaul.peers."major1".privkey;
+      #   local.privkey = secrets.peering.peers."major1".privkey;
 
       #   remote.host = "193.239.104.101";
       #   remote.port = 42101;
@@ -153,7 +153,7 @@ in {
       #   netdev = "peer.major2";
 
       #   local.port = 23424;
-      #   local.privkey = secrets.backhaul.peers."major2".privkey;
+      #   local.privkey = secrets.peering.peers."major2".privkey;
 
       #   remote.host = "193.239.104.103";
       #   remote.port = 42101;
@@ -180,7 +180,7 @@ in {
         netdev = "peer.cccda";
 
         local.port = 23420;
-        local.privkey = secrets.backhaul.peers."cccda".privkey;
+        local.privkey = secrets.peering.peers."cccda".privkey;
 
         remote.host = "core1.darmstadt.ccc.de";
         remote.port = 43007;
@@ -207,7 +207,7 @@ in {
         netdev = "peer.ffffm";
 
         local.port = 23422;
-        local.privkey = secrets.backhaul.peers."ffffm".privkey;
+        local.privkey = secrets.peering.peers."ffffm".privkey;
 
         remote.host = "icvpn2.aixit.off.de.ffffm.net";
         remote.port = 40106;
@@ -234,7 +234,7 @@ in {
         netdev = "peer.maglab";
 
         local.port = 23421;
-        local.privkey = secrets.backhaul.peers."maglab".privkey;
+        local.privkey = secrets.peering.peers."maglab".privkey;
 
         remote.host = "lintillas.maglab.space";
         remote.port = 42005;
@@ -261,7 +261,7 @@ in {
         netdev = "peer.clerie";
 
         local.port = 23425;
-        local.privkey = secrets.backhaul.peers."clerie".privkey;
+        local.privkey = secrets.peering.peers."clerie".privkey;
 
         remote.host = "dn42-il-gw1.net.clerie.de";
         remote.port = 51271;
@@ -287,7 +287,7 @@ in {
         netdev = "peer.maraun";
 
         local.port = 23426;
-        local.privkey = secrets.backhaul.peers."maraun".privkey;
+        local.privkey = secrets.peering.peers."maraun".privkey;
 
         remote.host = "dn42-de.maraun.de";
         remote.port = 21271;

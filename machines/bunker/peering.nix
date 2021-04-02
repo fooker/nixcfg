@@ -3,7 +3,7 @@
 let
   secrets = import ./secrets.nix;
 in {
-  backhaul = {
+  peering = {
     routerId = "37.120.161.15";
 
     domains = {
@@ -23,7 +23,7 @@ in {
         netdev = "peer.x.znorth";
 
         local.port = 23232;
-        local.privkey = secrets.backhaul.peers."zitadelle-north".privkey;
+        local.privkey = secrets.peering.peers."zitadelle-north".privkey;
 
         remote.host = "north.zitadelle.dev.open-desk.net";
         remote.port = 23232;
@@ -51,7 +51,7 @@ in {
         netdev = "peer.x.zsouth";
 
         local.port = 23233;
-        local.privkey = secrets.backhaul.peers."zitadelle-south".privkey;
+        local.privkey = secrets.peering.peers."zitadelle-south".privkey;
 
         remote.host = "south.zitadelle.dev.open-desk.net";
         remote.port = 23233;

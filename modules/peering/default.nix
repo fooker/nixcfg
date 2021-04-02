@@ -2,14 +2,12 @@
 
 with lib;
 
-# TODO: Firewall rules for wireguard
-
 {
   imports = [
     ./bird
   ];
 
-  options.backhaul = {
+  options.peering = {
     routerId = mkOption {
       description = "The router ID of the machine";
       type = types.str;
@@ -133,7 +131,7 @@ with lib;
     };
 
     peers = mkOption {
-      description = "Backhaul peers";
+      description = "Peers";
       default = {};
       type = types.attrsOf (types.submodule ({ name, ... }: {
         options = {
@@ -253,12 +251,12 @@ with lib;
 
   config = let
     writePrivateKey = peer: key: pkgs.writeTextFile {
-      name = "backhaul-peering-${name}-${peer}.key";
+      name = "peering-${name}-${peer}.key";
       text = key;
     };
 
     mkPeerNetwork = peer: cfg: {
-      netdevs."80-backhaul-peer-${peer}" = {
+      netdevs."80-peering-peer-${peer}" = {
         netdevConfig = {
           Description = "Peering with ${peer}";
           Name = "${cfg.netdev}";
@@ -278,7 +276,7 @@ with lib;
         }];
       };
 
-      networks."80-backhaul-peer-${peer}" = {
+      networks."80-peering-peer-${peer}" = {
         matchConfig = {
           Name = "${cfg.netdev}";
         };
@@ -310,7 +308,7 @@ with lib;
     };
 
     mkDomainNetwork = domain: {
-      netdevs."70-backhaul-domain-${domain.name}" = {
+      netdevs."70-peering-domain-${domain.name}" = {
         netdevConfig = {
           Description = "Domain ${domain.name}";
           Name = "${domain.name}";
@@ -318,7 +316,7 @@ with lib;
         };
       };
 
-      networks."70-backhaul-domain-${domain.name}" = {
+      networks."70-peering-domain-${domain.name}" = {
         matchConfig = {
           Name = "${domain.name}";
         };
@@ -342,21 +340,21 @@ with lib;
       };
     };
     
-  in mkIf (config.backhaul.peers != {}) {
+  in mkIf (config.peering.peers != {}) {
     boot.extraModulePackages = mkIf (versionOlder config.boot.kernelPackages.kernel.version "5.6") [ config.boot.kernelPackages.wireguard ];
     environment.systemPackages = [ pkgs.wireguard-tools ];
 
     systemd.network = mkMerge (flatten [
-      (mapAttrsToList mkPeerNetwork config.backhaul.peers)
+      (mapAttrsToList mkPeerNetwork config.peering.peers)
       (map
         mkDomainNetwork
         (filter # Filter domains with standalone interface and having at least one peer
           (domain: and
             (any # Check if domain has any peer
               (peer: hasAttr domain.name peer.domains) # Check if peer is associated with domain
-              (attrValues config.backhaul.peers))
+              (attrValues config.peering.peers))
             (domain.netdev == null)) # Check if domain has associated local interface
-          (attrValues config.backhaul.domains)))
+          (attrValues config.peering.domains)))
     ]);
 
     firewall.rules = dag: with dag; {
@@ -365,13 +363,13 @@ with lib;
           mkTunnel = peer: cfg: optional
             (cfg.local.port != null)
             (nameValuePair
-              "backhaul-${peer}-wg"
+              "peering-${peer}-wg"
               (between ["established"] ["drop"] ''
                 udp dport ${toString cfg.local.port}
                 accept
               ''));
         in
-          listToAttrs (concatLists (mapAttrsToList mkTunnel config.backhaul.peers));
+          listToAttrs (concatLists (mapAttrsToList mkTunnel config.peering.peers));
 
       inet.filter.forward =
         let
@@ -380,18 +378,18 @@ with lib;
           domains = filter
             (domain: (any
               (peer: hasAttr domain.name peer.domains) # Check if peer is associated with domain
-              (attrValues config.backhaul.peers)
+              (attrValues config.peering.peers)
             ))
-            (attrValues config.backhaul.domains);
+            (attrValues config.peering.domains);
 
           mkDomain = domain: nameValuePair
-            "backhaul-${domain.name}"
+            "peering-${domain.name}"
             (let
               /* List of all peers participating in this domain
               */
               peers = filter
                 (peer: hasAttr domain.name peer.domains) # Check if peer is associated with domain
-                (attrValues config.backhaul.peers);
+                (attrValues config.peering.peers);
 
               /* All network devices participating in this domain
 
