@@ -22,8 +22,8 @@ in {
         local.port = null;
         local.privkey = secrets.peering.peers."zitadelle-north".privkey;
 
-        remote.host = "north.zitadelle.dev.open-desk.net";
-        remote.port = 23230;
+        remote.endpoint.host = "north.zitadelle.dev.open-desk.net";
+        remote.endpoint.port = 23230;
         remote.pubkey = "T9YqMKM8Jp+sFvwJN5Y2MV2aWQdIVJ7WhEsKMm9NUmI=";
 
         transfer = {
@@ -47,8 +47,8 @@ in {
         local.port = null;
         local.privkey = secrets.peering.peers."zitadelle-south".privkey;
 
-        remote.host = "south.zitadelle.dev.open-desk.net";
-        remote.port = 23230;
+        remote.endpoint.host = "south.zitadelle.dev.open-desk.net";
+        remote.endpoint.port = 23230;
         remote.pubkey = "nLwhi0ikvoZ6kze+m+CP5wP0hsP4NgigHMMMiGrXung=";
 
         transfer = {

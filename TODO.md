@@ -2,16 +2,16 @@
 [ ] Roll out `services.openssh.knownHosts` for all hosts on all hosts
 [ ] Declarative config for syncthing (see https://git.darmstadt.ccc.de/maralorn/nixos-config/-/blob/master/common/common.nix)
 [ ] Open firewall ports for syncthing
-[ ] Log rejected routes in backhaul
+[ ] Log rejected routes in peering
 [ ] Move around some services
     * home-assistant + mosquitto on toiler (ACLs on router)
     * gitea on brueckenkopf
 [ ] Avoid double import of `findNixpkgs name` in deployment.nix
-[ ] Make backhaul.peer.remote a optional submodule
 [ ] Deploy ROA checks for eBGP sessions
 [ ] Deploy CAA and SSHFP records per host
 [ ] Roll out DNSSEC
 [ ] Unify dns.host and network config
+[ ] Central logging with loki
 
 # Hive
 [ ] Deploy monitoring user for mariadb

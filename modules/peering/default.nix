@@ -158,15 +158,22 @@ with lib;
             type = types.str;
           };
 
-          remote.host = mkOption {
-            description = "Remote host";
-            type = types.nullOr types.str;
-            default = null;
-          };
+          remote.endpoint = mkOption {
+            description = "Remote endpoint";
+            type = types.nullOr (types.submodule {
+              options = {
+                host = mkOption {
+                  description = "Remote host";
+                  type = types.str;
+                };
 
-          remote.port = mkOption {
-            description = "Remote port";
-            type = types.port;
+                port = mkOption {
+                  description = "Remote port";
+                  type = types.port;
+                };
+              };
+            });
+            default = null;
           };
 
           remote.pubkey = mkOption {
@@ -268,7 +275,7 @@ with lib;
         };
         wireguardPeers = [{
           wireguardPeerConfig = {
-            Endpoint = mkIf (cfg.remote.host != null) "${cfg.remote.host}:${toString cfg.remote.port}";
+            Endpoint = mkIf (cfg.remote.endpoint != null) "${cfg.remote.endpoint.host}:${toString cfg.remote.endpoint.port}";
             AllowedIPs = "0.0.0.0/0, ::/0";
             PublicKey = "${cfg.remote.pubkey}";
             PersistentKeepalive = 25;

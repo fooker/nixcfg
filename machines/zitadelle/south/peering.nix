@@ -25,8 +25,8 @@ in {
         local.port = 23231;
         local.privkey = secrets.peering.peers."zitadelle-north".privkey;
 
-        remote.host = "north.zitadelle.dev.open-desk.net";
-        remote.port = 23231;
+        remote.endpoint.host = "north.zitadelle.dev.open-desk.net";
+        remote.endpoint.port = 23231;
         remote.pubkey = "XNmZSMVWQeC6eR8P/XIfCEPnuaCbNq4d8lTOH+/QTQw=";
 
         transfer = {
@@ -54,8 +54,8 @@ in {
         local.port = 23233;
         local.privkey = secrets.peering.peers."bunker".privkey;
 
-        remote.host = "bunker.dev.open-desk.net";
-        remote.port = 23233;
+        remote.endpoint.host = "bunker.dev.open-desk.net";
+        remote.endpoint.port = 23233;
         remote.pubkey = "2z55B78CGG84aHgZsHZHY43iBas6Lpd9vLTZcT3PzCg=";
 
         transfer = {
@@ -128,8 +128,8 @@ in {
         local.port = 23423;
         local.privkey = secrets.peering.peers."major1".privkey;
 
-        remote.host = "193.239.104.101";
-        remote.port = 42102;
+        remote.endpoint.host = "193.239.104.101";
+        remote.endpoint.port = 42102;
         remote.pubkey = "2TUO7Aml21ppyciumxBukZyjO+YkHyFP087mu4MbRDY=";
 
         transfer = {
@@ -155,8 +155,8 @@ in {
         local.port = 23424;
         local.privkey = secrets.peering.peers."major2".privkey;
 
-        remote.host = "193.239.104.103";
-        remote.port = 42102;
+        remote.endpoint.host = "193.239.104.103";
+        remote.endpoint.port = 42102;
         remote.pubkey = "ebhr1DqDTfitH3XlZCT7j6DnEXP1+Ax3krei9CzNICo=";
 
         transfer = {
@@ -182,8 +182,8 @@ in {
         local.port = 23420;
         local.privkey = secrets.peering.peers."cccda".privkey;
 
-        remote.host = "core1.darmstadt.ccc.de";
-        remote.port = 43009;
+        remote.endpoint.host = "core1.darmstadt.ccc.de";
+        remote.endpoint.port = 43009;
         remote.pubkey = "B9v1EHhXAoCNbF8WZQe3Tdrm2GhvHZi6b59a/xlpESA=";
 
         transfer = {
@@ -209,8 +209,8 @@ in {
         local.port = 23422;
         local.privkey = secrets.peering.peers."ffffm".privkey;
 
-        remote.host = "icvpn2.aixit.off.de.ffffm.net";
-        remote.port = 40107;
+        remote.endpoint.host = "icvpn2.aixit.off.de.ffffm.net";
+        remote.endpoint.port = 40107;
         remote.pubkey = "e8z+pYfwLdj3yEThh7etkOnkwRu/4HOmKNoT0GAVZjg=";
 
         transfer = {
@@ -236,8 +236,8 @@ in {
         local.port = 23421;
         local.privkey = secrets.peering.peers."maglab".privkey;
 
-        remote.host = "lintillas.maglab.space";
-        remote.port = 42006;
+        remote.endpoint.host = "lintillas.maglab.space";
+        remote.endpoint.port = 42006;
         remote.pubkey = "wKN9BrkkKv884EBifkMMlwy96PADSOvaM9g5kM+Ub10=";
 
         transfer = {
@@ -263,8 +263,8 @@ in {
         local.port = 23425;
         local.privkey = secrets.peering.peers."clerie".privkey;
 
-        remote.host = "dn42-il-gw1.net.clerie.de";
-        remote.port = 51272;
+        remote.endpoint.host = "dn42-il-gw1.net.clerie.de";
+        remote.endpoint.port = 51272;
         remote.pubkey = "F1qXLmLwmg27+cGTyKBsp6Fh+K6H3GWthQYvafuznnQ=";
 
         transfer = {
@@ -290,8 +290,8 @@ in {
         local.port = 23426;
         local.privkey = secrets.peering.peers."maraun".privkey;
 
-        remote.host = "dn42-de.maraun.de";
-        remote.port = 21271;
+        remote.endpoint.host = "dn42-de.maraun.de";
+        remote.endpoint.port = 21271;
         remote.pubkey = "uS1AYe7zTGAP48XeNn0vppNjg7q0hawyh8Y0bvvAWhk=";
 
         transfer = {
