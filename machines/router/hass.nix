@@ -106,7 +106,7 @@ args @ { config, lib, pkgs, ... }:
   firewall.rules = dag: with dag; {
     inet.filter.input = {
       mqtt = between ["established"] ["drop"] ''
-        meta iifname iot
+        meta iifname {iot, priv}
         tcp
         dport 1883
         accept
