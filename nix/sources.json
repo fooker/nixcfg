@@ -54,15 +54,15 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "morph": {
-        "branch": "fix-lib-src",
+        "branch": "master",
         "description": "NixOS deployment tool",
         "homepage": null,
         "owner": "fooker",
         "repo": "morph",
-        "rev": "60900a5c4a0f4c66e349f72f08e61ee9a78e832f",
-        "sha256": "1cphxrdpw8x3i3q9gli96vj8kgjqi2669xm8hkh0vic5ann78fbl",
+        "rev": "4692b4c4bec371966b37947f5f74f0c0d7782df2",
+        "sha256": "1iyzzpbf89zzdk44dciz0ab8f40a2r4bh14czvqzvncy65qq52y4",
         "type": "tarball",
-        "url": "https://github.com/fooker/morph/archive/60900a5c4a0f4c66e349f72f08e61ee9a78e832f.tar.gz",
+        "url": "https://github.com/fooker/morph/archive/4692b4c4bec371966b37947f5f74f0c0d7782df2.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "niv": {

@@ -5,9 +5,7 @@ let
     (_: pkgs: {
       inherit (import sources.niv {}) niv;
 
-      morph = (unstable.callPackage (sources.morph + "/nix-packaging") {}).overrideAttrs (_: {
-        patches = [ ./patches/morph-evalConfig-machineName.patch ];
-      });
+      morph = (unstable.callPackage (sources.morph + "/nix-packaging") {});
     })
   ];
   pkgs = import sources.nixpkgs {
