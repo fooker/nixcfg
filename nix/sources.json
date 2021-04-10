@@ -59,10 +59,10 @@
         "homepage": null,
         "owner": "fooker",
         "repo": "morph",
-        "rev": "4692b4c4bec371966b37947f5f74f0c0d7782df2",
-        "sha256": "1iyzzpbf89zzdk44dciz0ab8f40a2r4bh14czvqzvncy65qq52y4",
+        "rev": "2063f8e0dda2d3134fef54e51cfce69d84d9f1f3",
+        "sha256": "0xz2s4fpcrb348z7zyf332hj1aqk9x980z9x9j35gy8m63c0ar65",
         "type": "tarball",
-        "url": "https://github.com/fooker/morph/archive/4692b4c4bec371966b37947f5f74f0c0d7782df2.tar.gz",
+        "url": "https://github.com/fooker/morph/archive/2063f8e0dda2d3134fef54e51cfce69d84d9f1f3.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "niv": {
