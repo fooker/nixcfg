@@ -1,186 +1,36 @@
 { config, lib, pkgs, name, ... }:
 
+with lib;
+
 let
   secrets = import ./secrets.nix;
 in {
   peering = {
     routerId = "37.120.172.185";
 
-    domains = {
-      "dn42" = {
-        ipv4 = "172.23.200.1/32";
-        ipv6 = "fd79:300d:6056::1/128";
-      };
+    backhaul = {
+      enable = true;
+      
+      deviceId = 1;
+      slug = "znorth";
 
-      "hive" = {
-        ipv4 = "${config.hive.self.address.ipv4}/32";
-        ipv6 = "${config.hive.self.address.ipv6}/128";
-      };
+      hub = true;
+
+      dn42.ipv4 = "172.23.200.1/32";
+      dn42.ipv6 = "fd79:300d:6056::1/128";
     };
 
     peers = {
-      "zitadelle-south" = {
-        netdev = "peer.x.zsouth";
-
-        local.port = 23231;
-        local.privkey = secrets.peering.peers."zitadelle-south".privkey;
-
-        remote.endpoint.host = "south.zitadelle.dev.open-desk.net";
-        remote.endpoint.port = 23231;
-        remote.pubkey = "pUi16/k8HksFrlVVR15RH7vc1xwUu5n+DhYvn6u5OGo=";
-
-        transfer = {
-          ipv4.addr = "192.168.67.0";
-          ipv4.peer = "192.168.67.1";
-
-          ipv6.addr = "fe80::1";
-          ipv6.peer = "fe80::2";
-        };
-
-        domains = {
-          "dn42" = {
-            babel = {};
-            bgp = {};
-          };
-          "hive" = {
-            ospf = {};
-          };
-        };
-      };
-
-      "bunker" = {
-        netdev = "peer.x.bunker";
-
-        local.port = 23232;
-        local.privkey = secrets.peering.peers."bunker".privkey;
-
-        remote.endpoint.host = "bunker.dev.open-desk.net";
-        remote.endpoint.port = 23232;
-        remote.pubkey = "a/BhSnxlKqe3gVAtKRXeKhuAtIL5csqzd1QYyJ/wbUo=";
-
-        transfer = {
-          ipv4.addr = "192.168.67.4";
-          ipv4.peer = "192.168.67.5";
-
-          ipv6.addr = "fe80::1";
-          ipv6.peer = "fe80::2";
-        };
-
-        domains = {
-          "dn42" = {
-            babel = {};
-          };
-          "hive" = {
-            ospf = {};
-          };
-        };
-      };
-
-      "router" = {
-        netdev = "peer.x.router";
-
-        local.port = 23230;
-        local.privkey = secrets.peering.peers."router".privkey;
-
-        remote.pubkey = "vjjnr+4LzQfbgSon0/ADFEc3+kppB9hoD3vXnXf77Cs=";
-
-        transfer = {
-          ipv4.addr = "192.168.67.6";
-          ipv4.peer = "192.168.67.7";
-
-          ipv6.addr = "fe80::1";
-          ipv6.peer = "fe80::2";
-        };
-
-        domains = {
-          "dn42" = {
-            babel = {};
-          };
-        };
-      };
-
-      "mobile" = {
-        netdev = "peer.x.mobile";
-
-        local.port = 23239;
-        local.privkey = secrets.peering.peers."mobile".privkey;
-
-        remote.pubkey = "dj9ooKzq0dFJIxnt6BKJ5Qz0akg0E44BXVbrQL0GHCs=";
-
-        transfer = {
-          ipv4.addr = "192.168.67.254";
-          ipv4.peer = "192.168.67.255";
-
-          ipv6.addr = "fe80::2";
-          ipv6.peer = "fe80::1";
-        };
-
-        domains = {
-          "dn42" = {
-            babel = {};
-          };
-        };
-      };
-
-      # "major1" = {
-      #   netdev = "peer.major1";
-
-      #   local.port = 23423;
-      #   local.privkey = secrets.peering.peers."major1".privkey;
-
-      #   remote.endpoint.host = "193.239.104.101";
-      #   remote.endpoint.port = 42101;
-      #   remote.pubkey = "RQ1nOR6CeUHuLOg8QoZHGPWVN8yY/HYhHC3KKfzZ5H4=";
-
-      #   transfer = {
-      #     ipv4.addr = "169.254.42.1";
-      #     ipv4.peer = "169.254.42.0";
-
-      #     ipv6.addr = "fe80::2";
-      #     ipv6.peer = "fe80::1";
-      #   };
-
-      #   domains = {
-      #     "dn42" = {
-      #       bgp = {
-      #         as = 4242422600;
-      #       };
-      #     };
-      #   };
-      # };
-
-      # "major2" = {
-      #   netdev = "peer.major2";
-
-      #   local.port = 23424;
-      #   local.privkey = secrets.peering.peers."major2".privkey;
-
-      #   remote.endpoint.host = "193.239.104.103";
-      #   remote.endpoint.port = 42101;
-      #   remote.pubkey = "9otCYTT2Eg+W5s3jEIXyVnclGAY/fOpcf21IOMH/VWI=";
-
-      #   transfer = {
-      #     ipv4.addr = "169.254.42.5";
-      #     ipv4.peer = "169.254.42.4";
-
-      #     ipv6.addr = "fe80::2";
-      #     ipv6.peer = "fe80::1";
-      #   };
-
-      #   domains = {
-      #     "dn42" = {
-      #       bgp = {
-      #         as = 4242422600;
-      #       };
-      #     };
-      #   };
-      # };
+      "backhaul.zsouth".local.privkey = secrets.peering.privkeys."backhaul.zsouth";
+      "backhaul.bunker".local.privkey = secrets.peering.privkeys."backhaul.bunker";
+      "backhaul.router".local.privkey = secrets.peering.privkeys."backhaul.router";
+      "backhaul.notebook".local.privkey = secrets.peering.privkeys."backhaul.notebook";
 
       "cccda" = {
         netdev = "peer.cccda";
 
         local.port = 23420;
-        local.privkey = secrets.peering.peers."cccda".privkey;
+        local.privkey = secrets.peering.privkeys."cccda";
 
         remote.endpoint.host = "core1.darmstadt.ccc.de";
         remote.endpoint.port = 43007;
@@ -207,7 +57,7 @@ in {
         netdev = "peer.ffffm";
 
         local.port = 23422;
-        local.privkey = secrets.peering.peers."ffffm".privkey;
+        local.privkey = secrets.peering.privkeys."ffffm";
 
         remote.endpoint.host = "icvpn2.aixit.off.de.ffffm.net";
         remote.endpoint.port = 40106;
@@ -234,7 +84,7 @@ in {
         netdev = "peer.maglab";
 
         local.port = 23421;
-        local.privkey = secrets.peering.peers."maglab".privkey;
+        local.privkey = secrets.peering.privkeys."maglab";
 
         remote.endpoint.host = "lintillas.maglab.space";
         remote.endpoint.port = 42005;
@@ -261,7 +111,7 @@ in {
         netdev = "peer.clerie";
 
         local.port = 23425;
-        local.privkey = secrets.peering.peers."clerie".privkey;
+        local.privkey = secrets.peering.privkeys."clerie";
 
         remote.endpoint.host = "dn42-il-gw1.net.clerie.de";
         remote.endpoint.port = 51271;
@@ -287,7 +137,7 @@ in {
         netdev = "peer.maraun";
 
         local.port = 23426;
-        local.privkey = secrets.peering.peers."maraun".privkey;
+        local.privkey = secrets.peering.privkeys."maraun";
 
         remote.endpoint.host = "dn42-de.maraun.de";
         remote.endpoint.port = 21271;

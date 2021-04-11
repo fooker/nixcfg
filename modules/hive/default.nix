@@ -61,6 +61,7 @@ with lib;
   };
 
   imports = [
+    ./peering.nix
     ./mariadb.nix
     ./glusterfs.nix
   ];

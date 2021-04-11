@@ -5,6 +5,7 @@ with lib;
 {
   imports = [
     ./bird
+    ./backhaul.nix
   ];
 
   options.peering = {
@@ -133,7 +134,7 @@ with lib;
     peers = mkOption {
       description = "Peers";
       default = {};
-      type = types.attrsOf (types.submodule ({ name, ... }: {
+      type = types.attrsOf (types.submodule ({ name, config, ... }: {
         options = {
           name = mkOption {
             description = "Name of the peer";
@@ -156,6 +157,12 @@ with lib;
           local.privkey = mkOption {
             description = "Local private key";
             type = types.str;
+          };
+
+          local.pubkey = mkOption {
+            description = "Local public key";
+            type = types.str;
+            readOnly = true;
           };
 
           remote.endpoint = mkOption {
@@ -182,7 +189,7 @@ with lib;
           };
 
           transfer.ipv4 = mkOption {
-            type = types.nullOr (types.submodule ({ ... }: {
+            type = types.nullOr (types.submodule ({
               options = {
                 addr = mkOption {
                   description = "Local IPv4 address";
@@ -198,7 +205,7 @@ with lib;
           };
 
           transfer.ipv6 = mkOption {
-            type = types.nullOr (types.submodule ({ ... }: {
+            type = types.nullOr (types.submodule ({
               options = {
                 addr = mkOption {
                   description = "Local IPv6 address";
@@ -215,7 +222,7 @@ with lib;
 
           domains = mkOption {
             description = "Routing Domains this peer participates in";
-            type = types.attrsOf (types.submodule ({ name, ... }: {
+            type = types.attrsOf (types.submodule ({
               options = {
                 bgp = mkOption {
                   description = "Peer BGP configuration";
@@ -252,6 +259,12 @@ with lib;
             }));
           };
         };
+
+        config = {
+          local.pubkey = builtins.readFile (pkgs.runCommandNoCCLocal "peering-${name}.crt" {} ''
+            echo '${ config.local.privkey }' | ${ pkgs.wireguard }/bin/wg pubkey > $out
+          '');
+        };
       }));
     };
   };
@@ -262,33 +275,33 @@ with lib;
       text = key;
     };
 
-    mkPeerNetwork = peer: cfg: {
-      netdevs."80-peering-peer-${peer}" = {
+    mkPeerNetwork = peer: {
+      netdevs."80-peering-peer-${peer.name}" = {
         netdevConfig = {
-          Description = "Peering with ${peer}";
-          Name = "${cfg.netdev}";
+          Description = "Peering with ${peer.name}";
+          Name = "${peer.netdev}";
           Kind = "wireguard";
         };
         wireguardConfig = {
-          ListenPort = cfg.local.port;
-          PrivateKeyFile = writePrivateKey peer cfg.local.privkey;
+          ListenPort = peer.local.port;
+          PrivateKeyFile = writePrivateKey peer.name peer.local.privkey;
         };
         wireguardPeers = [{
           wireguardPeerConfig = {
-            Endpoint = mkIf (cfg.remote.endpoint != null) "${cfg.remote.endpoint.host}:${toString cfg.remote.endpoint.port}";
+            Endpoint = mkIf (peer.remote.endpoint != null) "${peer.remote.endpoint.host}:${toString peer.remote.endpoint.port}";
             AllowedIPs = "0.0.0.0/0, ::/0";
-            PublicKey = "${cfg.remote.pubkey}";
+            PublicKey = "${peer.remote.pubkey}";
             PersistentKeepalive = 25;
           };
         }];
       };
 
-      networks."80-peering-peer-${peer}" = {
+      networks."80-peering-peer-${peer.name}" = {
         matchConfig = {
-          Name = "${cfg.netdev}";
+          Name = "${peer.netdev}";
         };
         networkConfig = {
-          Description = "Peering with ${peer}";
+          Description = "Peering with ${peer.name}";
 
           LinkLocalAddressing = "no";
           IPv6AcceptRA = false;
@@ -296,18 +309,18 @@ with lib;
           IPForward = "yes";
         };
         addresses = 
-          (optional (cfg.transfer.ipv4 != null) { 
+          (optional (peer.transfer.ipv4 != null) { 
             addressConfig = {
-              Address = "${cfg.transfer.ipv4.addr}/32";
-              Peer = "${cfg.transfer.ipv4.peer}/32";
+              Address = "${peer.transfer.ipv4.addr}/32";
+              Peer = "${peer.transfer.ipv4.peer}/32";
               Scope = "link";
             };
           })
           ++
-          (optional (cfg.transfer.ipv6 != null) {
+          (optional (peer.transfer.ipv6 != null) {
             addressConfig = {
-              Address = "${cfg.transfer.ipv6.addr}/128";
-              Peer = "${cfg.transfer.ipv6.peer}/128";
+              Address = "${peer.transfer.ipv6.addr}/128";
+              Peer = "${peer.transfer.ipv6.peer}/128";
               Scope = "link";
             };
           });
@@ -352,9 +365,8 @@ with lib;
     environment.systemPackages = [ pkgs.wireguard-tools ];
 
     systemd.network = mkMerge (flatten [
-      (mapAttrsToList mkPeerNetwork config.peering.peers)
-      (map
-        mkDomainNetwork
+      (map mkPeerNetwork (attrValues config.peering.peers))
+      (map mkDomainNetwork
         (filter # Filter domains with standalone interface and having at least one peer
           (domain: and
             (any # Check if domain has any peer
@@ -367,21 +379,20 @@ with lib;
     firewall.rules = dag: with dag; {
       inet.filter.input =
         let
-          mkTunnel = peer: cfg: optional
-            (cfg.local.port != null)
+          mkTunnel = peer: optional
+            (peer.local.port != null)
             (nameValuePair
-              "peering-${peer}-wg"
+              "peering-${peer.name}-wg"
               (between ["established"] ["drop"] ''
-                udp dport ${toString cfg.local.port}
+                udp dport ${toString peer.local.port}
                 accept
               ''));
         in
-          listToAttrs (concatLists (mapAttrsToList mkTunnel config.peering.peers));
+          listToAttrs (concatMap mkTunnel (attrValues config.peering.peers));
 
       inet.filter.forward =
         let
-          /* All domains having at least one peer
-          */
+          # All domains having at least one peer
           domains = filter
             (domain: (any
               (peer: hasAttr domain.name peer.domains) # Check if peer is associated with domain
@@ -392,17 +403,14 @@ with lib;
           mkDomain = domain: nameValuePair
             "peering-${domain.name}"
             (let
-              /* List of all peers participating in this domain
-              */
+              # List of all peers participating in this domain
               peers = filter
                 (peer: hasAttr domain.name peer.domains) # Check if peer is associated with domain
                 (attrValues config.peering.peers);
 
-              /* All network devices participating in this domain
-
-                  This includes the network interface for all participating
-                  peers and the local interface, if it's not a dummy interface.
-              */
+              # All network devices participating in this domain.
+              # This includes the network interface for all participating
+              # peers and the local interface, if it's not a dummy interface.
               netdevs = (optional (domain.netdev != null) domain.netdev) ++
                         (map (peer: peer.netdev) peers);
 

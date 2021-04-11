@@ -59,7 +59,7 @@ domain: peers:
 
         import keep filtered;
         import filter {
-          if net ~ [${ipv4.network}/${toString ipv4.netmask}+] then reject;
+          if net ~ [${ipv6.network}/${toString ipv6.netmask}+] then reject;
           if ${domain.name}_exported_v6() then accept;
           if ${domain.name}_filtered_v6() then accept;
 
