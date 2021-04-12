@@ -55,8 +55,8 @@ in {
 
   config = {
     data = with config; [
-      toString mappings.algorithm.${algorithm}
-      toString mappings.hash.${hash}
+      (toString mappings.algorithm.${algorithm})
+      (toString mappings.hash.${hash})
       fingerprint
     ];
   };

@@ -4,17 +4,19 @@ with lib;
 
 {
   dns.zones = let
+    nameservers = [
+      "ns.inwx.de."
+      "ns2.inwx.de."
+      "ns3.inwx.de."
+    ];
+
     zone = {
       SOA = {
         mname = "ns.inwx.de.";
         rname = "hostmaster";
       };
 
-      NS = [
-        "ns.inwx.de."
-        "ns2.inwx.de."
-        "ns3.inwx.de."
-      ];
+      NS = nameservers;
     };
   in {
     net.open-desk = zone // {
@@ -32,11 +34,11 @@ with lib;
           minimum = 300;
         };
         
-        NS = [
-          "ns.inwx.de."
-          "ns2.inwx.de."
-          "ns3.inwx.de."
-        ];
+        NS = nameservers;
+
+        parent = {
+          NS = nameservers;
+        };
       };
 
       # Legacy host records
