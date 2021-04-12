@@ -10,7 +10,10 @@ with lib;
   };
 
   config = mkIf config.server.enable {
-    services.openssh.enable = true;
+    services.openssh = {
+      enable = true;
+      passwordAuthentication = false;
+    };
 
     firewall.rules = dag: with dag; {
       inet.filter.input = {
