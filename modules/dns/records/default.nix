@@ -44,5 +44,11 @@ in {
 
     SRV = mkModuleRecord "SRV" ./srv.nix {
     };
+
+    DNSKEY = mkModuleRecord "DNSKEY" ./dnskey.nix {
+    };
+
+    DS = mkModuleRecord "DS" ./ds.nix {
+    };
   };
 }

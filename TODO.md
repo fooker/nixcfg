@@ -9,9 +9,11 @@
 [ ] Avoid double import of `findNixpkgs name` in deployment.nix
 [ ] Deploy ROA checks for eBGP sessions
 [ ] Deploy CAA and SSHFP records per host
-[ ] Roll out DNSSEC
 [ ] Unify dns.host and network config
 [ ] Central logging with loki
+
+# Router
+[ ] Restarting systemd-netword crashes PPPoE
 
 # Hive
 [ ] Deploy monitoring user for mariadb

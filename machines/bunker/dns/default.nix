@@ -77,6 +77,11 @@ in {
             update-type: TXT
             key: [ acme_update ]
 
+        policy:
+          - id: default
+            algorithm: ed25519
+            cds-cdnskey-publish: always
+
         template:
           - id: default
             semantic-checks: true
@@ -84,6 +89,8 @@ in {
             zonefile-load: difference-no-serial
             serial-policy: dateserial
             journal-content: all
+            dnssec-signing: on
+            dnssec-policy: default
 
         zone:
         ${ concatMapStringsSep "\n" (zone: ''
