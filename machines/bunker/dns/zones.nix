@@ -13,7 +13,7 @@ with lib;
       NS = [
         "ns.inwx.de."
         "ns2.inwx.de."
-        "ns3.inwx.eu."
+        "ns3.inwx.de."
       ];
     };
   in {
@@ -35,7 +35,7 @@ with lib;
         NS = [
           "ns.inwx.de."
           "ns2.inwx.de."
-          "ns3.inwx.eu."
+          "ns3.inwx.de."
         ];
       };
 
