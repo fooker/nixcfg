@@ -38,4 +38,8 @@ in {
       "libvirtd"
     ];
   };
+
+  backup.paths = [
+    "/home/fooker"
+  ];
 }
