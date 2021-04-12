@@ -8,9 +8,10 @@
     * gitea on brueckenkopf
 [ ] Avoid double import of `findNixpkgs name` in deployment.nix
 [ ] Deploy ROA checks for eBGP sessions
-[ ] Deploy CAA and SSHFP records per host
+[ ] Deploy SSHFP records per host
 [ ] Unify dns.host and network config
 [ ] Central logging with loki
+[ ] Rename `mkZone` to `mkRecords`
 
 # Router
 [ ] Restarting systemd-netword crashes PPPoE

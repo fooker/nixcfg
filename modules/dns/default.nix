@@ -282,7 +282,7 @@ in {
       };
 
       # Group the collected record by zone they are defined in
-      # [ { zone, record }, { zone, include } ... ] -> [ { zone, records = [ ... ], includes = [ ... ]} ... ]
+      # [ { zone, record }, { zone, include } ... ] -> [ { name = zone, records = [ ... ], includes = [ ... ]} ... ]
       grouped = attrValues (groupBy'
         (group: entry: {
           name = entry.zone;

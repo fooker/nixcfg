@@ -17,6 +17,25 @@ with lib;
       };
 
       NS = nameservers;
+
+      # Prohibit creation of certificates by default
+      CAA = [
+        {
+          critical = true;
+          tag = "issue";
+          value = ";";
+        }
+        {
+          critical = true;
+          tag = "issueWild";
+          value = ";";
+        }
+        {
+          critical = true;
+          tag = "iodef";
+          value = "mailto:hostmaster@open-desk.net";
+        }
+      ];
     };
   in {
     net.open-desk = zone // {

@@ -102,6 +102,14 @@ in {
         "_acme-challenge" = {
           CNAME = "${ domain }.acme.dyn.open-desk.net.";
         };
+
+        CAA = [
+          {
+            critical = true;
+            tag = "issue";
+            value = "letsencrypt.org";
+          }
+        ];
       })
       domains);
 
