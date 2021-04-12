@@ -108,6 +108,15 @@ in {
       };
     };
 
+    backup.commands = [
+      ''
+        mkdir knot
+        ${ pkgs.lmdb }/bin/mdb_dump '/var/lib/knot/journal' -f knot/journal.dump
+        ${ pkgs.lmdb }/bin/mdb_dump '/var/lib/knot/timers'  -f knot/timers.dump
+        ${ pkgs.lmdb }/bin/mdb_dump '/var/lib/knot/keys'    -f knot/keys.dump    -a
+      ''
+    ];
+
     deployment.secrets = {
       "knot-key-acme-update" = {
         source = "${path}/secrets/knot-key-acme-update.incl";
