@@ -62,7 +62,13 @@ with lib;
     };
   };
 
-  config = {
+  config = let
+    # Create a standalone bash script for each command
+    scripts = map
+      (command: pkgs.writeShellScript "backup-script" command)
+      config.backup.commands;
+
+  in {
     services.openssh.knownHosts.backup = {
       hostNames = [ config.backup.repo.host ];
       publicKey = config.backup.repo.fingerprint;
@@ -93,7 +99,7 @@ with lib;
         mkdir /tmp/backup-$archiveName
         cd /tmp/backup-$archiveName
 
-        ${concatMapStringsSep "\n" (command: "${command}") config.backup.commands}
+        ${concatStringsSep "\n" scripts}
       '';
     };
 
