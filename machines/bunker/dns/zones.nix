@@ -65,10 +65,6 @@ with lib;
         "zitadelle"."bak" = {
           A = "37.221.196.84";
         };
-        "brueckenkopf" = {
-          A = "193.174.29.6";
-          AAAA = "2001:638:301:11a3::6";
-        };
         "fliegerhorst" = {
           A = "193.34.144.95";
           AAAA = "2a02:c205:3002:2452::1";
@@ -89,12 +85,7 @@ with lib;
       };
 
       # Other legacy records
-      aurblobs = { CNAME = "brueckenkopf.dev.open-desk.net."; };
-      grafana = { CNAME = "brueckenkopf.dev.open-desk.net."; };
       magnetico = { CNAME = "fliegerhorst.dev.open-desk.net."; };
-      prometheus = { CNAME = "brueckenkopf.dev.open-desk.net."; };
-      salt = { CNAME = "brueckenkopf.dev.open-desk.net."; };
-      weechat = { CNAME = "brueckenkopf.dev.open-desk.net."; };
     };
 
     org.open-desk = zone // {};

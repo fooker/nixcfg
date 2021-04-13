@@ -25,6 +25,7 @@ in {
       "backhaul.bunker".local.privkey = secrets.peering.privkeys."backhaul.bunker";
       "backhaul.router".local.privkey = secrets.peering.privkeys."backhaul.router";
       "backhaul.notebook".local.privkey = secrets.peering.privkeys."backhaul.notebook";
+      "backhaul.brkopf".local.privkey = secrets.peering.privkeys."backhaul.brkopf";
 
       "cccda" = {
         netdev = "peer.cccda";
