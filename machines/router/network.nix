@@ -88,17 +88,6 @@ in {
           LACPTransmitRate = "fast";
         };
       };
-
-      "15-vx" = {
-        netdevConfig = {
-          Name = "vx";
-          Kind = "vlan";
-        };
-
-        vlanConfig = {
-          Id = 100;
-        };
-      };
     };
 
     networks = {
@@ -127,7 +116,7 @@ in {
 
       "10-int" = {
         name = "int";
-        vlan = (map (name: "${name}-vlan") (attrNames networks)) ++ [ "vx" ];
+        vlan = map (name: "${name}-vlan") (attrNames networks);
         networkConfig = {
           LinkLocalAddressing = "no";
         };
