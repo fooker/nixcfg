@@ -89,13 +89,10 @@ in {
     };
   };
 
-  reverse-proxy = {
-    enable = true;
-    hosts = {
-      "mopidy" = {
-        domains = [ "mopidy.home.open-desk.net" ];
-        target = "http://[::1]:6680";
-      };
+  reverse-proxy.hosts = {
+    "mopidy" = {
+      domains = [ "mopidy.home.open-desk.net" ];
+      target = "http://[::1]:6680";
     };
   };
 

@@ -17,13 +17,10 @@ in {
     options = ["x-systemd.automount" "noauto"];
   };
 
-  reverse-proxy = {
-    enable = true;
-    hosts = {
-      "jellyfin" = {
-        domains = [ "jellyfin.home.open-desk.net" ];
-        target = "http://127.0.0.1:8096";
-      };
+  reverse-proxy.hosts = {
+    "jellyfin" = {
+      domains = [ "jellyfin.home.open-desk.net" ];
+      target = "http://127.0.0.1:8096";
     };
   };
 

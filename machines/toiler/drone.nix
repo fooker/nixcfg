@@ -125,13 +125,10 @@ in {
     groups."drone-runner" = {};
   };
 
-  reverse-proxy = {
-    enable = true;
-    hosts = {
-      "ci" = {
-        domains = [ "ci.home.open-desk.net" ];
-        target = "http://localhost:3030";
-      };
+  reverse-proxy.hosts = {
+    "ci" = {
+      domains = [ "ci.home.open-desk.net" ];
+      target = "http://localhost:3030";
     };
   };
 }

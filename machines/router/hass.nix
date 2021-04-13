@@ -52,13 +52,10 @@ args @ { config, lib, pkgs, ... }:
     });
   };
 
-  reverse-proxy = {
-    enable = true;
-    hosts = {
-      "hass" = {
-        domains = [ "hass.home.open-desk.net" ];
-        target = "http://[::1]:8123/";
-      };
+  reverse-proxy.hosts = {
+    "hass" = {
+      domains = [ "hass.home.open-desk.net" ];
+      target = "http://[::1]:8123/";
     };
   };
 

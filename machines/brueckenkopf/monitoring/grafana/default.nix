@@ -11,13 +11,10 @@ in {
     security.adminPassword = secrets.grafana.adminPassword;
   };
 
-  reverse-proxy = {
-    enable = true;
-    hosts = {
-      "grafana" = {
-        domains = [ config.services.grafana.domain ];
-        target = "http://${ config.services.grafana.addr }:${ toString config.services.grafana.port }";
-      };
+  reverse-proxy.hosts = {
+    "grafana" = {
+      domains = [ config.services.grafana.domain ];
+      target = "http://${ config.services.grafana.addr }:${ toString config.services.grafana.port }";
     };
   };
 

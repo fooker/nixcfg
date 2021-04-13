@@ -35,13 +35,10 @@ in {
     } ];
   };
 
-  reverse-proxy = {
-    enable = true;
-    hosts = {
-      "git" = {
-        domains = [ "git.home.open-desk.net" ];
-        target = "http://[${config.services.gitea.httpAddress}]:${toString config.services.gitea.httpPort}";
-      };
+  reverse-proxy.hosts = {
+    "git" = {
+      domains = [ "git.home.open-desk.net" ];
+      target = "http://[${config.services.gitea.httpAddress}]:${toString config.services.gitea.httpPort}";
     };
   };
 

@@ -3,16 +3,6 @@
 with lib;
 {
   options.reverse-proxy = {
-    enable = mkOption {
-      type = types.bool;
-      default = false;
-    };
-
-    protected = mkOption {
-      type = types.bool;
-      default = false;
-    };
-
     hosts = mkOption {
       type = types.attrsOf (types.submodule ({
         options = {
@@ -29,11 +19,11 @@ with lib;
       }));
 
       description = "Virtual reverse proxy hosts";
-      default = [];
+      default = {};
     };
   };
 
-  config = mkIf config.reverse-proxy.enable {
+  config = mkIf (config.reverse-proxy.hosts != {}) {
     letsencrypt.certs = mapAttrs (name: host: {
       domains = host.domains;
       owner = "nginx";

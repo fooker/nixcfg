@@ -32,13 +32,10 @@ in {
     wants = [ "network.target" ];
   };
 
-  reverse-proxy = {
-    enable = true;
-    hosts = {
-      "weechat" = {
-        domains = [ "weechat.open-desk.net" ];
-        target = "http://127.0.0.1:9000";
-      };
+  reverse-proxy.hosts = {
+    "weechat" = {
+      domains = [ "weechat.open-desk.net" ];
+      target = "http://127.0.0.1:9000";
     };
   };
 

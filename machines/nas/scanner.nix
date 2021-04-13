@@ -32,13 +32,10 @@ in {
   #   };
   # };
 
-  # reverse-proxy = {
-  #   enable = true;
-  #   hosts = {
-  #     "paperless" = {
-  #       domains = [ "paperless.home.open-desk.net" ];
-  #       target = "http://[::1]:${ toString config.services.paperless.port }/";
-  #     };
+  # reverse-proxy.hosts = {
+  #   "paperless" = {
+  #     domains = [ "paperless.home.open-desk.net" ];
+  #     target = "http://[::1]:${ toString config.services.paperless.port }/";
   #   };
   # };
 

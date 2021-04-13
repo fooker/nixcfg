@@ -59,13 +59,10 @@ in {
     };
   };
 
-  reverse-proxy = {
-    enable = true;
-    hosts = {
-      "deluge" = {
-        domains = [ "deluge.home.open-desk.net" ];
-        target = "http://[::1]:${ toString config.services.deluge.web.port }/";
-      };
+  reverse-proxy.hosts = {
+    "deluge" = {
+      domains = [ "deluge.home.open-desk.net" ];
+      target = "http://[::1]:${ toString config.services.deluge.web.port }/";
     };
   };
 

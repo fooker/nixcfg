@@ -13,7 +13,6 @@
 [ ] Central logging with loki
 [ ] Rename `mkZone` to `mkRecords`
 [ ] Generate `backhaul.deviceId` from index in node list
-[ ] Remove `reverse-proxy.enable` by enabling if `reverse-proxy.hosts` are defined
 
 # Router
 [ ] Restarting systemd-netword crashes PPPoE
