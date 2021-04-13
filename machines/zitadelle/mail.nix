@@ -153,7 +153,7 @@ in {
 
     # MX and related security and service records for all domains we serve for
     (mkMerge (map
-      (domain: (ext.domain.absolute domain).mkZone {
+      (domain: (ext.domain.absolute domain).mkRecords {
 
         # MX record for this server
         MX = {

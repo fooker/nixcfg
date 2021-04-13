@@ -40,7 +40,7 @@ rec {
         };
 
       # Create DNS records in a zone denoted by this domain name
-      mkZone = setAttrByPath labels;
+      mkRecords = setAttrByPath labels;
 
       toSimpleString = concatStringsSep "." (reverseList labels);
       toString = if absolute

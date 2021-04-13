@@ -56,7 +56,7 @@ with ext;
   };
 
   config = {
-    dns.zones = mkIf (config.dns.host != null) (config.dns.host.domain.mkZone {
+    dns.zones = mkIf (config.dns.host != null) (config.dns.host.domain.mkRecords {
       A = config.dns.host.ipv4;
       AAAA = config.dns.host.ipv6;
     });

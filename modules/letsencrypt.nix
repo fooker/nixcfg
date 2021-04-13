@@ -98,7 +98,7 @@ in {
         (cert: cert.domains)
         (attrValues config.letsencrypt.certs);
     in mkMerge (map
-      (domain: (ext.domain.absolute domain).mkZone {
+      (domain: (ext.domain.absolute domain).mkRecords {
         "_acme-challenge" = {
           CNAME = "${ domain }.acme.dyn.open-desk.net.";
         };

@@ -48,7 +48,7 @@ in {
       (app: app.domains)
       (attrValues apps);
   in mkMerge (map
-    (domain: (ext.domain.absolute domain).mkZone {
+    (domain: (ext.domain.absolute domain).mkRecords {
       A = config.dns.host.ipv4;
       AAAA = config.dns.host.ipv6;
     })
