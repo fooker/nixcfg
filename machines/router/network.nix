@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, tools, ... }:
 
 with lib;
 
@@ -7,35 +7,29 @@ let
     mngt = {
       vlan = 1;
       
-      ipv4.address = "192.168.254.1";
-      ipv4.prefixLength = 24;
+      ipv4 = tools.ipinfo "192.168.254.1/24";
 
       dhcpPoolOffset = 128;
     };
     priv = {
       vlan = 2;
 
-      ipv4.address = "172.23.200.129";
-      ipv4.prefixLength = 25;
-
-      ipv6.address = "fd79:300d:6056:100::";
-      ipv6.prefixLength = 64;
+      ipv4 = tools.ipinfo config.peering.backhaul.dn42.ipv4;
+      ipv6 = tools.ipinfo config.peering.backhaul.dn42.ipv6;
 
       dhcpPoolOffset = 32;
     };
     guest = {
       vlan = 3;
 
-      ipv4.address = "203.0.113.1";
-      ipv4.prefixLength = 24;
+      ipv4 = tools.ipinfo "203.0.113.1/24";
 
       dhcpPoolOffset = 16;
     };
     iot = {
       vlan = 4;
 
-      ipv4.address = "192.168.0.1";
-      ipv4.prefixLength = 24;
+      ipv4 = tools.ipinfo "192.168.0.1/24";
 
       dhcpPoolOffset = 16;
     };
@@ -184,8 +178,8 @@ in {
       "30-${name}" = {
         name = "${name}";
         address = concatLists [
-          (optional (hasAttr "ipv4" config) "${config.ipv4.address}/${toString config.ipv4.prefixLength}")
-          (optional (hasAttr "ipv6" config) "${config.ipv6.address}/${toString config.ipv6.prefixLength}")
+          (optional (hasAttr "ipv4" config) "${config.ipv4.address}/${toString config.ipv4.netmask}")
+          (optional (hasAttr "ipv6" config) "${config.ipv6.address}/${toString config.ipv6.netmask}")
         ];
 
         networkConfig = {

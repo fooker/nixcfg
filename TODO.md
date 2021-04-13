@@ -12,6 +12,7 @@
 [ ] Unify dns.host and network config
 [ ] Central logging with loki
 [ ] Rename `mkZone` to `mkRecords`
+[ ] Generate `backhaul.deviceId` from index in node list
 
 # Router
 [ ] Restarting systemd-netword crashes PPPoE
