@@ -21,6 +21,7 @@ rec {
       isAbsolute = absolute;
       isRelative = !absolute;
 
+      # Resolve a domain relative to this one
       resolve = sub:
         assert isType "domain" sub;
         if sub.isRelative
@@ -30,6 +31,7 @@ rec {
           }
           else sub;
 
+      # Get the parent of this domain name
       parent =
         assert labels != [];
         mkDomain {
@@ -37,6 +39,7 @@ rec {
           inherit absolute;
         };
 
+      # Create DNS records in a zone denoted by this domain name
       mkZone = setAttrByPath labels;
 
       toSimpleString = concatStringsSep "." (reverseList labels);
