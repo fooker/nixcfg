@@ -42,13 +42,12 @@ with lib;
         serverName = head host.domains;
         serverAliases = tail host.domains;
 
-        listen =
-          let
-            addr = "*";
-          in [
-            { inherit addr; port = 80; }
-            { inherit addr; port = 443; ssl = true; }
-          ];
+        listen = [
+          { addr = "0.0.0.0"; port = 80; }
+          { addr = "[::]"; port = 80; }
+          { addr = "0.0.0.0"; port = 443; ssl = true; }
+          { addr = "[::]"; port = 443; ssl = true; }
+        ];
 
         forceSSL = true;
         sslCertificate = config.letsencrypt.certs."${name}".path.cert;
