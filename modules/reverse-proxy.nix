@@ -71,7 +71,8 @@ with lib;
         (attrValues config.reverse-proxy.hosts);
     in mkMerge (map
       (domain: (ext.domain.absolute domain).mkRecords {
-        CNAME = config.dns.host.domain;
+        A = config.dns.host.ipv4;
+        AAAA = config.dns.host.ipv6;
       })
       domains);
 

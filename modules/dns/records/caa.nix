@@ -52,7 +52,7 @@ with ext;
     data = with config; [
       (toString (if critical then 128 else 0))
       (toString tag)
-      (toString value)
+      "\"${(toString value)}\""
     ];
   };
 }
