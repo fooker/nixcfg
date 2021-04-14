@@ -52,6 +52,7 @@ with lib;
         forceSSL = true;
         sslCertificate = config.letsencrypt.certs."${name}".path.cert;
         sslCertificateKey = config.letsencrypt.certs."${name}".path.key;
+        sslTrustedCertificate = config.letsencrypt.certs."${name}".path.fullchain;
 
         locations."/" = {
           proxyPass = host.target;
@@ -62,6 +63,10 @@ with lib;
             proxy_set_header Accept-Encoding "$http_accept_encoding";
           '';
         };
+
+        extraConfig = ''
+          add_header Strict-Transport-Security "max-age=63072000; includeSubdomains; preload;";
+        '';
       }) config.reverse-proxy.hosts;
     };
 

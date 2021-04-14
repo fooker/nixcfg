@@ -77,11 +77,13 @@ in {
         forceSSL = true;
         sslCertificate = config.letsencrypt.certs."${name}".path.cert;
         sslCertificateKey = config.letsencrypt.certs."${name}".path.key;
+        sslTrustedCertificate = config.letsencrypt.certs."${name}".path.fullchain;
 
         root = app.root or "/srv/http/${name}";
         
         extraConfig = ''
           default_type application/octet-stream;
+          add_header Strict-Transport-Security "max-age=63072000; includeSubdomains; preload;";
         '';
       }
       (app.config or {})
