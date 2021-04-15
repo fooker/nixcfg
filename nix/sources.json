@@ -125,10 +125,10 @@
         "homepage": "https://github.com/NixOS/nixpkgs",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "ad47284f8b01f587e24a4f14e0f93126d8ebecda",
-        "sha256": "00m8zhb9lf1shkaf572imsmxq20fmq397jcydx3c651fi28i6rgs",
+        "rev": "311ceed827f531f88f46222920cd1ebb2c101f73",
+        "sha256": "1790vn4wdldgjfjgcx10pnq9hvz7ymr52xmbrkimjld1knibp0gw",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/ad47284f8b01f587e24a4f14e0f93126d8ebecda.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs/archive/311ceed827f531f88f46222920cd1ebb2c101f73.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs-router": {
