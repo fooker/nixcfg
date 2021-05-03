@@ -23,6 +23,27 @@
     };
 
     plugins = plugins: [
+      (plugins.buildPlugin rec {
+        pname = "PrusaLevelingGuide";
+        version = "1.0.17";
+        src = pkgs.fetchFromGitHub {
+          owner = "scottrini";
+          repo = "Octoprint-PrusaLevelingGuide";
+          rev = "${version}";
+          sha256 = "10n6f8nz6lgaa0kizn5lqmviba3awrwin3lc2ibjnw8zfh6413ai";
+        };
+      })
+
+      (plugins.buildPlugin rec {
+        pname = "ExcludeRegionPlugin";
+        version = "0.3.0";
+        src = pkgs.fetchFromGitHub {
+          owner = "bradcfisher";
+          repo = "Octoprint-ExcludeRegionPlugin";
+          rev = "${version}";
+          sha256 = "1yhw9gdb5hwnbs729bw5rgid3plhz5kxmswky1i30nfz7izrn4q1";
+        };
+      })
     ];
   };
 
