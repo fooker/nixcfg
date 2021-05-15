@@ -62,7 +62,7 @@ in {
   reverse-proxy.hosts = {
     "deluge" = {
       domains = [ "deluge.home.open-desk.net" ];
-      target = "http://[::1]:${ toString config.services.deluge.web.port }/";
+      target = "http://127.0.0.1:${ toString config.services.deluge.web.port }/";
     };
   };
 
