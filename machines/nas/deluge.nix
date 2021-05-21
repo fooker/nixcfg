@@ -163,17 +163,4 @@ in {
       target = "http://127.0.0.1:${ toString config.services.deluge.web.port }/";
     };
   };
-
-  # firewall.rules = dag: with dag; {
-  #   inet.filter.input = {
-  #     deluge-torrent-udp = between ["established"] ["drop"] ''
-  #       udp dport 6242
-  #       accept
-  #     '';
-  #     deluge-torrent-tcp = between ["established"] ["drop"] ''
-  #       tcp dport 6242
-  #       accept
-  #     '';
-  #   };
-  # };
 }
