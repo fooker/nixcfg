@@ -1,7 +1,12 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+
 let
   secrets = import ./secrets.nix;
+
+  netns-proxy = pkgs.callPackage ../../packages/netns-proxy.nix {};
+
 in {
   services.deluge  = {
     enable = true;
@@ -21,8 +26,9 @@ in {
         "Extractor"
       ];
       "listen_interface" = "";
-      "listen_ports" = [ 6242 6242 ];
+      "listen_ports" = [ secrets.deluge.wg.port secrets.deluge.wg.port ];
       "listen_reuse_port" = true;
+      "outgoing_ports" = [ secrets.deluge.wg.port secrets.deluge.wg.port ];
       "max_active_downloading" = 10;
       "max_active_limit" = 100;
       "max_active_seeding" = 100;
@@ -40,7 +46,8 @@ in {
       "move_completed_path" = "/mnt/downloads/finished/unsorted";
       "natpmp" = true;
       "new_release_check" = false;
-      "random_outgoing_ports" = true;
+      "random_port" = false;
+      "random_outgoing_ports" = false;
       "seed_time_limit" = 86400;
       "seed_time_ratio_limit" = 10.0;
       "stop_seed_at_ratio" = true;
@@ -59,6 +66,97 @@ in {
     };
   };
 
+  systemd.services."deluge-netns" = {
+    description = "Deluge BitTorrent Daemon - Network Namespace";
+    after = [ "network.target" ];
+
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      PrivateNetwork = true;
+      
+      ExecStartPre = [
+        "-${ pkgs.iproute }/bin/ip netns delete deluge"
+      ];
+
+      ExecStart = [
+        "${ pkgs.iproute }/bin/ip netns add deluge"
+        "${ pkgs.iproute }/bin/ip -n deluge link set lo up"
+
+        "${ pkgs.iproute }/bin/ip link add dev deluge type veth peer "
+      ];
+
+      ExecStop = [
+        "${ pkgs.iproute }/bin/ip netns delete deluge"
+      ];
+    };
+  };
+
+  systemd.services."deluge-wg" = {
+    description = "Deluge BitTorrent Daemon - Wireguard Tunnel";
+    after = [ "network.target" "deluge-netns.service" ];
+    bindsTo = [ "deluge-netns.service" ];
+
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+
+      ExecStartPre = [
+        "-${ pkgs.iproute }/bin/ip -n deluge link delete dev deluge"
+      ];
+
+      ExecStart = [
+        "${ pkgs.kmod }/bin/modprobe wireguard"
+
+        "${ pkgs.iproute }/bin/ip link add dev deluge type wireguard"
+        "${ pkgs.iproute }/bin/ip link set dev deluge netns deluge"
+
+        "${ pkgs.iproute }/bin/ip -n deluge link set dev deluge up"
+        "${ pkgs.iproute }/bin/ip -n deluge addr add dev deluge ${ secrets.deluge.wg.address.ipv4 }"
+        "${ pkgs.iproute }/bin/ip -n deluge addr add dev deluge ${ secrets.deluge.wg.address.ipv6 }"
+        "${ pkgs.iproute }/bin/ip -n deluge route replace 0.0.0.0/0 dev deluge table main"
+        "${ pkgs.iproute }/bin/ip -n deluge route replace ::0/0 dev deluge table main"
+
+        ''${ pkgs.iproute }/bin/ip netns exec deluge \
+            ${ pkgs.wireguard-tools }/bin/wg set deluge \
+              private-key '${ pkgs.writeText "wg-key" secrets.deluge.wg.local.private-key }' \
+              peer '${ secrets.deluge.wg.remote.public-key }' \
+                endpoint '${ secrets.deluge.wg.remote.endpoint }' \
+                persistent-keepalive 10 \
+                allowed-ips 0.0.0.0/0,::0/0 \
+        ''
+      ];
+
+      ExecStop = [
+        "${ pkgs.iproute }/bin/ip -n deluge link delete dev deluge"
+      ];
+    };
+  };
+
+  systemd.services."deluged-proxy" = {
+    after = [ "deluge-netns.service" "deluged.service" ];
+    bindsTo = [ "deluge-netns.service" ];
+
+    serviceConfig = {
+      Type        = "simple";
+      ExecStart   = "${ netns-proxy }/bin/netns-proxy -b 127.0.0.1:58846 deluge 127.0.0.1:58846";
+      Restart     = "on-failure";
+    };
+
+    wantedBy = [ "multi-user.target" ]; 
+  };
+
+  systemd.services."deluged" = {
+    after = [ "deluge-netns.service" ];
+    bindsTo = [ "deluge-netns.service" ];
+
+    serviceConfig = {
+      NetworkNamespacePath = "/var/run/netns/deluge";
+    };
+  };
+
+  boot.extraModulePackages = optional (versionOlder config.boot.kernelPackages.kernel.version "5.6") config.boot.kernelPackages.wireguard;
+
   reverse-proxy.hosts = {
     "deluge" = {
       domains = [ "deluge.home.open-desk.net" ];
@@ -66,21 +164,16 @@ in {
     };
   };
 
-  firewall.rules = dag: with dag; {
-    inet.filter.input = {
-      deluge-web = between ["established"] ["drop"] ''
-        ip saddr 172.23.200.0/24
-        tcp dport ${ toString config.services.deluge.web.port }
-        accept
-      '';
-      deluge-torrent-udp = between ["established"] ["drop"] ''
-        udp dport 6242
-        accept
-      '';
-      deluge-torrent-tcp = between ["established"] ["drop"] ''
-        tcp dport 6242
-        accept
-      '';
-    };
-  };
+  # firewall.rules = dag: with dag; {
+  #   inet.filter.input = {
+  #     deluge-torrent-udp = between ["established"] ["drop"] ''
+  #       udp dport 6242
+  #       accept
+  #     '';
+  #     deluge-torrent-tcp = between ["established"] ["drop"] ''
+  #       tcp dport 6242
+  #       accept
+  #     '';
+  #   };
+  # };
 }

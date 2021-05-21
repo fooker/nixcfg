@@ -65,6 +65,18 @@
         "url": "https://github.com/fooker/morph/archive/2063f8e0dda2d3134fef54e51cfce69d84d9f1f3.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "netns-proxy": {
+        "branch": "main",
+        "description": "A simple and slim proxy to forward ports from and into linux network namespaces",
+        "homepage": null,
+        "owner": "fooker",
+        "repo": "netns-proxy",
+        "rev": "e02757aa2ba1655f2fb346235b4d7e300d3d8837",
+        "sha256": "0l4fpa04rl0ccccah1m5m4i63ahfi9mcx73fv4jfas27yzmv0vi4",
+        "type": "tarball",
+        "url": "https://github.com/fooker/netns-proxy/archive/e02757aa2ba1655f2fb346235b4d7e300d3d8837.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "niv": {
         "branch": "master",
         "description": "Easy dependency management for Nix projects",
