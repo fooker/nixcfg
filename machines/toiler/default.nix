@@ -12,7 +12,7 @@ in {
     ./spotifyd.nix
     ./user.nix
     ./gitea.nix
-    ./drone.nix
+    ./laminar
   ];
 
   server.enable = true;
