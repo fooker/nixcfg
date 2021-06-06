@@ -115,7 +115,10 @@ in {
           newWindow = "none";
         };
 
-        fonts = [ "Hack 10.5" ];
+        fonts = {
+          names = [ "Hack" ];
+          size = 10.5;
+        };
 
         window = {
           border = 2;
@@ -222,9 +225,10 @@ in {
             
             trayOutput = "*";
 
-            fonts = [
-              "FontAwesome" "Hack 10.5"
-            ];
+            fonts = {
+              names = [ "FontAwesome" "Hack" ];
+              size = 10.5;
+            };
 
             colors = {
               background = "#00000000";
