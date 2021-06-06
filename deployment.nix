@@ -42,13 +42,6 @@ let
               config = config.nixpkgs.config;
               system = machine.system;
             };
-
-            /* Make nixpkgs-master available as subtree
-            */
-            master = import nixpkgs-master {
-              config = config.nixpkgs.config;
-              system = machine.system;
-            };
           };
         };
 
