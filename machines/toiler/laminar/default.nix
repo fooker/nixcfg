@@ -81,6 +81,7 @@ in {
       group = "laminar";
       home = "/var/lib/laminar";
       createHome = true;
+      isSystemUser = true;
     };
   };
 

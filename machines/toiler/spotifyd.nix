@@ -33,6 +33,7 @@ in {
     extraGroups = [ "audio" ];
     description = "spotifyd daemon user";
     home = "/var/lib/spotifyd";
+    isSystemUser = true;
   };
 
   systemd.services.spotifyd = {

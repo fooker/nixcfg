@@ -28,6 +28,8 @@ let
         targetHost = machine.target.host;
         targetUser = machine.target.user;
 
+        inherit (machine) tags;
+
         substituteOnDestination = true;
       };
 

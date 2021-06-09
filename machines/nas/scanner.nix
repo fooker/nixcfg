@@ -43,6 +43,7 @@ in {
   users.users."scanner" = {
     home = "/mnt/files/scans";
     createHome = true;
+    isSystemUser = true;
 
     shell = "/bin/sh";
 

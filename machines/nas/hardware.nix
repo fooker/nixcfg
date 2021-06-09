@@ -3,7 +3,7 @@
 {
   hardware.enableRedistributableFirmware = true;
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "ehci_pci" "nvme" "usb_storage" "sd_mod" "aes_x86_64" "aesni_intel" "cryptd" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "ehci_pci" "nvme" "usb_storage" "sd_mod" "aesni_intel" "cryptd" ];
   boot.kernelModules = [ "kvm-amd" ];
 
   fileSystems = {

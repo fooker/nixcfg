@@ -14,7 +14,7 @@
     "blog": {
         "branch": "master",
         "repo": "gitea@git.home.open-desk.net:fooker/blog.git",
-        "rev": "41e9edab467e509719b789c1ce8c11f278232902",
+        "rev": "a0845add47b775408f54467b332996bb71032369",
         "type": "git"
     },
     "home-manager": {
@@ -92,19 +92,19 @@
     "nixos-mailserver": {
         "branch": "master",
         "repo": "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver.git",
-        "rev": "66e8baa6f27581ae28678917f67ed2750842c14a",
+        "rev": "5675b122a947b40e551438df6a623efad19fd2e7",
         "type": "git"
     },
     "nixpkgs": {
-        "branch": "nixos-20.09",
+        "branch": "nixos-21.05",
         "description": "Nix Packages collection",
         "homepage": "https://github.com/NixOS/nixpkgs",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f8929dce13e729357f31d5b2950cbb097744bed7",
-        "sha256": "06ikqdb5038vkkyx4hi5lw4gksjjndjg7mz0spawnb1gpzhqkavs",
+        "rev": "5de44c15758465f8ddf84d541ba300b48e56eda4",
+        "sha256": "05darjv3zc5lfqx9ck7by6p90xgbgs1ni6193pw5zvi7xp2qlg4x",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/f8929dce13e729357f31d5b2950cbb097744bed7.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs/archive/5de44c15758465f8ddf84d541ba300b48e56eda4.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs-notebook": {

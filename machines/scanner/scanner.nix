@@ -137,6 +137,21 @@ let
   });
 
 in {
+  # Workaround to build on (currently) broken aarch64
+  nixpkgs.overlays = [ (self: super: rec {
+    python38 = super.python38.override {
+      packageOverrides = self: super: {
+        pikepdf = super.pikepdf.overrideAttrs (old: {
+          doCheck = false;
+          doInstallCheck = false;
+        });
+      };
+    };
+
+    python38Packages = python38.pkgs;
+  }) ];
+
+
   # Allow scanning over network
   boot.kernelModules = [ "nf_conntrack_sane" ];
 
