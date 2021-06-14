@@ -21,8 +21,8 @@ let
     [[block]]
     block = "memory"
     display_type = "memory"
-    format_mem = "{Mup}%"
-    format_swap = "{SUp}%"
+    format_mem = "{mem_used_percents}%"
+    format_swap = "{swap_used_percents}%"
 
     [[block]]
     block = "temperature"
@@ -33,21 +33,13 @@ let
     [[block]]
     block = "net"
     device = "wl"
-    ssid = true
-    signal_strength = true
-    bitrate = true
-    ip = true
-    speed_up = true
-    speed_down = true
+    format = "{ssid} {signal_strength} {bitrate;K} {frequency}"
     interval = 5
 
     [[block]]
     block = "net"
     device = "en"
-    ssid = true
-    ip = true
-    speed_up = true
-    speed_down = true
+    format = "{ip} {ipv6} {graph_down;K} {graph_up;K}"
     interval = 5
 
     [[block]]
