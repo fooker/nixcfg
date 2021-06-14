@@ -65,26 +65,15 @@ let
       system.stateVersion = machine.stateVersion;
     };
 
-  machines = id:
-    with pkgs.lib;
-    let
-      # Path of a (potential) machine
-      path = "${toString ./machines}/${concatStringsSep "/" id}";
-    in
-      # Machines must have a machine.nix file
-      if (builtins.pathExists "${path}/machine.nix" )
-      then {
-        name = "${concatStringsSep "-" (id)}"; # Build the name of the machine
-        value = mkMachine path id; # Build the machine config
-      }
-      else flatten
-        (mapAttrsToList
-          (entry: type:
-            # Filter for entries which are sub-directories and recurse into sub-directory while append sub-directory name to machine name
-            if type == "directory"
-              then machines (id ++ [ entry ])
-              else [])
-          (builtins.readDir path)); # Read entries in path
+  machines = let
+    machines = (pkgs.callPackage ./machines.nix {}).machines;
+  in
+    builtins.listToAttrs (map
+      (machine: {
+        name = machine.name;
+        value = (mkMachine machine.path machine.id);
+      })
+      machines);
 
 in
   {
