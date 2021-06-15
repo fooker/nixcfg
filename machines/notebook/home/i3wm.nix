@@ -21,14 +21,14 @@ let
     [[block]]
     block = "memory"
     display_type = "memory"
-    format_mem = "{mem_used_percents}%"
-    format_swap = "{swap_used_percents}%"
+    format_mem = "{mem_used_percents}"
+    format_swap = "{swap_used_percents}"
 
     [[block]]
     block = "temperature"
     collapsed = false
     interval = 5
-    format = "{max}°"    
+    format = "{max}"
 
     [[block]]
     block = "net"
@@ -39,13 +39,13 @@ let
     [[block]]
     block = "net"
     device = "en"
-    format = "{ip} {ipv6} {graph_down;K} {graph_up;K}"
+    format = "{ip} {ipv6} ⇩{graph_down;K} ⇧{graph_up;K}"
     interval = 5
 
     [[block]]
     block = "battery"
     driver = "upower"
-    format = "{percentage}% [{time}]"
+    format = "{percentage} [{time}]"
 
     [[block]]
     block = "time"

@@ -55,7 +55,6 @@ let
       nix.distributedBuilds = true;
 
       imports = [
-        "${ sources.agenix }/modules/age.nix"
         ./ext
         ./tools
         ./modules
