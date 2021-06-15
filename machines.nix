@@ -7,13 +7,14 @@ with lib;
   ## Returns a list of elements containing the path and the id of a machine
   machines = let
     walk = id: let
-      # Absolute path of a (potential) machine
-      path = "${toString ./machines}/${concatStringsSep "/" id}";
+      # Path of a (potential) machine
+      relPath = "machines/${concatStringsSep "/" id}";
+      absPath = "${toString ./.}/${relPath}";
     in
       # Machines must have a machine.nix file
-      if (builtins.pathExists "${path}/machine.nix" )
+      if (builtins.pathExists "${absPath}/machine.nix" )
       then [ {
-        inherit id path;
+        inherit id relPath absPath;
         name = "${concatStringsSep "-" (id)}"; # Build the name of the machine
       } ]
       else concatLists
@@ -23,6 +24,6 @@ with lib;
             if type == "directory"
               then walk (id ++ [ entry ])
               else [])
-          (builtins.readDir path)); # Read entries in path
+          (builtins.readDir absPath)); # Read entries in path
   in walk [];
 }

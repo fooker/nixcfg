@@ -55,6 +55,7 @@ let
       nix.distributedBuilds = true;
 
       imports = [
+        "${ sources.agenix }/modules/age.nix"
         ./ext
         ./tools
         ./modules
@@ -71,7 +72,7 @@ let
     builtins.listToAttrs (map
       (machine: {
         name = machine.name;
-        value = (mkMachine machine.path machine.id);
+        value = (mkMachine machine.absPath machine.id);
       })
       machines);
 
@@ -81,4 +82,4 @@ in
       inherit pkgs;
       evalConfig = name: (import "${findNixpkgs name}/nixos/lib/eval-config.nix");
     };
-  } // (builtins.listToAttrs (machines []))
+  } // machines
