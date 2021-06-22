@@ -18,6 +18,11 @@ in {
             type = types.str;
             description = "Public SSH key of the client using this repository";
           };
+          extraPublicKeys = mkOption {
+            type = types.attrsOf types.str;
+            description = "Additional public SSH keys";
+            default = {};
+          };
         };
       });
       description = "The backup repositories to provide";
@@ -29,7 +34,10 @@ in {
       (repo: nameValuePair repo.name {
         path = "/mnt/backups/borg/${ repo.name }";
 
-        authorizedKeysAppendOnly = [ "${ repo.publicKey } ${ repo.name }" ];
+        authorizedKeysAppendOnly = [ "${ repo.publicKey } ${ repo.name }" ]
+          ++ mapAttrsToList
+            (desc: publicKey: "${publicKey} ${repo.name}/${desc}")
+            repo.extraPublicKeys;
 
         allowSubRepos = true;
 
@@ -49,7 +57,7 @@ in {
       (mapAttrsToList
         (name: node: {
           inherit name;
-          publicKey = node.config.backup.publicKey;
+          inherit (node.config.backup) publicKey extraPublicKeys;
         })
         nodes)
 

@@ -29,8 +29,16 @@ with lib;
     publicKey = mkOption {
       type = types.str;
       description = ''
-        Publick SSH key used by the backup client.
+        Public SSH key used by the backup client.
       '';
+    };
+
+    extraPublicKeys = mkOption {
+      type = types.attrsOf types.str;
+      description = ''
+        Additional public SSH keys.
+      '';
+      default = {};
     };
 
     passphrase = mkOption {
@@ -103,9 +111,9 @@ with lib;
       '';
     };
 
-    backup.paths = [ "/etc" "/root" "/home" ];
+    backup.paths = [ "/etc" "/root" ];
 
-    backup.publicKey = mkDefault (builtins.readFile "${path}/secrets/id_backup.pub");
+    backup.publicKey = mkDefault (fileContents "${path}/secrets/id_backup.pub");
 
     deployment.secrets = {
       "backup-sshkey" = rec {

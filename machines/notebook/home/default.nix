@@ -31,6 +31,7 @@
     gimp
     inkscape
     libreoffice
+    vorta
 
     # CLI tools
     ripgrep
@@ -96,6 +97,7 @@
     ./syncthing.nix
     ./udiskie.nix
     ./vim.nix
+    ./vorta.nix
     ./zsh.nix
   ];
 

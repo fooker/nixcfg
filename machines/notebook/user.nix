@@ -39,7 +39,7 @@ in {
     ];
   };
 
-  backup.paths = [
-    "/home/fooker"
-  ];
+  backup.extraPublicKeys = {
+    "fooker" = ''ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK2nkarN0+uSuP5sGwDCb9KRu+FCjO/+da4VypGanPUZ'';
+  };
 }
