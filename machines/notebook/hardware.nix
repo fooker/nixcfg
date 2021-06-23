@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages;
 
   boot.kernelParams = [
     "quiet"
@@ -12,7 +12,7 @@
 
     # See https://iam.tj/prototype/enhancements/Windows-acpi_osi.html
     "acpi_osi=!"
-    "acpi_osi='Windows 2015'"
+    "acpi_osi=\"Windows 2015\""
   ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
