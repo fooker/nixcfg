@@ -17,6 +17,10 @@ in {
     options = ["x-systemd.automount" "noauto"];
   };
 
+  boot.kernel.sysctl = {
+    "fs.inotify.max_user_watches" = 65536;
+  };
+
   reverse-proxy.hosts = {
     "jellyfin" = {
       domains = [ "jellyfin.home.open-desk.net" ];
