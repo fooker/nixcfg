@@ -62,6 +62,7 @@
     ferdi
     thunderbird
     mumble
+    zoom-us
 
     # Remote Desktop
     parsecgaming
