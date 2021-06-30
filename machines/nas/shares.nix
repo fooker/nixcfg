@@ -5,6 +5,7 @@
     enable = true;
     exports = ''
       /mnt            *(rw,fsid=root,no_subtree_check,root_squash)
+      /mnt/docs       *(rw,no_subtree_check,root_squash)
       /mnt/downloads  *(rw,no_subtree_check,root_squash)
       /mnt/media      *(rw,no_subtree_check,root_squash)
       /mnt/scanner    *(rw,no_subtree_check,root_squash)

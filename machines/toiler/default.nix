@@ -13,6 +13,7 @@ in {
     ./user.nix
     ./gitea.nix
     ./laminar
+    ./paperless.nix
   ];
 
   server.enable = true;
