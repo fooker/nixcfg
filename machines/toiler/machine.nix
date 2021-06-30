@@ -4,7 +4,7 @@
     user = "root";
   };
 
-  tags = [ "deployed" "home" ];
+  tags = [ "prod" "home" ];
 
   system = "x86_64-linux";
   
