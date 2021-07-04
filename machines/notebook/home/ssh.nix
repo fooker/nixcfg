@@ -69,5 +69,9 @@
         };
       };
     };
+
+    extraConfig = ''
+      VerifyHostKeyDNS yes
+    '';
   };
 }

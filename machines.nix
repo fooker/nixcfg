@@ -8,13 +8,13 @@ with lib;
   machines = let
     walk = id: let
       # Path of a (potential) machine
-      relPath = "machines/${concatStringsSep "/" id}";
-      absPath = "${toString ./.}/${relPath}";
+      path = ./. + "/machines/${concatStringsSep "/" id}";
+
     in
       # Machines must have a machine.nix file
-      if (builtins.pathExists "${absPath}/machine.nix" )
+      if builtins.pathExists (path + "/machine.nix")
       then [ {
-        inherit id relPath absPath;
+        inherit id path;
         name = "${concatStringsSep "-" (id)}"; # Build the name of the machine
       } ]
       else concatLists
@@ -24,6 +24,6 @@ with lib;
             if type == "directory"
               then walk (id ++ [ entry ])
               else [])
-          (builtins.readDir absPath)); # Read entries in path
+          (builtins.readDir path)); # Read entries in path
   in walk [];
 }

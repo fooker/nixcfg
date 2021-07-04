@@ -71,7 +71,7 @@ let
     builtins.listToAttrs (map
       (machine: {
         name = machine.name;
-        value = (mkMachine machine.absPath machine.id);
+        value = (mkMachine machine.path machine.id);
       })
       machines);
 

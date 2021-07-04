@@ -21,6 +21,7 @@ in {
 
   services.kresd = {
     enable = true;
+    package = pkgs.knot-resolver.override { extraFeatures = true; };
 
     listenPlain = [ "0.0.0.0:53" "[::]:53" ];
     listenTLS = [ "0.0.0.0:853" "[::]:853" ];
