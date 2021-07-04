@@ -25,6 +25,9 @@
       set undofile
       set undolevels=100
       set undoreload=1000
+
+      set cursorline
+      hi CursorLine cterm=NONE ctermbg=238 ctermfg=NONE
     '';
   };
 }
