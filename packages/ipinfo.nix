@@ -8,5 +8,5 @@ in rustPlatform.buildRustPackage {
 
   src = sources.ipinfo;
 
-  cargoSha256 = "19rvnxxj4rp88zj2fr1i8s980sybq2g3c77m9ql4baqd5sldcfrc";
+  cargoSha256 = "1zmdsaqqikmfdis836jmyzf7938zi63f1g7nshag420xfsf9jaf9";
 }
