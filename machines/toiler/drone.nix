@@ -57,6 +57,9 @@ in {
         "DRONE_RPC_SECRET=${secrets.drone.rpc.secret}"
         "DRONE_RUNNER_CAPACITY=10"
         "DRONE_RUNNER_NAME=${config.networking.hostName}-exec"
+        "NIX_REMOTE=daemon"
+        "ENV=/etc/profile"
+        
       ];
       ExecStart = "${drone-runner-exec}/bin/drone-runner-exec";
       User = "drone-runner";
@@ -70,11 +73,12 @@ in {
         "/etc/passwd"
         "/etc/group"
         "/etc/resolv.conf"
-        "/nix/var/nix/profiles/system/etc/nix:/etc/nix"
         "${config.environment.etc."ssl/certs/ca-certificates.crt".source}:/etc/ssl/certs/ca-certificates.crt"
         "${config.environment.etc."ssh/ssh_known_hosts".source}:/etc/ssh/ssh_known_hosts"
         "/etc/machine-id"
-        "/nix/"
+        "/nix/store"
+        "/nix/var/nix/db"
+        "/nix/var/nix/profiles/system/etc/nix:/etc/nix"
       ];
     };
     
