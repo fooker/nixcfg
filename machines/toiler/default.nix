@@ -12,7 +12,7 @@ in {
     ./spotifyd.nix
     ./user.nix
     ./gitea.nix
-    ./laminar
+    ./drone.nix
     ./paperless.nix
   ];
 
