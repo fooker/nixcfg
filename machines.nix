@@ -8,7 +8,7 @@ with lib;
   machines = let
     walk = id: let
       # Path of a (potential) machine
-      path = ./. + "/machines/${concatStringsSep "/" id}";
+      path = toString (./machines + "/${concatStringsSep "/" id}");
 
     in
       # Machines must have a machine.nix file
