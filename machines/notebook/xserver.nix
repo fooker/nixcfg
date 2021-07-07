@@ -15,7 +15,7 @@
     ];
     useGlamor = true;
 
-    modules = with pkgs; [ 
+    modules = with pkgs; [
       xorg.xf86inputlibinput
     ];
 

@@ -2,7 +2,8 @@
 
 let
   secrets = import ../../secrets.nix;
-in {
+in
+{
   services.grafana = {
     enable = true;
     domain = "stats.open-desk.net";

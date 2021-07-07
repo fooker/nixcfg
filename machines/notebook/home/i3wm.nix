@@ -83,7 +83,8 @@ let
     sha256 = "0py9qixisbvjr811fj2a8z7kpn5lqa3s4w7ax7wdavz1f4mnw3w4";
   };
 
-in {
+in
+{
   xsession = {
     enable = true;
 
@@ -124,7 +125,8 @@ in {
         keybindings =
           let
             mod = "Mod4";
-          in with pkgs; {
+          in
+          with pkgs; {
             # Floating windows and popups
             "${mod}+d" = "focus mode_toggle";
             "${mod}+Shift+d" = "floating toggle";
@@ -176,12 +178,12 @@ in {
             # Close window
             "${mod}+c" = "kill";
 
-             # Reload and exit
+            # Reload and exit
             "${mod}+w" = "reload";
             "${mod}+Shift+w" = "restart";
             "${mod}+Shift+q" = "exec ${pkgs.i3}/bin/i3-nagbar -t warning -m 'Do you really want to exit?' -b 'Yes' '${pkgs.i3}/bin/i3-msg exit'";
 
-             # Start some things
+            # Start some things
             "${mod}+Return" = "exec ${pkgs.ate}/bin/ate";
             "${mod}+Shift+Return" = "exec ${ate}/bin/ate /run/wrappers/bin/sudo --shell";
 
@@ -214,7 +216,7 @@ in {
             workspaceButtons = false;
 
             statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ${i3status-rust-config}";
-            
+
             trayOutput = "*";
 
             fonts = {
@@ -229,11 +231,11 @@ in {
         ];
 
         colors = {
-          focused         = { border = "#285577"; background = "#285577"; text = "#ffffff"; indicator = "#2e9ef4"; childBorder = "#285577"; };
+          focused = { border = "#285577"; background = "#285577"; text = "#ffffff"; indicator = "#2e9ef4"; childBorder = "#285577"; };
           focusedInactive = { border = "#5f676a"; background = "#5f676a"; text = "#ffffff"; indicator = "#484e50"; childBorder = "#5f676a"; };
-          unfocused       = { border = "#333333"; background = "#222222"; text = "#888888"; indicator = "#292d2e"; childBorder = "#222222"; };
-          urgent          = { border = "#2f343a"; background = "#900000"; text = "#ffffff"; indicator = "#900000"; childBorder = "#900000"; };
-          placeholder     = { border = "#000000"; background = "#0c0c0c"; text = "#ffffff"; indicator = "#000000"; childBorder = "#0c0c0c"; };
+          unfocused = { border = "#333333"; background = "#222222"; text = "#888888"; indicator = "#292d2e"; childBorder = "#222222"; };
+          urgent = { border = "#2f343a"; background = "#900000"; text = "#ffffff"; indicator = "#900000"; childBorder = "#900000"; };
+          placeholder = { border = "#000000"; background = "#0c0c0c"; text = "#ffffff"; indicator = "#000000"; childBorder = "#0c0c0c"; };
         };
       };
 
@@ -250,7 +252,7 @@ in {
   };
 
   # xsession.pointerCursor = {
-  #   package = pkgs.	gnome3.adwaita-icon-theme;
+  #   package = pkgs.  gnome3.adwaita-icon-theme;
   #   name = "Adwaita";
   # };
 

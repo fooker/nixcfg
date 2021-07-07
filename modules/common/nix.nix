@@ -4,8 +4,8 @@ with lib;
 {
   options.common.nix = {
     enable = mkOption {
-        type = types.bool;
-        default = true;
+      type = types.bool;
+      default = true;
     };
   };
 

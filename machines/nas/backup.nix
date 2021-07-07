@@ -5,7 +5,8 @@ with lib;
 let
   secrets = import ./secrets.nix;
 
-in {
+in
+{
   options = {
     backup.server.repos = mkOption {
       type = types.listOf (types.submodule {
@@ -21,7 +22,7 @@ in {
           extraPublicKeys = mkOption {
             type = types.attrsOf types.str;
             description = "Additional public SSH keys";
-            default = {};
+            default = { };
           };
         };
       });
@@ -36,8 +37,8 @@ in {
 
         authorizedKeysAppendOnly = [ "${ repo.publicKey } ${ repo.name }" ]
           ++ mapAttrsToList
-            (desc: publicKey: "${publicKey} ${repo.name}/${desc}")
-            repo.extraPublicKeys;
+          (desc: publicKey: "${publicKey} ${repo.name}/${desc}")
+          repo.extraPublicKeys;
 
         allowSubRepos = true;
 

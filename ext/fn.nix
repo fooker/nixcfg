@@ -11,7 +11,8 @@ with lib;
       merge = loc: defs: args:
         let
           defs' = map ({ file, value }: { inherit file; value = value args; }) defs;
-        in (mergeDefinitions
+        in
+        (mergeDefinitions
           (loc ++ [ "{...}" ])
           retType
           defs'

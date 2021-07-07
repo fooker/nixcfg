@@ -5,7 +5,8 @@ with lib;
 let
   sources = import ../../nix/sources.nix;
   secrets = import ./secrets.nix;
-in {
+in
+{
   imports = [
     (import sources.nixos-mailserver)
   ];
@@ -36,7 +37,8 @@ in {
           "abuse"
           "security"
         ];
-      in listToAttrs
+      in
+      listToAttrs
         (concatMap
           (domain: map
             (alias: nameValuePair "${ alias }@${ domain }" "root@open-desk.net")
@@ -127,13 +129,13 @@ in {
     '';
   };
 
-   firewall.rules = dag: with dag; {
+  firewall.rules = dag: with dag; {
     inet.filter.input = {
-      mail = between ["established"] ["drop"] ''tcp dport 25 accept'';
-      mail-submission = between ["established"] ["drop"] ''tcp dport { 587, 465 } accept'';
-      mail-imap = between ["established"] ["drop"] ''tcp dport { 143, 993 } accept'';
-      mail-sieve = between ["established"] ["drop"] ''tcp dport 4190 accept'';
-      mail-replicate = between ["established"] ["drop"] ''
+      mail = between [ "established" ] [ "drop" ] ''tcp dport 25 accept'';
+      mail-submission = between [ "established" ] [ "drop" ] ''tcp dport { 587, 465 } accept'';
+      mail-imap = between [ "established" ] [ "drop" ] ''tcp dport { 143, 993 } accept'';
+      mail-sieve = between [ "established" ] [ "drop" ] ''tcp dport 4190 accept'';
+      mail-replicate = between [ "established" ] [ "drop" ] ''
         ip6 saddr ${ config.hive.spouse.address.ipv6 }
         tcp dport 22025
         accept
@@ -141,44 +143,46 @@ in {
     };
   };
 
-  dns.zones = let
-    mx = {
-      A = config.dns.host.ipv4;
-      AAAA = config.dns.host.ipv6;
-    };
-  in mkMerge [
-    {
-      net.open-desk.mx = mx;
-    }
+  dns.zones =
+    let
+      mx = {
+        A = config.dns.host.ipv4;
+        AAAA = config.dns.host.ipv6;
+      };
+    in
+    mkMerge [
+      {
+        net.open-desk.mx = mx;
+      }
 
-    # MX and related security and service records for all domains we serve for
-    (mkMerge (map
-      (domain: (ext.domain.absolute domain).mkRecords {
+      # MX and related security and service records for all domains we serve for
+      (mkMerge (map
+        (domain: (ext.domain.absolute domain).mkRecords {
 
-        # MX record for this server
-        MX = {
-          preference = 0;
-          exchange = ext.domain.absolute config.mailserver.fqdn;
-        };
+          # MX record for this server
+          MX = {
+            preference = 0;
+            exchange = ext.domain.absolute config.mailserver.fqdn;
+          };
 
-        # SPF record
-        TXT = "v=spf1 mx -all";
+          # SPF record
+          TXT = "v=spf1 mx -all";
 
-        # DKIM record
-        includes = [ (./secrets/dkim/. + "/${ domain }.mail.txt") ];
+          # DKIM record
+          includes = [ (./secrets/dkim/. + "/${ domain }.mail.txt") ];
 
-        # DMARK record
-        _dmarc = {
-          TXT = "v=DMARC1; p=none; rua=mailto:postmaster@open-desk.net; ruf=mailto:postmaster@open-desk.net; sp=none; fo=1; aspf=s; adkim=s; ri=86400";
-        };
+          # DMARK record
+          _dmarc = {
+            TXT = "v=DMARC1; p=none; rua=mailto:postmaster@open-desk.net; ruf=mailto:postmaster@open-desk.net; sp=none; fo=1; aspf=s; adkim=s; ri=86400";
+          };
 
-        # Host records for the related services
-        mail = mx;
-        smtp = mx;
-        imap = mx;
-      })
-      config.mailserver.domains))
-  ];
+          # Host records for the related services
+          mail = mx;
+          smtp = mx;
+          imap = mx;
+        })
+        config.mailserver.domains))
+    ];
 
   backup.paths = [
     "/data/mail"

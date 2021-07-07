@@ -3,20 +3,20 @@
 with lib;
 
 {
-  options.firewall = 
+  options.firewall =
     let
       mkTable = description: chains: mkOption {
-        type = types.submodule({ config, ... }: {
+        type = types.submodule ({ config, ... }: {
           options = chains;
         });
         inherit description;
-        default = {};
+        default = { };
       };
 
       mkChain = family: description: mkOption {
         type = ext.dag.types.dagOf types.str;
         inherit description;
-        default = {};
+        default = { };
       };
 
       mkIngressChain = mkChain "Process all packets before they enter the system";
@@ -26,7 +26,8 @@ with lib;
       mkOutputChain = mkChain "Process packets sent by local processes";
       mkPostrouteChain = mkChain "Process all packets leaving the system";
 
-    in {
+    in
+    {
       enable = mkOption {
         type = types.bool;
         default = true;
@@ -34,7 +35,7 @@ with lib;
       };
 
       rules = mkOption {
-        type = ext.fn.types.fnOf (types.submodule({ ... }: {
+        type = ext.fn.types.fnOf (types.submodule ({ ... }: {
           options = {
             ip = mkTable "internet (IPv4) address family netfilter table" {
               filter.prerouting = mkPrerouteChain "ip";
@@ -90,7 +91,7 @@ with lib;
       };
     };
 
-  config = 
+  config =
     let
       buildRule = { name, data }: ''
         ${ replaceStrings [ "\n" ] [ " " ] data } comment "${ name }";
@@ -117,35 +118,37 @@ with lib;
               )
               types
             );
-        in optionalString (length chains > 0) ''
+        in
+        optionalString (length chains > 0) ''
           table ${ table } nixos {
           ${ concatMapStringsSep "\n" buildChain chains }
           }
         '';
-      
+
       rules = filterAttrsRecursive
         (name: value: name != "_module")
         (config.firewall.rules ext.dag.entry);
 
-    in mkIf config.firewall.enable {
+    in
+    mkIf config.firewall.enable {
       networking.firewall.enable = mkForce false;
       networking.firewall.package = mkDefault pkgs.iptables-nftables-compat;
 
       networking.nftables.enable = mkDefault true;
 
-      networking.nftables.ruleset = mkDefault 
-        (concatStringsSep "\n" 
+      networking.nftables.ruleset = mkDefault
+        (concatStringsSep "\n"
           (mapAttrsToList buildTable rules)
         );
-      
+
       firewall.rules = dag: with dag; {
         inet.filter.input = {
-          loopback = before ["drop"] ''
+          loopback = before [ "drop" ] ''
             iifname lo
             accept
           '';
-          
-          established = between ["loopback"] ["drop"] ''
+
+          established = between [ "loopback" ] [ "drop" ] ''
             ct state {
               established,
               related
@@ -153,7 +156,7 @@ with lib;
             accept
           '';
 
-          basic-icmp6 = between ["established"] ["drop"] ''
+          basic-icmp6 = between [ "established" ] [ "drop" ] ''
             ip6 nexthdr icmpv6
             icmpv6 type {
               destination-unreachable,
@@ -166,7 +169,7 @@ with lib;
             }
             accept'';
 
-          basic-icmp = between ["established"] ["drop"] ''
+          basic-icmp = between [ "established" ] [ "drop" ] ''
             ip protocol icmp
             icmp type {
               destination-unreachable,
@@ -175,26 +178,26 @@ with lib;
               parameter-problem
             }
             accept'';
-          
-          ping = between ["established"] ["basic-icmp" "drop"] ''
+
+          ping = between [ "established" ] [ "basic-icmp" "drop" ] ''
             ip protocol icmp
             icmp type echo-request
             accept
           '';
 
-          ping6 = between ["established"] ["basic-icmp6" "drop"] ''
+          ping6 = between [ "established" ] [ "basic-icmp6" "drop" ] ''
             ip6 nexthdr icmpv6
             icmpv6 type echo-request
             accept
           '';
 
-          mdns-ipv6 = between ["established"] ["drop"] ''
+          mdns-ipv6 = between [ "established" ] [ "drop" ] ''
             udp dport mdns
             ip6 daddr ff02::fb
             accept
           '';
 
-          mdns-ipv4 = between ["established"] ["drop"] ''
+          mdns-ipv4 = between [ "established" ] [ "drop" ] ''
             udp dport mdns
             ip daddr 224.0.0.251
             accept
@@ -214,7 +217,7 @@ with lib;
         };
 
         inet.filter.forward = {
-          established = before ["drop"] ''
+          established = before [ "drop" ] ''
             ct state {
               established,
               related
@@ -235,18 +238,19 @@ with lib;
         install ip_tables ${pkgs.coreutils}/bin/false
       '';
 
-      assertions = 
+      assertions =
         let
           ruleset = pkgs.writeText "nft-ruleset" config.networking.nftables.ruleset;
-          check-results = pkgs.runCommand "check-nft-ruleset" {} ''
+          check-results = pkgs.runCommand "check-nft-ruleset" { } ''
             mkdir -p $out
             ${pkgs.nftables}/bin/nft -c -f ${ruleset} 2>&1 > $out/message \
               && echo false > $out/assertion \
               || echo true > $out/assertion
           '';
-        in [ {
+        in
+        [{
           message = "Bad config: ${builtins.readFile "${check-results}/message"}";
           assertion = import "${check-results}/assertion";
-        } ];
+        }];
     };
 }

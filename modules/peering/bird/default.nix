@@ -16,10 +16,10 @@ let
   /* All domains which have at least one peer participating
   */
   domains = filter
-      (domain: any
-        (peer: hasAttr domain.name peer.domains)
-        (attrValues config.peering.peers))
-      (attrValues config.peering.domains);
+    (domain: any
+      (peer: hasAttr domain.name peer.domains)
+      (attrValues config.peering.peers))
+    (attrValues config.peering.domains);
 
   domainConfig = domain:
     let
@@ -36,11 +36,11 @@ let
         configured for the current domain and the given protocol in this
         domain.
       */
-      peers = protocol: 
+      peers = protocol:
         optionals (domain."${protocol}" != null) (filter
           (peer: (attrByPath [ domain.name protocol ] null peer.domains) != null) # Peer is configured for proto
           (attrValues config.peering.peers));
-      
+
       /* Calls a protocol specific implementation if there are peers for this
         protocol. The protocol implementation must accept the domain
         configuration and the list of associated peer configurations.
@@ -49,9 +49,10 @@ let
         let
           peers' = peers protocol;
         in
-          optionalString (peers' != []) (impl domain peers');
+        optionalString (peers' != [ ]) (impl domain peers');
 
-    in ''
+    in
+    ''
       ipv4 table ${domain.name}_4;
       ipv6 table ${domain.name}_6;
 
@@ -116,7 +117,8 @@ let
       }
     '';
 
-in mkIf (domains != []) {
+in
+mkIf (domains != [ ]) {
   services.bird2 = {
     enable = true;
     config = ''
@@ -165,7 +167,7 @@ in mkIf (domains != []) {
               (attrValues peer.domains))
             (nameValuePair
               "peering-${peer.name}-${proto}"
-              (between ["established"] ["drop"] rule)
+              (between [ "established" ] [ "drop" ] rule)
             );
 
         mkPeer = peer: concatLists [
@@ -187,9 +189,9 @@ in mkIf (domains != []) {
         ];
 
       in
-        listToAttrs (concatMap
-          mkPeer
-          (attrValues config.peering.peers)
-        );
+      listToAttrs (concatMap
+        mkPeer
+        (attrValues config.peering.peers)
+      );
   };
 }

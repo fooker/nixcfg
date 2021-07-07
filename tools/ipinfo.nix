@@ -3,8 +3,9 @@
 with lib;
 
 let
-  ipinfo = pkgs.callPackage ../packages/ipinfo.nix {};
+  ipinfo = pkgs.callPackage ../packages/ipinfo.nix { };
 
-in input: importJSON (pkgs.runCommand "ipinfo-json" {} ''
-    ${ipinfo}/bin/ipinfo -j "${input}" > $out
-  '')
+in
+input: importJSON (pkgs.runCommand "ipinfo-json" { } ''
+  ${ipinfo}/bin/ipinfo -j "${input}" > $out
+'')

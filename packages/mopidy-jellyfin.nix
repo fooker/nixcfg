@@ -1,8 +1,7 @@
-args @ {
-  python3Packages,
-  mopidy,
-  websocket_client ? (args.python3Packages.callPackage ./websocket_client.nix {}),
-  ...
+args @ { python3Packages
+, mopidy
+, websocket_client ? (args.python3Packages.callPackage ./websocket_client.nix { })
+, ...
 }:
 
 python3Packages.buildPythonApplication rec {

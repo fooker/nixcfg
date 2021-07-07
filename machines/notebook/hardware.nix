@@ -17,7 +17,7 @@
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
   boot.initrd.kernelModules = [ ];
-  
+
   boot.kernelModules = [ "kvm-intel" "i915" "acpi_call" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
 
@@ -119,9 +119,9 @@
     fsType = "vfat";
   };
 
-  swapDevices = [ {
+  swapDevices = [{
     device = "/dev/disk/by-uuid/8807b3fe-4359-4d80-b8a0-b85b98693859";
-  } ];
+  }];
 
   services.hardware.bolt.enable = true;
 
@@ -135,7 +135,7 @@
 
       "START_CHARGE_THRESH_BAT0" = 60;
       "STOP_CHARGE_THRESH_BAT0" = 100;
-    
+
       "WIFI_PWR_ON_AC" = false;
       "WIFI_PWR_ON_BAT" = false;
     };

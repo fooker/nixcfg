@@ -6,7 +6,7 @@
     mkdir -m 0755 -p /lib64                                                                
     ln -sfn ${pkgs.glibc.out}/lib64/ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2.tmp   
     mv -f /lib64/ld-linux-x86-64.so.2.tmp /lib64/ld-linux-x86-64.so.2 # atomically replace 
-  '';                                                                                      
+  '';
 
   services.openvpn.servers.opennms = {
     autoStart = false;
@@ -24,12 +24,12 @@
 
   firewall.rules = dag: with dag; {
     inet.filter.input = {
-      opennms-ui = between ["established"] ["drop"] ''
+      opennms-ui = between [ "established" ] [ "drop" ] ''
         tcp dport { 8980 }
         accept
       '';
 
-      opennms-flows = between ["established"] ["drop"] ''
+      opennms-flows = between [ "established" ] [ "drop" ] ''
         udp dport { 9999 }
         accept
       '';

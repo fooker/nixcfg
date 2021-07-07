@@ -5,13 +5,14 @@ let
 
   # Use the unmodified host nixpkgs for all tools
   pkgs = import sources.nixpkgs {
-    config = {};
+    config = { };
   };
 
   tools = {
-    ipinfo = pkgs.callPackage ./ipinfo.nix {};
+    ipinfo = pkgs.callPackage ./ipinfo.nix { };
   };
-in {
+in
+{
   _module.args = {
     inherit tools;
   };

@@ -6,7 +6,7 @@
 
     userEmail = "fooker@lab.sh";
     userName = "Dustin Frisch";
-    
+
     extraConfig = {
       core = {
         whitespace = "trailing-space,space-before-tab";

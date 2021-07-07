@@ -2,12 +2,13 @@
 
 with lib;
 let
-  hostId = toString (import (pkgs.runCommandLocal "hostid-${ name }" {} "echo ${ name } | sha512sum | head -c4 | od -A none -t x4 > $out"));
-in {
+  hostId = toString (import (pkgs.runCommandLocal "hostid-${ name }" { } "echo ${ name } | sha512sum | head -c4 | od -A none -t x4 > $out"));
+in
+{
   options.common.network = {
     enable = mkOption {
-        type = types.bool;
-        default = true;
+      type = types.bool;
+      default = true;
     };
   };
 

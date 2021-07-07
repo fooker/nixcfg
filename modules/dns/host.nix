@@ -17,7 +17,7 @@ with ext;
           realm = mkOption {
             type = types.domain.relative;
             description = "The realm in the zone the host is exposted to";
-            default = domain.relative [];
+            default = domain.relative [ ];
           };
 
           name = mkOption {

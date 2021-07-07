@@ -7,7 +7,8 @@ let
     exec ${mosh}/bin/mosh "weechat@weechat.open-desk.net" -- \
       screen -A -x "weechat"
   '');
-in {
+in
+{
   home.packages = [
     weechat-connect
   ];

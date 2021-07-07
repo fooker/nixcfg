@@ -30,7 +30,8 @@ let
     };
   };
 
-in {
+in
+{
   options = {
     keyTag = mkOption {
       type = types.ints.u16;
@@ -43,9 +44,20 @@ in {
     algorithm = mkOption {
       type = types.enum [
         # https://www.iana.org/assignments/dns-sec-alg-numbers
-        "DELETE" "RSAMD5" "DH" "DSA" "RSASHA1" "DSA-NSEC3-SHA1"
-        "RSASHA1-NSEC3-SHA1" "RSASHA256" "RSASHA512" "ECC-GOST"
-        "ECDSAP256SHA256" "ECDSAP384SHA384" "ED25519" "ED448"
+        "DELETE"
+        "RSAMD5"
+        "DH"
+        "DSA"
+        "RSASHA1"
+        "DSA-NSEC3-SHA1"
+        "RSASHA1-NSEC3-SHA1"
+        "RSASHA256"
+        "RSASHA512"
+        "ECC-GOST"
+        "ECDSAP256SHA256"
+        "ECDSAP384SHA384"
+        "ED25519"
+        "ED448"
       ];
       description = ''
         The Algorithm field identifies the public key's cryptographic algorithm.
@@ -55,7 +67,10 @@ in {
     digestType = mkOption {
       type = types.enum [
         # https://www.iana.org/assignments/ds-rr-types/
-        "SHA-1" "SHA-256" "GOST R 34.11-94" "SHA-384"
+        "SHA-1"
+        "SHA-256"
+        "GOST R 34.11-94"
+        "SHA-384"
       ];
       description = ''
         Identifies the algorithm used to construct the digest.
@@ -67,7 +82,7 @@ in {
         name = "hexEncodedHash";
         description = "hex-encoded hash";
         check = x: lib.isString x
-                && builtins.match "([a-fA-F0-9]{2})+" x != null;
+          && builtins.match "([a-fA-F0-9]{2})+" x != null;
         merge = lib.mergeOneOption;
       };
       description = "The digest.";

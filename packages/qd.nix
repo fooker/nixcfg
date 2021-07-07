@@ -3,7 +3,8 @@
 let
   sources = import ../nix/sources.nix;
 
-in rustPlatform.buildRustPackage rec {
+in
+rustPlatform.buildRustPackage rec {
   name = "qd";
 
   src = sources.qd;

@@ -3,7 +3,7 @@
 with lib;
 
 {
-  options.hive = 
+  options.hive =
     let
       nodeModule = types.submodule ({ name, ... }: {
         options = {
@@ -30,7 +30,8 @@ with lib;
         };
       });
 
-    in {
+    in
+    {
       enable = mkEnableOption "hive node";
 
       id = mkOption {

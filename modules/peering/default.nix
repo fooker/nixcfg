@@ -49,7 +49,7 @@ with lib;
                   description = "The AS the machine is in";
                   type = types.ints.unsigned;
                 };
-                
+
                 preference = mkOption {
                   description = "Route preference";
                   type = types.ints.u16;
@@ -98,19 +98,19 @@ with lib;
             description = "Babel configuration";
             default = null;
             type = types.nullOr (types.submodule {
-              options = {};
+              options = { };
             });
           };
 
           exports = {
             ipv4 = mkOption {
               description = "The IPv4 routes exported by this node to this domain";
-              default = [];
+              default = [ ];
               type = types.listOf types.str;
             };
             ipv6 = mkOption {
               description = "The IPv4 routes exported by this node to this domain";
-              default = [];
+              default = [ ];
               type = types.listOf types.str;
             };
           };
@@ -118,12 +118,12 @@ with lib;
           filters = {
             ipv4 = mkOption {
               description = "The IPv4 routes to import by this node in this domain";
-              default = [];
+              default = [ ];
               type = types.listOf types.str;
             };
             ipv6 = mkOption {
               description = "The IPv6 routes to import by this node in this domain";
-              default = [];
+              default = [ ];
               type = types.listOf types.str;
             };
           };
@@ -133,7 +133,7 @@ with lib;
 
     peers = mkOption {
       description = "Peers";
-      default = {};
+      default = { };
       type = types.attrsOf (types.submodule ({ name, config, ... }: {
         options = {
           name = mkOption {
@@ -242,8 +242,7 @@ with lib;
                   description = "Peer OSPF configuration";
                   default = null;
                   type = types.nullOr (types.submodule {
-                    options = {
-                    };
+                    options = { };
                   });
                 };
 
@@ -251,8 +250,7 @@ with lib;
                   description = "Peer Babel configuration";
                   default = null;
                   type = types.nullOr (types.submodule {
-                    options = {
-                    };
+                    options = { };
                   });
                 };
               };
@@ -261,7 +259,7 @@ with lib;
         };
 
         config = {
-          local.pubkey = builtins.readFile (pkgs.runCommandNoCCLocal "peering-${name}.crt" {} ''
+          local.pubkey = builtins.readFile (pkgs.runCommandNoCCLocal "peering-${name}.crt" { } ''
             echo '${ config.local.privkey }' | ${ pkgs.wireguard }/bin/wg pubkey > $out
           '');
         };
@@ -269,161 +267,164 @@ with lib;
     };
   };
 
-  config = let
-    writePrivateKey = peer: key: pkgs.writeTextFile {
-      name = "peering-${name}-${peer}.key";
-      text = key;
-    };
+  config =
+    let
+      writePrivateKey = peer: key: pkgs.writeTextFile {
+        name = "peering-${name}-${peer}.key";
+        text = key;
+      };
 
-    mkPeerNetwork = peer: {
-      netdevs."80-peering-peer-${peer.name}" = {
-        netdevConfig = {
-          Description = "Peering with ${peer.name}";
-          Name = "${peer.netdev}";
-          Kind = "wireguard";
-        };
-        wireguardConfig = {
-          ListenPort = peer.local.port;
-          PrivateKeyFile = writePrivateKey peer.name peer.local.privkey;
-        };
-        wireguardPeers = [{
-          wireguardPeerConfig = {
-            Endpoint = mkIf (peer.remote.endpoint != null) "${peer.remote.endpoint.host}:${toString peer.remote.endpoint.port}";
-            AllowedIPs = "0.0.0.0/0, ::/0";
-            PublicKey = "${peer.remote.pubkey}";
-            PersistentKeepalive = 25;
+      mkPeerNetwork = peer: {
+        netdevs."80-peering-peer-${peer.name}" = {
+          netdevConfig = {
+            Description = "Peering with ${peer.name}";
+            Name = "${peer.netdev}";
+            Kind = "wireguard";
           };
-        }];
+          wireguardConfig = {
+            ListenPort = peer.local.port;
+            PrivateKeyFile = writePrivateKey peer.name peer.local.privkey;
+          };
+          wireguardPeers = [{
+            wireguardPeerConfig = {
+              Endpoint = mkIf (peer.remote.endpoint != null) "${peer.remote.endpoint.host}:${toString peer.remote.endpoint.port}";
+              AllowedIPs = "0.0.0.0/0, ::/0";
+              PublicKey = "${peer.remote.pubkey}";
+              PersistentKeepalive = 25;
+            };
+          }];
+        };
+
+        networks."80-peering-peer-${peer.name}" = {
+          matchConfig = {
+            Name = "${peer.netdev}";
+          };
+          networkConfig = {
+            Description = "Peering with ${peer.name}";
+
+            LinkLocalAddressing = "no";
+            IPv6AcceptRA = false;
+
+            IPForward = "yes";
+          };
+          addresses =
+            (optional (peer.transfer.ipv4 != null) {
+              addressConfig = {
+                Address = "${peer.transfer.ipv4.addr}/32";
+                Peer = "${peer.transfer.ipv4.peer}/32";
+                Scope = "link";
+              };
+            })
+            ++
+            (optional (peer.transfer.ipv6 != null) {
+              addressConfig = {
+                Address = "${peer.transfer.ipv6.addr}/128";
+                Peer = "${peer.transfer.ipv6.peer}/128";
+                Scope = "link";
+              };
+            });
+        };
       };
 
-      networks."80-peering-peer-${peer.name}" = {
-        matchConfig = {
-          Name = "${peer.netdev}";
+      mkDomainNetwork = domain: {
+        netdevs."70-peering-domain-${domain.name}" = {
+          netdevConfig = {
+            Description = "Domain ${domain.name}";
+            Name = "${domain.name}";
+            Kind = "dummy";
+          };
         };
-        networkConfig = {
-          Description = "Peering with ${peer.name}";
 
-          LinkLocalAddressing = "no";
-          IPv6AcceptRA = false;
+        networks."70-peering-domain-${domain.name}" = {
+          matchConfig = {
+            Name = "${domain.name}";
+          };
+          networkConfig = {
+            Description = "Domain ${domain.name}";
 
-          IPForward = "yes";
-        };
-        addresses = 
-          (optional (peer.transfer.ipv4 != null) { 
-            addressConfig = {
-              Address = "${peer.transfer.ipv4.addr}/32";
-              Peer = "${peer.transfer.ipv4.peer}/32";
-              Scope = "link";
-            };
-          })
-          ++
-          (optional (peer.transfer.ipv6 != null) {
-            addressConfig = {
-              Address = "${peer.transfer.ipv6.addr}/128";
-              Peer = "${peer.transfer.ipv6.peer}/128";
-              Scope = "link";
-            };
-          });
-      };
-    };
-
-    mkDomainNetwork = domain: {
-      netdevs."70-peering-domain-${domain.name}" = {
-        netdevConfig = {
-          Description = "Domain ${domain.name}";
-          Name = "${domain.name}";
-          Kind = "dummy";
+            IPForward = "yes";
+          };
+          addresses = [
+            {
+              addressConfig = with tools.ipinfo domain.ipv4; {
+                Address = "${address}/${toString netmask}";
+              };
+            }
+            {
+              addressConfig = with tools.ipinfo domain.ipv6; {
+                Address = "${address}/${toString netmask}";
+              };
+            }
+          ];
         };
       };
 
-      networks."70-peering-domain-${domain.name}" = {
-        matchConfig = {
-          Name = "${domain.name}";
-        };
-        networkConfig = {
-          Description = "Domain ${domain.name}";
-          
-          IPForward = "yes";
-        };
-        addresses = [
-          {
-            addressConfig = with tools.ipinfo domain.ipv4; {
-              Address = "${address}/${toString netmask}";
-            };
-          }
-          {
-            addressConfig = with tools.ipinfo domain.ipv6; {
-              Address = "${address}/${toString netmask}";
-            };
-          }
-        ];
-      };
-    };
-    
-  in mkIf (config.peering.peers != {}) {
-    boot.extraModulePackages = mkIf (versionOlder config.boot.kernelPackages.kernel.version "5.6") [ config.boot.kernelPackages.wireguard ];
-    environment.systemPackages = [ pkgs.wireguard-tools ];
+    in
+    mkIf (config.peering.peers != { }) {
+      boot.extraModulePackages = mkIf (versionOlder config.boot.kernelPackages.kernel.version "5.6") [ config.boot.kernelPackages.wireguard ];
+      environment.systemPackages = [ pkgs.wireguard-tools ];
 
-    systemd.network = mkMerge (flatten [
-      (map mkPeerNetwork (attrValues config.peering.peers))
-      (map mkDomainNetwork
-        (filter # Filter domains with standalone interface and having at least one peer
-          (domain: and
-            (any # Check if domain has any peer
-              (peer: hasAttr domain.name peer.domains) # Check if peer is associated with domain
-              (attrValues config.peering.peers))
-            (domain.netdev == null)) # Check if domain has associated local interface
-          (attrValues config.peering.domains)))
-    ]);
+      systemd.network = mkMerge (flatten [
+        (map mkPeerNetwork (attrValues config.peering.peers))
+        (map mkDomainNetwork
+          (filter # Filter domains with standalone interface and having at least one peer
+            (domain: and
+              (any # Check if domain has any peer
+                (peer: hasAttr domain.name peer.domains) # Check if peer is associated with domain
+                (attrValues config.peering.peers))
+              (domain.netdev == null)) # Check if domain has associated local interface
+            (attrValues config.peering.domains)))
+      ]);
 
-    firewall.rules = dag: with dag; {
-      inet.filter.input =
-        let
-          mkTunnel = peer: optional
-            (peer.local.port != null)
-            (nameValuePair
-              "peering-${peer.name}-wg"
-              (between ["established"] ["drop"] ''
-                udp dport ${toString peer.local.port}
-                accept
-              ''));
-        in
+      firewall.rules = dag: with dag; {
+        inet.filter.input =
+          let
+            mkTunnel = peer: optional
+              (peer.local.port != null)
+              (nameValuePair
+                "peering-${peer.name}-wg"
+                (between [ "established" ] [ "drop" ] ''
+                  udp dport ${toString peer.local.port}
+                  accept
+                ''));
+          in
           listToAttrs (concatMap mkTunnel (attrValues config.peering.peers));
 
-      inet.filter.forward =
-        let
-          # All domains having at least one peer
-          domains = filter
-            (domain: (any
-              (peer: hasAttr domain.name peer.domains) # Check if peer is associated with domain
-              (attrValues config.peering.peers)
-            ))
-            (attrValues config.peering.domains);
-
-          mkDomain = domain: nameValuePair
-            "peering-${domain.name}"
-            (let
-              # List of all peers participating in this domain
-              peers = filter
+        inet.filter.forward =
+          let
+            # All domains having at least one peer
+            domains = filter
+              (domain: (any
                 (peer: hasAttr domain.name peer.domains) # Check if peer is associated with domain
-                (attrValues config.peering.peers);
+                (attrValues config.peering.peers)
+              ))
+              (attrValues config.peering.domains);
 
-              # All network devices participating in this domain.
-              # This includes the network interface for all participating
-              # peers and the local interface, if it's not a dummy interface.
-              netdevs = (optional (domain.netdev != null) domain.netdev) ++
-                        (map (peer: peer.netdev) peers);
+            mkDomain = domain: nameValuePair
+              "peering-${domain.name}"
+              (
+                let
+                  # List of all peers participating in this domain
+                  peers = filter
+                    (peer: hasAttr domain.name peer.domains) # Check if peer is associated with domain
+                    (attrValues config.peering.peers);
 
-              netdevs' = concatMapStringsSep "," (netdev: "\"${netdev}\"") netdevs;
-            in
-              between ["established"] ["drop"] ''
-                meta iifname { ${ netdevs' } }
-                meta oifname { ${ netdevs' } }
-                accept
-              ''
-            );
-        in
+                  # All network devices participating in this domain.
+                  # This includes the network interface for all participating
+                  # peers and the local interface, if it's not a dummy interface.
+                  netdevs = (optional (domain.netdev != null) domain.netdev) ++
+                    (map (peer: peer.netdev) peers);
+
+                  netdevs' = concatMapStringsSep "," (netdev: "\"${netdev}\"") netdevs;
+                in
+                between [ "established" ] [ "drop" ] ''
+                  meta iifname { ${ netdevs' } }
+                  meta oifname { ${ netdevs' } }
+                  accept
+                ''
+              );
+          in
           listToAttrs (map mkDomain domains);
+      };
     };
-  };
 }

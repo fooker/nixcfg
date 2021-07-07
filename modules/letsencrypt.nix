@@ -6,7 +6,8 @@ let
   nameserver = "172.23.200.3";
   tsigAlgorithm = "hmac-sha512.";
   tsigKey = "acme_update";
-in {
+in
+{
   options = {
     letsencrypt = {
       production = mkOption {
@@ -55,68 +56,74 @@ in {
           };
 
           config = {
-            path = let 
-              dir = config.security.acme.certs."${name}".directory;
-            in {
-              cert = "${dir}/cert.pem";
-              chain = "${dir}/chain.pem"denonavr;
-              fullchain = "${dir}/fullchain.pem";
-              full = "${dir}/full.pem";
-              key = "${dir}/key.pem";
-            };
+            path =
+              let
+                dir = config.security.acme.certs."${name}".directory;
+              in
+              {
+                cert = "${dir}/cert.pem";
+                chain = "${dir}/chain.pem" denonavr;
+                fullchain = "${dir}/fullchain.pem";
+                full = "${dir}/full.pem";
+                key = "${dir}/key.pem";
+              };
           };
         }));
-        default = {};
+        default = { };
       };
     };
   };
 
-  config = mkIf (config.letsencrypt.certs != {}) {
+  config = mkIf (config.letsencrypt.certs != { }) {
     security.acme = {
       email = "hostmaster@open-desk.net";
       acceptTerms = true;
 
       server = mkIf (!config.letsencrypt.production) "https://acme-staging-v02.api.letsencrypt.org/directory";
 
-      certs = mapAttrs (name: cert: {
-        domain = head cert.domains;
-        extraDomainNames = (tail cert.domains);
-        
-        dnsProvider = "rfc2136";
-        credentialsFile = pkgs.writeText "acme-credentials" ''
-          LEGO_EXPERIMENTAL_CNAME_SUPPORT=true
-          RFC2136_NAMESERVER=${nameserver}
-          RFC2136_TSIG_ALGORITHM=${tsigAlgorithm}
-          RFC2136_TSIG_KEY=${tsigKey}
-          RFC2136_TSIG_SECRET_FILE=/var/lib/acme/update.tsig
-          RFC2136_PROPAGATION_TIMEOUT=3600
-        '';
+      certs = mapAttrs
+        (name: cert: {
+          domain = head cert.domains;
+          extraDomainNames = (tail cert.domains);
 
-        group = cert.owner;
-        
-        postRun = cert.trigger; 
-      }) config.letsencrypt.certs;
+          dnsProvider = "rfc2136";
+          credentialsFile = pkgs.writeText "acme-credentials" ''
+            LEGO_EXPERIMENTAL_CNAME_SUPPORT=true
+            RFC2136_NAMESERVER=${nameserver}
+            RFC2136_TSIG_ALGORITHM=${tsigAlgorithm}
+            RFC2136_TSIG_KEY=${tsigKey}
+            RFC2136_TSIG_SECRET_FILE=/var/lib/acme/update.tsig
+            RFC2136_PROPAGATION_TIMEOUT=3600
+          '';
+
+          group = cert.owner;
+
+          postRun = cert.trigger;
+        })
+        config.letsencrypt.certs;
     };
 
-    dns.zones = let
-      domains = concatMap
-        (cert: cert.domains)
-        (attrValues config.letsencrypt.certs);
-    in mkMerge (map
-      (domain: (ext.domain.absolute domain).mkRecords {
-        "_acme-challenge" = {
-          CNAME = "${ domain }.acme.dyn.open-desk.net.";
-        };
+    dns.zones =
+      let
+        domains = concatMap
+          (cert: cert.domains)
+          (attrValues config.letsencrypt.certs);
+      in
+      mkMerge (map
+        (domain: (ext.domain.absolute domain).mkRecords {
+          "_acme-challenge" = {
+            CNAME = "${ domain }.acme.dyn.open-desk.net.";
+          };
 
-        CAA = [
-          {
-            critical = true;
-            tag = "issue";
-            value = "letsencrypt.org";
-          }
-        ];
-      })
-      domains);
+          CAA = [
+            {
+              critical = true;
+              tag = "issue";
+              value = "letsencrypt.org";
+            }
+          ];
+        })
+        domains);
 
     backup.paths = [
       "/var/lib/acme"

@@ -4,7 +4,8 @@ let
   ext = lib.makeExtensible (self:
     let
       callLibs = file: import file { inherit lib; ext = self; };
-    in {
+    in
+    {
       fn = callLibs ./fn.nix;
       dag = callLibs ./dag.nix;
       dns = callLibs ./dns.nix;
@@ -15,8 +16,9 @@ let
         // self.dns.types;
 
       inherit (self.dns) domain;
-  });
-in {
+    });
+in
+{
   _module.args = {
     inherit ext;
   };

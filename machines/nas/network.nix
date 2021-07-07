@@ -8,7 +8,8 @@ let
     "24:5e:be:35:8b:d7"
     "24:5e:be:35:8b:d8"
   ];
-in {
+in
+{
   systemd.network = {
     enable = true;
 
@@ -17,14 +18,15 @@ in {
         let
           name = "priv-${ toString i }";
         in
-          (nameValuePair "00-${ name }" {
-            matchConfig = {
-              MACAddress = mac;
-            };
-            linkConfig = {
-              Name = name;
-            };
-          })))
+        (nameValuePair "00-${ name }" {
+          matchConfig = {
+            MACAddress = mac;
+          };
+          linkConfig = {
+            Name = name;
+          };
+        })
+      ))
       devices));
 
     netdevs = {
@@ -46,13 +48,14 @@ in {
         let
           name = "priv-${ toString i }";
         in
-          (nameValuePair "00-${ name }" {
-            name = name;
-            bond = [ "priv" ];
-            networkConfig = {
-              LinkLocalAddressing = "no";
-            };
-          })))
+        (nameValuePair "00-${ name }" {
+          name = name;
+          bond = [ "priv" ];
+          networkConfig = {
+            LinkLocalAddressing = "no";
+          };
+        })
+      ))
       devices)
     ) // {
       "30-priv" = {

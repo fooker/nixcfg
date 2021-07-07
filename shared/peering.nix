@@ -25,8 +25,8 @@ with lib;
         as = 4242421271;
         preference = 200;
       };
-      
-      babel = {};
+
+      babel = { };
 
       ospf = {
         instanceId = 42;
@@ -45,12 +45,12 @@ with lib;
         "172.21.0.0/24{28,32}" # dn42 Anycast
         "172.22.0.0/24{28,32}" # dn42 Anycast
         "172.23.0.0/24{28,32}" # dn42 Anycast
-        "172.31.0.0/16+"       # ChaosVPN
-        "10.100.0.0/14+"       # ChaosVPN
-        "10.0.0.0/8+"          # Freifunk
+        "172.31.0.0/16+" # ChaosVPN
+        "10.100.0.0/14+" # ChaosVPN
+        "10.0.0.0/8+" # Freifunk
       ];
       filters.ipv6 = [
-        "fc00::/7{44,64}"      # ULAs
+        "fc00::/7{44,64}" # ULAs
       ];
     };
   };

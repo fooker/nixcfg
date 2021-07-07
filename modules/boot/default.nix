@@ -9,8 +9,8 @@ with lib;
 
   options.boot = {
     preset = mkOption {
-        type = types.enum [ "grub" "systemd" "none" ];
-        default = "systemd";
+      type = types.enum [ "grub" "systemd" "none" ];
+      default = "systemd";
     };
   };
 

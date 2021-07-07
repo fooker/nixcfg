@@ -2,7 +2,8 @@
 
 let
   secrets = import ./secrets.nix;
-in {
+in
+{
   imports = [
     ./hardware.nix
     ./network.nix
@@ -88,7 +89,7 @@ in {
   };
 
   programs.dconf.enable = true;
-  
+
   programs.mosh.enable = true;
 
   systemd.packages = [ pkgs.blueman ];

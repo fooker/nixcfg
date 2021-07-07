@@ -8,54 +8,57 @@ let
 
   # Match every name that is all-upercase
   isRecord = name: (builtins.match "[A-Z]+" name) != null;
-  
+
   # Coerces an attrset to a zone submodule by splitting the attrset into three parts:
   # - the well-known attributes of the zone like `ttl`
   # - the resource records of this zone (all uppercase entries)
   # - all (virtual) sub-zones defined in this zone (everything else)
-  coerceZone = attrs: let
-    # Get the well-known attributes if they exists in the attrset
-    known = getAttrs
-      (filter
-        (name: hasAttr name attrs)
-        [ "ttl" "includes" "parent" ])
-      attrs;
-    
-    # Partititon all attr names that are not well-know by being a record or not
-    partitioned = partition
-      isRecord
-      (filter
-        # Filter for everything that is not well-known
-        (name: !(hasAttr name known))
-        (attrNames attrs));
-  in {
-    records = getAttrs partitioned.right attrs;
-    zones = getAttrs partitioned.wrong attrs;
-  } // known;
+  coerceZone = attrs:
+    let
+      # Get the well-known attributes if they exists in the attrset
+      known = getAttrs
+        (filter
+          (name: hasAttr name attrs)
+          [ "ttl" "includes" "parent" ])
+        attrs;
+
+      # Partititon all attr names that are not well-know by being a record or not
+      partitioned = partition
+        isRecord
+        (filter
+          # Filter for everything that is not well-known
+          (name: !(hasAttr name known))
+          (attrNames attrs));
+    in
+    {
+      records = getAttrs partitioned.right attrs;
+      zones = getAttrs partitioned.wrong attrs;
+    } // known;
 
   # Option type for zone definitions - similar to types.coercedTo but checking specific for
   # being a zone by looking zone specific records
   coercedZoneSubmodule = mod: mkOptionType rec {
     name = "coercedZoneSubmodule";
     description = "${mod.description} or ${types.attrs.description} convertible to it";
-    
+
     check = x: mod.check x || (types.attrs.check x && mod.check (coerceZone x));
-    
+
     merge = loc: defs:
       let
         coerceVal = val:
           if hasAttr "records" val || hasAttr "zones" val then val
           else coerceZone val;
-      in mod.merge loc (map (def: def // { value = coerceVal def.value; }) defs);
-    
+      in
+      mod.merge loc (map (def: def // { value = coerceVal def.value; }) defs);
+
     emptyValue = mod.emptyValue;
     getSubOptions = mod.getSubOptions;
     getSubModules = mod.getSubModules;
 
     substSubModules = m: coercedZoneSubmodule (mod.substSubModules m);
-    
+
     typeMerge = t1: t2: null;
-    
+
     functor = (defaultFunctor name) // { wrapped = mod; };
   };
 
@@ -92,29 +95,30 @@ let
         includes = mkOption {
           type = types.listOf types.path;
           description = "Other zone files to include";
-          default = [];
+          default = [ ];
         };
 
         parent = mkOption {
           type = recordsType;
           description = "Records prpagated to the parent zone";
-          default = {};
+          default = { };
         };
 
         records = mkOption {
           type = recordsType;
           description = "Records of this zone";
-          default = {};
+          default = { };
         };
       } // optionalAttrs (level <= 127) {
         zones = mkOption {
           type = types.attrsOf (zone (level + 1));
-          default = {};
+          default = { };
         };
       };
     });
 
-in {
+in
+{
   imports = [
     ./host.nix
   ];
@@ -123,7 +127,7 @@ in {
     zones = mkOption {
       type = zone 0;
       description = "The DNS tree";
-      default = {};
+      default = { };
     };
 
     defaultTTL = mkOption {
@@ -192,107 +196,117 @@ in {
 
   config.dns = {
     # Build global DNS tree by merging the local tree from all nodes
-    global = let
-      # Use all defined records while stripping out the data element as it is
-      # re-created from the definition.
-      cleanupRecords = records: let
-        cleanup = def: removeAttrs def [ "data" ];
-      in mapAttrs
-        (type: record: if isList record
-          then map cleanup record
-          else cleanup record)
-        (getAttrs records.defined records);
+    global =
+      let
+        # Use all defined records while stripping out the data element as it is
+        # re-created from the definition.
+        cleanupRecords = records:
+          let
+            cleanup = def: removeAttrs def [ "data" ];
+          in
+          mapAttrs
+            (type: record:
+              if isList record
+              then map cleanup record
+              else cleanup record)
+            (getAttrs records.defined records);
 
-      walk = cfg: path: {
-        inherit (cfg) ttl includes;
+        walk = cfg: path: {
+          inherit (cfg) ttl includes;
 
-        records = cleanupRecords cfg.records;
-        parent = cleanupRecords cfg.parent;
-        
-        # Recurs into all defined sub-zones
-        zones = mapAttrs (name: zone: walk zone (path ++ [name])) cfg.zones;
-      };
-    in mkMerge (map
-      (node: walk node.config.dns.zones [])
-      (attrValues nodes));
+          records = cleanupRecords cfg.records;
+          parent = cleanupRecords cfg.parent;
+
+          # Recurs into all defined sub-zones
+          zones = mapAttrs (name: zone: walk zone (path ++ [ name ])) cfg.zones;
+        };
+      in
+      mkMerge (map
+        (node: walk node.config.dns.zones [ ])
+        (attrValues nodes));
 
     # Build the zone list from the zones. This is an list where each element is
     # just the zone name and a list of records in the zone.
-    zoneList = let
-      walk = { domain, zone, ttl, config }: let
-        # If this domain has a SOA record, we found a new (sub) zone
-        zone' = if elem "SOA" config.records.defined
-          then [ domain ] ++ zone
-          else zone;
+    zoneList =
+      let
+        walk = { domain, zone, ttl, config }:
+          let
+            # If this domain has a SOA record, we found a new (sub) zone
+            zone' =
+              if elem "SOA" config.records.defined
+              then [ domain ] ++ zone
+              else zone;
 
-        # If the domain has defined a TTL we use it as default for all records and sub-zones
-        ttl' = if config.ttl != null then config.ttl else ttl;
+            # If the domain has defined a TTL we use it as default for all records and sub-zones
+            ttl' = if config.ttl != null then config.ttl else ttl;
 
-        # Build an entry for some element in the zone
-        mkEntry = zone: type: value: {
-          inherit zone;
-          ${ type } = value;
+            # Build an entry for some element in the zone
+            mkEntry = zone: type: value: {
+              inherit zone;
+              ${ type } = value;
+            };
+
+            # Build the resulting record type from a record in a zone
+            mkRecord = zone: record: mkEntry zone "record" {
+              inherit domain;
+              inherit (record) class type data;
+
+              ttl = if record.ttl != null then record.ttl else ttl';
+            };
+
+            # Build the list of records
+            mkRecords = zone: records: concatMap
+              (record: map
+                (mkRecord zone)
+                (toList record))
+              (attrVals records.defined records);
+
+            records = mkRecords (head zone') config.records;
+            parents = mkRecords (head (tail zone')) config.parent;
+
+            # Build an include element from the include in a zone
+            mkInclude = file: mkEntry (head zone') "include" {
+              inherit domain file;
+            };
+
+            # Build the list of includes in the current domain
+            includes = map mkInclude config.includes;
+
+            # Recurse into all sub-domain
+            next = concatLists (
+              mapAttrsToList
+                (name: value: walk {
+                  domain = domain.resolve (ext.domain.relative name);
+                  zone = zone';
+                  ttl = ttl';
+                  config = value;
+                })
+                config.zones);
+
+          in
+          records ++ parents ++ includes ++ next;
+
+        # Walk the tree and collect all records
+        collected = walk {
+          domain = ext.domain.root;
+          zone = [ ];
+          ttl = config.dns.defaultTTL;
+          config = config.dns.global;
         };
 
-        # Build the resulting record type from a record in a zone
-        mkRecord = zone: record: mkEntry zone "record" {
-          inherit domain;
-          inherit (record) class type data;
+        # Group the collected record by zone they are defined in
+        # [ { zone, record }, { zone, include } ... ] -> [ { name = zone, records = [ ... ], includes = [ ... ]} ... ]
+        grouped = attrValues (groupBy'
+          (group: entry: {
+            name = entry.zone;
+            records = group.records ++ (optional (hasAttr "record" entry) entry.record);
+            includes = group.includes ++ (optional (hasAttr "include" entry) entry.include);
+          })
+          { records = [ ]; includes = [ ]; }
+          (entry: toString entry.zone)
+          collected);
 
-          ttl = if record.ttl != null then record.ttl else ttl';
-        };
-
-        # Build the list of records
-        mkRecords = zone: records: concatMap
-          (record: map
-            (mkRecord zone)
-            (toList record))
-          (attrVals records.defined records);
-
-        records = mkRecords (head zone') config.records;
-        parents = mkRecords (head (tail zone')) config.parent;
-
-        # Build an include element from the include in a zone
-        mkInclude = file: mkEntry (head zone') "include" {
-          inherit domain file;
-        };
-
-        # Build the list of includes in the current domain
-        includes = map mkInclude config.includes;
-
-        # Recurse into all sub-domain
-        next = concatLists (
-          mapAttrsToList
-            (name: value: walk {
-              domain = domain.resolve (ext.domain.relative name);
-              zone = zone';
-              ttl = ttl';
-              config = value;
-            })
-            config.zones);
-
-      in records ++ parents ++ includes ++ next;
-
-      # Walk the tree and collect all records
-      collected = walk {
-        domain = ext.domain.root;
-        zone = [];
-        ttl = config.dns.defaultTTL;
-        config = config.dns.global;
-      };
-
-      # Group the collected record by zone they are defined in
-      # [ { zone, record }, { zone, include } ... ] -> [ { name = zone, records = [ ... ], includes = [ ... ]} ... ]
-      grouped = attrValues (groupBy'
-        (group: entry: {
-          name = entry.zone;
-          records = group.records ++ (optional (hasAttr "record" entry) entry.record);
-          includes = group.includes ++ (optional (hasAttr "include" entry) entry.include);
-        })
-        { records = []; includes = []; }
-        (entry: toString entry.zone)
-        collected);
-
-    in grouped;
+      in
+      grouped;
   };
 }

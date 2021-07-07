@@ -15,7 +15,8 @@ let
     "cache"
   ];
 
-in {
+in
+{
   boot.supportedFilesystems = [ "zfs" ];
 
   systemd.services = listToAttrs
@@ -44,7 +45,7 @@ in {
 
         wantedBy = [ "zfs-import.target" ];
       })
-    disks);
+      disks);
 
   services.udev.extraRules = concatStringsSep "\n"
     (map

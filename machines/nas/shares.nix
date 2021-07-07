@@ -59,23 +59,23 @@
 
   firewall.rules = dag: with dag; {
     inet.filter.input = {
-      nfs-tcp = between ["established"] ["drop"] ''
+      nfs-tcp = between [ "established" ] [ "drop" ] ''
         ip saddr 172.23.200.0/24
         tcp dport 2049
         accept
       '';
-      nfs-udp = between ["established"] ["drop"] ''
+      nfs-udp = between [ "established" ] [ "drop" ] ''
         ip saddr 172.23.200.0/24
         udp dport 2049
         accept
       '';
 
-      smb-tcp = between ["established"] ["drop"] ''
+      smb-tcp = between [ "established" ] [ "drop" ] ''
         ip saddr 172.23.200.0/24
         tcp dport { 137, 138, 139, 445 }
         accept
       '';
-      smb-udp = between ["established"] ["drop"] ''
+      smb-udp = between [ "established" ] [ "drop" ] ''
         ip saddr 172.23.200.0/24
         udp dport { 137, 138, 139, 445 }
         accept

@@ -2,10 +2,13 @@
 
 let
   secrets = import ./secrets.nix;
-in {
-  nixpkgs.overlays = [ (self: super: {
-    jellyfin = pkgs.unstable.jellyfin;
-  }) ];
+in
+{
+  nixpkgs.overlays = [
+    (self: super: {
+      jellyfin = pkgs.unstable.jellyfin;
+    })
+  ];
 
   services.jellyfin = {
     enable = true;
@@ -14,7 +17,7 @@ in {
   fileSystems."/mnt/media" = {
     device = "nas.dev.home.open-desk.net:/media";
     fsType = "nfs4";
-    options = ["x-systemd.automount" "noauto"];
+    options = [ "x-systemd.automount" "noauto" ];
   };
 
   boot.kernel.sysctl = {
@@ -30,12 +33,12 @@ in {
 
   firewall.rules = dag: with dag; {
     inet.filter.input = {
-      jellyfin-ssdp = between ["established"] ["drop"] ''
+      jellyfin-ssdp = between [ "established" ] [ "drop" ] ''
         ip saddr 172.23.200.0/24
         udp dport 1900
         accept
       '';
-      jellyfin-disocovery = between ["established"] ["drop"] ''
+      jellyfin-disocovery = between [ "established" ] [ "drop" ] ''
         ip saddr 172.23.200.0/24
         udp dport 7359
         accept

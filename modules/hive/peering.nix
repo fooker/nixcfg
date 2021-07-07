@@ -4,7 +4,7 @@ with lib;
 
 {
   config = mkIf config.hive.enable {
-    peering =  {
+    peering = {
       # Peering for hive relies on backhaul
       backhaul.enable = true;
 
@@ -23,7 +23,7 @@ with lib;
         (name: node: nameValuePair nodes.${ name }.config.peering.backhaul.key {
           domains = {
             "hive" = {
-              ospf = {};
+              ospf = { };
             };
           };
         })

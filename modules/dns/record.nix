@@ -6,10 +6,12 @@ with ext;
 rec {
   # Builder for record type options
   mkRecordOption = { type, singleton }: mkOption {
-    type = if singleton
+    type =
+      if singleton
       then type
       else types.either type (types.listOf type);
-    apply = if singleton
+    apply =
+      if singleton
       then id
       else toList;
   };
@@ -49,8 +51,8 @@ rec {
         type = rtype;
 
         _module.args = {
-            inherit ext;
-          };
+          inherit ext;
+        };
       };
     };
   };
@@ -67,7 +69,11 @@ rec {
       class = mkOption {
         type = types.enum [
           # https://www.iana.org/assignments/dns-parameters/#dns-parameters-2
-          "IN" "CH" "HS" "NONE" "ANY"
+          "IN"
+          "CH"
+          "HS"
+          "NONE"
+          "ANY"
         ];
         default = "IN";
         description = "The class to use for this record";
@@ -76,14 +82,82 @@ rec {
       type = mkOption {
         type = types.enum [
           # https://www.iana.org/assignments/dns-parameters/#dns-parameters-4
-          "A" "NS" "CNAME" "SOA" "MB" "MG" "MR" "NULL" "WKS" "PTR" "HINFO"
-          "MINFO" "MX" "TXT" "RP" "AFSDB" "X25" "ISDN" "RT" "NSAP" "NSAP-PTR"
-          "SIG" "KEY" "PX" "GPOS" "AAAA" "LOC" "EID" "NIMLOC" "SRV" "ATMA"
-          "NAPTR" "KX" "CERT" "DNAME" "SINK" "OPT" "APL" "DS" "SSHFP" "IPSECKEY"
-          "RRSIG" "NSEC" "DNSKEY" "DHCID" "NSEC3" "NSEC3PARAM" "TLSA" "SMIMEA"
-          "HIP" "NINFO" "RKEY" "TALINK" "CDS" "CDNSKEY" "OPENPGPKEY" "CSYNC"
-          "SPF" "UINFO" "UID" "GID" "UNSPEC" "NID" "L32" "L64" "LP" "EUI48"
-          "EUI64" "TKEY" "TSIG" "URI" "CAA" "AVC" "DOA" "TA" "DLV"
+          "A"
+          "NS"
+          "CNAME"
+          "SOA"
+          "MB"
+          "MG"
+          "MR"
+          "NULL"
+          "WKS"
+          "PTR"
+          "HINFO"
+          "MINFO"
+          "MX"
+          "TXT"
+          "RP"
+          "AFSDB"
+          "X25"
+          "ISDN"
+          "RT"
+          "NSAP"
+          "NSAP-PTR"
+          "SIG"
+          "KEY"
+          "PX"
+          "GPOS"
+          "AAAA"
+          "LOC"
+          "EID"
+          "NIMLOC"
+          "SRV"
+          "ATMA"
+          "NAPTR"
+          "KX"
+          "CERT"
+          "DNAME"
+          "SINK"
+          "OPT"
+          "APL"
+          "DS"
+          "SSHFP"
+          "IPSECKEY"
+          "RRSIG"
+          "NSEC"
+          "DNSKEY"
+          "DHCID"
+          "NSEC3"
+          "NSEC3PARAM"
+          "TLSA"
+          "SMIMEA"
+          "HIP"
+          "NINFO"
+          "RKEY"
+          "TALINK"
+          "CDS"
+          "CDNSKEY"
+          "OPENPGPKEY"
+          "CSYNC"
+          "SPF"
+          "UINFO"
+          "UID"
+          "GID"
+          "UNSPEC"
+          "NID"
+          "L32"
+          "L64"
+          "LP"
+          "EUI48"
+          "EUI64"
+          "TKEY"
+          "TSIG"
+          "URI"
+          "CAA"
+          "AVC"
+          "DOA"
+          "TA"
+          "DLV"
         ];
         description = "The record type";
       };

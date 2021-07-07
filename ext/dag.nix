@@ -23,12 +23,12 @@ with lib;
 
         before = mkOption {
           type = types.listOf types.str;
-          default = [];
+          default = [ ];
         };
 
         after = mkOption {
           type = types.listOf types.str;
-          default = [];
+          default = [ ];
         };
       };
     });
@@ -97,24 +97,26 @@ with lib;
           filterAttrs (n: v: any (a: a == name) v.before) dag
         );
       normalizedDag =
-        mapAttrs (n: v: {
-          name = n;
-          data = v.data;
-          after = v.after ++ dagBefore dag n;
-        }) dag;
+        mapAttrs
+          (n: v: {
+            name = n;
+            data = v.data;
+            after = v.after ++ dagBefore dag n;
+          })
+          dag;
       before = a: b: any (c: a.name == c) b.after;
       sorted = toposort before (mapAttrsToList (n: v: v) normalizedDag);
     in
-      if sorted ? result then
-        { result = map (v: { inherit (v) name data; }) sorted.result; }
-      else
-        sorted;
+    if sorted ? result then
+      { result = map (v: { inherit (v) name data; }) sorted.result; }
+    else
+      sorted;
 
   entry = {
     anywhere = data: {
       inherit data;
-      before = [];
-      after = [];
+      before = [ ];
+      after = [ ];
     };
 
     between = after: before: data: {
@@ -123,12 +125,12 @@ with lib;
 
     after = after: data: {
       inherit data after;
-      before = [];
+      before = [ ];
     };
 
     before = before: data: {
       inherit data before;
-      after = [];
+      after = [ ];
     };
   };
 }

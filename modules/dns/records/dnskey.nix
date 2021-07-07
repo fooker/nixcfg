@@ -27,7 +27,8 @@ let
     };
   };
 
-in {
+in
+{
   options = {
     flags = mkOption {
       type = types.ints.u16;
@@ -49,9 +50,20 @@ in {
     algorithm = mkOption {
       type = types.enum [
         # https://www.iana.org/assignments/dns-sec-alg-numbers/dns-sec-alg-numbers.xhtml
-        "DELETE" "RSAMD5" "DH" "DSA" "RSASHA1" "DSA-NSEC3-SHA1"
-        "RSASHA1-NSEC3-SHA1" "RSASHA256" "RSASHA512" "ECC-GOST"
-        "ECDSAP256SHA256" "ECDSAP384SHA384" "ED25519" "ED448"
+        "DELETE"
+        "RSAMD5"
+        "DH"
+        "DSA"
+        "RSASHA1"
+        "DSA-NSEC3-SHA1"
+        "RSASHA1-NSEC3-SHA1"
+        "RSASHA256"
+        "RSASHA512"
+        "ECC-GOST"
+        "ECDSAP256SHA256"
+        "ECDSAP384SHA384"
+        "ED25519"
+        "ED448"
       ];
       description = ''
         The Algorithm field identifies the public key's cryptographic algorithm.

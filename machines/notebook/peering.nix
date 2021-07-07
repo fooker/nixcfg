@@ -2,14 +2,15 @@
 
 let
   secrets = import ./secrets.nix;
-in {
+in
+{
   peering = {
     routerId = "1.2.3.5";
 
     backhaul = {
       enable = true;
       reachable = false;
-      
+
       deviceId = 127;
 
       dn42.ipv4 = "172.23.200.127/32";

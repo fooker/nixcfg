@@ -16,7 +16,7 @@ with lib;
     "bunker" = {
       address.ipv4 = "192.168.33.3";
       address.ipv6 = "fd4c:8f0:aff2::3";
-      
+
       snowflake = true;
     };
   };

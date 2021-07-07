@@ -38,7 +38,7 @@ with lib;
       description = ''
         Additional public SSH keys.
       '';
-      default = {};
+      default = { };
     };
 
     passphrase = mkOption {
@@ -53,7 +53,7 @@ with lib;
       description = ''
         Path(s) to back up.
       '';
-      default = [];
+      default = [ ];
     };
 
     commands = mkOption {
@@ -61,7 +61,7 @@ with lib;
       description = ''
         Command(s) to include into backup.
       '';
-      default = [];
+      default = [ ];
     };
 
     defaultPaths = mkOption {
@@ -70,58 +70,60 @@ with lib;
     };
   };
 
-  config = let
-    # Create a standalone bash script for each command
-    scripts = map
-      (command: pkgs.writeShellScript "backup-script" command)
-      config.backup.commands;
+  config =
+    let
+      # Create a standalone bash script for each command
+      scripts = map
+        (command: pkgs.writeShellScript "backup-script" command)
+        config.backup.commands;
 
-  in {
-    services.openssh.knownHosts.backup = {
-      hostNames = [ config.backup.repo.host ];
-      publicKey = config.backup.repo.fingerprint;
-    };
-
-    services.borgbackup.jobs.system = {
-      repo = with config.backup.repo; "${user}@${host}:system";
-
-      doInit = true;
-
-      archiveBaseName = "system";
-      dateFormat = "+%Y-%m-%dT%H:%M";
-
-      encryption = {
-        mode = "repokey";
-        passphrase = config.backup.passphrase;
+    in
+    {
+      services.openssh.knownHosts.backup = {
+        hostNames = [ config.backup.repo.host ];
+        publicKey = config.backup.repo.fingerprint;
       };
 
-      environment = {
-        "BORG_RSH" = "ssh -i /var/lib/backup/id_backup";
+      services.borgbackup.jobs.system = {
+        repo = with config.backup.repo; "${user}@${host}:system";
+
+        doInit = true;
+
+        archiveBaseName = "system";
+        dateFormat = "+%Y-%m-%dT%H:%M";
+
+        encryption = {
+          mode = "repokey";
+          passphrase = config.backup.passphrase;
+        };
+
+        environment = {
+          "BORG_RSH" = "ssh -i /var/lib/backup/id_backup";
+        };
+
+        paths = config.backup.paths ++ [ "." ];
+
+        readWritePaths = [ "/tmp" ];
+
+        preHook = ''
+          mkdir /tmp/backup-$archiveName
+          cd /tmp/backup-$archiveName
+
+          ${concatStringsSep "\n" scripts}
+        '';
       };
 
-      paths = config.backup.paths ++ [ "." ];
+      backup.paths = [ "/etc" "/root" ];
 
-      readWritePaths = [ "/tmp" ];
+      backup.publicKey = mkDefault (fileContents "${path}/gathered/id_backup.pub");
 
-      preHook = ''
-        mkdir /tmp/backup-$archiveName
-        cd /tmp/backup-$archiveName
-
-        ${concatStringsSep "\n" scripts}
+      system.activationScripts."backup-sshkey" = ''
+        if ! [ -f "/var/lib/backup/id_backup" ]; then
+          ${pkgs.openssh}/bin/ssh-keygen \
+            -N "" \
+            -t ed25519 \
+            -f /var/lib/backup/id_backup
+        fi
       '';
     };
-
-    backup.paths = [ "/etc" "/root" ];
-
-    backup.publicKey = mkDefault (fileContents "${path}/gathered/id_backup.pub");
-
-    system.activationScripts."backup-sshkey" = ''
-      if ! [ -f "/var/lib/backup/id_backup" ]; then
-        ${pkgs.openssh}/bin/ssh-keygen \
-          -N "" \
-          -t ed25519 \
-          -f /var/lib/backup/id_backup
-      fi
-    '';
-  };
 }

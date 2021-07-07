@@ -3,7 +3,8 @@
 let
   secrets = import ./secrets.nix;
 
-in {
+in
+{
   # Used to upload scanned documents from printer
   users.users."scanner" = {
     home = "/mnt/files/scans";

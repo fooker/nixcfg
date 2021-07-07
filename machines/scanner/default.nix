@@ -2,7 +2,8 @@
 
 let
   secrets = import ./secrets.nix;
-in {
+in
+{
   imports = [
     ./hardware.nix
     ./network.nix

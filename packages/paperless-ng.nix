@@ -1,7 +1,17 @@
 { lib
-, stdenv, fetchzip, makeWrapper, callPackage, writeShellScriptBin
+, stdenv
+, fetchzip
+, makeWrapper
+, callPackage
+, writeShellScriptBin
 , python3Packages
-, imagemagick, ghostscript, optipng, tesseract4, unpaper, gnupg, ocrmypdf
+, imagemagick
+, ghostscript
+, optipng
+, tesseract4
+, unpaper
+, gnupg
+, ocrmypdf
 }:
 
 let
@@ -14,7 +24,7 @@ let
       django-picklefield = super.django-picklefield.overridePythonAttrs (orig: {
         doCheck = false;
         doInstalCheck = false;
-        pythonImportsCheck = [];
+        pythonImportsCheck = [ ];
       });
     };
   };
@@ -164,4 +174,5 @@ let
     };
   };
 
-in paperless-ng
+in
+paperless-ng

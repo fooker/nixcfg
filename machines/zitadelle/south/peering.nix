@@ -4,13 +4,14 @@ with lib;
 
 let
   secrets = import ./secrets.nix;
-in {
+in
+{
   peering = {
     routerId = "37.120.172.177";
 
     backhaul = {
       enable = true;
-      
+
       deviceId = 2;
       slug = "zsouth";
 

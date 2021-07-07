@@ -2,8 +2,9 @@
 
 let
   secrets = import ../secrets.nix;
-in {
-  default_config = {};
+in
+{
+  default_config = { };
   homeassistant = {
     latitude = 50.55216;
     longitude = 9.68617;
@@ -29,7 +30,7 @@ in {
     discovery_prefix = "homeassistant";
   };
 
-  esphome = {};
+  esphome = { };
 
   spotify = {
     client_id = secrets.spotify.client.id;
@@ -50,26 +51,26 @@ in {
     bed = true;
   };
 
-  automation = [];
-  script = [];
+  automation = [ ];
+  script = [ ];
   group = import ./groups.nix;
   scene = import ./scenes.nix;
 
   switch = [
     {
       platform = "mqtt";
-      
+
       name = "Screen";
       icon = "mdi:projector-screen";
 
       command_topic = "frisch/home/esper/9e90e5/screen/set";
       payload_on = "LOWER";
       payload_off = "RAISE";
-      
+
       state_topic = "frisch/home/esper/9e90e5/screen";
       state_on = "LOWER";
       state_off = "RAISE";
-      
+
       availability_topic = "frisch/home/esper/9e90e5/status";
       payload_available = "ONLINE";
       payload_not_available = "OFFLINE";

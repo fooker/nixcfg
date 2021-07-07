@@ -7,6 +7,6 @@
   tags = [ "prod" ];
 
   system = "x86_64-linux";
-  
+
   stateVersion = "20.03";
 }

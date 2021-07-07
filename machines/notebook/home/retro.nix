@@ -5,7 +5,8 @@ with lib;
 let
   romsPath = name: "~/roms/${ name }";
 
-in {
+in
+{
   home.packages = with pkgs; [
     emulationstation
   ];
@@ -18,7 +19,7 @@ in {
         command = "${ pkgs.retroarch }/bin/retroarch --fullscreen -L ${ pkgs.libretro."${ core }" }/lib/retroarch/cores/${ core }_libretro.so %ROM%";
       });
 
-      mkSystem = { name, desc, extensions, command, platform, theme } : {
+      mkSystem = { name, desc, extensions, command, platform, theme }: {
         inherit name desc extensions command platform theme;
       };
 
@@ -41,7 +42,8 @@ in {
           theme = "snes";
         })
       ];
-    in ''
+    in
+    ''
       <systemList>
         ${ concatMapStringsSep "\n" (system: with system; ''
           <system>

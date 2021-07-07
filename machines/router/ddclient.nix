@@ -3,7 +3,8 @@
 with lib;
 let
   secrets = import ./secrets.nix;
-in {
+in
+{
   services.ddclient = with secrets.ddclient.basis;  {
     enable = true;
 

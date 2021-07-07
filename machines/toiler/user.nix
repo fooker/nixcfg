@@ -3,7 +3,8 @@
 with lib;
 let
   secrets = import ./secrets.nix;
-in {
+in
+{
   users.users = listToAttrs [
     (nameValuePair secrets.user.username {
       createHome = true;
@@ -16,7 +17,7 @@ in {
       packages = with pkgs; [
         # System
         direnv
-        
+
         # Editor
         vim
 

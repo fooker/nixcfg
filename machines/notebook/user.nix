@@ -3,7 +3,8 @@
 let
   username = "fooker";
   sources = import ../../nix/sources.nix;
-in {
+in
+{
   imports = [
     "${sources.home-manager}/nixos"
   ];

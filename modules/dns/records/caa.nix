@@ -17,7 +17,9 @@ with ext;
 
     tag = mkOption {
       type = types.enum [
-        "issue" "issueWild" "iodef"
+        "issue"
+        "issueWild"
+        "iodef"
       ];
       description = ''
         issue:

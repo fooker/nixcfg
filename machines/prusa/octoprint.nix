@@ -55,7 +55,7 @@
 
   services.nginx = {
     enable = true;
-    
+
     resolver.addresses = [ "[::1]" ];
 
     recommendedGzipSettings = true;
@@ -85,7 +85,7 @@
 
         "/webcam/" = {
           proxyPass = "http://localhost:5050/";
-          
+
           # Workaround for https://github.com/NixOS/nixpkgs/pull/100708
           extraConfig = ''
             proxy_set_header Accept-Encoding "$http_accept_encoding";
@@ -97,7 +97,7 @@
 
   firewall.rules = dag: with dag; {
     inet.filter.input = {
-      octoprint = between ["established"] ["drop"] ''
+      octoprint = between [ "established" ] [ "drop" ] ''
         ip saddr 172.23.200.0/24
         tcp dport { 80, 443 }
         accept

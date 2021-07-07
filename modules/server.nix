@@ -3,7 +3,7 @@
 with lib;
 
 let
-  fingerprint = file: fileContents (pkgs.runCommandNoCCLocal "" {} ''
+  fingerprint = file: fileContents (pkgs.runCommandNoCCLocal "" { } ''
     cat ${/. + file} \
       | awk '{print $2}' \
       | ${pkgs.openssl}/bin/openssl base64 -d -A \
@@ -11,11 +11,12 @@ let
       | awk '{print $2}' \
       > $out
   '');
-in {
+in
+{
   options.server = {
     enable = mkOption {
-        type = types.bool;
-        default = false;
+      type = types.bool;
+      default = false;
     };
   };
 
@@ -27,7 +28,7 @@ in {
 
     firewall.rules = dag: with dag; {
       inet.filter.input = {
-        ssh = between ["established"] ["drop"] ''
+        ssh = between [ "established" ] [ "drop" ] ''
           tcp
           dport 22
           accept

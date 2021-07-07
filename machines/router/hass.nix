@@ -8,13 +8,13 @@ args @ { config, lib, pkgs, ... }:
     port = 1883;
 
     allowAnonymous = true;
-    
+
     # TODO: Use real ACLs (with patterns and users) here
     aclExtraConf = ''
       topic readwrite #
     '';
 
-    users = {};
+    users = { };
 
     extraConf = ''
       persistence true
@@ -32,8 +32,7 @@ args @ { config, lib, pkgs, ... }:
 
     autoExtraComponents = true;
 
-    package = (pkgs.unstable.home-assistant
-    .override {
+    package = (pkgs.unstable.home-assistant.override {
       extraPackages = ps: with ps; [
         pythonPackages.pyipp
 
@@ -88,7 +87,7 @@ args @ { config, lib, pkgs, ... }:
   };
 
   systemd.timers.esper-heartbeat = {
-    wantedBy = [ "multi-user.target" ]; 
+    wantedBy = [ "multi-user.target" ];
     after = [ "network.target" "mosquitto.service" ];
     requires = [ "mosquitto.service" ];
     description = "ESPer heartbeat";
@@ -102,7 +101,7 @@ args @ { config, lib, pkgs, ... }:
 
   firewall.rules = dag: with dag; {
     inet.filter.input = {
-      mqtt = between ["established"] ["drop"] ''
+      mqtt = between [ "established" ] [ "drop" ] ''
         meta iifname {iot, priv}
         tcp
         dport 1883

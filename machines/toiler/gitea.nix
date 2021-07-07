@@ -2,7 +2,8 @@
 
 let
   secrets = import ./secrets.nix;
-in {
+in
+{
   services.gitea = {
     enable = true;
     domain = "git.home.open-desk.net";
@@ -27,12 +28,12 @@ in {
 
   services.postgresql = {
     ensureDatabases = [ "gitea" ];
-    ensureUsers = [ {
+    ensureUsers = [{
       name = "gitea";
       ensurePermissions = {
         "DATABASE gitea" = "ALL PRIVILEGES";
       };
-    } ];
+    }];
   };
 
   reverse-proxy.hosts = {
@@ -47,24 +48,28 @@ in {
       config.services.gitea.stateDir
     ];
 
-    commands = [ 
-      (let
-        gitea-dump = pkgs.writeScript "gitea-dump" ''
-          export USER=${ config.services.gitea.user };
-          export HOME=${ config.services.gitea.stateDir };
-          export GITEA_WORK_DIR=${ config.services.gitea.stateDir };
+    commands = [
+      (
+        let
+          gitea-dump = pkgs.writeScript "gitea-dump" ''
+            export USER=${ config.services.gitea.user };
+            export HOME=${ config.services.gitea.stateDir };
+            export GITEA_WORK_DIR=${ config.services.gitea.stateDir };
       
-          ${ pkgs.gitea }/bin/gitea dump \
-            --verbose \
-            --database postgres \
-            --type tar \
-            --file -
-        '';
-      in ''
-      ${ pkgs.sudo }/bin/sudo \
-        --user ${ config.services.gitea.user } \
-        ${ gitea-dump }
-        > gitea-dump.tar
-    '') ];
+            ${ pkgs.gitea }/bin/gitea dump \
+              --verbose \
+              --database postgres \
+              --type tar \
+              --file -
+          '';
+        in
+        ''
+          ${ pkgs.sudo }/bin/sudo \
+            --user ${ config.services.gitea.user } \
+            ${ gitea-dump }
+            > gitea-dump.tar
+        ''
+      )
+    ];
   };
 }

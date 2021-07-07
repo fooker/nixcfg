@@ -10,7 +10,7 @@
         monospace = [ "Hack 10.5" ];
       };
     };
-    
+
     fontDir.enable = true;
 
     enableDefaultFonts = true;

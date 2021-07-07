@@ -17,7 +17,7 @@
 
   firewall.rules = dag: with dag; {
     inet.filter.input = {
-      pulseaudio = between ["established"] ["drop"] ''
+      pulseaudio = between [ "established" ] [ "drop" ] ''
         ip saddr 172.23.200.0/24
         tcp dport 4713
         accept

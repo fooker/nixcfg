@@ -3,9 +3,10 @@
 let
   secrets = import ./secrets.nix;
 
-  drone-runner-docker = pkgs.callPackage ../../packages/drone-runner-docker.nix {};
-  drone-runner-exec = pkgs.callPackage ../../packages/drone-runner-exec.nix {};
-in {
+  drone-runner-docker = pkgs.callPackage ../../packages/drone-runner-docker.nix { };
+  drone-runner-exec = pkgs.callPackage ../../packages/drone-runner-exec.nix { };
+in
+{
   systemd.services.drone-server = {
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
@@ -59,7 +60,7 @@ in {
         "DRONE_RUNNER_NAME=${config.networking.hostName}-exec"
         "NIX_REMOTE=daemon"
         "ENV=/etc/profile"
-        
+
       ];
       ExecStart = "${drone-runner-exec}/bin/drone-runner-exec";
       User = "drone-runner";
@@ -81,7 +82,7 @@ in {
         "/nix/var/nix/profiles/system/etc/nix:/etc/nix"
       ];
     };
-    
+
     path = with pkgs; [
       git
       gnutar
@@ -106,12 +107,12 @@ in {
 
   services.postgresql = {
     ensureDatabases = [ "drone" ];
-    ensureUsers = [ {
+    ensureUsers = [{
       name = "drone";
       ensurePermissions = {
         "DATABASE drone" = "ALL PRIVILEGES";
       };
-    } ];
+    }];
   };
 
   users = {
@@ -120,13 +121,13 @@ in {
       createHome = true;
       group = "drone";
     };
-    groups."drone" = {};
+    groups."drone" = { };
 
     users."drone-runner" = {
       isSystemUser = true;
       group = "drone-runner";
     };
-    groups."drone-runner" = {};
+    groups."drone-runner" = { };
   };
 
   reverse-proxy.hosts = {

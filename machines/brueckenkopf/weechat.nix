@@ -7,9 +7,10 @@ let
     };
   };
 
-in {
+in
+{
   users = {
-    groups.weechat = {};
+    groups.weechat = { };
     users.weechat = {
       createHome = true;
       group = "weechat";
@@ -20,14 +21,14 @@ in {
 
   systemd.services.weechat = {
     environment.WEECHAT_HOME = config.users.users."weechat".home;
-    
+
     serviceConfig = {
       User = "weechat";
       Group = "weechat";
     };
-    
+
     script = "exec ${pkgs.tmux}/bin/tmux -L weechat -2 new-session -d -s weechat -n weechat '${weechat}/bin/weechat'";
-    
+
     wantedBy = [ "multi-user.target" ];
     wants = [ "network.target" ];
   };

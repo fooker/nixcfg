@@ -12,8 +12,9 @@ let
     } // conf)
     secrets.syncthing.folders;
 
-in {
-  services.syncthing  = {
+in
+{
+  services.syncthing = {
     enable = true;
     openDefaultPorts = true;
     declarative = {

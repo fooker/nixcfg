@@ -3,7 +3,7 @@
 {
   programs.password-store = {
     enable = true;
-    
+
     package = pkgs.pass-wayland.withExtensions (exts: [
       exts.pass-audit
       exts.pass-checkup
@@ -11,7 +11,7 @@
       exts.pass-import
       exts.pass-update
     ]);
-    
+
     settings = {
       PASSWORD_STORE_DIR = "$HOME/docs/passwords";
     };

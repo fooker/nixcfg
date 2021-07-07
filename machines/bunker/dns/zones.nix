@@ -1,103 +1,105 @@
-{ lib, ...}: 
+{ lib, ... }:
 
 with lib;
 
 {
-  dns.zones = let
-    nameservers = [
-      "ns.inwx.de."
-      "ns2.inwx.de."
-      "ns3.inwx.de."
-    ];
-
-    zone = {
-      SOA = {
-        mname = "ns.inwx.de.";
-        rname = "hostmaster";
-      };
-
-      NS = nameservers;
-
-      # Prohibit creation of certificates by default
-      CAA = [
-        {
-          critical = true;
-          tag = "issue";
-          value = ";";
-        }
-        {
-          critical = true;
-          tag = "issueWild";
-          value = ";";
-        }
-        {
-          critical = true;
-          tag = "iodef";
-          value = "mailto:hostmaster@open-desk.net";
-        }
+  dns.zones =
+    let
+      nameservers = [
+        "ns.inwx.de."
+        "ns2.inwx.de."
+        "ns3.inwx.de."
       ];
-    };
-  in {
-    net.open-desk = zone // {
 
-      # Dynamic updated zone for ACME
-      dyn = {
-        ttl = 60;
-
+      zone = {
         SOA = {
           mname = "ns.inwx.de.";
           rname = "hostmaster";
-          refresh = 200;
-          retry = 300;
-          expire = 1209600;
-          minimum = 300;
         };
-        
+
         NS = nameservers;
 
-        parent = {
+        # Prohibit creation of certificates by default
+        CAA = [
+          {
+            critical = true;
+            tag = "issue";
+            value = ";";
+          }
+          {
+            critical = true;
+            tag = "issueWild";
+            value = ";";
+          }
+          {
+            critical = true;
+            tag = "iodef";
+            value = "mailto:hostmaster@open-desk.net";
+          }
+        ];
+      };
+    in
+    {
+      net.open-desk = zone // {
+
+        # Dynamic updated zone for ACME
+        dyn = {
+          ttl = 60;
+
+          SOA = {
+            mname = "ns.inwx.de.";
+            rname = "hostmaster";
+            refresh = 200;
+            retry = 300;
+            expire = 1209600;
+            minimum = 300;
+          };
+
           NS = nameservers;
+
+          parent = {
+            NS = nameservers;
+          };
         };
+
+        # Legacy host records
+        dev = {
+          "zitadelle"."bak" = {
+            A = "37.221.196.84";
+          };
+          "fliegerhorst" = {
+            A = "193.34.144.95";
+            AAAA = "2a02:c205:3002:2452::1";
+          };
+          "raketensilo" = {
+            AAAA = "2001:638:301:11a3::64";
+          };
+        };
+
+        # Legacy host records
+        home.dev = {
+          "amp" = {
+            A = "172.23.200.133";
+          };
+          "printer" = {
+            A = "172.23.200.160";
+          };
+        };
+
+        # Other legacy records
+        magnetico = { CNAME = "fliegerhorst.dev.open-desk.net."; };
       };
 
-      # Legacy host records
-      dev = {
-        "zitadelle"."bak" = {
-          A = "37.221.196.84";
-        };
-        "fliegerhorst" = {
-          A = "193.34.144.95";
-          AAAA = "2a02:c205:3002:2452::1";
-        };
-        "raketensilo" = {
-          AAAA = "2001:638:301:11a3::64";
-        };
-      };
+      org.open-desk = zone // { };
 
-      # Legacy host records
-      home.dev = {
-        "amp" = {
-          A = "172.23.200.133";
-        };
-        "printer" = {
-          A = "172.23.200.160";
-        };
-      };
+      cloud.frisch = zone // { };
 
-      # Other legacy records
-      magnetico = { CNAME = "fliegerhorst.dev.open-desk.net."; };
+      sh.lab = zone // { };
+
+      org.schoen-und-gut = zone // { };
+
+      io.adacta = zone // { };
+
+      jetzt.ak36 = zone // { };
     };
-
-    org.open-desk = zone // {};
-    
-    cloud.frisch = zone // {};
-
-    sh.lab = zone // {};
-    
-    org.schoen-und-gut = zone // {};
-    
-    io.adacta = zone // {};
-
-    jetzt.ak36 = zone // {};
-  };
 }

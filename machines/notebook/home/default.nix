@@ -1,4 +1,4 @@
-{ pkgs, ... }: 
+{ pkgs, ... }:
 
 {
   programs.home-manager.enable = true;
@@ -13,10 +13,10 @@
 
   home.packages = with pkgs; [
     ate
-    
+
     direnv
     lorri
-    
+
     # Sound and media
     pavucontrol
     ponymix
@@ -41,7 +41,8 @@
     tmux
     tree
     jq
-    unzip unrar
+    unzip
+    unrar
 
     # Networking
     wireshark
@@ -54,7 +55,7 @@
     jetbrains.goland
     jetbrains.pycharm-professional
     vscodium
-    
+
     # Comm
     tdesktop
     signal-desktop

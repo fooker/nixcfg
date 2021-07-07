@@ -3,11 +3,12 @@
 let
   secrets = import ./secrets.nix;
 
-  mopidy-jellyfin = pkgs.callPackage ../../packages/mopidy-jellyfin.nix {};
-  mopidy-mpd = pkgs.callPackage ../../packages/mopidy-mpd.nix {};
-  mopidy-muse = pkgs.callPackage ../../packages/mopidy-muse.nix {};
-  mopidy-somafm = pkgs.callPackage ../../packages/mopidy-somafm.nix {};
-in {
+  mopidy-jellyfin = pkgs.callPackage ../../packages/mopidy-jellyfin.nix { };
+  mopidy-mpd = pkgs.callPackage ../../packages/mopidy-mpd.nix { };
+  mopidy-muse = pkgs.callPackage ../../packages/mopidy-muse.nix { };
+  mopidy-somafm = pkgs.callPackage ../../packages/mopidy-somafm.nix { };
+in
+{
   services.mopidy = {
     enable = true;
     extensionPackages = with pkgs; [
@@ -81,7 +82,7 @@ in {
 
   firewall.rules = dag: with dag; {
     inet.filter.input = {
-      mopidy = between ["established"] ["drop"] ''
+      mopidy = between [ "established" ] [ "drop" ] ''
         ip saddr 172.23.200.0/24
         tcp dport 6600
         accept

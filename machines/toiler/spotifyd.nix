@@ -3,7 +3,8 @@
 let
   secrets = import ./secrets.nix;
 
-in {
+in
+{
   services.spotifyd = {
     enable = true;
     config = ''
@@ -40,18 +41,18 @@ in {
     serviceConfig.User = "spotifyd";
 
     serviceConfig.DynamicUser = lib.mkForce false;
-    serviceConfig.SupplementaryGroups = lib.mkForce [];
+    serviceConfig.SupplementaryGroups = lib.mkForce [ ];
   };
   # End of hack...
 
   firewall.rules = dag: with dag; {
     inet.filter.input = {
-      spotify-tcp = between ["established"] ["drop"] ''
+      spotify-tcp = between [ "established" ] [ "drop" ] ''
         ip saddr 172.23.200.0/24
         tcp dport 4444
         accept
       '';
-      spotify-udp = between ["established"] ["drop"] ''
+      spotify-udp = between [ "established" ] [ "drop" ] ''
         ip saddr 172.23.200.0/24
         udp dport 5353
         accept

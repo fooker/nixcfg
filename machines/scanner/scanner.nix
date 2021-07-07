@@ -3,7 +3,7 @@
 with lib;
 
 let
-  qd = pkgs.callPackage ../../packages/qd.nix {};
+  qd = pkgs.callPackage ../../packages/qd.nix { };
 
   driver = "fujitsu";
 
@@ -136,20 +136,23 @@ let
     '';
   });
 
-in {
+in
+{
   # Workaround to build on (currently) broken aarch64
-  nixpkgs.overlays = [ (self: super: rec {
-    python38 = super.python38.override {
-      packageOverrides = self: super: {
-        pikepdf = super.pikepdf.overrideAttrs (old: {
-          doCheck = false;
-          doInstallCheck = false;
-        });
+  nixpkgs.overlays = [
+    (self: super: rec {
+      python38 = super.python38.override {
+        packageOverrides = self: super: {
+          pikepdf = super.pikepdf.overrideAttrs (old: {
+            doCheck = false;
+            doInstallCheck = false;
+          });
+        };
       };
-    };
 
-    python38Packages = python38.pkgs;
-  }) ];
+      python38Packages = python38.pkgs;
+    })
+  ];
 
 
   # Allow scanning over network
@@ -162,7 +165,7 @@ in {
 
       home = "/var/lib/scanner";
       createHome = true;
-      
+
       group = "scanner";
     };
     groups.scanner = {
@@ -173,7 +176,7 @@ in {
   # Scanbd services
   systemd.services."scanbd" = {
     description = "Scanner button polling Service";
-    
+
     environment = {
       "SANE_CONFIG_DIR" = scanbdConfigDir;
     };
@@ -195,7 +198,7 @@ in {
   systemd.services."scanbm@" = {
     description = "Scanner Service";
     requires = [ "scanbm.socket" ];
-    
+
     environment = {
       "SANE_CONFIG_DIR" = scanbdConfigDir;
     };
@@ -203,7 +206,7 @@ in {
     serviceConfig = {
       User = "scanner";
       Group = "scanner";
-      
+
       StandardInput = "null";
       StandardOutput = "syslog";
       StandardError = "syslog";
@@ -278,9 +281,11 @@ in {
       destination = "/var/lib/scanner/id_scanner";
       owner.user = "scanner";
       owner.group = "scanner";
-      action = [ ''
-        ${pkgs.openssh}/bin/ssh-keygen -y -f ${destination} > ${destination}.pub
-      '' ];
+      action = [
+        ''
+          ${pkgs.openssh}/bin/ssh-keygen -y -f ${destination} > ${destination}.pub
+        ''
+      ];
     };
   };
 }

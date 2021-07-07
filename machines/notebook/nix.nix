@@ -4,13 +4,13 @@
   nix = {
     buildCores = 8;
 
-    buildMachines = [ {
+    buildMachines = [{
       hostName = "builder";
-      systems = [ "i686-linux" "x86_64-linux" "aarch64-linux" "armv6l-linux" "armv7l-linux"];
+      systems = [ "i686-linux" "x86_64-linux" "aarch64-linux" "armv6l-linux" "armv7l-linux" ];
       speedFactor = 8;
       supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
       mandatoryFeatures = [ ];
-    }] ;
+    }];
 
     distributedBuilds = true;
 
@@ -41,9 +41,11 @@
       destination = "/var/lib/id_builder";
       owner.user = "root";
       owner.group = "nixbld";
-      action = [ ''
-        ${pkgs.openssh}/bin/ssh-keygen -y -f ${destination} > ${destination}.pub
-      '' ];
+      action = [
+        ''
+          ${pkgs.openssh}/bin/ssh-keygen -y -f ${destination} > ${destination}.pub
+        ''
+      ];
     };
   };
 }

@@ -7,7 +7,7 @@ let
 
   port = 28981;
 
-  paperless = (pkgs.callPackage ../../packages/paperless-ng.nix {});
+  paperless = (pkgs.callPackage ../../packages/paperless-ng.nix { });
   configured = paperless.withConfig {
     PAPERLESS_STATICDIR = paperless.static;
 
@@ -24,7 +24,8 @@ let
     PAPERLESS_DISABLE_LOGIN = "true";
   };
 
-in {
+in
+{
   systemd.tmpfiles.rules = [
     "d '${config.users.users."paperless".home}' - paperless paperless - -"
     "d '${config.users.users."paperless".home}/consume' 777 - - - -"
@@ -33,7 +34,7 @@ in {
   fileSystems."/mnt/docs" = {
     device = "nas.dev.home.open-desk.net:/docs";
     fsType = "nfs4";
-    options = ["x-systemd.automount" "noauto"];
+    options = [ "x-systemd.automount" "noauto" ];
   };
 
   users = {
@@ -44,8 +45,7 @@ in {
       isSystemUser = true;
     };
 
-    groups."paperless" = {
-    };
+    groups."paperless" = { };
   };
 
   services.redis.enable = true;
@@ -67,7 +67,7 @@ in {
 
   systemd.services.paperless-processor = {
     description = "Paperless-ng document processor";
-    
+
     serviceConfig = {
       User = "paperless";
       ExecStart = "${configured}/bin/paperless-ng qcluster";
@@ -78,13 +78,13 @@ in {
     # during migrations
     bindsTo = [ "paperless-consumer.service" ];
     after = [ "paperless-consumer.service" ];
-    
+
     wantedBy = [ "multi-user.target" ];
   };
 
   systemd.services.paperless-server = {
     description = "Paperless-ng document server";
-    
+
     serviceConfig = {
       User = "paperless";
       ExecStart = "${configured}/bin/paperless-ng runserver --noreload localhost:${toString port}";
@@ -95,7 +95,7 @@ in {
     # during migrations
     bindsTo = [ "paperless-consumer.service" ];
     after = [ "paperless-consumer.service" ];
-    
+
     wantedBy = [ "multi-user.target" ];
   };
 

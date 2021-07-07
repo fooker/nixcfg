@@ -19,7 +19,7 @@ buildGoModule rec {
   meta = with stdenv.lib; {
     description = "Drone pipeline runner that executes builds inside Docker containers";
     homepage = "https://github.com/drone-runners/drone-runner-docker";
-    
+
     # https://polyformproject.org/licenses/small-business/1.0.0/
     license = licenses.unfree;
   };

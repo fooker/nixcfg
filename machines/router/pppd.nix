@@ -3,7 +3,8 @@
 with lib;
 let
   secrets = import ./secrets.nix;
-in {
+in
+{
   services.pppd = {
     enable = true;
 
@@ -47,19 +48,19 @@ in {
   };
 
   environment.etc = with secrets.ppp.uplink; {
-    "ppp/chap-secrets".text=''* * "${password}"'';
+    "ppp/chap-secrets".text = ''* * "${password}"'';
   };
 
   firewall.rules = dag: with dag; {
     inet.filter.forward = {
-      ppp-clamp = before ["drop"] ''
+      ppp-clamp = before [ "drop" ] ''
         meta oifname "ppp*"
         tcp flags syn
         tcp option maxseg
         size set rt mtu
       '';
     };
-    
+
     inet.nat.postrouting = {
       uplink = anywhere ''
         meta oifname "ppp*"

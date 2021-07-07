@@ -3,8 +3,9 @@
 let
   secrets = import ./secrets.nix;
 
-  mmv = pkgs.callPackage ../../packages/mmv.nix {};
-in {
+  mmv = pkgs.callPackage ../../packages/mmv.nix { };
+in
+{
   imports = [
     ./hardware.nix
     ./network.nix

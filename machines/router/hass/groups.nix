@@ -8,7 +8,7 @@
 
       "switch.projector"
       "switch.screen"
-      
+
       "media_player.amp"
     ];
     icon = "mdi:movie-open";

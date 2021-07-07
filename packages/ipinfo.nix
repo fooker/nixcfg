@@ -3,7 +3,8 @@
 let
   sources = import ../nix/sources.nix;
 
-in rustPlatform.buildRustPackage {
+in
+rustPlatform.buildRustPackage {
   name = "ipinfo";
 
   src = sources.ipinfo;

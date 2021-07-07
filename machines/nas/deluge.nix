@@ -5,10 +5,11 @@ with lib;
 let
   secrets = import ./secrets.nix;
 
-  netns-proxy = pkgs.callPackage ../../packages/netns-proxy.nix {};
+  netns-proxy = pkgs.callPackage ../../packages/netns-proxy.nix { };
 
-in {
-  services.deluge  = {
+in
+{
+  services.deluge = {
     enable = true;
     declarative = true;
 
@@ -74,7 +75,7 @@ in {
       Type = "oneshot";
       RemainAfterExit = true;
       PrivateNetwork = true;
-      
+
       ExecStartPre = [
         "-${ pkgs.iproute }/bin/ip netns delete deluge"
       ];
@@ -138,12 +139,12 @@ in {
     bindsTo = [ "deluge-netns.service" ];
 
     serviceConfig = {
-      Type        = "simple";
-      ExecStart   = "${ netns-proxy }/bin/netns-proxy -b 127.0.0.1:58846 deluge 127.0.0.1:58846";
-      Restart     = "on-failure";
+      Type = "simple";
+      ExecStart = "${ netns-proxy }/bin/netns-proxy -b 127.0.0.1:58846 deluge 127.0.0.1:58846";
+      Restart = "on-failure";
     };
 
-    wantedBy = [ "multi-user.target" ]; 
+    wantedBy = [ "multi-user.target" ];
   };
 
   systemd.services."deluged" = {

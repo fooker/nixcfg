@@ -2,17 +2,20 @@
 
 let
   secrets = import ./secrets.nix;
-in {
+in
+{
   fileSystems."/mnt/vault" = {
     device = "nas.dev.home.open-desk.net:/";
     fsType = "nfs4";
-    options = ["x-systemd.automount" "noauto"];
+    options = [ "x-systemd.automount" "noauto" ];
   };
 
   fileSystems."/mnt/cantina" = {
     device = "//192.168.31.16/cantina";
     fsType = "cifs";
-    options = ["x-systemd.automount" "noauto"
+    options = [
+      "x-systemd.automount"
+      "noauto"
       "username=${secrets.mounts.cantina.username}"
       "password=${secrets.mounts.cantina.password}"
     ];

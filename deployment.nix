@@ -2,7 +2,7 @@ let
   sources = import ./nix/sources.nix;
 
   pkgs = import sources.nixpkgs {
-    config = {};
+    config = { };
   };
 
   /* Find the nixpkgs path for the machine with the given name
@@ -19,7 +19,8 @@ let
       */
       machine = import "${path}/machine.nix";
 
-    in { config, lib, name, ... }: {
+    in
+    { config, lib, name, ... }: {
       _module.args = {
         inherit machine path id;
       };
@@ -49,7 +50,7 @@ let
 
         system = machine.system;
       };
-      
+
       nixpkgs.localSystem.system = machine.system;
 
       nix.distributedBuilds = true;
@@ -65,9 +66,10 @@ let
       system.stateVersion = machine.stateVersion;
     };
 
-  machines = let
-    machines = (pkgs.callPackage ./machines.nix {}).machines;
-  in
+  machines =
+    let
+      machines = (pkgs.callPackage ./machines.nix { }).machines;
+    in
     builtins.listToAttrs (map
       (machine: {
         name = machine.name;
@@ -76,9 +78,9 @@ let
       machines);
 
 in
-  {
-    network = {
-      inherit pkgs;
-      evalConfig = name: (import "${findNixpkgs name}/nixos/lib/eval-config.nix");
-    };
-  } // machines
+{
+  network = {
+    inherit pkgs;
+    evalConfig = name: (import "${findNixpkgs name}/nixos/lib/eval-config.nix");
+  };
+} // machines

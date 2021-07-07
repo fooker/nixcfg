@@ -3,35 +3,38 @@
 with lib;
 
 let
-  zones = let
-    mkRecord = { domain, ttl, type, class, data }: concatStringsSep " " ([
-      (toString domain)
-      (toString ttl)
-      class
-      type
-    ] ++ data);
+  zones =
+    let
+      mkRecord = { domain, ttl, type, class, data }: concatStringsSep " " ([
+        (toString domain)
+        (toString ttl)
+        class
+        type
+      ] ++ data);
 
-    mkInclude = { domain, file }: "$INCLUDE \"${ file }\" ${ domain.toString }";
+      mkInclude = { domain, file }: "$INCLUDE \"${ file }\" ${ domain.toString }";
 
-  in map
-    (zone: {
-      inherit (zone) name;
+    in
+    map
+      (zone: {
+        inherit (zone) name;
 
-      notify = "inwx";
-      acl = [ "inwx_transfer" ] ++ optional ((last zone.name.labels) == "dyn") "acme_update";
+        notify = "inwx";
+        acl = [ "inwx_transfer" ] ++ optional ((last zone.name.labels) == "dyn") "acme_update";
 
-      file = pkgs.writeText "${ zone.name.toSimpleString }.zone" ''
+        file = pkgs.writeText "${ zone.name.toSimpleString }.zone" ''
           ${ concatMapStringsSep "\n" mkRecord zone.records }
           ${ concatMapStringsSep "\n" mkInclude zone.includes }
         '';
-    })
-    config.dns.zoneList;
+      })
+      config.dns.zoneList;
 
-in {
+in
+{
   imports = [
     ./zones.nix
   ];
-  
+
   config = {
     /* Let systemd-resolved not listen on 127.0.0.53:53 to avoid conflicts with
       kresd listening on wildcard.
@@ -45,7 +48,8 @@ in {
       (zone: nameValuePair "knot-zone-${ zone.name.toSimpleString }" {
         target = "knot/zones/${ zone.name.toSimpleString }.zone";
         source = zone.file;
-      }) zones);
+      })
+      zones);
 
     systemd.services.knot.restartTriggers = map
       (zone: zone.file)
@@ -104,11 +108,11 @@ in {
 
     firewall.rules = dag: with dag; {
       inet.filter.input = {
-        dns-udp = between ["established"] ["drop"] ''
+        dns-udp = between [ "established" ] [ "drop" ] ''
           udp dport 53
           accept
         '';
-        dns-tcp = between ["established"] ["drop"] ''
+        dns-tcp = between [ "established" ] [ "drop" ] ''
           tcp dport 53
           accept
         '';
