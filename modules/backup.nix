@@ -113,18 +113,15 @@ with lib;
 
     backup.paths = [ "/etc" "/root" ];
 
-    backup.publicKey = mkDefault (fileContents "${path}/secrets/id_backup.pub");
+    backup.publicKey = mkDefault (fileContents "${path}/gathered/id_backup.pub");
 
-    deployment.secrets = {
-      "backup-sshkey" = rec {
-        source = "${path}/secrets/id_backup";
-        destination = "/var/lib/backup/id_backup";
-        owner.user = "root";
-        owner.group = "root";
-        action = [ ''
-          ${pkgs.openssh}/bin/ssh-keygen -y -f ${destination} > ${destination}.pub
-        '' ];
-      };
-    };
+    system.activationScripts."backup-sshkey" = ''
+      if ! [ -f "/var/lib/backup/id_backup" ]; then
+        ${pkgs.openssh}/bin/ssh-keygen \
+          -N "" \
+          -t ed25519 \
+          -f /var/lib/backup/id_backup
+      fi
+    '';
   };
 }
