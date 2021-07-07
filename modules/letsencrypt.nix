@@ -33,18 +33,23 @@ in {
             path = {
               cert = mkOption {
                 type = types.path;
+                readOnly = true;
               };
               chain = mkOption {
                 type = types.path;
+                readOnly = true;
               };
               fullchain = mkOption {
                 type = types.path;
+                readOnly = true;
               };
               full = mkOption {
                 type = types.path;
+                readOnly = true;
               };
               key = mkOption {
                 type = types.path;
+                readOnly = true;
               };
             };
           };
