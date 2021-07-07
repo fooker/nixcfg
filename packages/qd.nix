@@ -8,5 +8,5 @@ in rustPlatform.buildRustPackage rec {
 
   src = sources.qd;
 
-  cargoSha256 = "1hakklx7yjkcmmlig5whdhz9xx7lic69mw5n3xlqk7wx3fwaby5x";
+  cargoSha256 = "0vhijmcb6lfwp0xbxqadk8x5ifvkdcg13i65ziam7qlz8dypiqaf";
 }

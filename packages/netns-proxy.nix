@@ -8,5 +8,5 @@ in rustPlatform.buildRustPackage rec {
 
   src = sources.netns-proxy;
 
-  cargoSha256 = "0695ah7qxf7m43f2n1rvryyvgbmqk0i4lvq7smr1dqvyz7qhjsg4";
+  cargoSha256 = "0brc5damxcrszcijw79jlgs4zjmihd0mqf65qns7f20sq997pvzj";
 }
