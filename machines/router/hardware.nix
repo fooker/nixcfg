@@ -1,4 +1,6 @@
-{ config, lib, pkgs, ... }:
+{ lib, ... }:
+
+with lib;
 
 {
   boot.preset = "grub";

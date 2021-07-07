@@ -1,4 +1,4 @@
-{ config, lib, ext, pkgs, path, ... }:
+{ config, lib, ext, pkgs, ... }:
 
 with lib;
 {
@@ -25,7 +25,7 @@ with lib;
 
   config = mkIf (config.reverse-proxy.hosts != { }) {
     letsencrypt.certs = mapAttrs
-      (name: host: {
+      (_: host: {
         domains = host.domains;
         owner = "nginx";
         trigger = "${pkgs.systemd}/bin/systemctl reload nginx.service";

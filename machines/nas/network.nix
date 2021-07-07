@@ -1,33 +1,44 @@
-{ config, lib, pkgs, ... }:
+{ lib, ... }:
 
 with lib;
+
 let
-  devices = [
-    "24:5e:be:35:8b:d5"
-    "24:5e:be:35:8b:d6"
-    "24:5e:be:35:8b:d7"
-    "24:5e:be:35:8b:d8"
-  ];
+  devices = imap1
+    (i: mac: rec {
+      iface = "priv-${ toString i }";
+
+      name = "00-${iface}";
+
+      link = {
+        matchConfig = {
+          MACAddress = mac;
+        };
+        linkConfig = {
+          Name = iface;
+        };
+      };
+
+      network = {
+        name = iface;
+        bond = [ "priv" ];
+        networkConfig = {
+          LinkLocalAddressing = "no";
+        };
+      };
+    })
+    [
+      "24:5e:be:35:8b:d5"
+      "24:5e:be:35:8b:d6"
+      "24:5e:be:35:8b:d7"
+      "24:5e:be:35:8b:d8"
+    ];
 in
 {
   systemd.network = {
     enable = true;
 
-    links = (listToAttrs (imap1
-      (i: mac: (
-        let
-          name = "priv-${ toString i }";
-        in
-        (nameValuePair "00-${ name }" {
-          matchConfig = {
-            MACAddress = mac;
-          };
-          linkConfig = {
-            Name = name;
-          };
-        })
-      ))
-      devices));
+    links = listToAttrs
+      (map (device: nameValuePair device.name device.link) devices);
 
     netdevs = {
       "30-priv" = {
@@ -43,20 +54,8 @@ in
       };
     };
 
-    networks = (listToAttrs (imap1
-      (i: mac: (
-        let
-          name = "priv-${ toString i }";
-        in
-        (nameValuePair "00-${ name }" {
-          name = name;
-          bond = [ "priv" ];
-          networkConfig = {
-            LinkLocalAddressing = "no";
-          };
-        })
-      ))
-      devices)
+    networks = (listToAttrs
+      (map (device: nameValuePair device.name device.network) devices)
     ) // {
       "30-priv" = {
         name = "priv";

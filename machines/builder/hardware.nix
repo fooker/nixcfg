@@ -1,4 +1,6 @@
-{ config, lib, modulesPath, ... }:
+{ lib, modulesPath, ... }:
+
+with lib;
 
 {
   imports = [
@@ -22,5 +24,5 @@
     label = "swap";
   }];
 
-  nix.maxJobs = lib.mkDefault 4;
+  nix.maxJobs = mkDefault 4;
 }

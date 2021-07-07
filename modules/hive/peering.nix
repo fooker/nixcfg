@@ -1,4 +1,4 @@
-{ config, nodes, lib, pkgs, ... }:
+{ config, nodes, lib, ... }:
 
 with lib;
 
@@ -19,15 +19,15 @@ with lib;
       };
 
       # Enable the hive domain for all related peers
-      peers = mapAttrs'
-        (name: node: nameValuePair nodes.${ name }.config.peering.backhaul.key {
+      peers = listToAttrs (map
+        (name: nameValuePair nodes.${ name }.config.peering.backhaul.key {
           domains = {
             "hive" = {
               ospf = { };
             };
           };
         })
-        config.hive.others;
+        (attrNames config.hive.others));
     };
   };
 }

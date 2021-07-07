@@ -1,4 +1,6 @@
-{ config, lib, pkgs, ... }:
+{ lib, pkgs, ... }:
+
+with lib;
 
 {
   hardware.enableRedistributableFirmware = true;
@@ -19,7 +21,7 @@
 
   platform.cryptroot.enable = true;
 
-  nix.maxJobs = lib.mkDefault 4;
+  nix.maxJobs = mkDefault 4;
 
   services.udev.extraRules = ''
     ACTION=="add|change", SUBSYSTEM=="block", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="1", RUN+="${pkgs.smartmontools}/bin/smartctl -s apm,32 -s standby,60 /dev/%k"

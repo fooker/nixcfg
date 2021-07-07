@@ -103,7 +103,7 @@ in
   };
 
   letsencrypt.certs = mapAttrs
-    (name: app: {
+    (_: app: {
       domains = app.domains;
       owner = "nginx";
       trigger = "${pkgs.systemd}/bin/systemctl reload nginx.service";

@@ -1,4 +1,4 @@
-args @ { config, lib, pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   services.mosquitto = {
@@ -28,7 +28,7 @@ args @ { config, lib, pkgs, ... }:
     enable = true;
     port = 8123;
 
-    config = import ./hass args;
+    config = import ./hass;
 
     autoExtraComponents = true;
 

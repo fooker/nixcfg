@@ -7,7 +7,7 @@ rec {
     let
       check = labels:
         assert isList labels;
-        assert all (label: isString label) labels;
+        assert all isString labels;
         assert all (label: stringLength label > 0) labels;
         assert all (label: stringLength label <= 63) labels;
         labels;
@@ -91,15 +91,15 @@ rec {
 
   types = {
     # Like types.uniq but merges equal definitions
-    equi = elemType: mkOptionType rec {
+    equi = type: mkOptionType rec {
       name = "equi";
-      inherit (elemType) description check;
+      inherit (type) description check;
       merge = mergeEqualOption;
-      emptyValue = elemType.emptyValue;
-      getSubOptions = elemType.getSubOptions;
-      getSubModules = elemType.getSubModules;
-      substSubModules = m: equi (elemType.substSubModules m);
-      functor = (defaultFunctor name) // { wrapped = elemType; };
+      emptyValue = type.emptyValue;
+      getSubOptions = type.getSubOptions;
+      getSubModules = type.getSubModules;
+      substSubModules = m: equi (type.substSubModules m);
+      functor = (defaultFunctor name) // { wrapped = type; };
     };
 
     domain =

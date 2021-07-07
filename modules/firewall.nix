@@ -5,15 +5,15 @@ with lib;
 {
   options.firewall =
     let
-      mkTable = description: chains: mkOption {
-        type = types.submodule ({ config, ... }: {
-          options = chains;
+      mkTable = description: options: mkOption {
+        type = types.submodule ({
+          inherit options;
         });
         inherit description;
         default = { };
       };
 
-      mkChain = family: description: mkOption {
+      mkChain = description: mkOption {
         type = ext.dag.types.dagOf types.str;
         inherit description;
         default = { };
@@ -38,53 +38,53 @@ with lib;
         type = ext.fn.types.fnOf (types.submodule ({ ... }: {
           options = {
             ip = mkTable "internet (IPv4) address family netfilter table" {
-              filter.prerouting = mkPrerouteChain "ip";
-              filter.input = mkInputChain "ip";
-              filter.forward = mkForwardChain "ip";
-              filter.output = mkOutputChain "ip";
-              filter.postrouting = mkPostrouteChain "ip";
-              nat.prerouting = mkPrerouteChain "ip";
-              nat.input = mkInputChain "ip";
-              nat.output = mkOutputChain "ip";
-              nat.postrouting = mkPostrouteChain "ip";
-              route.output = mkForwardChain "ip";
+              filter.prerouting = mkPrerouteChain;
+              filter.input = mkInputChain;
+              filter.forward = mkForwardChain;
+              filter.output = mkOutputChain;
+              filter.postrouting = mkPostrouteChain;
+              nat.prerouting = mkPrerouteChain;
+              nat.input = mkInputChain;
+              nat.output = mkOutputChain;
+              nat.postrouting = mkPostrouteChain;
+              route.output = mkForwardChain;
             };
             ip6 = mkTable "internet (IPv6) address family netfilter table" {
-              filter.prerouting = mkPrerouteChain "ip6";
-              filter.input = mkInputChain "ip6";
-              filter.forward = mkForwardChain "ip6";
-              filter.output = mkOutputChain "ip6";
-              filter.postrouting = mkPostrouteChain "ip6";
-              nat.prerouting = mkPrerouteChain "ip6";
-              nat.input = mkInputChain "ip6";
-              nat.output = mkOutputChain "ip6";
-              nat.postrouting = mkPostrouteChain "ip6";
-              route.output = mkForwardChain "ip6";
+              filter.prerouting = mkPrerouteChain;
+              filter.input = mkInputChain;
+              filter.forward = mkForwardChain;
+              filter.output = mkOutputChain;
+              filter.postrouting = mkPostrouteChain;
+              nat.prerouting = mkPrerouteChain;
+              nat.input = mkInputChain;
+              nat.output = mkOutputChain;
+              nat.postrouting = mkPostrouteChain;
+              route.output = mkForwardChain;
             };
             inet = mkTable "internet (IPv4/IPv6) address family netfilter table" {
-              filter.prerouting = mkPrerouteChain "inet";
-              filter.input = mkInputChain "inet";
-              filter.forward = mkForwardChain "inet";
-              filter.output = mkOutputChain "inet";
-              filter.postrouting = mkPostrouteChain "inet";
-              nat.prerouting = mkPrerouteChain "inet";
-              nat.input = mkInputChain "inet";
-              nat.output = mkOutputChain "inet";
-              nat.postrouting = mkPostrouteChain "inet";
+              filter.prerouting = mkPrerouteChain;
+              filter.input = mkInputChain;
+              filter.forward = mkForwardChain;
+              filter.output = mkOutputChain;
+              filter.postrouting = mkPostrouteChain;
+              nat.prerouting = mkPrerouteChain;
+              nat.input = mkInputChain;
+              nat.output = mkOutputChain;
+              nat.postrouting = mkPostrouteChain;
             };
             arp = mkTable "ARP (IPv4) address family netfilter table" {
-              filter.input = mkInputChain "arp";
-              filter.output = mkOutputChain "arp";
+              filter.input = mkInputChain;
+              filter.output = mkOutputChain;
             };
             bridge = mkTable "bridge address family netfilter table" {
-              filter.prerouting = mkPrerouteChain "bridge";
-              filter.input = mkInputChain "bridge";
-              filter.forward = mkForwardChain "bridge";
-              filter.output = mkOutputChain "bridge";
-              filter.postrouting = mkPostrouteChain "bridge";
+              filter.prerouting = mkPrerouteChain;
+              filter.input = mkInputChain;
+              filter.forward = mkForwardChain;
+              filter.output = mkOutputChain;
+              filter.postrouting = mkPostrouteChain;
             };
             netdev = mkTable "netdev address family netfilter table" {
-              filter.ingress = mkIngressChain "netdev";
+              filter.ingress = mkIngressChain;
             };
           };
         }));
@@ -126,7 +126,7 @@ with lib;
         '';
 
       rules = filterAttrsRecursive
-        (name: value: name != "_module")
+        (name: _: name != "_module")
         (config.firewall.rules ext.dag.entry);
 
     in

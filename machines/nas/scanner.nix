@@ -1,9 +1,5 @@
-{ config, lib, pkgs, ... }:
+{ config, ... }:
 
-let
-  secrets = import ./secrets.nix;
-
-in
 {
   # Used to upload scanned documents from printer
   users.users."scanner" = {

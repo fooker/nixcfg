@@ -15,10 +15,10 @@ with lib;
 
 {
   types = {
-    dagOf = subType: types.attrsOf (types.submodule {
+    dagOf = type: types.attrsOf (types.submodule {
       options = {
         data = mkOption {
-          type = subType;
+          inherit type;
         };
 
         before = mkOption {
@@ -93,19 +93,19 @@ with lib;
   topoSort = dag:
     let
       dagBefore = dag: name:
-        mapAttrsToList (n: v: n) (
-          filterAttrs (n: v: any (a: a == name) v.before) dag
+        attrNames (
+          filterAttrs (_: v: any (a: a == name) v.before) dag
         );
       normalizedDag =
         mapAttrs
-          (n: v: {
-            name = n;
-            data = v.data;
-            after = v.after ++ dagBefore dag n;
+          (name: value: {
+            inherit name;
+            data = value.data;
+            after = value.after ++ dagBefore dag name;
           })
           dag;
       before = a: b: any (c: a.name == c) b.after;
-      sorted = toposort before (mapAttrsToList (n: v: v) normalizedDag);
+      sorted = toposort before (attrValues normalizedDag);
     in
     if sorted ? result then
       { result = map (v: { inherit (v) name data; }) sorted.result; }

@@ -126,7 +126,7 @@ let
     }
   '';
 
-  scanbd = pkgs.scanbd.overrideAttrs (super: {
+  scanbd = pkgs.scanbd.overrideAttrs (_: {
     postInstall = ''
       mkdir -p $out/share/dbus-1/system.d/
       sed 's/<policy user="saned">/<policy user="scanner">/' < integration/scanbd_dbus.conf > $out/share/dbus-1/system.d/scanbd.conf
@@ -140,10 +140,10 @@ in
 {
   # Workaround to build on (currently) broken aarch64
   nixpkgs.overlays = [
-    (self: super: rec {
+    (_: super: rec {
       python38 = super.python38.override {
-        packageOverrides = self: super: {
-          pikepdf = super.pikepdf.overrideAttrs (old: {
+        packageOverrides = _: super: {
+          pikepdf = super.pikepdf.overrideAttrs (_: {
             doCheck = false;
             doInstallCheck = false;
           });

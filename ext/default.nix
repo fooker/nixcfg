@@ -1,22 +1,20 @@
 { lib, ... }:
 
 let
-  ext = lib.makeExtensible (self:
-    let
-      callLibs = file: import file { inherit lib; ext = self; };
-    in
-    {
-      fn = callLibs ./fn.nix;
-      dag = callLibs ./dag.nix;
-      dns = callLibs ./dns.nix;
+  callLibs = file: import file { inherit lib; };
 
-      types = lib.types
-        // self.fn.types
-        // self.dag.types
-        // self.dns.types;
+  ext = lib.makeExtensible (self: {
+    fn = callLibs ./fn.nix;
+    dag = callLibs ./dag.nix;
+    dns = callLibs ./dns.nix;
 
-      inherit (self.dns) domain;
-    });
+    types = lib.types
+      // self.fn.types
+      // self.dag.types
+      // self.dns.types;
+
+    inherit (self.dns) domain;
+  });
 in
 {
   _module.args = {

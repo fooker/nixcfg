@@ -1,5 +1,3 @@
-{ config, lib, pkgs, ... }:
-
 {
   nixpkgs.config.pulseaudio = true;
 

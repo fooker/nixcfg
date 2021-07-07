@@ -1,8 +1,9 @@
-{ config, lib, pkgs, ... }:
+{ lib, ... }:
+
+with lib;
 
 let
   secrets = import ./secrets.nix;
-
 in
 {
   services.spotifyd = {
@@ -40,8 +41,8 @@ in
   systemd.services.spotifyd = {
     serviceConfig.User = "spotifyd";
 
-    serviceConfig.DynamicUser = lib.mkForce false;
-    serviceConfig.SupplementaryGroups = lib.mkForce [ ];
+    serviceConfig.DynamicUser = mkForce false;
+    serviceConfig.SupplementaryGroups = mkForce [ ];
   };
   # End of hack...
 

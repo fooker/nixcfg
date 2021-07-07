@@ -74,7 +74,7 @@ with lib;
     let
       # Create a standalone bash script for each command
       scripts = map
-        (command: pkgs.writeShellScript "backup-script" command)
+        (pkgs.writeShellScript "backup-script")
         config.backup.commands;
 
     in

@@ -11,16 +11,15 @@ let
     (sources."nixpkgs-${name}" or sources.nixpkgs);
 
   nixpkgs-unstable = sources.nixpkgs-unstable;
-  nixpkgs-master = sources.nixpkgs-master;
 
-  mkMachine = path: id:
+  mkMachine = path: id: { config, name, ... }:
     let
       /* Read the machine configuration from machine.nix in the machines directory
       */
       machine = import "${path}/machine.nix";
 
     in
-    { config, lib, name, ... }: {
+    {
       _module.args = {
         inherit machine path id;
       };
@@ -38,7 +37,7 @@ let
         config = {
           allowUnfree = true;
 
-          packageOverrides = pkgs: {
+          packageOverrides = _: {
             /* Make nixpkgs-unstable available as subtree
             */
             unstable = import nixpkgs-unstable {

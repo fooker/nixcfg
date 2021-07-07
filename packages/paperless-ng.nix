@@ -2,7 +2,6 @@
 , stdenv
 , fetchzip
 , makeWrapper
-, callPackage
 , writeShellScriptBin
 , python3Packages
 , imagemagick
@@ -10,18 +9,17 @@
 , optipng
 , tesseract4
 , unpaper
-, gnupg
 , ocrmypdf
 }:
 
 let
   python = python3Packages.python.override {
-    packageOverrides = self: super: {
+    packageOverrides = _: super: {
       pyocr = super.pyocr.override {
         inherit tesseract4;
       };
       django = super.django_3;
-      django-picklefield = super.django-picklefield.overridePythonAttrs (orig: {
+      django-picklefield = super.django-picklefield.overridePythonAttrs (_: {
         doCheck = false;
         doInstalCheck = false;
         pythonImportsCheck = [ ];

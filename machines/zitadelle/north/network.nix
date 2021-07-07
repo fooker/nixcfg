@@ -1,5 +1,3 @@
-{ config, lib, pkgs, ... }:
-
 {
   systemd.network = {
     enable = true;

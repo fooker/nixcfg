@@ -1,6 +1,3 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
 {
   hive.nodes = {
     "zitadelle-north" = {

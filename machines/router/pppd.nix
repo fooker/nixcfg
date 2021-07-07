@@ -1,6 +1,7 @@
-{ config, lib, pkgs, ... }:
+{ lib, pkgs, ... }:
 
 with lib;
+
 let
   secrets = import ./secrets.nix;
 in

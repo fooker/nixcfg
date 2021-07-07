@@ -1,5 +1,3 @@
-{ lib, pkgs, ... }:
-
 let
   secrets = import ../secrets.nix;
 in

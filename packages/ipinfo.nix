@@ -1,4 +1,4 @@
-{ stdenv, rustPlatform, fetchFromGitHub, ... }:
+{ rustPlatform, ... }:
 
 let
   sources = import ../nix/sources.nix;

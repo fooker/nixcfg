@@ -1,5 +1,3 @@
-{ config, lib, pkgs, ... }:
-
 {
   imports = [
     ./common/default.nix

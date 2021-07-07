@@ -90,16 +90,16 @@ with lib;
         magnetico = { CNAME = "fliegerhorst.dev.open-desk.net."; };
       };
 
-      org.open-desk = zone // { };
+      org.open-desk = zone;
 
-      cloud.frisch = zone // { };
+      cloud.frisch = zone;
 
-      sh.lab = zone // { };
+      sh.lab = zone;
 
-      org.schoen-und-gut = zone // { };
+      org.schoen-und-gut = zone;
 
-      io.adacta = zone // { };
+      io.adacta = zone;
 
-      jetzt.ak36 = zone // { };
+      jetzt.ak36 = zone;
     };
 }

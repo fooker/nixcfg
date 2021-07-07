@@ -1,17 +1,7 @@
-{ config, lib, pkgs, ... }:
+{ lib, pkgs, ... }:
 
 with lib;
 
-let
-  secrets = import ./secrets.nix;
-
-  interfaces = [
-    "192.168.0.1"
-    "192.168.254.1"
-    "172.23.200.129"
-    "203.0.113.1"
-  ];
-in
 {
   /* Let systemd-resolved not listen on 127.0.0.53:53 to avoid conflicts with
     kresd listening on wildcard.

@@ -59,7 +59,7 @@ let
 in
 {
   nixpkgs.overlays = [
-    (self: super: {
+    (_: _: {
       inherit parsecgaming;
     })
   ];

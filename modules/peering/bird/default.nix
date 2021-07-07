@@ -1,4 +1,4 @@
-{ config, lib, pkgs, name, tools, ... }@args:
+{ config, lib, tools, ... }@args:
 
 with lib;
 
@@ -8,10 +8,6 @@ let
 
   filters.ipv4 = domain: concatStringsSep ", " domain.filters.ipv4;
   filters.ipv6 = domain: concatStringsSep ", " domain.filters.ipv6;
-
-  bgp = import ./bgp.nix args;
-  ospf = import ./ospf.nix args;
-  babel = import ./babel.nix args;
 
   /* All domains which have at least one peer participating
   */
@@ -28,28 +24,29 @@ let
 
       netdev = if (domain.netdev != null) then domain.netdev else domain.name;
 
-      /* Find all peers working in the current domain and having a
-        configuration for the given protocol.
-
-        The returned list of peers is empty, if the domain is not configured
-        for the protocol. Else, it will contian only peers wich are
-        configured for the current domain and the given protocol in this
-        domain.
-      */
-      peers = protocol:
-        optionals (domain."${protocol}" != null) (filter
-          (peer: (attrByPath [ domain.name protocol ] null peer.domains) != null) # Peer is configured for proto
-          (attrValues config.peering.peers));
-
       /* Calls a protocol specific implementation if there are peers for this
         protocol. The protocol implementation must accept the domain
         configuration and the list of associated peer configurations.
       */
-      callProtocol = protocol: impl:
+      callProtocol = protocol:
         let
-          peers' = peers protocol;
+          /* Find all peers working in the current domain and having a
+            configuration for the given protocol.
+
+            The returned list of peers is empty, if the domain is not configured
+            for the protocol. Else, it will contian only peers wich are
+            configured for the current domain and the given protocol in this
+            domain.
+          */
+          peers = optionals (domain."${protocol}" != null) (filter
+            (peer: (attrByPath [ domain.name protocol ] null peer.domains) != null) # Peer is configured for proto
+            (attrValues config.peering.peers));
+
+          /* Import the protocol implementation
+          */
+          impl = import (./. + "/${protocol}.nix") args;
         in
-        optionalString (peers' != [ ]) (impl domain peers');
+        optionalString (peers != [ ]) (impl domain peers);
 
     in
     ''
@@ -86,9 +83,9 @@ let
         };
       }
 
-      ${callProtocol "bgp" bgp}
-      ${callProtocol "ospf" ospf}
-      ${callProtocol "babel" babel}
+      ${callProtocol "bgp"}
+      ${callProtocol "ospf"}
+      ${callProtocol "babel"}
 
       protocol pipe ${domain.name}_pipe_4 {
         table ${domain.name}_4;

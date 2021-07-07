@@ -1,4 +1,4 @@
-{ config, options, lib, ext, pkgs, nodes, ... }@args:
+{ config, lib, ext, nodes, ... }@args:
 
 with lib;
 with ext;
@@ -43,13 +43,14 @@ let
 
     check = x: mod.check x || (types.attrs.check x && mod.check (coerceZone x));
 
-    merge = loc: defs:
+    merge =
       let
         coerceVal = val:
           if hasAttr "records" val || hasAttr "zones" val then val
           else coerceZone val;
       in
-      mod.merge loc (map (def: def // { value = coerceVal def.value; }) defs);
+      loc: defs:
+        mod.merge loc (map (def: def // { value = coerceVal def.value; }) defs);
 
     emptyValue = mod.emptyValue;
     getSubOptions = mod.getSubOptions;
@@ -57,7 +58,7 @@ let
 
     substSubModules = m: coercedZoneSubmodule (mod.substSubModules m);
 
-    typeMerge = t1: t2: null;
+    typeMerge = _: _: null;
 
     functor = (defaultFunctor name) // { wrapped = mod; };
   };
@@ -200,16 +201,12 @@ in
       let
         # Use all defined records while stripping out the data element as it is
         # re-created from the definition.
-        cleanupRecords = records:
-          let
-            cleanup = def: removeAttrs def [ "data" ];
-          in
-          mapAttrs
-            (type: record:
-              if isList record
-              then map cleanup record
-              else cleanup record)
-            (getAttrs records.defined records);
+        cleanupRecords = records: mapAttrs
+          (_: record:
+            if isList record
+            then map (flip removeAttrs [ "data" ]) record
+            else removeAttrs record [ "data" ])
+          (getAttrs records.defined records);
 
         walk = cfg: path: {
           inherit (cfg) ttl includes;

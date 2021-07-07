@@ -1,9 +1,7 @@
-{ config, lib, pkgs, utils, ... }:
+{ lib, pkgs, utils, ... }:
 
 with lib;
 let
-  secrets = import ./secrets.nix;
-
   disks = [
     "disk1"
     "disk2"

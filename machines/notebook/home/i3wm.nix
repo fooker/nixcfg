@@ -52,37 +52,6 @@ let
     interval = 1
     format = "%F %a %T"
   '';
-
-  # wallpaper = builtins.fetchurl {
-  #   name = "wallpaper.jpg";
-  #   url = "https://w.wallhaven.cc/full/2e/wallhaven-2eqezx.jpg";
-  #   sha256 = "1zc079sx3kad497wc1h5cznpml91gln1vkngk6m9izd0idw09s1r";
-  # };
-
-  # wallpaper = builtins.fetchurl {
-  #   name = "wallpaper.jpg";
-  #   url = "https://w.wallhaven.cc/full/49/wallhaven-49kdvw.png";
-  #   sha256 = "0ybr2xk65x2vy0c2ahg2nsn77c9552plxrys09x35f5apy7wfz4q";
-  # };
-
-  # wallpaper = builtins.fetchurl {
-  #   name = "wallpaper.jpg";
-  #   url = "https://w.wallhaven.cc/full/4l/wallhaven-4l3okl.jpg";
-  #   sha256 = "1kvrwjr658sjxhw5w257bvnvcn5h321p76rnjpcjh3y250ndqcdw";
-  # };
-
-  # wallpaper = builtins.fetchurl {
-  #   name = "wallpaper.jpg";
-  #   url = "http://getwallpapers.com/wallpaper/full/6/d/d/853739-download-starry-night-backgrounds-1920x1080.jpg";
-  #   sha256 = "1kilpz8l0np8zdjpqq850xha1nmy6gh2nhrvmjxkd83632askqvd";
-  # };
-
-  wallpaper = builtins.fetchurl {
-    name = "wallpaper.jpg";
-    url = "https://w.wallhaven.cc/full/ne/wallhaven-ne622l.jpg";
-    sha256 = "0py9qixisbvjr811fj2a8z7kpn5lqa3s4w7ax7wdavz1f4mnw3w4";
-  };
-
 in
 {
   xsession = {

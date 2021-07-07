@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, ... }:
 
 {
   systemd.network = {
@@ -47,7 +47,6 @@
           config.peering.backhaul.dn42.ipv4
           config.peering.backhaul.dn42.ipv6
         ];
-        gateway = [ "193.174.29.1" ];
       };
       "30-hs" = {
         name = "hs";

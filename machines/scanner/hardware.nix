@@ -1,5 +1,3 @@
-{ config, lib, pkgs, ... }:
-
 {
   platform.rpi3 = true;
 

@@ -1,6 +1,6 @@
-args @ { python3Packages
+{ python3Packages
 , mopidy
-, websocket_client ? (args.python3Packages.callPackage ./websocket_client.nix { })
+, websocket_client ? (python3Packages.callPackage ./websocket_client.nix { })
 , ...
 }:
 

@@ -4,9 +4,9 @@ with lib;
 
 {
   types = {
-    fnOf = retType: mkOptionType rec {
+    fnOf = type: mkOptionType rec {
       name = "fnOf";
-      description = "Function retuning a ${retType.description}";
+      description = "Function retuning a ${type.description}";
       check = isFunction;
       merge = loc: defs: args:
         let
@@ -14,10 +14,10 @@ with lib;
         in
         (mergeDefinitions
           (loc ++ [ "{...}" ])
-          retType
+          type
           defs'
         ).mergedValue;
-      functor = (defaultFunctor name) // { wrapped = retType; };
+      functor = (defaultFunctor name) // { wrapped = type; };
     };
   };
 }

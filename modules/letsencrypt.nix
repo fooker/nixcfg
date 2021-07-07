@@ -82,7 +82,7 @@ in
       server = mkIf (!config.letsencrypt.production) "https://acme-staging-v02.api.letsencrypt.org/directory";
 
       certs = mapAttrs
-        (name: cert: {
+        (_: cert: {
           domain = head cert.domains;
           extraDomainNames = (tail cert.domains);
 
