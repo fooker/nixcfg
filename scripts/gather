@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+declare -a MACHINES
+if [[ "${1}" != "" ]]; then
+	MACHINES=( "${1}" )
+else
+	MACHINES=( $(cd machines; find . -name 'machine.nix' -printf '%P\0' | xargs -0 dirname) )
+fi
+
+for MACHINE in "${MACHINES[@]}"; do
+	echo "-- ${MACHINE} --"
+	MACHINE_DIR="$(pwd)/machines/${MACHINE}"
+	
+	TARGET="$(nix eval --raw "(with import \"${MACHINE_DIR}/machine.nix\"; \"\${target.user}@\${target.host}\")")"
+	echo "Target: ${TARGET}"
+
+	mkdir -p "${MACHINE_DIR}/gathered"
+
+	scp \
+		"${TARGET}:/etc/ssh/ssh_host_rsa_key.pub" \
+		"${TARGET}:/etc/ssh/ssh_host_ed25519_key.pub" \
+		"${TARGET}:/var/lib/backup/id_backup.pub" \
+		"${MACHINE_DIR}/gathered"
+	
+done
