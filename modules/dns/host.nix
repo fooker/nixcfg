@@ -1,7 +1,6 @@
-{ config, lib, ext, id, ... }:
+{ config, lib, id, ... }:
 
 with lib;
-with ext;
 
 {
   options = {
@@ -11,19 +10,19 @@ with ext;
           zone = mkOption {
             type = types.domain.absolute;
             description = "The zone the host is exposted to";
-            default = domain.absolute "open-desk.net";
+            default = mkDomainAbsolute "open-desk.net";
           };
 
           realm = mkOption {
             type = types.domain.relative;
             description = "The realm in the zone the host is exposted to";
-            default = domain.relative [ ];
+            default = mkDomainRelative [ ];
           };
 
           name = mkOption {
             type = types.domain.relative;
             description = "The host name to expose";
-            default = domain.relative id;
+            default = mkDomainRelative id;
           };
 
           domain = mkOption {
@@ -46,7 +45,7 @@ with ext;
         config = {
           domain = foldl (domain: domain.resolve) config.dns.host.zone [
             config.dns.host.realm
-            (domain.relative "dev")
+            (mkDomainRelative "dev")
             config.dns.host.name
           ];
         };

@@ -1,4 +1,4 @@
-{ config, lib, ext, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 
@@ -157,12 +157,12 @@ in
 
       # MX and related security and service records for all domains we serve for
       (mkMerge (map
-        (domain: (ext.domain.absolute domain).mkRecords {
+        (domain: (mkDomainAbsolute domain).mkRecords {
 
           # MX record for this server
           MX = {
             preference = 0;
-            exchange = ext.domain.absolute config.mailserver.fqdn;
+            exchange = mkDomainAbsolute config.mailserver.fqdn;
           };
 
           # SPF record

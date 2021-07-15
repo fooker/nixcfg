@@ -3,11 +3,7 @@ let
 
   pkgs = import sources.nixpkgs { };
 
-  /* Find the nixpkgs path for the machine with the given name
   */
-  findNixpkgs = name:
-    (sources."nixpkgs-${name}" or sources.nixpkgs);
-
 
   mkMachine = path: id: { config, ... }:
     let
@@ -52,7 +48,6 @@ let
       nix.distributedBuilds = true;
 
       imports = [
-        ./ext
         ./tools
         ./modules
         ./shared
@@ -77,6 +72,15 @@ in
 {
   network = {
     lib = pkgs.lib;
-    evalConfig = name: (findNixpkgs name) + "/nixos/lib/eval-config.nix";
+    evalConfig = name:
+      let
+        # Find the nixpkgs path for the machine with the given name
+        path = sources."nixpkgs-${name}" or sources.nixpkgs;
+
+        # Import the lib from the selected nixpkgs path and extend it with our own functions
+        lib = import ./lib (import (path + "/lib"));
+
+      in
+      args: (import (path + "/nixos/lib/eval-config.nix")) (args // { inherit lib; });
   };
 } // machines

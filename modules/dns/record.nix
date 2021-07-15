@@ -1,7 +1,6 @@
-{ lib, ext, ... }:
+{ lib, ... }:
 
 with lib;
-with ext;
 
 rec {
   # Builder for record type options
@@ -33,10 +32,6 @@ rec {
         config = {
           type = rtype;
           data = [ (apply config.value) ];
-
-          _module.args = {
-            inherit ext;
-          };
         };
       }));
   };
@@ -49,10 +44,6 @@ rec {
       imports = [ module mod ];
       config = {
         type = rtype;
-
-        _module.args = {
-          inherit ext;
-        };
       };
     };
   };

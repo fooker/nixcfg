@@ -1,4 +1,4 @@
-{ config, lib, ext, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 {
@@ -81,7 +81,7 @@ with lib;
           (attrValues config.reverse-proxy.hosts);
       in
       mkMerge (map
-        (domain: (ext.domain.absolute domain).mkRecords {
+        (domain: (mkDomainAbsolute domain).mkRecords {
           A = config.dns.host.ipv4;
           AAAA = config.dns.host.ipv6;
         })

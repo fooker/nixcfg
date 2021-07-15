@@ -1,7 +1,6 @@
-{ config, lib, ext, ... }:
+{ config, lib, ... }:
 
 with lib;
-with ext;
 
 let
   mappings = {

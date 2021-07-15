@@ -1,7 +1,6 @@
-{ lib, ext, record, ... }:
+{ lib, record, ... }:
 
 with lib;
-with ext;
 
 let
   inherit (record) mkValueRecord mkModuleRecord;

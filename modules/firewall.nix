@@ -1,4 +1,4 @@
-{ config, lib, ext, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 
@@ -14,7 +14,7 @@ with lib;
       };
 
       mkChain = description: mkOption {
-        type = ext.dag.types.dagOf types.str;
+        type = types.dagOf types.str;
         inherit description;
         default = { };
       };
@@ -35,7 +35,7 @@ with lib;
       };
 
       rules = mkOption {
-        type = ext.fn.types.fnOf (types.submodule ({ ... }: {
+        type = types.fnOf (types.submodule ({ ... }: {
           options = {
             ip = mkTable "internet (IPv4) address family netfilter table" {
               filter.prerouting = mkPrerouteChain;
@@ -107,7 +107,7 @@ with lib;
         let
           mkChain = type: chain: rules: {
             inherit type chain;
-            rules = ((ext.dag.topoSort rules).result or (throw "Cycle in DAG"));
+            rules = ((topoSort rules).result or (throw "Cycle in DAG"));
           };
 
           chains = concatLists
@@ -127,7 +127,7 @@ with lib;
 
       rules = filterAttrsRecursive
         (name: _: name != "_module")
-        (config.firewall.rules ext.dag.entry);
+        (config.firewall.rules dagEntry);
 
     in
     mkIf config.firewall.enable {

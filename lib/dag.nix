@@ -9,7 +9,7 @@
 #  - the addition of the function `entryBefore` indicating a
 #    "wanted by" relationship.
 
-{ lib, ... }:
+lib:
 
 with lib;
 
@@ -112,7 +112,7 @@ with lib;
     else
       sorted;
 
-  entry = {
+  dagEntry = {
     anywhere = data: {
       inherit data;
       before = [ ];

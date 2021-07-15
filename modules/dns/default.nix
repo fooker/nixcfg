@@ -1,7 +1,6 @@
-{ config, lib, ext, nodes, ... }@args:
+{ config, lib, nodes, ... }@args:
 
 with lib;
-with ext;
 
 let
   record = (import ./record.nix args);
@@ -79,7 +78,7 @@ let
         (name: isRecord name && options.${ name }.isDefined)
         (attrNames config);
 
-      _module.args = { inherit ext record; };
+      _module.args = { inherit record; };
     };
   });
 
@@ -273,7 +272,7 @@ in
             next = concatLists (
               mapAttrsToList
                 (name: value: walk {
-                  domain = domain.resolve (ext.domain.relative name);
+                  domain = domain.resolve (mkDomainRelative name);
                   zone = zone';
                   ttl = ttl';
                   config = value;
@@ -285,7 +284,7 @@ in
 
         # Walk the tree and collect all records
         collected = walk {
-          domain = ext.domain.root;
+          domain = mkDomainAbsolute [ ];
           zone = [ ];
           ttl = config.dns.defaultTTL;
           config = config.dns.global;
