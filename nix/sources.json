@@ -57,12 +57,12 @@
         "branch": "master",
         "description": "NixOS deployment tool",
         "homepage": null,
-        "owner": "fooker",
+        "owner": "DBCDK",
         "repo": "morph",
-        "rev": "2063f8e0dda2d3134fef54e51cfce69d84d9f1f3",
-        "sha256": "0xz2s4fpcrb348z7zyf332hj1aqk9x980z9x9j35gy8m63c0ar65",
+        "rev": "c4d0ba03a83decba3b616293b398b532b8d187e9",
+        "sha256": "1qzp5vw1kbykab0k5b49gczx7j7dmczs539qy5d58852gj7k9rdc",
         "type": "tarball",
-        "url": "https://github.com/fooker/morph/archive/2063f8e0dda2d3134fef54e51cfce69d84d9f1f3.tar.gz",
+        "url": "https://github.com/DBCDK/morph/archive/c4d0ba03a83decba3b616293b398b532b8d187e9.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "netns-proxy": {

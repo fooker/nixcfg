@@ -80,6 +80,6 @@ in
 {
   network = {
     inherit pkgs;
-    evalConfig = name: (import "${findNixpkgs name}/nixos/lib/eval-config.nix");
+    evalConfig = name: (findNixpkgs name) + "/nixos/lib/eval-config.nix";
   };
 } // machines

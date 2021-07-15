@@ -5,7 +5,11 @@ let
     (self: _: {
       inherit (import sources.niv { }) niv;
 
-      morph = (self.callPackage (sources.morph + "/nix-packaging") { });
+      morph = (self.callPackage sources.morph { }).overrideAttrs (attrs: {
+        patches = attrs.patches or [ ] ++ [
+          ./patches/morph-evalConfig-machineName.patch
+        ];
+      });
 
       nix-pre-commit-hooks = import sources.nix-pre-commit-hooks;
     })
