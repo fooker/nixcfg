@@ -1,7 +1,7 @@
 {
   nixpkgs.overlays = [
-    (_: super: {
-      jellyfin = super.unstable.jellyfin;
+    (self: _: {
+      jellyfin = self.unstable.jellyfin;
     })
   ];
 

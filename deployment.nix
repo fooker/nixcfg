@@ -1,18 +1,15 @@
 let
   sources = import ./nix/sources.nix;
 
-  pkgs = import sources.nixpkgs {
-    config = { };
-  };
+  pkgs = import sources.nixpkgs { };
 
   /* Find the nixpkgs path for the machine with the given name
   */
   findNixpkgs = name:
     (sources."nixpkgs-${name}" or sources.nixpkgs);
 
-  nixpkgs-unstable = sources.nixpkgs-unstable;
 
-  mkMachine = path: id: { config, name, ... }:
+  mkMachine = path: id: { config, ... }:
     let
       /* Read the machine configuration from machine.nix in the machines directory
       */
@@ -33,24 +30,24 @@ let
         substituteOnDestination = true;
       };
 
-      nixpkgs.pkgs = import (findNixpkgs name) {
+      nixpkgs = {
         config = {
           allowUnfree = true;
+        };
 
-          packageOverrides = _: {
+        overlays = [
+          (_: _: {
             /* Make nixpkgs-unstable available as subtree
             */
-            unstable = import nixpkgs-unstable {
+            unstable = import sources.nixpkgs-unstable {
               config = config.nixpkgs.config;
               system = machine.system;
             };
-          };
-        };
+          })
+        ];
 
-        system = machine.system;
+        localSystem.system = machine.system;
       };
-
-      nixpkgs.localSystem.system = machine.system;
 
       nix.distributedBuilds = true;
 
@@ -79,7 +76,7 @@ let
 in
 {
   network = {
-    inherit pkgs;
+    lib = pkgs.lib;
     evalConfig = name: (findNixpkgs name) + "/nixos/lib/eval-config.nix";
   };
 } // machines
