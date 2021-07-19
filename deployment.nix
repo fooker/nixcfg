@@ -48,7 +48,6 @@ let
       nix.distributedBuilds = true;
 
       imports = [
-        ./tools
         ./modules
         ./shared
         path
