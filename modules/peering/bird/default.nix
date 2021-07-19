@@ -1,14 +1,8 @@
-{ config, lib, tools, ... }@args:
+{ config, lib, ... }@args:
 
 with lib;
 
 let
-  exports.ipv4 = domain: concatMapStringsSep ", " (export: "${export}+") domain.exports.ipv4;
-  exports.ipv6 = domain: concatMapStringsSep ", " (export: "${export}+") domain.exports.ipv6;
-
-  filters.ipv4 = domain: concatStringsSep ", " domain.filters.ipv4;
-  filters.ipv6 = domain: concatStringsSep ", " domain.filters.ipv6;
-
   /* All domains which have at least one peer participating
   */
   domains = filter
@@ -19,9 +13,6 @@ let
 
   domainConfig = domain:
     let
-      ipv4 = tools.ipinfo domain.ipv4;
-      ipv6 = tools.ipinfo domain.ipv6;
-
       netdev = if (domain.netdev != null) then domain.netdev else domain.name;
 
       /* Calls a protocol specific implementation if there are peers for this
@@ -54,16 +45,16 @@ let
       ipv6 table ${domain.name}_6;
 
       function ${domain.name}_exported_v4() {
-        return net ~ [ ${exports.ipv4 domain} ];
+        return net ~ [ ${concatMapStringsSep "," (export: "${toString export}+") domain.exports.ipv4} ];
       }
       function ${domain.name}_filtered_v4() {
-        return net ~ [ ${filters.ipv4 domain} ];
+        return net ~ [ ${concatStringsSep ", " domain.filters.ipv4} ];
       }
       function ${domain.name}_exported_v6() {
-        return net ~ [ ${exports.ipv6 domain} ];
+        return net ~ [ ${concatMapStringsSep ", " (export: "${toString export}+") domain.exports.ipv6} ];
       }
       function ${domain.name}_filtered_v6() {
-        return net ~ [ ${filters.ipv6 domain} ];
+        return net ~ [ ${concatStringsSep ", " domain.filters.ipv6} ];
       }
 
       protocol direct ${domain.name}_direct {
@@ -93,8 +84,8 @@ let
 
         import none;
         export filter {
-          krt_prefsrc = ${ipv4.address};
-          if net ~ [${ipv4.network}/${toString ipv4.netmask}+] then reject;
+          krt_prefsrc = ${toString domain.ipv4.address};
+          if net ~ [${toString domain.ipv4.prefix}+] then reject;
 
           accept;
         };
@@ -106,8 +97,8 @@ let
 
         import none;
         export filter {
-          krt_prefsrc = ${ipv6.address};
-          if net ~ [${ipv6.network}/${toString ipv6.netmask}+] then reject;
+          krt_prefsrc = ${toString domain.ipv6.address};
+          if net ~ [${toString domain.ipv6.prefix}+] then reject;
 
           accept;
         };

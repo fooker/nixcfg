@@ -32,7 +32,7 @@ with lib;
     firewall.rules = dag: with dag; {
       inet.filter.input = {
         gluster = between [ "established" ] [ "drop" ] ''
-          ip saddr { ${ concatMapStringsSep "," (node: node.address.ipv4) (attrValues config.hive.nodes) } }
+          ip saddr { ${ concatMapStringsSep "," (node: toString node.address.ipv4) (attrValues config.hive.nodes) } }
           tcp dport { 24007 - 24009, 49152 - 49154}
           accept
         '';

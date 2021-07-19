@@ -14,11 +14,11 @@ with lib;
           };
 
           address.ipv4 = mkOption {
-            type = types.str;
+            type = types.ip.address.v4;
             description = "IPv4 address of the node";
           };
           address.ipv6 = mkOption {
-            type = types.str;
+            type = types.ip.address.v6;
             description = "IPv6 address of the node";
           };
 

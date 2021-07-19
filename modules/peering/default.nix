@@ -1,4 +1,4 @@
-{ config, lib, pkgs, name, tools, ... }:
+{ config, lib, pkgs, name, ... }:
 
 with lib;
 
@@ -32,12 +32,12 @@ with lib;
 
           ipv4 = mkOption {
             description = "IPv4 address/network of the node in this domain (CIDR notation)";
-            type = types.str;
+            type = types.ip.network.v4;
           };
 
           ipv6 = mkOption {
             description = "IPv6 address/network of the node in this domain (CIDR notation)";
-            type = types.str;
+            type = types.ip.network.v6;
           };
 
           bgp = mkOption {
@@ -106,12 +106,12 @@ with lib;
             ipv4 = mkOption {
               description = "The IPv4 routes exported by this node to this domain";
               default = [ ];
-              type = types.listOf types.str;
+              type = types.listOf types.ip.network.v4;
             };
             ipv6 = mkOption {
               description = "The IPv4 routes exported by this node to this domain";
               default = [ ];
-              type = types.listOf types.str;
+              type = types.listOf types.ip.network.v6;
             };
           };
 
@@ -193,12 +193,12 @@ with lib;
               options = {
                 addr = mkOption {
                   description = "Local IPv4 address";
-                  type = types.str;
+                  type = types.ip.address;
                 };
 
                 peer = mkOption {
                   description = "Remote IPv4 address";
-                  type = types.str;
+                  type = types.ip.address;
                 };
               };
             }));
@@ -209,12 +209,12 @@ with lib;
               options = {
                 addr = mkOption {
                   description = "Local IPv6 address";
-                  type = types.str;
+                  type = types.ip.address;
                 };
 
                 peer = mkOption {
                   description = "Remote IPv6 address";
-                  type = types.str;
+                  type = types.ip.address;
                 };
               };
             }));
@@ -310,16 +310,16 @@ with lib;
           addresses =
             (optional (peer.transfer.ipv4 != null) {
               addressConfig = {
-                Address = "${peer.transfer.ipv4.addr}/32";
-                Peer = "${peer.transfer.ipv4.peer}/32";
+                Address = "${toString peer.transfer.ipv4.addr}/32";
+                Peer = "${toString peer.transfer.ipv4.peer}/32";
                 Scope = "link";
               };
             })
             ++
             (optional (peer.transfer.ipv6 != null) {
               addressConfig = {
-                Address = "${peer.transfer.ipv6.addr}/128";
-                Peer = "${peer.transfer.ipv6.peer}/128";
+                Address = "${toString peer.transfer.ipv6.addr}/128";
+                Peer = "${toString peer.transfer.ipv6.peer}/128";
                 Scope = "link";
               };
             });
@@ -346,13 +346,13 @@ with lib;
           };
           addresses = [
             {
-              addressConfig = with tools.ipinfo domain.ipv4; {
-                Address = "${address}/${toString netmask}";
+              addressConfig = {
+                Address = "${toString domain.ipv4.prefix}";
               };
             }
             {
-              addressConfig = with tools.ipinfo domain.ipv6; {
-                Address = "${address}/${toString netmask}";
+              addressConfig = {
+                Address = "${toString domain.ipv6.prefix}";
               };
             }
           ];

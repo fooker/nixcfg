@@ -39,12 +39,12 @@ in
 
     dn42.ipv4 = mkOption {
       description = "IPv4 address/network of the node in DN42 (CIDR notation)";
-      type = types.str;
+      type = types.ip.network.v4;
     };
 
     dn42.ipv6 = mkOption {
       description = "IPv6 address/network of the node in DN42 (CIDR notation)";
-      type = types.str;
+      type = types.ip.network.v6;
     };
 
     reachable = mkOption {
@@ -80,10 +80,8 @@ in
       # Every node in backhaul is part of DN42
       peering.domains = {
         "dn42" = {
-          netdev = config.peering.backhaul.netdev;
-
-          ipv4 = config.peering.backhaul.dn42.ipv4;
-          ipv6 = config.peering.backhaul.dn42.ipv6;
+          inherit (config.peering.backhaul) netdev;
+          inherit (config.peering.backhaul.dn42) ipv4 ipv6;
         };
       };
 
@@ -108,11 +106,11 @@ in
           remote.pubkey = nodes.${ peer.name }.config.peering.peers.${ local.key }.local.pubkey;
 
           transfer = {
-            ipv4.addr = "100.64.${ toString local.deviceId }.${ toString peer.deviceId }";
-            ipv4.peer = "100.64.${ toString peer.deviceId }.${ toString local.deviceId }";
+            ipv4.addr = ip.address.parse "100.64.${ toString local.deviceId }.${ toString peer.deviceId }";
+            ipv4.peer = ip.address.parse "100.64.${ toString peer.deviceId }.${ toString local.deviceId }";
 
-            ipv6.addr = "fe80::${ toHexString local.deviceId }:${ toHexString peer.deviceId }";
-            ipv6.peer = "fe80::${ toHexString peer.deviceId }:${ toHexString local.deviceId }";
+            ipv6.addr = ip.address.parse "fe80::${ toHexString local.deviceId }:${ toHexString peer.deviceId }";
+            ipv6.peer = ip.address.parse "fe80::${ toHexString peer.deviceId }:${ toHexString local.deviceId }";
           };
 
           domains = {

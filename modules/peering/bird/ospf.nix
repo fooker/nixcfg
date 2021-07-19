@@ -1,4 +1,4 @@
-{ lib, tools, ... }:
+{ lib, ... }:
 
 with lib;
 
@@ -12,9 +12,6 @@ let
       };
     '')
     peers;
-
-  ipv4 = tools.ipinfo domain.ipv4;
-  ipv6 = tools.ipinfo domain.ipv6;
 
 in
 ''
@@ -31,7 +28,7 @@ in
 
       import keep filtered;
       import filter {
-        if net ~ [${ipv4.network}/${toString ipv4.netmask}+] then reject;
+        if net ~ [${toString domain.ipv4.prefix}+] then reject;
         if ${domain.name}_exported_v4() then accept;
         if ${domain.name}_filtered_v4() then accept;
 
@@ -60,7 +57,7 @@ in
 
       import keep filtered;
       import filter {
-        if net ~ [${ipv6.network}/${toString ipv6.netmask}+] then reject;
+        if net ~ [${toString domain.ipv6.prefix}+] then reject;
         if ${domain.name}_exported_v6() then accept;
         if ${domain.name}_filtered_v6() then accept;
 

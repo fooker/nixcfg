@@ -1,4 +1,4 @@
-{ lib, tools, ... }:
+{ lib, ... }:
 
 with lib;
 
@@ -13,20 +13,17 @@ let
       in
       (optionalString (peer.transfer.ipv4 != null) ''
         protocol bgp ${domain.name}_bgp_${name}_4 from ${domain.name}_bgp_4 {
-          neighbor ${peer.transfer.ipv4.peer} as ${as};
+          neighbor ${toString peer.transfer.ipv4.peer} as ${as};
           interface "${peer.netdev}";
         }
       '') +
       (optionalString (peer.transfer.ipv6 != null) ''
         protocol bgp ${domain.name}_bgp_${name}_6 from ${domain.name}_bgp_6 {
-          neighbor ${peer.transfer.ipv6.peer} as ${as};
+          neighbor ${toString peer.transfer.ipv6.peer} as ${as};
           interface "${peer.netdev}";
         }
       ''))
     peers;
-
-  ipv4 = tools.ipinfo domain.ipv4;
-  ipv6 = tools.ipinfo domain.ipv6;
 
   netdev = if (domain.netdev != null) then domain.netdev else domain.name;
 
@@ -36,7 +33,7 @@ in
   ipv6 table ${domain.name}_egp_6;
 
   protocol static ${domain.name}_static_4 {
-    ${concatMapStringsSep "\n" (export: "route ${export} via \"${netdev}\";") domain.exports.ipv4}
+    ${concatMapStringsSep "\n" (export: "route ${toString export} via \"${netdev}\";") domain.exports.ipv4}
 
     ipv4 {
       table ${domain.name}_egp_4;
@@ -46,7 +43,7 @@ in
   }
 
   protocol static ${domain.name}_static_6 {
-    ${concatMapStringsSep "\n" (export: "route ${export} via \"${netdev}\";") domain.exports.ipv6}
+    ${concatMapStringsSep "\n" (export: "route ${toString export} via \"${netdev}\";") domain.exports.ipv6}
 
     ipv6 {
       table ${domain.name}_egp_6;
@@ -99,7 +96,7 @@ in
       import keep filtered;
       import limit 1000 action block;
       import filter {
-        if net ~ [${ipv4.network}/${toString ipv4.netmask}+] then {
+        if net ~ [${toString domain.ipv4.prefix}+] then {
           print "[${domain.name}] Received local network from external: ", net, " from ", bgp_path.last;
           reject;
         }
@@ -143,7 +140,7 @@ in
       import keep filtered;
       import limit 1000 action block;
       import filter {
-        if net ~ [${ipv6.network}/${toString ipv6.netmask}+] then {
+        if net ~ [${toString domain.ipv6.prefix}+] then {
           print "[${domain.name}] Received local network from external: ", net, " from ", bgp_path.last;
           reject;
         }

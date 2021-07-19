@@ -16,8 +16,8 @@ with lib;
         "fd4c:8f0:aff2::/64"
       ];
 
-      filters.ipv4 = mapAttrsToList (_: node: "${node.address.ipv4}/32") config.hive.nodes;
-      filters.ipv6 = mapAttrsToList (_: node: "${node.address.ipv6}/128") config.hive.nodes;
+      filters.ipv4 = mapAttrsToList (_: node: toString node.address.ipv4.hostNetwork) config.hive.nodes;
+      filters.ipv6 = mapAttrsToList (_: node: toString node.address.ipv6.hostNetwork) config.hive.nodes;
     };
 
     dn42 = {

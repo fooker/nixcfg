@@ -22,9 +22,9 @@ with lib;
           wsrep_debug = "NONE";
           wsrep_retry_autocommit = "3";
           wsrep_provider = "${pkgs.mariadb-galera}/lib/galera/libgalera_smm.so";
-          wsrep_cluster_address = "gcomm://${ concatMapStringsSep "," (node: node.address.ipv4) (attrValues config.hive.others) }";
+          wsrep_cluster_address = "gcomm://${ concatMapStringsSep "," (node: toString node.address.ipv4) (attrValues config.hive.others) }";
           wsrep_cluster_name = "open-desk";
-          wsrep_node_address = config.hive.self.address.ipv4;
+          wsrep_node_address = toString config.hive.self.address.ipv4;
           wsrep_node_name = config.hive.self.id;
           wsrep_sst_method = "rsync";
 
@@ -54,13 +54,13 @@ with lib;
     firewall.rules = dag: with dag; {
       inet.filter.input = {
         mysql-client = between [ "established" ] [ "drop" ] ''
-          ip saddr { ${ concatMapStringsSep "," (node: node.address.ipv4) (attrValues config.hive.nodes) } }
+          ip saddr { ${ concatMapStringsSep "," (node: toString node.address.ipv4) (attrValues config.hive.nodes) } }
           tcp dport 3306
           accept
         '';
 
         mysql-replication-tcp = between [ "established" ] [ "drop" ] ''
-          ip saddr { ${ concatMapStringsSep "," (node: node.address.ipv4) (attrValues config.hive.nodes) } }
+          ip saddr { ${ concatMapStringsSep "," (node: toString node.address.ipv4) (attrValues config.hive.nodes) } }
           tcp dport 4567
           accept
         '';
@@ -72,13 +72,13 @@ with lib;
         '';
 
         mysql-incremental = between [ "established" ] [ "drop" ] ''
-          ip saddr { ${ concatMapStringsSep "," (node: node.address.ipv4) (attrValues config.hive.nodes) } }
+          ip saddr { ${ concatMapStringsSep "," (node: toString node.address.ipv4) (attrValues config.hive.nodes) } }
           tcp dport 4568
           accept
         '';
 
         mysql-snapshot = between [ "established" ] [ "drop" ] ''
-          ip saddr { ${ concatMapStringsSep "," (node: node.address.ipv4) (attrValues config.hive.nodes) } }
+          ip saddr { ${ concatMapStringsSep "," (node: toString node.address.ipv4) (attrValues config.hive.nodes) } }
           tcp dport 4444
           accept
         '';

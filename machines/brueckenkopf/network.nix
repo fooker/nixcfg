@@ -44,8 +44,8 @@
       "30-int" = {
         name = "int";
         address = [
-          config.peering.backhaul.dn42.ipv4
-          config.peering.backhaul.dn42.ipv6
+          (toString config.peering.backhaul.dn42.ipv4)
+          (toString config.peering.backhaul.dn42.ipv6)
         ];
       };
       "30-hs" = {

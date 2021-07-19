@@ -1,4 +1,4 @@
-{ config, lib, tools, ... }:
+{ config, lib, ... }:
 
 with lib;
 
@@ -7,29 +7,29 @@ let
     mngt = {
       vlan = 1;
 
-      ipv4 = tools.ipinfo "192.168.254.1/24";
+      ipv4 = ip.network.parse "192.168.254.1/24";
 
       dhcpPoolOffset = 128;
     };
     priv = {
       vlan = 2;
 
-      ipv4 = tools.ipinfo config.peering.backhaul.dn42.ipv4;
-      ipv6 = tools.ipinfo config.peering.backhaul.dn42.ipv6;
+      ipv4 = config.peering.backhaul.dn42.ipv4;
+      ipv6 = config.peering.backhaul.dn42.ipv6;
 
       dhcpPoolOffset = 32;
     };
     guest = {
       vlan = 3;
 
-      ipv4 = tools.ipinfo "203.0.113.1/24";
+      ipv4 = ip.network.parse "203.0.113.1/24";
 
       dhcpPoolOffset = 16;
     };
     iot = {
       vlan = 4;
 
-      ipv4 = tools.ipinfo "192.168.0.1/24";
+      ipv4 = ip.network.parse "192.168.0.1/24";
 
       dhcpPoolOffset = 16;
     };
@@ -182,8 +182,8 @@ in
           "30-${name}" = {
             name = "${name}";
             address = concatLists [
-              (optional (hasAttr "ipv4" config) "${config.ipv4.address}/${toString config.ipv4.netmask}")
-              (optional (hasAttr "ipv6" config) "${config.ipv6.address}/${toString config.ipv6.netmask}")
+              (optional (hasAttr "ipv4" config) (toString config.ipv4))
+              (optional (hasAttr "ipv6" config) (toString config.ipv6))
             ];
 
             networkConfig = {
@@ -195,7 +195,7 @@ in
               IPv6DuplicateAddressDetection = 1;
               IPv6PrivacyExtensions = false;
 
-              DNS = "${config.ipv4.address}";
+              DNS = "${toString config.ipv4.address}";
               Domains = [
                 "home.open-desk.net"
                 "${name}.home.open-desk.net"
@@ -213,7 +213,7 @@ in
               EmitRouter = true;
               EmitTimezone = true;
 
-              DNS = "${config.ipv4.address}";
+              DNS = "${toString config.ipv4.address}";
             };
 
             ipv6SendRAConfig = {
