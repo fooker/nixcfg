@@ -85,7 +85,7 @@ let
         import none;
         export filter {
           krt_prefsrc = ${toString domain.ipv4.address};
-          if net ~ [${toString domain.ipv4.prefix}+] then reject;
+          if net ~ [${toString (ip.network.prefixNetwork domain.ipv4)}+] then reject;
 
           accept;
         };
@@ -98,7 +98,7 @@ let
         import none;
         export filter {
           krt_prefsrc = ${toString domain.ipv6.address};
-          if net ~ [${toString domain.ipv6.prefix}+] then reject;
+          if net ~ [${toString (ip.network.prefixNetwork domain.ipv6)}+] then reject;
 
           accept;
         };

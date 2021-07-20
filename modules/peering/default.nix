@@ -347,12 +347,12 @@ with lib;
           addresses = [
             {
               addressConfig = {
-                Address = "${toString domain.ipv4.prefix}";
+                Address = "${toString (ip.network.prefixNetwork domain.ipv4)}";
               };
             }
             {
               addressConfig = {
-                Address = "${toString domain.ipv6.prefix}";
+                Address = "${toString (ip.network.prefixNetwork domain.ipv6)}";
               };
             }
           ];

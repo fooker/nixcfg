@@ -13,8 +13,8 @@ with lib;
         "hive" = {
           netdev = null;
 
-          ipv4 = config.hive.self.address.ipv4.hostNetwork;
-          ipv6 = config.hive.self.address.ipv6.hostNetwork;
+          ipv4 = ip.address.hostNetwork config.hive.self.address.ipv4;
+          ipv6 = ip.address.hostNetwork config.hive.self.address.ipv6;
         };
       };
 

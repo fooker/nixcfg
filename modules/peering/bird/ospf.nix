@@ -28,7 +28,7 @@ in
 
       import keep filtered;
       import filter {
-        if net ~ [${toString domain.ipv4.prefix}+] then reject;
+        if net ~ [${toString (ip.network.prefixNetwork domain.ipv4)}+] then reject;
         if ${domain.name}_exported_v4() then accept;
         if ${domain.name}_filtered_v4() then accept;
 
@@ -57,7 +57,7 @@ in
 
       import keep filtered;
       import filter {
-        if net ~ [${toString domain.ipv6.prefix}+] then reject;
+        if net ~ [${toString (ip.network.prefixNetwork domain.ipv6)}+] then reject;
         if ${domain.name}_exported_v6() then accept;
         if ${domain.name}_filtered_v6() then accept;
 
