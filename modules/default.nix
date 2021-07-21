@@ -14,5 +14,6 @@
     ./builder.nix
     ./hive/default.nix
     ./dns/default.nix
+    ./network.nix
   ];
 }

@@ -3,7 +3,12 @@ let
 
   pkgs = import sources.nixpkgs { };
 
+  /* Load the IPAM data
   */
+  network = (import ../ipam.nix {
+    lib = pkgs.lib;
+    configuration = ./network;
+  }).config;
 
   mkMachine = path: id: { config, ... }:
     let
@@ -14,7 +19,7 @@ let
     in
     {
       _module.args = {
-        inherit machine path id;
+        inherit machine path id network;
       };
 
       deployment = {

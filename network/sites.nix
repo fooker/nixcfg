@@ -1,0 +1,6 @@
+{
+  sites = {
+    "home" = { };
+    "university" = { };
+  };
+}
