@@ -32,7 +32,7 @@ with lib;
 
     networks = {
       "20-priv" = {
-        name = "priv-{1..4}";
+        name = "priv-[1234]";
         bond = [ "priv" ];
         networkConfig = {
           LinkLocalAddressing = "no";
