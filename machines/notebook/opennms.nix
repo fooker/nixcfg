@@ -8,6 +8,10 @@
     mv -f /lib64/ld-linux-x86-64.so.2.tmp /lib64/ld-linux-x86-64.so.2 # atomically replace 
   '';
 
+  users.users."opennms" = {
+    isSystemUser = true;
+  };
+
   services.openvpn.servers.opennms = {
     autoStart = false;
     config = "config /etc/openvpn/opennms.ovpn";
