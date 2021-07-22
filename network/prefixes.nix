@@ -1,5 +1,6 @@
 {
   prefixes = {
+    # Private Network @ Home
     "172.23.200.128/25" = {
       site = "home";
 
@@ -50,6 +51,51 @@
       # };
     };
 
+    # Private Network @ Home
+    "fd79:300d:6056:100::/64" = {
+      site = "home";
+
+      gateway = "fd79:300d:6056:100::0";
+      dns = [ "fd79:300d:6056:100::0" ];
+
+      addresses = {
+        "fd79:300d:6056:100::0" = {
+          device = "router";
+          interface = "priv";
+        };
+        "fd79:300d:6056:100::1" = {
+          device = "nas";
+          interface = "priv";
+        };
+        "fd79:300d:6056:100::2" = {
+          device = "toiler";
+          interface = "priv";
+        };
+        "fd79:300d:6056:100::3" = {
+          device = "prusa";
+          interface = "priv";
+        };
+        "fd79:300d:6056:100::4" = {
+          device = "amp";
+          interface = "priv";
+        };
+        "fd79:300d:6056:100::5" = {
+          device = "scanner";
+          interface = "priv";
+        };
+        "fd79:300d:6056:100::6" = {
+          device = "photonic";
+          interface = "priv";
+        };
+
+        "fd79:300d:6056:100::1F" = {
+          device = "printer";
+          interface = "priv";
+        };
+      };
+    };
+
+    # Management Network @ Home
     "192.168.254.0/24" = {
       site = "home";
 
@@ -88,6 +134,7 @@
       };
     };
 
+    # Guest Network @ Home
     "203.0.113.0/24" = {
       site = "home";
 
@@ -102,6 +149,7 @@
       };
     };
 
+    # IoT Network @ Home
     "192.168.0.0/24" = {
       site = "home";
 
@@ -116,6 +164,7 @@
       };
     };
 
+    # Private Network @ University
     "172.23.200.32/28" = {
       site = "university";
 
@@ -139,6 +188,7 @@
       };
     };
 
+    # Private Network @ University
     "fd79:300d:6056:1::/64" = {
       site = "university";
 
@@ -152,6 +202,7 @@
       };
     };
 
+    # Legacy Network @ University
     "192.168.42.0/24" = {
       site = "university";
 
@@ -166,17 +217,16 @@
       };
     };
 
+    # Lab Network @ University
     "192.168.31.0/24" = {
       site = "university";
-
-      #gateway = "192.168.31.1";
-      #dns = [ ];
 
       addresses = {
         "192.168.31.28" = {
           device = "paradeplatz";
           interface = "lab";
         };
+
         "192.168.31.93" = {
           device = "brueckenkopf";
           interface = "lab";
