@@ -119,6 +119,7 @@ with lib;
 
       system.activationScripts."backup-sshkey" = ''
         if ! [ -f "/var/lib/backup/id_backup" ]; then
+          mkdir -pv /var/lib/backup
           ${pkgs.openssh}/bin/ssh-keygen \
             -N "" \
             -t ed25519 \
