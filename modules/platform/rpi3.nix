@@ -45,7 +45,7 @@ with lib;
     #   };
     # };
 
-    # This requires to change /boot.firmware/config.txt manually
+    # This requires to change /boot/firmware/config.txt manually
     boot.loader = {
       grub.enable = false;
       generic-extlinux-compatible.enable = true;
