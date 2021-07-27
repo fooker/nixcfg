@@ -1,4 +1,4 @@
-{ stdenv
+{ lib
 , buildGoModule
 , fetchFromGitHub
 }:
@@ -16,7 +16,7 @@ buildGoModule rec {
 
   vendorSha256 = "1k16xg17my0zqc4w03v9y3v4780pg9mnkvaibw3191aimi02x5na";
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Drone pipeline runner that executes builds directly on the host machine";
     homepage = "https://github.com/drone-runners/drone-runner-exec";
 
