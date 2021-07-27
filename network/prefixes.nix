@@ -185,6 +185,11 @@
         #   device = "builder";
         #   interface = "int";
         # };
+
+        # "172.23.200.36" = {
+        #   device = "fliegerhorst";
+        #   interface = "int";
+        # };
       };
     };
 
@@ -207,6 +212,11 @@
 
         # "fd79:300d:6056:1::2" = {
         #   device = "builder";
+        #   interface = "int";
+        # };
+
+        # "fd79:300d:6056:1::2" = {
+        #   device = "fliegerhorst";
         #   interface = "int";
         # };
       };
@@ -246,6 +256,11 @@
 
         "192.168.31.93" = {
           device = "brueckenkopf";
+          interface = "lab";
+        };
+
+        "192.168.31.241" = {
+          device = "fliegerhorst";
           interface = "lab";
         };
       };

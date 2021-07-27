@@ -57,6 +57,7 @@ in
         (name: config: nameValuePair "00-${name}" {
           matchConfig = {
             MACAddress = config.mac;
+            Type = "ether";
           };
           linkConfig = {
             Name = config.name;
