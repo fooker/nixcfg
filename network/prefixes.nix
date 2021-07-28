@@ -176,20 +176,20 @@
           interface = "int";
         };
 
-        # "172.23.200.34" = {
-        #   device = "paradeplatz";
-        #   interface = "int";
-        # };
+        "172.23.200.34" = {
+          device = "paradeplatz";
+          interface = "int";
+        };
 
-        # "172.23.200.35" = {
-        #   device = "builder";
-        #   interface = "int";
-        # };
+        "172.23.200.35" = {
+          device = "builder";
+          interface = "int";
+        };
 
-        # "172.23.200.36" = {
-        #   device = "fliegerhorst";
-        #   interface = "int";
-        # };
+        "172.23.200.36" = {
+          device = "raketensilo";
+          interface = "int";
+        };
       };
     };
 
@@ -205,20 +205,20 @@
           interface = "int";
         };
 
-        # "fd79:300d:6056:1::1" = {
-        #   device = "paradeplatz";
-        #   interface = "int";
-        # };
+        "fd79:300d:6056:1::1" = {
+          device = "paradeplatz";
+          interface = "int";
+        };
 
-        # "fd79:300d:6056:1::2" = {
-        #   device = "builder";
-        #   interface = "int";
-        # };
+        "fd79:300d:6056:1::2" = {
+          device = "builder";
+          interface = "int";
+        };
 
-        # "fd79:300d:6056:1::2" = {
-        #   device = "fliegerhorst";
-        #   interface = "int";
-        # };
+        "fd79:300d:6056:1::3" = {
+          device = "raketensilo";
+          interface = "int";
+        };
       };
     };
 
@@ -260,7 +260,7 @@
         };
 
         "192.168.31.241" = {
-          device = "fliegerhorst";
+          device = "raketensilo";
           interface = "lab";
         };
       };

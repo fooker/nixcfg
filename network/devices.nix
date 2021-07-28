@@ -204,7 +204,7 @@
       };
     };
 
-    "fliegerhorst" = {
+    "raketensilo" = {
       type = "VMware Virtual Machine";
       role = "Server";
       site = "university";
