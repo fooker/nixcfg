@@ -22,16 +22,10 @@
   };
 
   programs.ssh.extraConfig = ''
-    Host brueckenkopf
-      IdentitiesOnly yes
-      User root
-      HostName brueckenkopf.dev.open-desk.net
-      IdentityFile /var/lib/id_builder
     Host builder
       IdentitiesOnly yes
       User root
-      HostName 192.168.42.2
-      ProxyJump brueckenkopf
+      HostName builder.dev.hs.open-desk.net
       IdentityFile /var/lib/id_builder
   '';
 
