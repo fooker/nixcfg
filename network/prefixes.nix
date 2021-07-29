@@ -226,8 +226,6 @@
     "192.168.31.0/24" = {
       site = "university";
 
-      gateway = "192.168.31.1";
-
       addresses = {
         "192.168.31.28" = {
           device = "paradeplatz";
