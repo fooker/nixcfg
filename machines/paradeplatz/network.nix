@@ -52,29 +52,6 @@
           LinkLocalAddressing = "no";
         };
       };
-
-      "30-int" = {
-        networkConfig = {
-          IPForward = "yes";
-        };
-      };
-    };
-  };
-
-  firewall.rules = dag: with dag; {
-    inet.filter.forward = {
-      uplink = between [ "established" ] [ "drop" ] ''
-        meta iifname int
-        meta oifname lab
-        accept
-      '';
-    };
-
-    inet.nat.postrouting = {
-      uplink = anywhere ''
-        meta oifname "lab"
-        masquerade
-      '';
     };
   };
 }
