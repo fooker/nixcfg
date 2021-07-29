@@ -166,7 +166,7 @@
 
     # Private Network @ University
     "172.23.200.32/28" = {
-      site = "university";
+      site = "hs";
 
       gateway = "172.23.200.33";
 
@@ -195,7 +195,7 @@
 
     # Private Network @ University
     "fd79:300d:6056:1::/64" = {
-      site = "university";
+      site = "hs";
 
       gateway = "fd79:300d:6056:1::";
 
@@ -224,7 +224,7 @@
 
     # Lab Network @ University
     "192.168.31.0/24" = {
-      site = "university";
+      site = "hs";
 
       addresses = {
         "192.168.31.28" = {

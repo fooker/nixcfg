@@ -170,7 +170,7 @@
     "brueckenkopf" = {
       type = "Virtual Server";
       role = "Server";
-      site = "university";
+      site = "hs";
 
       interfaces = {
         "ext" = {
@@ -196,7 +196,7 @@
     "paradeplatz" = {
       type = "Hyundai iTMC Pentino H-Series";
       role = "Server";
-      site = "university";
+      site = "hs";
 
       interfaces = {
         "int" = { };
@@ -207,7 +207,7 @@
     "raketensilo" = {
       type = "VMware Virtual Machine";
       role = "Server";
-      site = "university";
+      site = "hs";
 
       interfaces = {
         "ext" = {
@@ -228,7 +228,7 @@
     "builder" = {
       type = "Virtual Server";
       role = "Server";
-      site = "university";
+      site = "hs";
 
       interfaces = {
         "int" = {
