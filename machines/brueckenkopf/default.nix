@@ -6,6 +6,7 @@ in
     ./hardware.nix
     ./network.nix
     ./peering.nix
+    ./mosh.nix
     ./weechat.nix
     ./monitoring
   ];

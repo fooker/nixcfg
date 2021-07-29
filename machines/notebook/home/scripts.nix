@@ -5,7 +5,7 @@ let
     #!${stdenv.shell}
 
     exec ${mosh}/bin/mosh "weechat@weechat.open-desk.net" -- \
-      screen -A -x "weechat"
+      tmux -S /var/lib/weechat/tmux.session attach-session -t weechat
   '');
 in
 {

@@ -1,32 +1,20 @@
-{ lib, modulesPath, ... }:
+{ lib, ... }:
 
 with lib;
 
 {
-  imports = [
-    "${modulesPath}/profiles/qemu-guest.nix"
-  ];
-
   hardware.enableRedistributableFirmware = true;
 
-  boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "ehci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.preset = "grub";
+  boot.device = "/dev/sda";
 
-  boot.initrd.luks.devices = {
-    "nixos" = {
-      device = "/dev/disk/by-label/nixos-crypt";
-    };
-  };
+  boot.initrd.availableKernelModules = [ "ata_piix" "mptspi" "floppy" "sd_mod" "sr_mod" ];
 
   fileSystems = {
     "/" = {
       device = "/dev/disk/by-label/nixos";
       fsType = "ext4";
       neededForBoot = true;
-    };
-    "/boot" = {
-      device = "/dev/disk/by-label/boot";
-      fsType = "vfat";
     };
   };
 
