@@ -222,26 +222,6 @@
       };
     };
 
-    # Legacy Network @ University
-    "192.168.42.0/24" = {
-      site = "university";
-
-      gateway = "192.168.42.1";
-      dns = [ "1.0.0.1" "1.1.1.1" "2606:4700:4700::1111" "2606:4700:4700::1001" ];
-
-      addresses = {
-        "192.168.42.1" = {
-          device = "paradeplatz";
-          interface = "int";
-        };
-
-        "192.168.42.2" = {
-          device = "builder";
-          interface = "int";
-        };
-      };
-    };
-
     # Lab Network @ University
     "192.168.31.0/24" = {
       site = "university";
