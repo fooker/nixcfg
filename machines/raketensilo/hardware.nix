@@ -22,4 +22,9 @@ with lib;
   }];
 
   nix.maxJobs = mkDefault 4;
+
+  virtualisation.vmware.guest = {
+    enable = true;
+    headless = true;
+  };
 }
