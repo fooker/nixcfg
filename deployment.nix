@@ -10,23 +10,30 @@ let
     configuration = ./network;
   }).config;
 
-  mkMachine = path: id: { config, ... }:
+  mkMachine = path: id: { lib, config, name, ... }:
+    with lib;
+
     let
       /* Read the machine configuration from machine.nix in the machines directory
       */
       machine = import "${path}/machine.nix";
 
+      /* Network configuration for this device.
+      */
+      device = network.devices."${name}";
+
     in
     {
       _module.args = {
-        inherit machine path id network;
+        inherit machine path id network device;
       };
 
       deployment = {
         targetHost = machine.target.host;
         targetUser = machine.target.user;
 
-        inherit (machine) tags;
+        tags = machine.tags
+          ++ (optional (device.site != null) "site-${device.site.name}");
 
         substituteOnDestination = true;
       };

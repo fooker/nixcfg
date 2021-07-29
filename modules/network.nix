@@ -1,10 +1,7 @@
-{ lib, config, name, network, ... }:
+{ lib, config, device, ... }:
 
 with lib;
 
-let
-  device = network.devices."${name}";
-in
 {
   options.network = {
     enable = mkEnableOption "Network Configuration";

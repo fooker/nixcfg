@@ -1,5 +1,11 @@
 {
   devices = {
+    "notebook" = {
+      type = "Lenovo Thinkpad T14 Gen1";
+      role = "Notebook";
+      site = null;
+    };
+
     "router" = {
       type = "PC Engines APU.1C4";
       role = "Router";
@@ -240,6 +246,7 @@
     "bunker" = {
       type = "Virtual Server";
       role = "Server";
+      site = null;
 
       interfaces = {
         "ext" = {
@@ -259,6 +266,7 @@
     "zitadelle-north" = {
       type = "Virtual Server";
       role = "Server";
+      site = null;
 
       interfaces = {
         "ext" = {
@@ -278,6 +286,7 @@
     "zitadelle-south" = {
       type = "Virtual Server";
       role = "Server";
+      site = null;
 
       interfaces = {
         "ext" = {
