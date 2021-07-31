@@ -6,6 +6,7 @@ with lib;
   imports = [
     ./bird
     ./backhaul.nix
+    ./info.nix
   ];
 
   options.peering = {
