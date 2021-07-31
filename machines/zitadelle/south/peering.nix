@@ -24,6 +24,14 @@ in
       "backhaul.notebook".local.privkey = secrets.peering.privkeys."backhaul.notebook";
       "backhaul.brkopf".local.privkey = secrets.peering.privkeys."backhaul.brkopf";
 
+      "backhaul.znorth".domains = {
+        "dn42" = {
+          bgp = {
+            as = null;
+          };
+        };
+      };
+
       "cccda" = {
         netdev = "peer.cccda";
 
