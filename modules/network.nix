@@ -84,13 +84,14 @@ with lib;
           in
           {
             name = iface.name;
+
             address = map toString config.addresses;
             gateway = map toString config.gateways;
             dns = map toString config.dns;
-            #domains = [
-            #  "home.open-desk.net"
-            #  "priv.home.open-desk.net"
-            #];
+
+            networkConfig = {
+              IPv6AcceptRA = false;
+            };
           }
         ))
         device.interfaces);
