@@ -6,6 +6,7 @@ with lib;
   imports = [
     ./web.nix
     ./mail.nix
+    ./radicale.nix
   ];
 
   options = {

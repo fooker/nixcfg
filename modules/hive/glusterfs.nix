@@ -27,6 +27,13 @@ with lib;
         noCheck = true;
         options = [ "_netdev" ];
       };
+
+      "/srv/calendar" = {
+        device = "localhost:/calendar";
+        fsType = "glusterfs";
+        noCheck = true;
+        options = [ "_netdev" ];
+      };
     };
 
     firewall.rules = dag: with dag; {
