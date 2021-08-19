@@ -119,4 +119,19 @@ in
       '';
     };
   };
+
+  monitoring.services = flatten (mapAttrsToList
+    (_: app: map
+      (domain: [
+        {
+          name = "HTTP:${domain}";
+          interfaces = "ext";
+        }
+        {
+          name = "HTTPS:${domain}";
+          interfaces = "ext";
+        }
+      ])
+      app.domains)
+    apps);
 }

@@ -10,6 +10,10 @@ let
   opennms = pkgs.callPackage ./packages/opennms { };
 in
 {
+  imports = [
+    ./requisition.nix
+  ];
+
   users = {
     users."opennms" = {
       home = "/var/lib/opennms";

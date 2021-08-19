@@ -96,5 +96,12 @@ with lib;
         ))
         device.interfaces);
     };
+
+    monitoring.services = [
+      {
+        name = "ICMP";
+        interfaces = null;
+      }
+    ];
   };
 }
