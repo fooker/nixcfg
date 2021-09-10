@@ -161,6 +161,10 @@
           device = "router";
           interface = "iot";
         };
+        "192.168.0.2" = {
+          device = "toiler";
+          interface = "iot";
+        };
       };
     };
 

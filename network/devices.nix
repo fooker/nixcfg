@@ -35,9 +35,8 @@
       site = "home";
 
       interfaces = {
-        "priv" = {
-          mac = "b8:ae:ed:7d:69:ab";
-        };
+        "priv" = { };
+        "iot" = { };
       };
     };
 
