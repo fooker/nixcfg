@@ -32,6 +32,7 @@
     inkscape
     libreoffice
     vorta
+    obsidian
 
     # CLI tools
     ripgrep
