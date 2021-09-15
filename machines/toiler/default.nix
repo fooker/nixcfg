@@ -13,6 +13,7 @@ in
     ./gitea.nix
     ./drone.nix
     ./paperless.nix
+    ./hass.nix
   ];
 
   server.enable = true;

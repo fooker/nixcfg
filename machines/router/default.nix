@@ -9,7 +9,6 @@ in
     ./dns.nix
     ./ddclient.nix
     ./peering.nix
-    ./hass.nix
   ];
 
   serial.enable = true;
