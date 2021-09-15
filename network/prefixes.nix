@@ -246,6 +246,13 @@
           interface = "lab";
         };
       };
+
+      routes = [
+        {
+          destination = "193.174.29.32/27";
+          gateway = "192.168.31.1";
+        }
+      ];
     };
   };
 }

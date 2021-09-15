@@ -80,6 +80,9 @@ with lib;
                 dns = unique (concatMap
                   (addr: addr.prefix.dns)
                   iface.addresses);
+                routes = concatMap
+                  (addr: addr.prefix.routes)
+                  iface.addresses;
               };
           in
           {
@@ -88,6 +91,15 @@ with lib;
             address = map toString config.addresses;
             gateway = map toString config.gateways;
             dns = map toString config.dns;
+
+            routes = map
+              (route: {
+                routeConfig = {
+                  "Destination" = route.destination;
+                  "Gateway" = route.gateway;
+                };
+              })
+              config.routes;
 
             networkConfig = {
               IPv6AcceptRA = false;
