@@ -62,8 +62,16 @@ in
     };
 
     networks = {
-      "00-int" = {
-        name = "int-{l,r}";
+      "00-int-l" = {
+        name = "int-l";
+        bond = [ "int" ];
+        networkConfig = {
+          LinkLocalAddressing = "no";
+        };
+      };
+
+      "00-int-r" = {
+        name = "int-r";
         bond = [ "int" ];
         networkConfig = {
           LinkLocalAddressing = "no";

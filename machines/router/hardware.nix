@@ -15,11 +15,5 @@ with lib;
     };
   };
 
-  swapDevices = [{
-    label = "swap";
-  }];
-
   nix.maxJobs = lib.mkDefault 2;
-
-
 }
