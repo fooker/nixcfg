@@ -18,8 +18,5 @@ in
 
   backup.passphrase = secrets.backup.passphrase;
 
-  dns.host = {
-    ipv4 = "37.120.161.15";
-    ipv6 = "2a03:4000:6:30f2::";
-  };
+  dns.host.interface = "ext";
 }

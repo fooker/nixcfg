@@ -1,4 +1,4 @@
-{ config, nodes, lib, name, ... }:
+{ config, nodes, lib, name, device, ... }:
 
 
 with lib;
@@ -40,11 +40,13 @@ in
     dn42.ipv4 = mkOption {
       description = "IPv4 address/network of the node in DN42 (CIDR notation)";
       type = types.ip.network.v4;
+      default = device.interfaces."${config.peering.backhaul.netdev}".address.ipv4;
     };
 
     dn42.ipv6 = mkOption {
       description = "IPv6 address/network of the node in DN42 (CIDR notation)";
       type = types.ip.network.v6;
+      default = device.interfaces."${config.peering.backhaul.netdev}".address.ipv6;
     };
 
     reachable = mkOption {

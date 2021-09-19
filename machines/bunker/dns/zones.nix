@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, network, ... }:
 
 with lib;
 
@@ -63,26 +63,12 @@ with lib;
         };
 
         # Legacy host records
-        dev = {
-          "zitadelle"."bak" = {
-            A = "37.221.196.84";
-          };
-          "fliegerhorst" = {
-            A = "193.34.144.95";
-            AAAA = "2a02:c205:3002:2452::1";
-          };
-          "raketensilo" = {
-            AAAA = "2001:638:301:11a3::64";
-          };
-        };
-
-        # Legacy host records
         home.dev = {
           "amp" = {
-            A = "172.23.200.133";
+            A = network.devices."amp".interfaces."priv".address.ipv4.address;
           };
           "printer" = {
-            A = "172.23.200.160";
+            A = network.devices."printer".interfaces."priv".address.ipv4.address;
           };
         };
 

@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ lib, device, ... }:
 
 with lib;
 
@@ -7,29 +7,28 @@ let
     mngt = {
       vlan = 1;
 
-      ipv4 = ip.network.parse "192.168.254.1/24";
+      inherit (device.interfaces.mngt.address) ipv4;
 
       dhcpPoolOffset = 128;
     };
     priv = {
       vlan = 2;
 
-      ipv4 = config.peering.backhaul.dn42.ipv4;
-      ipv6 = config.peering.backhaul.dn42.ipv6;
+      inherit (device.interfaces.priv.address) ipv4 ipv6;
 
       dhcpPoolOffset = 32;
     };
     guest = {
       vlan = 3;
 
-      ipv4 = ip.network.parse "203.0.113.1/24";
+      inherit (device.interfaces.guest.address) ipv4;
 
       dhcpPoolOffset = 16;
     };
     iot = {
       vlan = 4;
 
-      ipv4 = ip.network.parse "192.168.0.1/24";
+      inherit (device.interfaces.iot.address) ipv4;
 
       dhcpPoolOffset = 16;
     };

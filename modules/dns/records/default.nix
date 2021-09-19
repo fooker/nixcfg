@@ -25,11 +25,11 @@ in
     SSHFP = mkModuleRecord "SSHFP" ./sshfp.nix { };
 
     A = mkValueRecord "A" {
-      type = types.str;
+      type = types.ip.address.v4;
     };
 
     AAAA = mkValueRecord "AAAA" {
-      type = types.str;
+      type = types.ip.address.v6;
     };
 
     TXT = mkValueRecord "TXT" {

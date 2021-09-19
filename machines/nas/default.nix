@@ -24,8 +24,7 @@ in
 
   dns.host = {
     realm = "home";
-    ipv4 = "172.23.200.130";
-    ipv6 = "fd79:300d:6056:100::1";
+    interface = "priv";
   };
 
   environment.systemPackages = with pkgs; [

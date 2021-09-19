@@ -3,7 +3,7 @@
 with lib;
 
 let
-  nameserver = "172.23.200.3";
+  nameserver = "bunker.dev.open-desk.net";
   tsigAlgorithm = "hmac-sha512.";
   tsigKey = "acme_update";
 in

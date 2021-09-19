@@ -14,7 +14,6 @@ in
 
   dns.host = {
     realm = "hs";
-    ipv4 = "172.23.200.35";
-    ipv6 = "fd79:300d:6056:1::2";
+    interface = "int";
   };
 }

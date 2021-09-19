@@ -13,9 +13,6 @@ in
       slug = "brkopf";
 
       netdev = "int";
-
-      dn42.ipv4 = "172.23.200.33/28";
-      dn42.ipv6 = "fd79:300d:6056:1::/64";
     };
 
     peers = {

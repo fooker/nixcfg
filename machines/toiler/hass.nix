@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, device, ... }:
 
 {
   services.mosquitto = {
@@ -64,7 +64,7 @@
         serverName = "deploy.home.open-desk.net";
         serverAliases = [ "deploy" ];
         listen = [
-          { addr = "192.168.0.2"; port = 80; }
+          { addr = toString device.interfaces.iot.address.ipv4.address; port = 80; }
         ];
         root = "/srv/http/deploy";
       };
@@ -112,8 +112,8 @@
 
   dns.zones = {
     net.open-desk.home.iot = {
-      mqtt = { A = "192.168.0.2"; };
-      deploy = { A = "192.168.0.2"; };
+      mqtt = { A = device.interfaces.iot.address.ipv4.address; };
+      deploy = { A = device.interfaces.iot.address.ipv4.address; };
     };
   };
 

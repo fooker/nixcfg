@@ -1,4 +1,4 @@
-{ config, lib, id, ... }:
+{ config, lib, id, device, ... }:
 
 with lib;
 
@@ -31,14 +31,24 @@ with lib;
             readOnly = true;
           };
 
+          interface = mkOption {
+            type = types.refAttr device.interfaces;
+            description = "Interface to take host IPs from";
+            readOnly = true;
+          };
+
           ipv4 = mkOption {
-            type = types.str;
+            type = types.ip.address.v4;
             description = "IPv4 address of the host";
+            readOnly = true;
+            default = config.dns.host.interface.address.ipv4.address;
           };
 
           ipv6 = mkOption {
-            type = types.str;
+            type = types.ip.address.v6;
             description = "IPv6 address of the host";
+            readOnly = true;
+            default = config.dns.host.interface.address.ipv6.address;
           };
         };
 
