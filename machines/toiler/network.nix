@@ -39,7 +39,7 @@
 
       "30-iot" = {
         netdevConfig = {
-          Name = "priv";
+          Name = "iot";
           Kind = "bridge";
         };
       };

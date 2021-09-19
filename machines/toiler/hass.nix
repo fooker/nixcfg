@@ -64,7 +64,7 @@
         serverName = "deploy.home.open-desk.net";
         serverAliases = [ "deploy" ];
         listen = [
-          { addr = "192.168.0.1"; port = 80; }
+          { addr = "192.168.0.2"; port = 80; }
         ];
         root = "/srv/http/deploy";
       };
@@ -112,8 +112,8 @@
 
   dns.zones = {
     net.open-desk.home.iot = {
-      mqtt = { A = "192.168.0.1"; };
-      deploy = { A = "192.168.0.1"; };
+      mqtt = { A = "192.168.0.2"; };
+      deploy = { A = "192.168.0.2"; };
     };
   };
 
