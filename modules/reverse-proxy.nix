@@ -90,8 +90,7 @@ with lib;
     firewall.rules = dag: with dag; {
       inet.filter.input = {
         reverse-proxy = between [ "established" ] [ "drop" ] ''
-          tcp
-          dport { 80, 443 }
+          tcp dport { 80, 443 }
           accept
         '';
       };

@@ -48,16 +48,18 @@ in
 
   firewall.rules = dag: with dag; {
     inet.filter.input = {
-      spotify-tcp = between [ "established" ] [ "drop" ] ''
-        ip saddr 172.23.200.0/24
-        tcp dport 4444
-        accept
-      '';
-      spotify-udp = between [ "established" ] [ "drop" ] ''
-        ip saddr 172.23.200.0/24
-        udp dport 5353
-        accept
-      '';
+      spotify = between [ "established" ] [ "drop" ] [
+        ''
+          ip saddr 172.23.200.0/24
+          tcp dport 4444
+          accept
+        ''
+        ''
+          ip saddr 172.23.200.0/24
+          udp dport 5353
+          accept
+        ''
+      ];
     };
   };
 }

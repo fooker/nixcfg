@@ -29,8 +29,7 @@ in
     firewall.rules = dag: with dag; {
       inet.filter.input = {
         ssh = between [ "established" ] [ "drop" ] ''
-          tcp
-          dport 22
+          tcp dport 22
           accept
         '';
       };

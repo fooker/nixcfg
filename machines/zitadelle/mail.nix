@@ -131,10 +131,22 @@ in
 
   firewall.rules = dag: with dag; {
     inet.filter.input = {
-      mail = between [ "established" ] [ "drop" ] ''tcp dport 25 accept'';
-      mail-submission = between [ "established" ] [ "drop" ] ''tcp dport { 587, 465 } accept'';
-      mail-imap = between [ "established" ] [ "drop" ] ''tcp dport { 143, 993 } accept'';
-      mail-sieve = between [ "established" ] [ "drop" ] ''tcp dport 4190 accept'';
+      mail = between [ "established" ] [ "drop" ] ''
+        tcp dport 25
+        accept
+      '';
+      mail-submission = between [ "established" ] [ "drop" ] ''
+        tcp dport { 587, 465 }
+        accept
+      '';
+      mail-imap = between [ "established" ] [ "drop" ] ''
+        tcp dport { 143, 993 }
+        accept
+      '';
+      mail-sieve = between [ "established" ] [ "drop" ] ''
+        tcp dport 4190
+        accept
+      '';
       mail-replicate = between [ "established" ] [ "drop" ] ''
         ip6 saddr ${ config.hive.spouse.address.ipv6 }
         tcp dport 22025

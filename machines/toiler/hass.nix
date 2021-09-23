@@ -103,8 +103,7 @@
     inet.filter.input = {
       mqtt = between [ "established" ] [ "drop" ] ''
         meta iifname {iot, priv}
-        tcp
-        dport 1883
+        tcp dport 1883
         accept
       '';
     };

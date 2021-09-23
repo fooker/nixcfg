@@ -113,8 +113,7 @@ in
   firewall.rules = dag: with dag; {
     inet.filter.input = {
       web = between [ "established" ] [ "drop" ] ''
-        tcp
-        dport { 80, 443 }
+        tcp dport { 80, 443 }
         accept
       '';
     };

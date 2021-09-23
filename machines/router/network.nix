@@ -1,4 +1,4 @@
-{ lib, device, ... }:
+{ lib, device, network, ... }:
 
 with lib;
 
@@ -207,61 +207,54 @@ in
     })
     networks));
 
-  firewall.rules = dag: with dag; {
-    inet.nat.prerouting = {
-      forward-torrent-tcp = anywhere ''
-        meta iifname "ppp*"
-        tcp dport 6242
-        dnat ip to 172.23.200.130:6242
-      '';
+  firewall.rules =
+    let
+      nas = {
+        ipv4 = toString network.devices."nas".interfaces."priv".address.ipv4.address;
+        ipv6 = toString network.devices."nas".interfaces."priv".address.ipv6.address;
+      };
+    in
+    dag: with dag; {
+      inet.nat.prerouting.forward-torrent = anywhere [
+        ''meta iifname "ppp*" tcp dport 6242 dnat ip to ${nas.ipv4}:6242''
+        ''meta iifname "ppp*" udp dport 6242 dnat ip to ${nas.ipv4}:6242''
+        ''meta iifname "ppp*" tcp dport 6242 dnat ip6 to ${nas.ipv6}:6242''
+        ''meta iifname "ppp*" udp dport 6242 dnat ip6 to ${nas.ipv6}:6242''
+      ];
 
-      forward-torrent-udp = anywhere ''
-        meta iifname "ppp*"
-        udp dport 6242
-        dnat ip to 172.23.200.130:6242
-      '';
+      inet.filter.forward.forward-torrent = before [ "drop" ] [
+        ''meta iifname "ppp*" ip daddr "${nas.ipv4}" tcp dport 6242 accept''
+        ''meta iifname "ppp*" ip daddr "${nas.ipv4}" udp dport 6242 accept''
+        ''meta iifname "ppp*" ip6 daddr "${nas.ipv6}" tcp dport 6242 accept''
+        ''meta iifname "ppp*" ip6 daddr "${nas.ipv6}" udp dport 6242 accept''
+      ];
+
+      inet.filter.forward = {
+        uplink = between [ "established" ] [ "drop" ] ''
+          meta iifname { mngt, priv, guest }
+          meta oifname "ppp*"
+          accept
+        '';
+
+        priv2guest = between [ "established" ] [ "drop" ] ''
+          meta iifname priv
+          meta oifname { guest, iot }
+          accept
+        '';
+      };
+
+      inet.filter.input = {
+        dhcp = between [ "established" ] [ "drop" ] ''
+          meta iifname { mngt, priv, guest, iot }
+          udp dport bootps
+          accept
+        '';
+
+        uplink-dhcpv6 = between [ "established" ] [ "drop" ] ''
+          udp sport dhcpv6-server
+          udp dport dhcpv6-client
+          accept
+        '';
+      };
     };
-
-    inet.filter.forward = {
-      uplink = between [ "established" ] [ "drop" ] ''
-        meta iifname { mngt, priv, guest }
-        meta oifname "ppp*"
-        accept
-      '';
-
-      priv2guest = between [ "established" ] [ "drop" ] ''
-        meta iifname priv
-        meta oifname { guest, iot }
-        accept
-      '';
-
-      forward-torrent-tcp = before [ "drop" ] ''
-        meta iifname "ppp*"
-        ip daddr "172.23.200.130"
-        tcp dport 6242
-        accept
-      '';
-
-      forward-torrent-udp = before [ "drop" ] ''
-        meta iifname "ppp*"
-        ip daddr "172.23.200.130"
-        udp dport 6242
-        accept
-      '';
-    };
-
-    inet.filter.input = {
-      dhcp = between [ "established" ] [ "drop" ] ''
-        meta iifname { mngt, priv, guest, iot }
-        udp dport bootps
-        accept
-      '';
-
-      uplink-dhcpv6 = between [ "established" ] [ "drop" ] ''
-        udp sport dhcpv6-server
-        udp dport dhcpv6-client
-        accept
-      '';
-    };
-  };
 }

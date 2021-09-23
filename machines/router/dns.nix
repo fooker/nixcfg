@@ -41,21 +41,11 @@ with lib;
 
   firewall.rules = dag: with dag; {
     inet.filter.input = {
-      dns-tcp = between [ "established" ] [ "drop" ] ''
-        meta iifname { mngt, priv, guest, iot }
-        tcp dport 53
-        accept
-      '';
-      dns-tls = between [ "established" ] [ "drop" ] ''
-        meta iifname { mngt, priv, guest, iot }
-        tcp dport 853
-        accept
-      '';
-      dns-udp = between [ "established" ] [ "drop" ] ''
-        meta iifname { mngt, priv, guest, iot }
-        udp dport 53
-        accept
-      '';
+      dns = between [ "established" ] [ "drop" ] [
+        ''meta iifname { mngt, priv, guest, iot } tcp dport { 53, 853 } accept''
+        ''meta iifname { mngt, priv, guest, iot } udp dport { 53 } accept''
+      ];
+
       dns-avahi = between [ "established" ] [ "drop" ] ''
         meta iifname { mngt, priv, guest, iot }
         udp dport 5353

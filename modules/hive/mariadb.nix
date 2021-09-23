@@ -51,39 +51,24 @@ with lib;
       serviceConfig.TimeoutStartSec = "1h";
     };
 
-    firewall.rules = dag: with dag; {
-      inet.filter.input = {
-        mysql-client = between [ "established" ] [ "drop" ] ''
-          ip saddr { ${ concatMapStringsSep "," (node: toString node.address.ipv4) (attrValues config.hive.nodes) } }
-          tcp dport 3306
-          accept
-        '';
+    firewall.rules =
+      let
+        nodes = concatMapStringsSep "," (node: node.address.ipv4) (attrValues config.hive.nodes);
+      in
+      dag: with dag; {
+        inet.filter.input = {
+          mysql-client = between [ "established" ] [ "drop" ] ''
+            ip saddr { ${nodes} }
+            tcp dport 3306
+            accept
+          '';
 
-        mysql-replication-tcp = between [ "established" ] [ "drop" ] ''
-          ip saddr { ${ concatMapStringsSep "," (node: toString node.address.ipv4) (attrValues config.hive.nodes) } }
-          tcp dport 4567
-          accept
-        '';
-
-        mysql-replication-udp = between [ "established" ] [ "drop" ] ''
-          ip saddr { ${ concatMapStringsSep "," (node: node.address.ipv4) (attrValues config.hive.nodes) } }
-          udp dport 4567
-          accept
-        '';
-
-        mysql-incremental = between [ "established" ] [ "drop" ] ''
-          ip saddr { ${ concatMapStringsSep "," (node: toString node.address.ipv4) (attrValues config.hive.nodes) } }
-          tcp dport 4568
-          accept
-        '';
-
-        mysql-snapshot = between [ "established" ] [ "drop" ] ''
-          ip saddr { ${ concatMapStringsSep "," (node: toString node.address.ipv4) (attrValues config.hive.nodes) } }
-          tcp dport 4444
-          accept
-        '';
+          mysql-replication = between [ "established" ] [ "drop" ] [
+            ''ip saddr { ${nodes} } tcp dport { 4567, 4568, 4444 } accept''
+            ''ip saddr { ${nodes} } udp dport { 4567 }             accept''
+          ];
+        };
       };
-    };
 
     backup.commands = [
       "${pkgs.mariadb}/bin/mariabackup --backup --target-dir=./mariadb --user=root"

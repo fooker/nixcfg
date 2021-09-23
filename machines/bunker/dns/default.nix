@@ -108,14 +108,10 @@ in
 
     firewall.rules = dag: with dag; {
       inet.filter.input = {
-        dns-udp = between [ "established" ] [ "drop" ] ''
-          udp dport 53
-          accept
-        '';
-        dns-tcp = between [ "established" ] [ "drop" ] ''
-          tcp dport 53
-          accept
-        '';
+        dns = between [ "established" ] [ "drop" ] [
+          "udp dport 53 accept"
+          "tcp dport 53 accept"
+        ];
       };
     };
 

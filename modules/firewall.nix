@@ -14,7 +14,7 @@ with lib;
       };
 
       mkChain = description: mkOption {
-        type = types.dagOf types.str;
+        type = with types; dagOf (coercedTo str singleton (listOf str));
         inherit description;
         default = { };
       };
@@ -93,9 +93,9 @@ with lib;
 
   config =
     let
-      buildRule = { name, data }: ''
-        ${ replaceStrings [ "\n" ] [ " " ] data } comment "${ name }";
-      '';
+      buildRule = { name, data }: concatMapStringsSep "\n"
+        (rule: ''${ replaceStrings [ "\n" ] [ " " ] rule } comment "${ name }";'')
+        data;
 
       buildChain = { type, chain, rules }: ''
         chain ${ chain } { type ${ type } hook ${ chain } priority 0;

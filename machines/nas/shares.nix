@@ -57,47 +57,19 @@
 
   firewall.rules = dag: with dag; {
     inet.filter.input = {
-      nfs-tcp-4 = between [ "established" ] [ "drop" ] ''
-        ip saddr 172.23.200.0/25
-        tcp dport 2049
-        accept
-      '';
-      nfs-tcp-6 = between [ "established" ] [ "drop" ] ''
-        ip6 saddr fd79:300d:6056:100::/64
-        tcp dport 2049
-        accept
-      '';
-      nfs-udp-4 = between [ "established" ] [ "drop" ] ''
-        ip saddr 172.23.200.0/25
-        udp dport 2049
-        accept
-      '';
-      nfs-udp-6 = between [ "established" ] [ "drop" ] ''
-        ip6 saddr fd79:300d:6056:100::/64
-        udp dport 2049
-        accept
-      '';
+      nfs = between [ "established" ] [ "drop" ] [
+        ''ip saddr 172.23.200.0/25 tcp dport 2049 accept''
+        ''ip saddr 172.23.200.0/25 udp dport 2049 accept''
+        ''ip6 saddr fd79:300d:6056:100::/64 tcp dport 2049 accept''
+        ''ip6 saddr fd79:300d:6056:100::/64 udp dport 2049 accept''
+      ];
 
-      smb-tcp-4 = between [ "established" ] [ "drop" ] ''
-        ip saddr 172.23.200.0/25
-        tcp dport { 137, 138, 139, 445 }
-        accept
-      '';
-      smb-tcp-6 = between [ "established" ] [ "drop" ] ''
-        ip6 saddr fd79:300d:6056:100::/64
-        tcp dport { 137, 138, 139, 445 }
-        accept
-      '';
-      smb-udp-4 = between [ "established" ] [ "drop" ] ''
-        ip saddr 172.23.200.0/25
-        udp dport { 137, 138, 139, 445 }
-        accept
-      '';
-      smb-udp-6 = between [ "established" ] [ "drop" ] ''
-        ip6 saddr fd79:300d:6056:100::/64
-        udp dport { 137, 138, 139, 445 }
-        accept
-      '';
+      smb = between [ "established" ] [ "drop" ] [
+        ''ip saddr 172.23.200.0/25 tcp dport { 137, 138, 139, 445 } accept''
+        ''ip saddr 172.23.200.0/25 udp dport { 137, 138, 139, 445 } accept''
+        ''ip6 saddr fd79:300d:6056:100::/64 tcp dport { 137, 138, 139, 445 } accept''
+        ''ip6 saddr fd79:300d:6056:100::/64 udp dport { 137, 138, 139, 445 } accept''
+      ];
     };
   };
 }
