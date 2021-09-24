@@ -125,8 +125,7 @@
 
   services.hardware.bolt.enable = true;
 
-  powerManagement.cpuFreqGovernor = "powersave";
-  powerManagement.powertop.enable = true;
+  powerManagement.cpuFreqGovernor = "performance";
 
   services.tlp = {
     enable = true;
