@@ -1,6 +1,6 @@
 {
   target = {
-    host = "raketensilo.dev.open-desk.net";
+    host = "raketensilo.dev.hs.open-desk.net";
     user = "root";
   };
 
