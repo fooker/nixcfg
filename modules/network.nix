@@ -99,7 +99,13 @@ with lib;
                   "Gateway" = route.gateway;
                 };
               })
-              config.routes;
+              (filter # Filter extra routes that are already directly attached via any other interface
+                (route: !(any
+                  (address: ip.network.equals
+                    (ip.network.prefixNetwork address)
+                    route.destination)
+                  device.effectiveAddresses))
+                config.routes);
 
             networkConfig = {
               IPv6AcceptRA = false;
