@@ -4,7 +4,7 @@
     user = "root";
   };
 
-  tags = [ "prod" "zitadelle" "hive" ];
+  tags = [ "prod" "hive" ];
 
   system = "x86_64-linux";
 

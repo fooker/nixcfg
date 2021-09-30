@@ -22,6 +22,13 @@ let
       */
       device = network.devices."${name}";
 
+      /* Generate tags for a machine path
+      */
+      genTags = path:
+        if path != [ ]
+        then (genTags (init path)) ++ [ (concatStringsSep "-" path) ]
+        else [ ];
+
     in
     {
       _module.args = {
@@ -33,7 +40,8 @@ let
         targetUser = machine.target.user;
 
         tags = machine.tags
-          ++ (optional (device.site != null) "site-${device.site.name}");
+          ++ (optional (device.site != null) "site-${device.site.name}")
+          ++ (genTags (init id));
 
         substituteOnDestination = true;
       };
