@@ -1,9 +1,9 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, nodes, ... }:
 
 with lib;
 
 let
-  nameserver = "bunker.dev.open-desk.net";
+  nameserver = toString nodes."bunker".config.peering.backhaul.dn42.ipv4.address;
   tsigAlgorithm = "hmac-sha512.";
   tsigKey = "acme_update";
 in
