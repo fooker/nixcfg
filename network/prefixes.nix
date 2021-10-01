@@ -186,7 +186,7 @@
         };
 
         "172.23.200.35" = {
-          device = "builder";
+          device = "builder-intel";
           interface = "int";
         };
 
@@ -215,7 +215,7 @@
         };
 
         "fd79:300d:6056:1::2" = {
-          device = "builder";
+          device = "builder-intel";
           interface = "int";
         };
 
@@ -249,7 +249,7 @@
 
       routes = [
         {
-          destination = "193.174.29.32/27";
+          destination = "193.174.29.0/26";
           gateway = "192.168.31.1";
         }
       ];

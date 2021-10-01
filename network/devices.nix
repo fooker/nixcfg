@@ -187,6 +187,12 @@
             ];
             gateways = [ "193.174.29.1" "2001:638:301:11a3::1" ];
             dns = [ "1.0.0.1" "1.1.1.1" "2606:4700:4700::1111" "2606:4700:4700::1001" ];
+            routes = [
+              {
+                destination = "193.174.29.32/27";
+                gateway = "193.174.29.1";
+              }
+            ];
           };
         };
         "int" = {
@@ -234,7 +240,7 @@
       };
     };
 
-    "builder" = {
+    "builder-intel" = {
       type = "Virtual Server";
       role = "Server";
       site = "hs";
@@ -242,6 +248,25 @@
       interfaces = {
         "int" = {
           mac = "52:54:00:57:ff:27";
+        };
+      };
+    };
+
+    "builder-arm" = {
+      type = "Virtual Server";
+      role = "Server";
+      site = null;
+
+      interfaces = {
+        "ext" = {
+          mac = "02:00:17:00:32:cc";
+          satelite = {
+            addresses = [
+              "10.0.0.63/24"
+            ];
+            gateways = [ "10.0.0.1" ];
+            dns = [ "1.0.0.1" "1.1.1.1" "2606:4700:4700::1111" "2606:4700:4700::1001" ];
+          };
         };
       };
     };

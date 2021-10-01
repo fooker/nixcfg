@@ -34,20 +34,17 @@ with lib;
           interface = mkOption {
             type = types.refAttr device.interfaces;
             description = "Interface to take host IPs from";
-            readOnly = true;
           };
 
           ipv4 = mkOption {
-            type = types.ip.address.v4;
+            type = types.nullOr types.ip.address.v4;
             description = "IPv4 address of the host";
-            readOnly = true;
             default = config.dns.host.interface.address.ipv4.address;
           };
 
           ipv6 = mkOption {
-            type = types.ip.address.v6;
+            type = types.nullOr types.ip.address.v6;
             description = "IPv6 address of the host";
-            readOnly = true;
             default = config.dns.host.interface.address.ipv6.address;
           };
         };
@@ -65,9 +62,14 @@ with lib;
   };
 
   config = {
-    dns.zones = mkIf (config.dns.host != null) (config.dns.host.domain.mkRecords {
-      A = config.dns.host.ipv4;
-      AAAA = config.dns.host.ipv6;
-    });
+    dns.zones = mkIf (config.dns.host != null) (config.dns.host.domain.mkRecords (
+      (optionalAttrs (config.dns.host.ipv4 != null) {
+        A = config.dns.host.ipv4;
+      })
+      //
+      (optionalAttrs (config.dns.host.ipv6 != null) {
+        AAAA = config.dns.host.ipv6;
+      })
+    ));
   };
 }

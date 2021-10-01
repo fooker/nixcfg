@@ -1,16 +1,37 @@
-{ pkgs, lib, path, ... }:
+{ pkgs, lib, path, nodes, ... }:
 
+with lib;
+
+let
+  # All builders
+  builders = filter
+    (node: node.builder.enable)
+    (mapAttrsToList (_: node: node.config) nodes);
+
+  # Unique set of systems over all nodes
+  systems = unique (map
+    (node: node.config.nixpkgs.localSystem.system)
+    (attrValues nodes));
+
+in
 {
   nix = {
     buildCores = 8;
 
-    buildMachines = [{
-      hostName = "builder";
-      systems = [ "i686-linux" "x86_64-linux" "aarch64-linux" "armv6l-linux" "armv7l-linux" ];
-      speedFactor = 8;
-      supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
-      mandatoryFeatures = [ ];
-    }];
+    buildMachines = traceValSeq (concatMap
+      (builder: map
+        (system: {
+          inherit system;
+          hostName = builder.dns.host.domain.toSimpleString;
+          sshUser = "root";
+          sshKey = "/var/lib/id_builder";
+          speedFactor = if system == builder.nixpkgs.localSystem.system then 8 else 4;
+          maxJobs = 8;
+          supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+          mandatoryFeatures = [ ];
+        })
+        systems)
+      builders);
 
     distributedBuilds = true;
 
@@ -20,14 +41,6 @@
 
     trustedUsers = lib.mkOptionDefault [ "fooker" ];
   };
-
-  programs.ssh.extraConfig = ''
-    Host builder
-      IdentitiesOnly yes
-      User root
-      HostName builder.dev.hs.open-desk.net
-      IdentityFile /var/lib/id_builder
-  '';
 
   deployment.secrets = {
     "builder-sshkey" = rec {
