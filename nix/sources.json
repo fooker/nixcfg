@@ -155,6 +155,18 @@
         "url": "https://github.com/NixOS/nixpkgs/archive/1ca6b0a0cc38dbba0441202535c92841dd39d1ae.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "photonic": {
+        "branch": "master",
+        "description": "Dynamic LED-Strip controller and animator ",
+        "homepage": null,
+        "owner": "fooker",
+        "repo": "photonic",
+        "rev": "8c0b66a6dc5507c1390a9fdf365bc8c33a892d88",
+        "sha256": "1n7av7zakyinrv43kfr5inc2c31f9660g6y70nb8zk2xv2b41r48",
+        "type": "tarball",
+        "url": "https://github.com/fooker/photonic/archive/8c0b66a6dc5507c1390a9fdf365bc8c33a892d88.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "qd": {
         "branch": "master",
         "description": "Local filesystem job queue",
