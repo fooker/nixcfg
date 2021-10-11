@@ -50,7 +50,7 @@ in {
     size = 244,
     root = blackout,
     output = {
-        type = "led-strip:spi:sk6812Grbw",
+        type = "led-strip:spi:sk6812grbw",
         config = {
             dev = "/dev/spidev0.0",
         },

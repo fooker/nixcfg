@@ -2,7 +2,7 @@
 
 let
   sources = import ../../../nix/sources.nix;
-  photonic = pkgs.callPackage sources.photonic { };
+  photonic = pkgs.unstable.callPackage sources.photonic { };
 
   scene = ./scene.dhall;
 

@@ -161,10 +161,10 @@
         "homepage": null,
         "owner": "fooker",
         "repo": "photonic",
-        "rev": "8c0b66a6dc5507c1390a9fdf365bc8c33a892d88",
-        "sha256": "1n7av7zakyinrv43kfr5inc2c31f9660g6y70nb8zk2xv2b41r48",
+        "rev": "51f2a7531a0a694da1309c78ccad3662bd23bf02",
+        "sha256": "1pln4kf9a5hc501qqwdwi3lqk81d3vl76qaya51dii836n9qvmv1",
         "type": "tarball",
-        "url": "https://github.com/fooker/photonic/archive/8c0b66a6dc5507c1390a9fdf365bc8c33a892d88.tar.gz",
+        "url": "https://github.com/fooker/photonic/archive/51f2a7531a0a694da1309c78ccad3662bd23bf02.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "qd": {
