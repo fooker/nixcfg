@@ -18,7 +18,7 @@ in
   nix = {
     buildCores = 8;
 
-    buildMachines = traceValSeq (concatMap
+    buildMachines = concatMap
       (builder: map
         (system: {
           inherit system;
@@ -31,7 +31,7 @@ in
           mandatoryFeatures = [ ];
         })
         systems)
-      builders);
+      builders;
 
     distributedBuilds = true;
 
