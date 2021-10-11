@@ -88,7 +88,10 @@
     mediaKeys.enable = true;
   };
 
-  services.udev.packages = [ pkgs.stlink ];
+  services.udev.packages = with pkgs; [
+    stlink
+    saleae-logic-2
+  ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-label/nixos";
