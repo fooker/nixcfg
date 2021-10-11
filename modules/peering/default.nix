@@ -300,6 +300,9 @@ with lib;
           matchConfig = {
             Name = "${peer.netdev}";
           };
+          linkConfig = {
+            MTUBytes = "1280";
+          };
           networkConfig = {
             Description = "Peering with ${peer.name}";
 
