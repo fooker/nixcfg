@@ -189,6 +189,12 @@ in
             DNS = "${toString config.ipv4.address}";
           };
 
+          ipv6Prefixes = optional (hasAttr "ipv6" config) {
+            ipv6PrefixConfig = {
+              Prefix = toString (ip.network.prefixNetwork config.ipv6);
+            };
+          };
+
           ipv6SendRAConfig = {
             RouterLifetimeSec = 300;
 
