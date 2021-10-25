@@ -3,6 +3,7 @@
 let
   username = "fooker";
   sources = import ../../nix/sources.nix;
+  secrets = import ./secrets.nix;
 in
 {
   imports = [
@@ -22,7 +23,7 @@ in
   };
 
   users.users."${username}" = {
-    hashedPassword = "$6$xWl/Id.n98CPWMNw$5NbPhLcjaX3rn699i5zk57z1jLksy3uWdtGH6wNGtMOtBYTDt7OLvH5L.C7o.Jqd0Uztjm/9nttznV5gWncsB0";
+    inherit (secrets.users.fooker) hashedPassword;
     isNormalUser = true;
     uid = 1000;
     shell = pkgs.zsh;

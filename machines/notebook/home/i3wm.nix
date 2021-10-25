@@ -245,7 +245,7 @@ in
 
   services.screen-locker = {
     enable = true;
-    enableDetectSleep = true;
+    xautolock.detectSleep = true;
     inactiveInterval = 10;
     lockCmd = "${pkgs.i3lock}/bin/i3lock --nofork --color=000000 --ignore-empty-password --show-failed-attempts";
   };
