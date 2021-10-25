@@ -8,7 +8,11 @@ in
   ];
 
   server.enable = true;
-  builder.enable = true;
+
+  builder = {
+    enable = true;
+    emulatedSystems = [ "aarch64-linux" ];
+  };
 
   backup.passphrase = secrets.backup.passphrase;
 

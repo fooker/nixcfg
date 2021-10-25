@@ -1,24 +1,31 @@
-{ config, lib, nodes, ... }:
+{ config, lib, ... }:
 
 with lib;
 
-let
-  # Collect all systems used by all nodes and emulate them if they are not
-  # native to the builders system
-  emulatedSystems = unique (filter
-    (system: system != config.nixpkgs.localSystem.system)
-    (map
-      (node: node.config.nixpkgs.localSystem.system)
-      (attrValues nodes)));
-
-in
 {
   options.builder = {
     enable = mkEnableOption "machine for distributed building";
+
+    emulatedSystems = mkOption {
+      type = types.listOf types.str;
+      default = [ ];
+      description = ''
+        List of systems to emulate for building.
+      '';
+    };
+
+    systems = mkOption {
+      type = types.listOf types.str;
+      readOnly = true;
+      description = ''
+        List of systems this machine supports building for.
+      '';
+      default = [ config.nixpkgs.localSystem.system ] ++ config.builder.emulatedSystems;
+    };
   };
 
   config = mkIf config.builder.enable {
-    boot.binfmt.emulatedSystems = emulatedSystems;
+    boot.binfmt.emulatedSystems = config.builder.emulatedSystems;
 
     users.users."root" = {
       openssh.authorizedKeys.keys = [

@@ -8,11 +8,6 @@ let
     (node: node.builder.enable)
     (mapAttrsToList (_: node: node.config) nodes);
 
-  # Unique set of systems over all nodes
-  systems = unique (map
-    (node: node.config.nixpkgs.localSystem.system)
-    (attrValues nodes));
-
 in
 {
   nix = {
@@ -30,7 +25,7 @@ in
           supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
           mandatoryFeatures = [ ];
         })
-        systems)
+        builder.builder.systems)
       builders;
 
     distributedBuilds = true;
