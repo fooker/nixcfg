@@ -9,6 +9,9 @@ let
     (concatStringsSep "\n" (mapAttrsToList
       (user: hash: "${user}:${hash}")
       secrets.radicale.credentials));
+
+  storage = "/srv/calendar";
+
 in
 {
   services.radicale = {
@@ -24,7 +27,7 @@ in
       };
 
       storage = {
-        filesystem_folder = "/srv/calendar";
+        filesystem_folder = storage;
       };
     };
 
@@ -47,6 +50,12 @@ in
     };
   };
 
+  systemd.services."radicale" = {
+    unitConfig = {
+      RequiresMountsFor = [ storage ];
+    };
+  };
+
   reverse-proxy.hosts = {
     "calendar" = {
       domains = [ "calendar.open-desk.net" ];
@@ -55,6 +64,6 @@ in
   };
 
   backup.paths = [
-    "/srv/calendar"
+    storage
   ];
 }

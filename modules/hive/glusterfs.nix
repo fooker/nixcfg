@@ -2,6 +2,12 @@
 
 with lib;
 
+let
+  mounts = [
+    "http"
+    "calendar"
+  ];
+in
 {
   options.hive.glusterfs = {
     enable = mkOption {
@@ -20,21 +26,14 @@ with lib;
       glusterfs
     ];
 
-    fileSystems = {
-      "/srv/http" = {
-        device = "localhost:/http";
+    fileSystems = listToAttrs (map
+      (mount: nameValuePair "/srv/${mount}" {
+        device = "localhost:/${mount}";
         fsType = "glusterfs";
         noCheck = true;
-        options = [ "_netdev" ];
-      };
-
-      "/srv/calendar" = {
-        device = "localhost:/calendar";
-        fsType = "glusterfs";
-        noCheck = true;
-        options = [ "_netdev" ];
-      };
-    };
+        options = [ "noatime,_netdev" ];
+      })
+      mounts);
 
     firewall.rules = dag: with dag; {
       inet.filter.input = {

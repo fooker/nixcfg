@@ -102,6 +102,12 @@ in
     user = config.services.nginx.user;
   };
 
+  systemd.services."nginx" = {
+    unitConfig = {
+      RequiresMountsFor = [ "/srv/http" ];
+    };
+  };
+
   letsencrypt.certs = mapAttrs
     (_: app: {
       domains = app.domains;
