@@ -15,6 +15,7 @@ in
 runCommandNoCC "opennms-${version}"
 {
   buildInputs = [ gnutar ];
+  preferLocalBuild = true;
 } ''
   mkdir -pv $out/opt/opennms
   tar -xzf ${src} -C $out/opt/opennms

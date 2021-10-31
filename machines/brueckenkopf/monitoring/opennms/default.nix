@@ -54,7 +54,7 @@ in
       ExecStart = "/opt/opennms/bin/opennms -s start";
       ExecStop = "/opt/opennms/bin/opennms stop";
 
-      ExecPostStop = "-rm /var/log/opennms/opennms.pid";
+      ExecStopPost = "-rm /var/log/opennms/opennms.pid";
 
       RuntimeDirectory = "opennms";
 
@@ -95,6 +95,17 @@ in
       target = "http://127.0.0.1:8980";
     };
   };
+
+  programs.ssh.extraConfig = ''
+    Host opennms
+      Port 8101
+      User admin
+      HostName 127.0.0.1
+      CheckHostIP no
+      NoHostAuthenticationForLocalhost yes
+      SetEnv TERM=xterm
+      StrictHostKeyChecking no
+  '';
 
   backup = {
     commands = ''${ config.services.postgresql.package }/bin/pg_dump --format tar --file postgres-opennms.tar opennms'';

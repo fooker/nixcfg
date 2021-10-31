@@ -132,5 +132,12 @@ in
         owner.group = "knot";
       };
     };
+
+    monitoring.services = map
+      (zone: {
+        name = "DNS:${zone.name.toSimpleString}";
+        interfaces = "ext";
+      })
+      zones;
   };
 }

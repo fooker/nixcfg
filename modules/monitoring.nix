@@ -41,6 +41,14 @@ with lib;
               The interfaces to monitor the service on.
             '';
           };
+
+          meta = mkOption {
+            type = types.attrsOf types.str;
+            description = ''
+              Metadata attributes for the service.
+            '';
+            default = { };
+          };
         };
       });
       description = ''

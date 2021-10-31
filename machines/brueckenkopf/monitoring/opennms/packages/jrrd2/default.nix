@@ -51,5 +51,5 @@ stdenv.mkDerivation rec {
   outputHashAlgo = "sha256";
   outputHashMode = "recursive";
 
-  outputHash = "0qxfq1qi3p9qzd7ksqq8bsj98wjhq6pna4pqd49gif7x6ysa1qi6";
+  outputHash = "1p19h9qxjdayvaadihslg797gzxnxcndq83dqx3kazzf28x7k1rn";
 }

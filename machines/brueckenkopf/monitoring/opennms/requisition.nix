@@ -24,7 +24,7 @@ let
 
               services = map
                 (service: {
-                  inherit (service) name;
+                  inherit (service) name meta;
                 })
                 (filter
                   (service: service.interfaces == null || elem interface.name service.interfaces)
@@ -52,7 +52,11 @@ let
             snmp-primary="N">
           ${concatMapStringsSep "\n" (service: ''
           <monitored-service
-            service-name="${service.name}"/>
+            service-name="${service.name}">
+            ${concatStringsSep "\n" (mapAttrsToList (name: value: ''
+              <meta-data context="x-nixos" key="${name}" value="${value}" />
+            '') service.meta)}
+          </monitored-service>
           '') interface.services}
         </interface>
         '') node.interfaces}
