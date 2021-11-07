@@ -7,6 +7,7 @@ in
     ./network.nix
     ./pppd.nix
     ./dns.nix
+    ./upnp.nix
     ./ddclient.nix
     ./peering.nix
   ];
