@@ -14,7 +14,7 @@ with lib;
       };
 
       mkChain = description: mkOption {
-        type = with types; dagOf (coercedTo str singleton (listOf str));
+        type = with types; dagOf (coercedTo str singleton (nonEmptyListOf str));
         inherit description;
         default = { };
       };
@@ -93,41 +93,67 @@ with lib;
 
   config =
     let
-      buildRule = { name, data }: concatMapStringsSep "\n"
-        (rule: ''${ replaceStrings [ "\n" ] [ " " ] rule } comment "${ name }";'')
-        data;
+      buildEntry = { entry, rules, ... }: concatMapStringsSep "\n"
+        (rule: ''${ replaceStrings [ "\n" ] [ " " ] rule } comment "${ entry }";'')
+        rules;
 
-      buildChain = { type, chain, rules }: ''
+      buildChain = { type, chain, entries, ... }: ''
         chain ${ chain } { type ${ type } hook ${ chain } priority 0;
-        ${ concatMapStringsSep "\n" buildRule rules }
+        ${ concatMapStringsSep "\n" buildEntry entries }
         }
       '';
 
-      buildTable = table: types:
-        let
-          mkChain = type: chain: rules: {
-            inherit type chain;
-            rules = ((topoSort rules).result or (throw "Cycle in DAG"));
-          };
+      buildType = { family, type, chains, ... }: ''
+        table ${ family } ${ type } {
+        ${ concatMapStringsSep "\n" buildChain chains }
+        }
+      '';
 
-          chains = concatLists
-            (mapAttrsToList
-              (type: chains: filter
-                (chain: length chain.rules > 0)
-                (mapAttrsToList (mkChain type) chains)
-              )
-              types
-            );
-        in
-        optionalString (length chains > 0) ''
-          table ${ table } nixos {
-          ${ concatMapStringsSep "\n" buildChain chains }
-          }
-        '';
+      buildFamily = { types, ... }:
+        concatMapStringsSep "\n" buildType types;
 
+      # family => [type => [chain => [entry => [rule]]]]
       rules = filterAttrsRecursive
         (name: _: name != "_module")
         (config.firewall.rules dagEntry);
+
+      # [{family, types => [{family, type, chains => [{family, type, chain, entries => [{family, type, chain, entry, rules}]}]}]}]
+      #
+      # This creates a tree of rules where each element contains all path information.
+      # Empty elements in the tree are removed.
+      tree =
+        let
+          mkChain = base: entries:
+            base // {
+              entries = map
+                ({ name, data }: base // {
+                  entry = name;
+                  rules = data;
+                })
+                ((topoSort entries).result or (throw "Cycle in DAG"));
+            };
+
+          mkType = base: chains:
+            base // {
+              chains = filter
+                (chain: chain.entries != [ ])
+                (mapAttrsToList
+                  (chain: mkChain (base // { inherit chain; }))
+                  chains);
+            };
+
+          mkFamily = base: types:
+            base // {
+              types = filter
+                (type: type.chains != [ ])
+                (mapAttrsToList
+                  (type: mkType (base // { inherit type; }))
+                  types);
+            };
+        in
+        mapAttrsToList
+          (family: mkFamily { inherit family; })
+          rules;
 
     in
     mkIf config.firewall.enable {
@@ -136,10 +162,7 @@ with lib;
 
       networking.nftables.enable = mkDefault true;
 
-      networking.nftables.ruleset = mkDefault
-        (concatStringsSep "\n"
-          (mapAttrsToList buildTable rules)
-        );
+      networking.nftables.ruleset = concatMapStringsSep "\n" buildFamily tree;
 
       firewall.rules = dag: with dag; {
         inet.filter.input = {
