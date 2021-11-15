@@ -93,6 +93,8 @@
     saleae-logic-2
   ];
 
+  hardware.sane.enable = true;
+
   fileSystems."/" = {
     device = "/dev/disk/by-label/nixos";
     fsType = "btrfs";
