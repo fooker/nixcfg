@@ -10,7 +10,7 @@ in
     options = [
       "x-systemd.automount"
       "noauto"
-      "username=${secrets.mounts.vault.username}"
+      "username=share"
       "password=${nodes."nas".config.users.users."share".password}"
     ];
   };
