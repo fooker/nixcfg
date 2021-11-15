@@ -53,7 +53,6 @@
     # Development
     jetbrains.idea-ultimate
     jetbrains.clion
-    jetbrains.goland
     jetbrains.pycharm-professional
     vscodium
 
@@ -61,7 +60,6 @@
     tdesktop
     signal-desktop
     element-desktop
-    ferdi
     thunderbird
     mumble
     zoom-us
