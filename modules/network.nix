@@ -106,10 +106,6 @@ with lib;
                     route.destination)
                   device.effectiveAddresses))
                 config.routes);
-
-            networkConfig = {
-              IPv6AcceptRA = false;
-            };
           }
         ))
         device.interfaces);
