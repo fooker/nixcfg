@@ -60,21 +60,26 @@
     package = pkgs.bluezFull;
   };
 
-  security.rtkit.enable = true;
-  services.pipewire = {
+  hardware.pulseaudio = {
     enable = true;
+    support32Bit = true;
+    zeroconf.discovery.enable = true;
 
-    alsa = {
-      enable = true;
-      support32Bit = true;
-    };
+    extraModules = [ pkgs.pulseaudio-modules-bt ];
 
-    pulse = {
-      enable = true;
-    };
+    package = pkgs.pulseaudioFull;
 
-    media-session = {
-      enable = true;
+    daemon.config = {
+      avoid-resampling = "yes";
+      alternate-sample-rate = 88200;
+      default-fragment-size-msec = 125;
+      default-fragments = 2;
+      default-sample-channels = 2;
+      default-sample-format = "s32le";
+      default-sample-rate = 96000;
+      enable-lfe-remixing = "no";
+      realtime-scheduling = "yes";
+      resample-method = "speex-float-10";
     };
   };
 
