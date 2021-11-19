@@ -41,6 +41,12 @@ let
     {
       name = "saned.conf";
       path = pkgs.writeText "scanbd-conf-saned" ''
+        127.0.0.1
+        ::1
+        172.23.200.128/25
+        172.23.200.127/32
+        fd79:300d:6056:100::/64
+        fd79:300d:6056:ffff::0/128
       '';
     }
 
@@ -185,8 +191,8 @@ in
       Type = "simple";
 
       StandardInput = "null";
-      StandardOutput = "syslog";
-      StandardError = "syslog";
+      StandardOutput = "journal";
+      StandardError = "journal";
 
       ExecStart = "${scanbd}/bin/scanbd -f -c ${scanbdConfig}";
     };
@@ -208,8 +214,8 @@ in
       Group = "scanner";
 
       StandardInput = "null";
-      StandardOutput = "syslog";
-      StandardError = "syslog";
+      StandardOutput = "journal";
+      StandardError = "journal";
 
       ExecStart = "${scanbd}/bin/scanbm -c ${scanbdConfig}";
     };
@@ -258,8 +264,8 @@ in
       Group = "scanner";
 
       StandardInput = "null";
-      StandardOutput = "syslog";
-      StandardError = "syslog";
+      StandardOutput = "journal";
+      StandardError = "journal";
 
       ExecStart = "${qd}/bin/qd -v -v -p /mnt/spool daemon ${uploadScript}";
     };
@@ -272,6 +278,15 @@ in
     "nas" = {
       hostNames = [ "nas.dev.home.open-desk.net" "172.23.200.130" ];
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ58kj0PhHZThJ00tXLwNCFfK8o4RArFcNqtWfaXWto3";
+    };
+  };
+
+  firewall.rules = dag: with dag; {
+    inet.filter.input = {
+      sane = between [ "established" ] [ "drop" ] [
+        ''ip saddr { 172.23.200.128/25, 172.23.200.127/32 } tcp dport 6566 accept''
+        ''ip6 saddr { fd79:300d:6056:100::/64, fd79:300d:6056:ffff::0/128 } tcp dport 6566 accept''
+      ];
     };
   };
 
