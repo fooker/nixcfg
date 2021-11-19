@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, network, ... }:
 
 {
   boot.kernelPackages = pkgs.linuxPackages_5_10;
@@ -93,7 +93,14 @@
     saleae-logic-2
   ];
 
-  hardware.sane.enable = true;
+  hardware.sane = {
+    enable = true;
+    extraBackends = [ pkgs.sane-airscan ];
+    netConf = ''
+      ${toString network.devices."scanner".interfaces."priv".address.ipv4.address}
+      ${toString network.devices."scanner".interfaces."priv".address.ipv6.address}
+    '';
+  };
 
   fileSystems."/" = {
     device = "/dev/disk/by-label/nixos";

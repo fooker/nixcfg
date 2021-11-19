@@ -55,7 +55,10 @@ in
 
   services.gvfs.enable = true;
 
-  services.avahi.enable = true;
+  services.avahi = {
+    enable = true;
+    nssmdns = true;
+  };
 
   programs.system-config-printer.enable = true;
   services.printing = {
