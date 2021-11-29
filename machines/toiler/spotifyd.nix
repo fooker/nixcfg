@@ -10,19 +10,19 @@ in
     enable = true;
     config = ''
       [global]
-      username = ${secrets.mopidy.spotify.username}
-      password = ${secrets.mopidy.spotify.password}
+      username = "${secrets.mopidy.spotify.username}"
+      password = "${secrets.mopidy.spotify.password}"
 
-      backend = pulseaudio
+      backend = "pulseaudio"
 
-      device_name = toiler
+      device_name = "toiler"
 
       bitrate = 320
 
       volume_normalisation = true
       normalisation_pregain = -10
 
-      device_type = stb
+      device_type = "s_t_b"
 
       zeroconf_port = 4444
     '';
@@ -36,6 +36,7 @@ in
     description = "spotifyd daemon user";
     home = "/var/lib/spotifyd";
     isSystemUser = true;
+    createHome = true;
   };
 
   systemd.services.spotifyd = {
