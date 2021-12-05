@@ -6,6 +6,7 @@ in
     ./hardware.nix
     ./network.nix
     ./pppd.nix
+    ./dhcp.nix
     ./dns.nix
     ./upnp.nix
     ./ddclient.nix

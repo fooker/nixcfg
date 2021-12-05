@@ -6,31 +6,19 @@ let
   networks = {
     mngt = {
       vlan = 1;
-
       inherit (device.interfaces.mngt.address) ipv4;
-
-      dhcpPoolOffset = 128;
     };
     priv = {
       vlan = 2;
-
       inherit (device.interfaces.priv.address) ipv4 ipv6;
-
-      dhcpPoolOffset = 32;
     };
     guest = {
       vlan = 3;
-
       inherit (device.interfaces.guest.address) ipv4;
-
-      dhcpPoolOffset = 16;
     };
     iot = {
       vlan = 4;
-
       inherit (device.interfaces.iot.address) ipv4;
-
-      dhcpPoolOffset = 16;
     };
   };
 in
@@ -160,8 +148,6 @@ in
           ];
 
           networkConfig = {
-            DHCPServer = true;
-
             DHCPv6PrefixDelegation = true;
             IPv6SendRA = true;
 
@@ -175,18 +161,6 @@ in
             ];
 
             IPForward = "yes";
-          };
-
-          # TODO: Search domain = home.open-desk.net
-          dhcpServerConfig = {
-            PoolOffset = config.dhcpPoolOffset;
-
-            EmitDNS = true;
-            EmitNTP = true;
-            EmitRouter = true;
-            EmitTimezone = true;
-
-            DNS = "${toString config.ipv4.address}";
           };
 
           ipv6Prefixes = optional (hasAttr "ipv6" config) {
@@ -250,12 +224,6 @@ in
       };
 
       inet.filter.input = {
-        dhcp = between [ "established" ] [ "drop" ] ''
-          meta iifname { mngt, priv, guest, iot }
-          udp dport bootps
-          accept
-        '';
-
         uplink-dhcpv6 = between [ "established" ] [ "drop" ] ''
           udp sport dhcpv6-server
           udp dport dhcpv6-client

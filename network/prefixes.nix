@@ -43,12 +43,12 @@
         };
       };
 
-      # reservations = {
-      #   "dhcp" = {
-      #     range = [ "172.23.200.160" "172.23.200.254" ];
-      #     description = "DHCP clients";
-      #   };
-      # };
+      reservations = {
+        "dhcp" = {
+          range = [ "172.23.200.160" "172.23.200.254" ];
+          description = "DHCP clients";
+        };
+      };
     };
 
     # Private Network @ Home
@@ -132,6 +132,13 @@
           interface = "mngt";
         };
       };
+
+      reservations = {
+        "dhcp" = {
+          range = [ "192.168.254.128" "192.168.254.254" ];
+          description = "DHCP clients";
+        };
+      };
     };
 
     # Guest Network @ Home
@@ -147,13 +154,19 @@
           interface = "guest";
         };
       };
+
+      reservations = {
+        "dhcp" = {
+          range = [ "203.0.113.16" "203.0.113.254" ];
+          description = "DHCP clients";
+        };
+      };
     };
 
     # IoT Network @ Home
     "192.168.0.0/24" = {
       site = "home";
 
-      gateway = "192.168.0.1";
       dns = [ "192.168.0.1" ];
 
       addresses = {
@@ -164,6 +177,13 @@
         "192.168.0.2" = {
           device = "toiler";
           interface = "iot";
+        };
+      };
+
+      reservations = {
+        "dhcp" = {
+          range = [ "192.168.0.16" "192.168.0.254" ];
+          description = "DHCP clients";
         };
       };
     };
