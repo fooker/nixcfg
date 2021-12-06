@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, path, config, ... }:
 
 with lib;
 let
@@ -15,10 +15,17 @@ in
     server = "ddserver.org";
 
     username = "${username}";
-    password = "${password}";
+    passwordFile = config.deployment.secrets."ddclient-password".destination;
 
     domains = [ "${domain}" ];
 
     use = "if, if=ppp0";
+  };
+
+  deployment.secrets = {
+    "ddclient-password" = rec {
+      source = "${path}/secrets/ddclient";
+      destination = "/etc/secrets/ddclient";
+    };
   };
 }
