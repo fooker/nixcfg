@@ -86,16 +86,10 @@ in
 
   firewall.rules = dag: with dag; {
     inet.filter.input = {
-      dhcpv4 = between [ "established" ] [ "drop" ] ''
+      dhcp = between [ "established" ] [ "drop" ] ''
         meta iifname { ${concatStringsSep ", " interfaces} }
         udp sport bootpc
         udp dport bootps
-        accept
-      '';
-      dhcpv6 = between [ "established" ] [ "drop" ] ''
-        meta iifname { ${concatStringsSep ", " interfaces} }
-        udp sport dhcpv6-client
-        udp dport dhcpv6-server
         accept
       '';
     };

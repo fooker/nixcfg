@@ -149,7 +149,6 @@ in
 
           networkConfig = {
             DHCPv6PrefixDelegation = true;
-            IPv6SendRA = true;
 
             IPv6DuplicateAddressDetection = 1;
             IPv6PrivacyExtensions = false;
@@ -167,15 +166,6 @@ in
             ipv6PrefixConfig = {
               Prefix = toString (ip.network.prefixNetwork config.ipv6);
             };
-          };
-
-          ipv6SendRAConfig = {
-            RouterLifetimeSec = 300;
-
-            EmitDNS = true;
-            EmitDomains = true;
-
-            OtherInformation = true;
           };
 
           dhcpV6PrefixDelegationConfig = {

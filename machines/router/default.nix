@@ -7,6 +7,7 @@ in
     ./network.nix
     ./pppd.nix
     ./dhcp.nix
+    ./corerad.nix
     ./dns.nix
     ./upnp.nix
     ./ddclient.nix
