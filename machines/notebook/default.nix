@@ -79,6 +79,9 @@ in
   services.udev = {
     extraRules = ''
       SUBSYSTEM=="power_supply", ATTR{status}=="Discharging", ATTR{capacity}=="[0-5]", RUN+="${pkgs.systemd}/bin/systemctl hibernate"
+
+      # Training for keyboard
+      SUBSYSTEM=="usb", ATTR{idVendor}=="3297", GROUP="dialout"
     '';
   };
 
