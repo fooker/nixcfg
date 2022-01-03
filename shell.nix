@@ -15,7 +15,7 @@ let
     })
   ];
 
-  pkgs = import sources.nixpkgs {
+  pkgs = import sources.nixpkgs-unstable {
     inherit overlays;
     config = { };
   };
@@ -50,7 +50,7 @@ pkgs.mkShell {
     gzip
     morph
     niv
-    nix
+    nixUnstable
     openssh
     drone-cli
     nixpkgs-fmt
