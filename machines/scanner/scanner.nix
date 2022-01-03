@@ -227,7 +227,6 @@ in
     socketConfig = {
       ListenStream = 6566;
       Accept = "yes";
-      MaxConnections = 1;
     };
 
     wantedBy = [ "sockets.target" ];
