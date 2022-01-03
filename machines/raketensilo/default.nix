@@ -5,6 +5,7 @@ in
   imports = [
     ./hardware.nix
     ./network.nix
+    ./ipfs.nix
   ];
 
   server.enable = true;
