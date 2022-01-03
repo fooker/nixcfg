@@ -59,10 +59,10 @@
         "homepage": null,
         "owner": "DBCDK",
         "repo": "morph",
-        "rev": "ad13802e59c90d3a6d6c33a0a7cc1ffafbe151af",
-        "sha256": "008134l2wn0h7b2rvrq9859p9lsk9znx42idg2x8sgnc067lqi1s",
+        "rev": "081a5752825d4884d82b5b3b84baa426fadc2307",
+        "sha256": "14nql41vs6mbvz17h8brf5lv4372qnsh81pcb8j5pgsk0jbik4lm",
         "type": "tarball",
-        "url": "https://github.com/DBCDK/morph/archive/ad13802e59c90d3a6d6c33a0a7cc1ffafbe151af.tar.gz",
+        "url": "https://github.com/DBCDK/morph/archive/081a5752825d4884d82b5b3b84baa426fadc2307.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "netns-proxy": {
