@@ -8,24 +8,25 @@ in
 {
   services.spotifyd = {
     enable = true;
-    config = ''
-      [global]
-      username = "${secrets.mopidy.spotify.username}"
-      password = "${secrets.mopidy.spotify.password}"
+    settings = {
+      global = {
+        username = "${secrets.mopidy.spotify.username}";
+        password = "${secrets.mopidy.spotify.password}";
 
-      backend = "pulseaudio"
+        backend = "pulseaudio";
 
-      device_name = "toiler"
+        device_name = "toiler";
 
-      bitrate = 320
+        bitrate = 320;
 
-      volume_normalisation = true
-      normalisation_pregain = -10
+        volume_normalisation = true;
+        normalisation_pregain = -10;
 
-      device_type = "s_t_b"
+        device_type = "s_t_b";
 
-      zeroconf_port = 4444
-    '';
+        zeroconf_port = 4444;
+      };
+    };
   };
 
   # HACK: the provided service uses a dynamic user which can not authenticate to the pulse daemon

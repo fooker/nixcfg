@@ -7,7 +7,7 @@
     onShutdown = "shutdown";
 
     package = pkgs.unstable.libvirt;
-    qemuPackage = pkgs.unstable.qemu;
+    qemu.package = pkgs.unstable.qemu;
   };
 
   boot.kernelParams = [

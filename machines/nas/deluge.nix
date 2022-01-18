@@ -13,6 +13,8 @@ in
     enable = true;
     declarative = true;
 
+    package = pkgs.deluge-2_x;
+
     config = {
       "add_paused" = false;
       "allow_remote" = false;

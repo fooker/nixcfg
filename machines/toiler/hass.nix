@@ -4,24 +4,27 @@
   services.mosquitto = {
     enable = true;
 
-    host = "0.0.0.0";
-    port = 1883;
+    listeners = [
+      {
+        address = "0.0.0.0";
+        port = 1883;
 
-    allowAnonymous = true;
+        omitPasswordAuth = true;
 
-    # TODO: Use real ACLs (with patterns and users) here
-    aclExtraConf = ''
-      topic readwrite #
-    '';
+        # TODO: Use real ACLs (with patterns and users) here
+        settings.allow_anonymous = true;
+        acl = [
+          "topic readwrite #"
+        ];
 
-    users = { };
+        users = { };
+      }
+    ];
 
-    extraConf = ''
-      persistence true
-
-      autosave_interval 10
-      autosave_on_changes false
-    '';
+    settings = {
+      "autosave_interval" = 10;
+      "autosave_on_changes" = false;
+    };
   };
 
   services.home-assistant = {
@@ -31,24 +34,6 @@
     config = import ./hass;
 
     autoExtraComponents = true;
-
-    package = (pkgs.unstable.home-assistant.override {
-      extraPackages = ps: with ps; [
-        pythonPackages.pyipp
-
-        # Required vor Denon AVR integration
-        pythonPackages.denonavr
-
-        # Required for zeroconf
-        pythonPackages.getmac
-
-        # Required for pulseaudio
-        pythonPackages.pulsectl
-
-        # Required for vacuum
-        pythonPackages.python-miio
-      ];
-    });
   };
 
   reverse-proxy.hosts = {

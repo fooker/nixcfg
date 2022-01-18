@@ -3,6 +3,7 @@ let
 in
 {
   default_config = { };
+
   homeassistant = {
     latitude = 50.55216;
     longitude = 9.68617;
@@ -29,6 +30,18 @@ in
   };
 
   esphome = { };
+
+  denonavr = { };
+
+  ipp = { };
+
+  discovery = { };
+
+  xiaomi_miio = { };
+
+  mullvad = { };
+
+  mjpeg = { };
 
   spotify = {
     client_id = secrets.spotify.client.id;

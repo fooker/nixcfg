@@ -7,7 +7,7 @@ let
 
   port = 28981;
 
-  paperless = (pkgs.callPackage ../../packages/paperless-ng.nix { });
+  paperless = (pkgs.unstable.callPackage ../../packages/paperless-ng.nix { });
   configured = paperless.withConfig {
     PAPERLESS_STATICDIR = paperless.static;
 

@@ -10,6 +10,12 @@ with lib;
   };
 
   config = mkIf config.common.nix.enable {
+    # Living on the edge
+    nix.package = pkgs.unstable.nixUnstable;
+    nix.extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+
     # Take out the trash
     nix.gc = {
       automatic = true;
