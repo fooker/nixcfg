@@ -72,6 +72,7 @@ in
   systemd.services."deluge-netns" = {
     description = "Deluge BitTorrent Daemon - Network Namespace";
     after = [ "network.target" ];
+    wantedBy = [ "network.target" ];
 
     serviceConfig = {
       Type = "oneshot";
