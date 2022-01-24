@@ -237,6 +237,13 @@ in
 
   gtk = {
     enable = true;
+
+    gtk3.extraConfig = {
+      gtk-cursor-blink = false;
+    };
+    gtk4.extraConfig = {
+      gtk-cursor-blink = false;
+    };
   };
 
   home.packages = with pkgs; [
