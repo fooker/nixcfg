@@ -14,6 +14,8 @@ let
 
         first = elemAt address.prefix.reservations."dhcp".range 0;
         last = elemAt address.prefix.reservations."dhcp".range 1;
+
+        extraConfig = address.prefix.reservations."dhcp".extraConfig or { };
       })
       (filter
         (address: address.address.version == 4)
@@ -78,7 +80,7 @@ in
                 "pool" = "${toString reservation.first}-${toString reservation.last}";
               }
             ];
-          })
+          } // reservation.extraConfig)
           reservations;
       };
     };
