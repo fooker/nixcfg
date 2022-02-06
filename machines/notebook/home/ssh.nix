@@ -44,6 +44,7 @@
         extraOptions = {
           "KexAlgorithms" = "+diffie-hellman-group1-sha1";
           "Ciphers" = "+aes256-cbc";
+          "HostKeyAlgorithms" = "+ssh-rsa";
         };
       };
 
@@ -55,6 +56,7 @@
         extraOptions = {
           "KexAlgorithms" = "+diffie-hellman-group1-sha1";
           "Ciphers" = "+aes256-cbc";
+          "HostKeyAlgorithms" = "+ssh-rsa";
         };
       };
 
@@ -66,6 +68,7 @@
         extraOptions = {
           "KexAlgorithms" = "+diffie-hellman-group1-sha1";
           "Ciphers" = "+aes256-cbc";
+          "HostKeyAlgorithms" = "+ssh-rsa";
         };
       };
     };
