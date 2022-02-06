@@ -184,6 +184,9 @@
         "dhcp" = {
           range = [ "192.168.0.16" "192.168.0.254" ];
           description = "DHCP clients";
+          extraConfig = {
+            valid-lifetime = 31536000;
+          };
         };
       };
     };
