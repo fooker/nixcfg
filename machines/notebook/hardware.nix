@@ -91,6 +91,7 @@
   services.udev.packages = with pkgs; [
     stlink
     saleae-logic-2
+    qmk-udev-rules
   ];
 
   hardware.sane = {
