@@ -20,6 +20,7 @@ in
           linkname uplink
           
           user "${username}"
+          password "${password}"
           
           lcp-echo-interval 15
           lcp-echo-failure 3
@@ -46,10 +47,6 @@ in
   # Restart pppd if systemd-networkd restarts
   systemd.services."pppd-uplink" = {
     partOf = [ "systemd-networkd.service" ];
-  };
-
-  environment.etc = with secrets.ppp.uplink; {
-    "ppp/chap-secrets".text = ''* * "${password}"'';
   };
 
   firewall.rules = dag: with dag; {
