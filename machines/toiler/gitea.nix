@@ -63,7 +63,7 @@
         ''
           ${ pkgs.sudo }/bin/sudo \
             --user ${ config.services.gitea.user } \
-            ${ gitea-dump }
+            ${ gitea-dump } \
             > gitea-dump.tar
         ''
       )
