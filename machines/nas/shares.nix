@@ -62,7 +62,7 @@ in
       load printers = no
       printcap name = /dev/null
 
-      valid users = @share
+      valid users = @share, nobody
     '';
   };
 
