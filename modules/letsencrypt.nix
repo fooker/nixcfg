@@ -62,7 +62,7 @@ in
               in
               {
                 cert = "${dir}/cert.pem";
-                chain = "${dir}/chain.pem" denonavr;
+                chain = "${dir}/chain.pem";
                 fullchain = "${dir}/fullchain.pem";
                 full = "${dir}/full.pem";
                 key = "${dir}/key.pem";
