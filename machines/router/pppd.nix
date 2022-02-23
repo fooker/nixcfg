@@ -77,8 +77,8 @@ in
     };
   };
   systemd.timers."pppd-uplink-redial" = {
-    bindsTo = [ "pppd-uplink.service" ];
-    partOf = [ "pppd-uplink.service" ];
+    wantedBy = [ "timers.target" ];
+
     timerConfig = {
       OnCalendar = "*-*-* 05:00:00";
     };
