@@ -7,6 +7,9 @@
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usbhid" "usb_storage" "sd_mod" "sdhci_pci" ];
   boot.initrd.kernelModules = [ "i915" ];
 
+  # Disable IR driver to silence funky kernel messages
+  boot.blacklistedKernelModules = [ "ite_cir" ];
+
   boot.kernelModules = [ "kvm-intel" ];
 
   fileSystems = {
