@@ -2,26 +2,20 @@
 
 let
   secrets = import ./secrets.nix;
-
-  mopidy-jellyfin = pkgs.callPackage ../../packages/mopidy-jellyfin.nix { };
-  mopidy-mpd = pkgs.callPackage ../../packages/mopidy-mpd.nix { };
-  mopidy-muse = pkgs.callPackage ../../packages/mopidy-muse.nix { };
-  mopidy-somafm = pkgs.callPackage ../../packages/mopidy-somafm.nix { };
 in
 {
   services.mopidy = {
     enable = true;
     extensionPackages = with pkgs; [
-      mopidy-spotify
-      mopidy-jellyfin
       mopidy-mpd
-      mopidy-muse
+      mopidy-local
       mopidy-somafm
+      mopidy-musicbox-webclient
     ];
     configuration = ''
       [audio]
       mixer = none
-      output = pulsesink
+      output = audioresample ! audioconvert ! audio/x-raw,rate=48000,channels=2,format=S16LE ! filesink location=/run/snapserver/mopidy
 
       [stream]
       enabled = true
@@ -39,10 +33,11 @@ in
       port = 6680
       zeroconf = Mopidy HTTP Server
       csrf_protection = true
-      default_app = muse
+      default_app = musicbox_webclient
 
-      [muse]
+      [musicbox_webclient]
       enabled = true
+      musicbox = false
 
       [mpd]
       enabled = true
@@ -54,30 +49,37 @@ in
       [file]
       enabled = false
 
+      [local]
+      enabled = true
+      media_dir = /mnt/media/music
+
       [m3u]
       enabled = false
-
-      [jellyfin]
-      enabled = true
-      hostname = http://localhost:8096
-      username = ${secrets.mopidy.jellyfin.username}
-      password = ${secrets.mopidy.jellyfin.password}
-      album_format = {ProductionYear} - {Name}
-
-      [spotify]
-      enabled = true
-      username = ${secrets.mopidy.spotify.username}
-      password = ${secrets.mopidy.spotify.username}
-      client_id = ${secrets.mopidy.spotify.client_id}
-      client_secret = ${secrets.mopidy.spotify.client_secret}
-      bitrate = 320
-      volume_normalization = true
 
       [somafm]
       enabled = true
       encoding = aac
       quality = highest
     '';
+  };
+
+  systemd.timers.mopidy-scan = {
+    wantedBy = [ "timers.target" ];
+    timerConfig.OnCalendar = [ "*-*-* 05:00:00" ];
+  };
+
+  systemd.services.mopidy.unitConfig = {
+    RequiresMountsFor = "/mnt/media";
+  };
+
+  systemd.services.mopidy.after = [ "snapserver.service" ];
+
+  services.snapserver.streams = {
+    "mopidy" = {
+      type = "pipe";
+      location = "/run/snapserver/mopidy";
+      codec = "pcm";
+    };
   };
 
   firewall.rules = dag: with dag; {

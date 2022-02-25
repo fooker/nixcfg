@@ -6,6 +6,7 @@ in
     ./hardware.nix
     ./network.nix
     ./jellyfin.nix
+    ./snapcast.nix
     ./pulseaudio.nix
     ./mopidy.nix
     ./spotifyd.nix
@@ -23,6 +24,22 @@ in
   dns.host = {
     realm = "home";
     interface = "priv";
+  };
+
+  services.avahi = {
+    enable = true;
+    publish.enable = true;
+    publish.userServices = true;
+  };
+
+  firewall.rules = dag: with dag; {
+    inet.filter.input = {
+      avahi = between [ "established" ] [ "drop" ] ''
+        ip saddr 172.23.200.0/24
+        udp dport 5353
+        accept
+      '';
+    };
   };
 
   fileSystems."/mnt/media" = {

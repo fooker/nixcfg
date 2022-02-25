@@ -62,6 +62,17 @@ in
     bed = true;
   };
 
+  media_player = [
+    {
+      platform = "snapcast";
+      host = "127.0.0.1";
+    }
+    {
+      platform = "mpd";
+      host = "127.0.0.1";
+    }
+  ];
+
   automation = [ ];
   script = [ ];
   group = import ./groups.nix;
