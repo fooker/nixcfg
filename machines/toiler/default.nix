@@ -24,4 +24,10 @@ in
     realm = "home";
     interface = "priv";
   };
+
+  fileSystems."/mnt/media" = {
+    device = "//nas.dev.home.open-desk.net/media";
+    fsType = "cifs";
+    options = [ "x-systemd.automount" "noauto" "guest" ];
+  };
 }

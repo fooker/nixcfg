@@ -9,10 +9,8 @@
     enable = true;
   };
 
-  fileSystems."/mnt/media" = {
-    device = "nas.dev.home.open-desk.net:/media";
-    fsType = "nfs4";
-    options = [ "x-systemd.automount" "noauto" ];
+  systemd.services.jellyfin.unitConfig = {
+    RequiresMountsFor = "/mnt/media";
   };
 
   boot.kernel.sysctl = {
