@@ -51,6 +51,9 @@
       "30-en" = {
         name = "en";
         DHCP = "yes";
+        dhcpV4Config = {
+          RouteMetric = 2048;
+        };
       };
       "30-wl" = {
         name = "wl";
