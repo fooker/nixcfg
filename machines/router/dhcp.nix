@@ -6,20 +6,20 @@ let
   # All DHCP reservations by IP version from all prefixes over all interfaces
   reservations = concatMap
     (interface: concatMap
-      (address: optional (hasAttr "dhcp" address.prefix.reservations) {
-        inherit interface;
-        inherit address;
+      (address: concatMap
+        (reservation: optional (address.address.version == 4 && reservation.dhcp.enable) {
+          inherit interface;
+          inherit address;
 
-        inherit (address.prefix) prefix;
+          inherit (address.prefix) prefix;
 
-        first = elemAt address.prefix.reservations."dhcp".range 0;
-        last = elemAt address.prefix.reservations."dhcp".range 1;
+          first = elemAt reservation.range 0;
+          last = elemAt reservation.range 1;
 
-        extraConfig = address.prefix.reservations."dhcp".extraConfig or { };
-      })
-      (filter
-        (address: address.address.version == 4)
-        interface.addresses))
+          config = reservation.dhcp;
+        })
+        (attrValues address.prefix.reservations))
+      (interface.addresses))
     (attrValues device.interfaces);
 
   # All interfaces that have at least one prefix with a DHCP reservation
@@ -80,7 +80,9 @@ in
                 "pool" = "${toString reservation.first}-${toString reservation.last}";
               }
             ];
-          } // reservation.extraConfig)
+          } // (optionalAttrs (reservation.config.valid-lifetime != null) {
+            inherit (reservation.config) valid-lifetime;
+          }))
           reservations;
       };
     };
