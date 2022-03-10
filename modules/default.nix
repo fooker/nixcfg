@@ -15,6 +15,7 @@
     ./hive/default.nix
     ./dns/default.nix
     ./network.nix
-    ./monitoring.nix
+    ./ipam.nix
+    ./monitoring/default.nix
   ];
 }

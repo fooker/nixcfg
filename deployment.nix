@@ -3,24 +3,13 @@ let
 
   pkgs = import sources.nixpkgs { };
 
-  /* Load the IPAM data
-  */
-  network = (import ../ipam.nix {
-    lib = pkgs.lib;
-    configuration = ./network;
-  }).config;
-
-  mkMachine = path: id: { lib, config, name, ... }:
+  mkMachine = path: id: { lib, config, ... }:
     with lib;
 
     let
       /* Read the machine configuration from machine.nix in the machines directory
       */
       machine = import "${path}/machine.nix";
-
-      /* Network configuration for this device.
-      */
-      device = network.devices."${name}";
 
       /* Generate tags for a machine path
       */
@@ -32,7 +21,7 @@ let
     in
     {
       _module.args = {
-        inherit machine path id network device;
+        inherit machine path id;
       };
 
       deployment = {
@@ -40,7 +29,6 @@ let
         targetUser = machine.target.user;
 
         tags = machine.tags
-          ++ (optional (device.site != null) "site-${device.site.name}")
           ++ (genTags (init id));
 
         substituteOnDestination = true;

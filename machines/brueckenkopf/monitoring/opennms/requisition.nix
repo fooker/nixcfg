@@ -6,34 +6,33 @@ let
   secrets = import ../../secrets.nix;
 
   nodes' = mapAttrsToList
-    (name: node:
-      rec {
-        inherit name;
-        inherit (node.config.monitoring) label id;
+    (name: device: {
+      id = device.monitoring.id;
 
-        device = network.devices."${name}";
+      label = name;
 
-        location = optionalString
-          (device.site != null)
-          device.site.name;
+      location = optionalString
+        (device.site != null)
+        device.site.name;
 
-        interfaces = concatLists (mapAttrsToList
-          (name: interface: map
-            (address: {
-              inherit name address;
+      interfaces = concatLists (mapAttrsToList
+        (name: interface: map
+          (address: {
+            inherit name address;
 
-              services = map
-                (service: {
-                  inherit (service) name meta;
-                })
-                (filter
-                  (service: service.interfaces == null || elem interface.name service.interfaces)
-                  node.config.monitoring.services);
-            })
-            interface.effectiveAddresses)
-          device.interfaces);
-      })
-    nodes;
+            services = map
+              (service: {
+                inherit (service) name meta;
+              })
+              ((filter
+                (service: service.interfaces == null || elem interface.name service.interfaces)
+                (optionals (nodes ? ${name}) nodes.${name}.config.monitoring.services))
+              ++ interface.monitoring.services);
+          })
+          interface.effectiveAddresses)
+        device.interfaces);
+    })
+    network.devices;
 
   requisition = pkgs.writeText "requisition.xml" ''
     <model-import
