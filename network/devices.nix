@@ -60,6 +60,8 @@
       interfaces = {
         "priv" = {
           mac = "00:05:cd:38:94:8a";
+
+          monitoring.services = [ "ICMP" ];
         };
       };
     };
@@ -96,6 +98,8 @@
       interfaces = {
         "priv" = {
           mac = "f8:b4:6a:80:a2:cf";
+
+          monitoring.services = [ "ICMP" "SNMP" ];
         };
       };
     };
@@ -108,6 +112,8 @@
       interfaces = {
         "mngt" = {
           mac = "00:1d:aa:87:58:ac";
+
+          monitoring.services = [ "ICMP" "SNMP" ];
         };
       };
     };
@@ -120,6 +126,8 @@
       interfaces = {
         "mngt" = {
           mac = "58:0a:20:9a:11:72";
+
+          monitoring.services = [ "ICMP" "SNMP" ];
         };
       };
     };
@@ -132,6 +140,8 @@
       interfaces = {
         "mngt" = {
           mac = "08:cc:68:43:35:a2";
+
+          monitoring.services = [ "ICMP" "SNMP" ];
         };
       };
     };
@@ -144,6 +154,8 @@
       interfaces = {
         "mngt" = {
           mac = "9c:57:ad:a0:ad:67";
+
+          monitoring.services = [ "ICMP" "SNMP" ];
         };
       };
     };
@@ -155,7 +167,9 @@
 
       interfaces = {
         "mngt" = {
-          mac = "";
+          mac = "bc:9f:e4:cc:90:3e";
+
+          monitoring.services = [ "ICMP" ];
         };
       };
     };
@@ -168,6 +182,8 @@
       interfaces = {
         "mngt" = {
           mac = "bc:9f:e4:cc:a6:26";
+
+          monitoring.services = [ "ICMP" ];
         };
       };
     };
