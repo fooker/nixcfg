@@ -37,5 +37,26 @@ with lib;
       "nixpkgs=${pkgs.path}"
       "nixpkgs-unstable=${pkgs.unstable.path}"
     ];
+
+    # Register current nixpkgs in flake registry
+    nix.registry = {
+      "nixpkgs" = {
+        from = { type = "indirect"; id = "nixpkgs"; };
+        to = { type = "path"; path = pkgs.path; };
+      };
+      "nixpkgs-unstable" = {
+        from = { type = "indirect"; id = "nixpkgs-unstable"; };
+        to = { type = "path"; path = pkgs.unstable.path; };
+      };
+      "nixpkgs-latest" = {
+        from = { type = "indirect"; id = "nixpkgs-latest"; };
+        to = {
+          type = "github";
+          owner = "NixOS";
+          repo = "nixpkgs";
+          reg = "nixpkgs-unstable";
+        };
+      };
+    };
   };
 }
