@@ -28,11 +28,11 @@
     qalculate-gtk
     evince
     mate.eom
-    gimp
-    inkscape
+    unstable.gimp
+    unstable.inkscape
     libreoffice
     vorta
-    obsidian
+    unstable.obsidian
 
     # CLI tools
     ripgrep
