@@ -51,6 +51,7 @@ in
   camera = [
     {
       platform = "mjpeg";
+      name = "prusa";
       mjpeg_url = "http://prusa.home.open-desk.net/webcam?action=stream";
       still_image_url = "http://prusa.home.open-desk.net/webcam?action=snapshot";
     }
