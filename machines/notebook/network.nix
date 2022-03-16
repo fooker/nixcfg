@@ -52,7 +52,7 @@
         name = "en";
         DHCP = "yes";
         dhcpV4Config = {
-          RouteMetric = 2048;
+          RouteMetric = 512;
         };
       };
       "30-wl" = {
