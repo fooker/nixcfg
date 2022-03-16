@@ -54,7 +54,7 @@ with lib;
           type = "github";
           owner = "NixOS";
           repo = "nixpkgs";
-          reg = "nixpkgs-unstable";
+          ref = "nixpkgs-unstable";
         };
       };
     };
