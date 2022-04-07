@@ -9,6 +9,7 @@ in
     ./dhcp.nix
     ./corerad.nix
     ./dns.nix
+    ./ntp.nix
     ./upnp.nix
     ./ddclient.nix
     ./peering.nix
