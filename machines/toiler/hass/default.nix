@@ -74,7 +74,7 @@ in
     }
   ];
 
-  automation = [ ];
+  automation = import ./automations;
   script = [ ];
   group = import ./groups.nix;
   scene = import ./scenes.nix;
