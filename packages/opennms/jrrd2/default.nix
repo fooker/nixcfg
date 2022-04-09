@@ -1,4 +1,5 @@
 { stdenv
+, buildMaven
 , fetchFromGitHub
 , jdk8_headless
 , maven
@@ -7,6 +8,9 @@
 , rrdtool
 }:
 
+let
+  m2 = buildMaven ./maven-deps.json;
+in
 stdenv.mkDerivation rec {
   pname = "jrrd2";
   version = "2.0.5";
@@ -18,6 +22,10 @@ stdenv.mkDerivation rec {
     sha256 = "05ax3xxlzgby23ll1anxa3qy1jc23i1l8swdyzgvink18qyb2rky";
   };
 
+  patches = [
+    ./maven-deps.patch
+  ];
+
   nativeBuildInputs = [ jdk8_headless maven cmake pkg-config ];
   buildInputs = [ rrdtool ];
 
@@ -27,7 +35,7 @@ stdenv.mkDerivation rec {
   buildPhase = ''
     (
       cd java
-      mvn clean compile -Dmaven.repo.local=/tmp/m2
+      mvn --offline --settings ${m2.settings} clean compile
     )
 
     (
@@ -38,7 +46,7 @@ stdenv.mkDerivation rec {
 
     (
       cd java
-      mvn package -DskipTests -Dmaven.repo.local=/tmp/m2
+      mvn --offline --settings ${m2.settings} package -Dmaven.test.skip=true -Dmaven.site.skip=true -Dmaven.javadoc.skip=true
       cp -v target/jrrd2-api-*.jar ../dist/
     )
   '';
@@ -47,9 +55,4 @@ stdenv.mkDerivation rec {
     mkdir $out
     cp -v -r dist/* $out/
   '';
-
-  outputHashAlgo = "sha256";
-  outputHashMode = "recursive";
-
-  outputHash = "1mgp73q35jzw4xh5skpj85bqj6pavfvwfgba1can7b204zngh2sb";
 }

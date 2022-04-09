@@ -3,9 +3,9 @@
 with lib;
 
 let
-  jicmp = pkgs.callPackage ../../../../packages/opennms/jicmp.nix { };
-  jicmp6 = pkgs.callPackage ../../../../packages/opennms/jicmp6.nix { };
-  jrrd2 = pkgs.callPackage ../../../../packages/opennms/jrrd2.nix { };
+  jicmp = pkgs.callPackage ../../../../packages/opennms/jicmp { };
+  jicmp6 = pkgs.callPackage ../../../../packages/opennms/jicmp6 { };
+  jrrd2 = pkgs.callPackage ../../../../packages/opennms/jrrd2 { };
 
   opennms = pkgs.callPackage ../../../../packages/opennms/opennms.nix { };
 in
@@ -54,12 +54,10 @@ in
       ExecStart = "/opt/opennms/bin/opennms -s start";
       ExecStop = "/opt/opennms/bin/opennms stop";
 
-      ExecStopPost = "-rm /var/log/opennms/opennms.pid";
-
       RuntimeDirectory = "opennms";
 
       PIDFile = "/var/log/opennms/opennms.pid";
-      TimeoutStartSec = "5m";
+      TimeoutStartSec = "10m";
 
       BindReadOnlyPaths = [
         "${opennms.horizon}/opt/opennms:/opt/opennms"
@@ -85,7 +83,7 @@ in
   services.postgresql = {
     enable = true;
     package = pkgs.postgresql_12.withPackages (_: [
-      (pkgs.callPackage ../../../../packages/opennms/iplike.nix { postgresql = pkgs.postgresql_12; })
+      (pkgs.callPackage ../../../../packages/opennms/iplike { postgresql = pkgs.postgresql_12; })
     ]);
   };
 

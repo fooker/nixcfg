@@ -1,0 +1,31 @@
+diff --git a/java/pom.xml b/java/pom.xml
+index 76af475..257bc76 100644
+--- a/java/pom.xml
++++ b/java/pom.xml
+@@ -33,6 +33,26 @@
+                 <target>${jdk.version}</target>
+             </configuration>
+         </plugin>
++        <plugin>
++            <groupId>org.apache.maven.plugins</groupId>
++            <artifactId>maven-resources-plugin</artifactId>
++            <version>3.2.0</version>
++        </plugin>
++        <plugin>
++            <groupId>org.apache.maven.plugins</groupId>
++            <artifactId>maven-surefire-plugin</artifactId>
++            <version>2.22.2</version>
++        </plugin>
++        <plugin>
++            <groupId>org.apache.maven.plugins</groupId>
++            <artifactId>maven-install-plugin</artifactId>
++            <version>2.5.2</version>
++        </plugin>
++        <plugin>
++            <groupId>org.apache.maven.plugins</groupId>
++            <artifactId>maven-deploy-plugin</artifactId>
++            <version>2.8.2</version>
++        </plugin>
+         <!-- Generate JNI headers -->
+         <plugin>
+             <groupId>com.alexkasko.maven</groupId>
