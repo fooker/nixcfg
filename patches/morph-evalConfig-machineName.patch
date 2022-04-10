@@ -8,8 +8,7 @@ Date:   Sat May 23 20:53:36 2020 +0200
     name. Which in turn allows using a complelty different NixOS version for
     a specific version.
 
-diff --git a/data/eval-machines.nix b/data/eval-machines.nix
-index 2ff6fbb..074a3af 100644
+index bc06d2b..746f7fd 100644
 --- a/data/eval-machines.nix
 +++ b/data/eval-machines.nix
 @@ -5,7 +5,7 @@ let
@@ -21,21 +20,21 @@ index 2ff6fbb..074a3af 100644
    runCommand   = network.network.runCommand or nwPkgs.runCommand or ((import <nixpkgs> {}).runCommand);
  in
    with lib;
-@@ -42,7 +42,7 @@ in rec {
+@@ -52,7 +52,7 @@ in rec {
    uncheckedNodes =
      listToAttrs (map (machineName:
        { name = machineName;
 -        value = import evalConfig {
 +        value = evalConfig machineName {
-           modules = modules machineName;
-           extraArgs = { nodes = uncheckedNodes; name = machineName; };
-           check = false;
-@@ -54,7 +54,7 @@ in rec {
+           modules = modules {
+             inherit machineName;
+             check = false;
+@@ -66,7 +66,7 @@ in rec {
    nodes =
      listToAttrs (map (machineName:
        { name = machineName;
 -        value = import evalConfig {
 +        value = evalConfig machineName {
-           modules = modules machineName;
-           extraArgs = { nodes = uncheckedNodes ; name = machineName; };
-         };
+           modules = modules {
+             inherit machineName;
+             check = true;
