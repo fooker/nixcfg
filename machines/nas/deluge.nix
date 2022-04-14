@@ -135,6 +135,8 @@ in
         "${ pkgs.iproute }/bin/ip -n deluge link delete dev deluge"
       ];
     };
+
+    wantedBy = [ "multi-user.target" ];
   };
 
   systemd.services."deluged-proxy" = {
