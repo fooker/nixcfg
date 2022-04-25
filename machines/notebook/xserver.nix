@@ -48,6 +48,14 @@
         Option          "ScrollButton"          "2"
         Option          "ScrollMethod"          "button"
       ''
+      ''
+        Identifier      "Yowkees Keyball61"
+        MatchVendor     "Yowkees"
+        MatchProduct    "Keyball61"
+        Driver          "libinput"
+        Option          "ScrollButton"          "2"
+        Option          "ScrollMethod"          "button"
+      ''
     ];
 
     updateDbusEnvironment = true;
