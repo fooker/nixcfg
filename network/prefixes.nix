@@ -123,12 +123,12 @@
           device = "br3";
           interface = "mngt";
         };
-        "192.168.254.140" = {
-          device = "ap-upstairs";
+        "192.168.254.16" = {
+          device = "ap-downstairs";
           interface = "mngt";
         };
-        "192.168.254.157" = {
-          device = "ap-downstairs";
+        "192.168.254.17" = {
+          device = "ap-upstairs";
           interface = "mngt";
         };
       };
