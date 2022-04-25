@@ -3,15 +3,13 @@
 with lib;
 
 let
-  # All DHCP reservations by IP version from all prefixes over all interfaces
-  reservations = concatMap
+  # All DHCP pool reservations by IP version from all prefixes over all interfaces
+  pools = concatMap
     (interface: concatMap
       (address: concatMap
         (reservation: optional (address.address.version == 4 && reservation.dhcp.enable) {
           inherit interface;
           inherit address;
-
-          inherit (address.prefix) prefix;
 
           first = elemAt reservation.range 0;
           last = elemAt reservation.range 1;
@@ -22,10 +20,10 @@ let
       (interface.addresses))
     (attrValues device.interfaces);
 
-  # All interfaces that have at least one prefix with a DHCP reservation
+  # All interfaces that have at least one prefix with a DHCP pool reservation
   interfaces = attrNames (groupBy
     (reservation: reservation.interface.name)
-    reservations);
+    pools);
 
 in
 {
@@ -48,18 +46,18 @@ in
         };
 
         "subnet4" = map
-          (reservation: {
-            "subnet" = toString reservation.prefix;
-            "interface" = reservation.interface.name;
+          (pool: {
+            "subnet" = toString pool.address.prefix.prefix;
+            "interface" = pool.interface.name;
 
             "option-data" = [
               {
                 "name" = "routers";
-                "data" = "${toString reservation.address.address}";
+                "data" = "${toString pool.address.address}";
               }
               {
                 "name" = "domain-name-servers";
-                "data" = "${toString reservation.address.address}";
+                "data" = "${toString pool.address.address}";
               }
               {
                 "name" = "domain-name";
@@ -71,19 +69,27 @@ in
               }
               {
                 "name" = "ntp-servers";
-                "data" = "${toString reservation.address.address}";
+                "data" = "${toString pool.address.address}";
               }
             ];
 
             "pools" = [
               {
-                "pool" = "${toString reservation.first}-${toString reservation.last}";
+                "pool" = "${toString pool.first}-${toString pool.last}";
               }
             ];
-          } // (optionalAttrs (reservation.config.valid-lifetime != null) {
-            inherit (reservation.config) valid-lifetime;
+
+            # Build a static reservation for all devices in the prefix of the defined pool
+            "reservations" = concatMap
+              (address: optional (address.interface.mac != null) {
+                "hw-address" = address.interface.mac;
+                "ip-address" = toString address.address;
+              })
+              (attrValues pool.address.prefix.addresses);
+          } // (optionalAttrs (pool.config.valid-lifetime != null) {
+            inherit (pool.config) valid-lifetime;
           }))
-          reservations;
+          pools;
       };
     };
   };
