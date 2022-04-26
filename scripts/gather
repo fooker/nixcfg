@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 declare -a MACHINES
 if [[ "${1}" != "" ]]; then
 	MACHINES=( "${1}" )
@@ -11,7 +13,7 @@ for MACHINE in "${MACHINES[@]}"; do
 	echo "-- ${MACHINE} --"
 	MACHINE_DIR="$(pwd)/machines/${MACHINE}"
 	
-	TARGET="$(nix eval --raw "(with import \"${MACHINE_DIR}/machine.nix\"; \"\${target.user}@\${target.host}\")")"
+	TARGET="$(nix eval --raw --impure --expr "(with import \"${MACHINE_DIR}/machine.nix\"; \"\${target.user}@\${target.host}\")")"
 	echo "Target: ${TARGET}"
 
 	mkdir -p "${MACHINE_DIR}/gathered"
