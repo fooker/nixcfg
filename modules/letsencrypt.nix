@@ -92,7 +92,7 @@ in
             RFC2136_NAMESERVER=${nameserver}
             RFC2136_TSIG_ALGORITHM=${tsigAlgorithm}
             RFC2136_TSIG_KEY=${tsigKey}
-            RFC2136_TSIG_SECRET_FILE=/var/lib/acme/update.tsig
+            RFC2136_TSIG_SECRET_FILE=${config.deployment.keys."acme-update-tsig-secret".path}
             RFC2136_PROPAGATION_TIMEOUT=3600
           '';
 
@@ -129,12 +129,12 @@ in
       "/var/lib/acme"
     ];
 
-    deployment.secrets = {
+    deployment.keys = {
       "acme-update-tsig-secret" = {
-        source = toString ../secrets/acme_update.tsig;
-        destination = "/var/lib/acme/update.tsig";
-        owner.user = "acme";
-        owner.group = "acme";
+        keyFile = toString ../secrets/acme_update.tsig;
+        destDir = "/etc/secrets";
+        user = "acme";
+        group = "acme";
         permissions = "0444";
       };
     };

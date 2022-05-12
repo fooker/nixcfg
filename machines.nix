@@ -15,10 +15,17 @@ with lib;
         in
         # Machines must have a machine.nix file
         if builtins.pathExists (path + "/machine.nix")
-        then [{
-          inherit id path;
-          name = "${concatStringsSep "-" (id)}"; # Build the name of the machine
-        }]
+        then [
+          (
+            # Read the machine configuration from machine.nix in the machines directory
+            (import "${path}/machine.nix") // {
+              inherit id path;
+
+              # Build the name of the machine
+              name = "${concatStringsSep "-" (id)}";
+            }
+          )
+        ]
         else
           concatLists
             (mapAttrsToList

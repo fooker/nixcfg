@@ -1,18 +1,16 @@
+{ nixpkgs
+, ipam
+, ...
+}@inputs:
+
 let
-  sources = import ./nix/sources.nix;
+  pkgs = import nixpkgs { };
 
-  pkgs = import sources.nixpkgs { };
-
-  mkMachine = path: id: { lib, config, ... }:
+  mkMachine = machine: { lib, ... }:
     with lib;
 
     let
-      /* Read the machine configuration from machine.nix in the machines directory
-      */
-      machine = import "${path}/machine.nix";
-
-      /* Generate tags for a machine path
-      */
+      # Generate tags for a machine path
       genTags = path:
         if path != [ ]
         then (genTags (init path)) ++ [ (concatStringsSep "-" path) ]
@@ -21,7 +19,8 @@ let
     in
     {
       _module.args = {
-        inherit machine path id;
+        inherit machine;
+        inherit (machine) path id;
       };
 
       deployment = {
@@ -29,28 +28,7 @@ let
         targetUser = machine.target.user;
 
         tags = machine.tags
-          ++ (genTags (init id));
-
-        substituteOnDestination = true;
-      };
-
-      nixpkgs = {
-        config = {
-          allowUnfree = true;
-        };
-
-        overlays = [
-          (_: _: {
-            /* Make nixpkgs-unstable available as subtree
-            */
-            unstable = import sources.nixpkgs-unstable {
-              config = config.nixpkgs.config;
-              system = machine.system;
-            };
-          })
-        ];
-
-        localSystem.system = machine.system;
+          ++ (genTags (init machine.id));
       };
 
       nix.distributedBuilds = true;
@@ -58,7 +36,7 @@ let
       imports = [
         ./modules
         ./shared
-        path
+        machine.path
       ];
 
       system.stateVersion = machine.stateVersion;
@@ -71,23 +49,51 @@ let
     builtins.listToAttrs (map
       (machine: {
         name = machine.name;
-        value = (mkMachine machine.path machine.id);
+        value = {
+          # Find the nixpkgs path for the machine with the given name
+          nixpkgs = import (inputs."nixpkgs-${machine.name}" or nixpkgs) {
+            localSystem.system = machine.system;
+            config = {
+              allowUnfree = true;
+            };
+
+            overlays = [
+              # Make nixpkgs-unstable available as subtree
+              (_: _: {
+                unstable = import inputs.nixpkgs-unstable {
+                  localSystem.system = machine.system;
+                  config = {
+                    allowUnfree = true;
+                  };
+                };
+              })
+            ];
+          };
+
+          # Build the machines
+          system = mkMachine machine;
+        };
       })
       machines);
 
 in
-{
-  network = {
-    lib = pkgs.lib;
-    evalConfig = name:
-      let
-        # Find the nixpkgs path for the machine with the given name
-        path = sources."nixpkgs-${name}" or sources.nixpkgs;
+(builtins.mapAttrs
+  (_: machine: machine.system)
+  machines)
+  // {
+  meta = {
+    nixpkgs = pkgs;
 
-        # Import the lib from the selected nixpkgs path and extend it with our own functions
-        lib = import ./lib (import (path + "/lib"));
+    nodeNixpkgs = builtins.mapAttrs
+      (_: machine: machine.nixpkgs)
+      machines;
 
-      in
-      args: (import (path + "/nixos/lib/eval-config.nix")) (args // { inherit lib; });
+    specialArgs = {
+      # Inject the lib extensions
+      lib = (pkgs.lib.extend (import ./lib)).extend (import "${ipam}/lib");
+
+      # All available inputs
+      inputs = (removeAttrs inputs [ "self" ]);
+    };
   };
-} // machines
+}

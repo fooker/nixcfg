@@ -36,7 +36,7 @@
         enable = true;
         label = "data";
         blkDev = "/dev/disk/by-label/data-crypt";
-        keyFile = "/mnt-root/${config.deployment.secrets."luks-data-key".destination}";
+        keyFile = "/mnt-root/${config.deployment.keys."luks-data-key".path}";
       };
     };
   };
@@ -47,12 +47,12 @@
 
   nix.maxJobs = lib.mkDefault 4;
 
-  deployment.secrets = {
+  deployment.keys = {
     "luks-data-key" = {
-      source = "${path}/secrets/luks-data.key";
-      destination = "/etc/secrets/luks-data.key";
-      owner.user = "root";
-      owner.group = "root";
+      keyFile = "${path}/secrets/luks-data.key";
+      destDir = "/etc/secrets";
+      user = "root";
+      group = "root";
     };
   };
 }

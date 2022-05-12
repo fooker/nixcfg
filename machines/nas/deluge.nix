@@ -1,11 +1,11 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 with lib;
 
 let
   secrets = import ./secrets.nix;
 
-  netns-proxy = pkgs.callPackage ../../packages/netns-proxy.nix { };
+  netns-proxy = pkgs.callPackage ../../packages/netns-proxy.nix { inherit inputs; };
 
 in
 {

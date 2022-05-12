@@ -13,7 +13,6 @@ in
     ./user.nix
     ./gitea.nix
     ./drone.nix
-    ./paperless.nix
     ./hass.nix
   ];
 

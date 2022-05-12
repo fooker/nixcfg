@@ -9,7 +9,6 @@ in
     ./mosh.nix
     ./weechat.nix
     ./monitoring
-    ./ipam.nix
   ];
 
   server.enable = true;

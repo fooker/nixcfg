@@ -1,10 +1,9 @@
-let
-  sources = import ../../nix/sources.nix;
-in
+{ inputs, ... }:
+
 {
   nixpkgs.overlays = [
     (_: super: {
-      ate = super.callPackage sources.ate { };
+      ate = super.callPackage inputs.ate { };
     })
   ];
 

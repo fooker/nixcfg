@@ -59,7 +59,7 @@ in
       enable = true;
 
       keyFiles = [
-        config.deployment.secrets."knot-key-acme-update".destination
+        config.deployment.keys."knot-key-acme-update".path
       ];
 
       extraConfig = ''
@@ -124,12 +124,12 @@ in
       ''
     ];
 
-    deployment.secrets = {
+    deployment.keys = {
       "knot-key-acme-update" = {
-        source = "${path}/secrets/knot-key-acme-update.incl";
-        destination = "/var/lib/knot/key-acme-update.incl";
-        owner.user = "knot";
-        owner.group = "knot";
+        keyFile = "${path}/secrets/knot-key-acme-update.incl";
+        destDir = "/etc/secrets";
+        user = "knot";
+        group = "knot";
       };
     };
 

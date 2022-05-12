@@ -1,4 +1,4 @@
-{ pkgs, lib, path, nodes, ... }:
+{ lib, path, nodes, config, ... }:
 
 with lib;
 
@@ -19,7 +19,7 @@ in
           inherit system;
           hostName = builder.dns.host.domain.toSimpleString;
           sshUser = "root";
-          sshKey = "/var/lib/id_builder";
+          sshKey = config.deployment.keys."builder-sshkey".path;
           speedFactor = if system == builder.nixpkgs.localSystem.system then 8 else 4;
           maxJobs = 8;
           supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
@@ -37,17 +37,12 @@ in
     trustedUsers = lib.mkOptionDefault [ "fooker" ];
   };
 
-  deployment.secrets = {
+  deployment.keys = {
     "builder-sshkey" = rec {
-      source = "${path}/secrets/id_builder";
-      destination = "/var/lib/id_builder";
-      owner.user = "root";
-      owner.group = "nixbld";
-      action = [
-        ''
-          ${pkgs.openssh}/bin/ssh-keygen -y -f ${destination} > ${destination}.pub
-        ''
-      ];
+      keyFile = "${path}/secrets/id_builder";
+      destDir = "/etc/secrets";
+      user = "root";
+      group = "nixbld";
     };
   };
 }

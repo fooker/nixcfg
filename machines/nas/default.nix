@@ -1,9 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 let
   secrets = import ./secrets.nix;
 
-  mmv = pkgs.callPackage ../../packages/mmv.nix { };
+  mmv = pkgs.callPackage ../../packages/mmv.nix { inherit inputs; };
 in
 {
   imports = [

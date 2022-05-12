@@ -1,17 +1,14 @@
-{ pkgs, lib, name, config, ... }:
+{ lib, name, config, inputs, ... }:
 
 with lib;
 
 let
-  network = (import ../../ipam.nix {
-    lib = pkgs.lib;
-    configuration = [
-      ./../network
-      {
-        inherit (config.ipam) extends;
-      }
-    ];
-  }).config;
+  network = (inputs.ipam.eval [
+    ./../network
+    {
+      inherit (config.ipam) extends;
+    }
+  ]).config;
 
   device = network.devices."${name}";
 

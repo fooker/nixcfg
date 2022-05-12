@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
   # Hack required to get running nodejs downloaded by maven (who even things this is a god idea?)
@@ -18,15 +18,15 @@
 
   services.openvpn.servers.opennms = {
     autoStart = false;
-    config = "config /etc/openvpn/opennms.ovpn";
+    config = "config ${config.deployment.keys."openvpn-opennms".path}";
   };
 
-  deployment.secrets = {
+  deployment.keys = {
     "openvpn-opennms" = {
-      source = toString ./secrets/opennms.ovpn;
-      destination = "/etc/openvpn/opennms.ovpn";
-      owner.user = "root";
-      owner.group = "root";
+      keyFile = toString ./secrets/opennms.ovpn;
+      destDir = "/etc/secrets";
+      user = "root";
+      group = "root";
     };
   };
 

@@ -1,10 +1,8 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 with lib;
 
 let
-  sources = import ../../nix/sources.nix;
-
   apps = {
     "box" = {
       domains = [ "box.open-desk.net" "frisch.cloud" "www.frisch.cloud" ];
@@ -12,7 +10,7 @@ let
 
     "blog" = {
       domains = [ "open-desk.org" "www.open-desk.org" ];
-      root = pkgs.callPackage sources.blog { };
+      root = pkgs.callPackage inputs.blog { };
     };
 
     "schoen-und-gut" =
@@ -20,7 +18,7 @@ let
         php = pkgs.php.buildEnv { };
         site = pkgs.applyPatches {
           name = "schoen-und-gut-patched";
-          src = sources.schoen-und-gut;
+          src = inputs.schoen-und-gut;
           postPatch = ''
             sed -i '1s;^;#!${ php }/bin/php-cgi\n;' ./mail.php
           '';

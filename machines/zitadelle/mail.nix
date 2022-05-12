@@ -1,14 +1,13 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 with lib;
 
 let
-  sources = import ../../nix/sources.nix;
   secrets = import ./secrets.nix;
 in
 {
   imports = [
-    (import sources.nixos-mailserver)
+    (import inputs.nixos-mailserver)
   ];
 
   mailserver = {
@@ -63,6 +62,7 @@ in
     keyFile = config.letsencrypt.certs.mail.path.key;
 
     dkimSigning = true;
+    dkimKeyDirectory = "/etc/secrets/dkim";
     dkimSelector = "mail";
 
     mailDirectory = "/data/mail";
@@ -198,31 +198,32 @@ in
 
   backup.paths = [
     "/data/mail"
-    "/var/dkim"
     "/var/sieve"
   ];
 
-  deployment.secrets = listToAttrs (concatMap
+  deployment.keys = listToAttrs (concatMap
     (domain: [
       (nameValuePair "dkim-mail-${ domain }-key" {
-        source = toString ./secrets/dkim + "/${ domain }.mail.key";
-        destination = "/var/dkim/${ domain }.mail.key";
-        owner.user = config.services.opendkim.user;
-        owner.group = config.services.opendkim.group;
-        action = [
-          "${pkgs.systemd}/bin/systemctl reload opendkim.service"
-        ];
+        keyFile = toString ./secrets/dkim + "/${ domain }.mail.key";
+        destDir = config.mailserver.dkimKeyDirectory;
+        user = config.services.opendkim.user;
+        group = config.services.opendkim.group;
       })
       (nameValuePair "dkim-mail-${ domain }-txt" {
-        source = toString ./secrets/dkim + "/${ domain }.mail.txt";
-        destination = "/var/dkim/${ domain }.mail.txt";
-        owner.user = config.services.opendkim.user;
-        owner.group = config.services.opendkim.group;
-        action = [
-          "${pkgs.systemd}/bin/systemctl restart opendkim.service"
-        ];
+        keyFile = toString ./secrets/dkim + "/${ domain }.mail.txt";
+        destDir = config.mailserver.dkimKeyDirectory;
+        user = config.services.opendkim.user;
+        group = config.services.opendkim.group;
       })
     ])
     config.mailserver.domains
   );
+
+  systemd.service."opendkim" = mkMerge (map
+    (domain: {
+      requires = [ "dkim-mail-${domain}-key.service" ];
+      bindsTo = [ "dkim-mail-${domain}-key.service" ];
+      partOf = [ "dkim-mail-${domain}-key.service" ];
+    })
+    config.mailserver.domains);
 }

@@ -1,8 +1,7 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 let
-  sources = import ../../../nix/sources.nix;
-  photonic = pkgs.unstable.callPackage sources.photonic { };
+  photonic = pkgs.unstable.callPackage inputs.photonic { };
 
   scene = ./scene.dhall;
 

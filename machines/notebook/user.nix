@@ -1,13 +1,12 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 let
   username = "fooker";
-  sources = import ../../nix/sources.nix;
   secrets = import ./secrets.nix;
 in
 {
   imports = [
-    "${sources.home-manager}/nixos"
+    "${inputs.home-manager}/nixos"
   ];
 
   home-manager = {

@@ -1,9 +1,9 @@
-{ config, lib, pkgs, path, ... }:
+{ config, lib, pkgs, path, inputs, ... }:
 
 with lib;
 
 let
-  qd = pkgs.callPackage ../../packages/qd.nix { };
+  qd = pkgs.callPackage ../../packages/qd.nix { inherit inputs; };
 
   driver = "fujitsu";
 
@@ -34,7 +34,7 @@ let
       --output scan.pdf \
       *.jpg
 
-      ${pkgs.openssh}/bin/scp -i /var/lib/scanner/id_scanner ./scan.pdf scanner@nas.dev.home.open-desk.net:"$QD_JOB_ID.pdf"
+      ${pkgs.openssh}/bin/scp -i ${config.deployment.keys."scanner-sshkey".path} ./scan.pdf scanner@nas.dev.home.open-desk.net:"$QD_JOB_ID.pdf"
   '';
 
   scanbdConfigDir = pkgs.linkFarm "scanbd-conf" [
@@ -289,17 +289,12 @@ in
     };
   };
 
-  deployment.secrets = {
+  deployment.keys = {
     "scanner-sshkey" = rec {
-      source = "${path}/secrets/id_scanner";
-      destination = "/var/lib/scanner/id_scanner";
-      owner.user = "scanner";
-      owner.group = "scanner";
-      action = [
-        ''
-          ${pkgs.openssh}/bin/ssh-keygen -y -f ${destination} > ${destination}.pub
-        ''
-      ];
+      keyFile = "${path}/secrets/id_scanner";
+      destDir = "/etc/secrets/id_scanner";
+      user = "scanner";
+      group = "scanner";
     };
   };
 }

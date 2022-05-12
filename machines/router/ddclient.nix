@@ -15,17 +15,17 @@ in
     server = "ddserver.org";
 
     username = "${username}";
-    passwordFile = config.deployment.secrets."ddclient-password".destination;
+    passwordFile = config.deployment.keys."ddclient-password".path;
 
     domains = [ "${domain}" ];
 
     use = "if, if=ppp0";
   };
 
-  deployment.secrets = {
+  deployment.keys = {
     "ddclient-password" = rec {
-      source = "${path}/secrets/ddclient";
-      destination = "/etc/secrets/ddclient";
+      keyFile = "${path}/secrets/ddclient";
+      destDir = "/etc/secrets";
     };
   };
 }
