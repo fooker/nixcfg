@@ -254,6 +254,6 @@ in
     enable = true;
     xautolock.detectSleep = true;
     inactiveInterval = 10;
-    lockCmd = "${pkgs.i3lock}/bin/i3lock --nofork --color=000000 --ignore-empty-password --show-failed-attempts";
+    lockCmd = "${pkgs.i3lock}/bin/i3lock --nofork --color=000000 --image=/home/fooker/docs/lock.png --ignore-empty-password --show-failed-attempts";
   };
 }
