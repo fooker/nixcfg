@@ -219,7 +219,7 @@ in
     config.mailserver.domains
   );
 
-  systemd.service."opendkim" = mkMerge (map
+  systemd.services."opendkim" = mkMerge (map
     (domain: {
       requires = [ "dkim-mail-${domain}-key.service" ];
       bindsTo = [ "dkim-mail-${domain}-key.service" ];

@@ -36,6 +36,7 @@
     nixos-mailserver = {
       type = "git";
       url = "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver.git";
+      ref = "nixos-21.11";
     };
 
     ipinfo = {
