@@ -31,12 +31,20 @@
       type = "github";
       owner = "rycee";
       repo = "home-manager";
+
+      inputs = {
+        nixpkgs.follows = "nixpkgs-notebook";
+      };
     };
 
     nixos-mailserver = {
       type = "git";
       url = "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver.git";
       ref = "nixos-21.11";
+
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
     };
 
     ipinfo = {
@@ -102,10 +110,24 @@
       type = "github";
       owner = "cachix";
       repo = "pre-commit-hooks.nix";
+
+      inputs = {
+        flake-utils.follows = "flake-utils";
+      };
+    };
+
+    colmena = {
+      type = "github";
+      owner = "zhaofengli";
+      repo = "colmena";
+
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
     };
   };
 
-  outputs = { nixpkgs, flake-utils, pre-commit-hooks, ... }@inputs: {
+  outputs = { nixpkgs, flake-utils, pre-commit-hooks, colmena, ... }@inputs: {
     colmena = import ./deployment.nix inputs;
 
     devShell = flake-utils.lib.eachSystemMap flake-utils.lib.allSystems (system:
@@ -125,7 +147,9 @@
         };
       in
       pkgs.mkShell {
-        buildInputs = with pkgs; [
+        buildInputs = [
+          colmena.defaultPackage.${system}
+        ] ++ (with pkgs; [
           bash
           gitAndTools.git
           gitAndTools.transcrypt
@@ -137,7 +161,7 @@
           nixpkgs-fmt
           nix-linter
           shellcheck
-        ];
+        ]);
 
         inherit (hooks) shellHook;
       });
