@@ -221,9 +221,9 @@ in
 
   systemd.services."opendkim" = mkMerge (map
     (domain: {
-      requires = [ "dkim-mail-${domain}-key.service" ];
-      bindsTo = [ "dkim-mail-${domain}-key.service" ];
-      partOf = [ "dkim-mail-${domain}-key.service" ];
+      requires = [ "dkim-mail-${domain}-key-key.service" ];
+      bindsTo = [ "dkim-mail-${domain}-key-key.service" ];
+      partOf = [ "dkim-mail-${domain}-key-key.service" ];
     })
     config.mailserver.domains);
 }
