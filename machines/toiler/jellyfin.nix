@@ -1,10 +1,4 @@
 {
-  nixpkgs.overlays = [
-    (self: _: {
-      jellyfin = self.unstable.jellyfin;
-    })
-  ];
-
   services.jellyfin = {
     enable = true;
   };
