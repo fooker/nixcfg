@@ -58,6 +58,7 @@
   hardware.bluetooth = {
     enable = true;
     package = pkgs.bluezFull;
+    hsphfpd.enable = true;
   };
 
   hardware.pulseaudio = {
