@@ -31,6 +31,7 @@
       type = "github";
       owner = "rycee";
       repo = "home-manager";
+      ref = "release-21.11";
 
       inputs = {
         nixpkgs.follows = "nixpkgs-notebook";

@@ -4,7 +4,7 @@
 }@inputs:
 
 let
-  pkgs = import nixpkgs { };
+  deploymentPkgs = import nixpkgs { };
 
   mkMachine = machine: { lib, ... }:
     with lib;
@@ -33,6 +33,18 @@ let
 
       nix.distributedBuilds = true;
 
+      nixpkgs.overlays = [
+        # Make nixpkgs-unstable available as subtree
+        (_: _: {
+          unstable = import inputs.nixpkgs-unstable {
+            localSystem.system = machine.system;
+            config = {
+              allowUnfree = true;
+            };
+          };
+        })
+      ];
+
       imports = [
         ./modules
         ./shared
@@ -44,7 +56,7 @@ let
 
   machines =
     let
-      machines = (pkgs.callPackage ./machines.nix { }).machines;
+      machines = (deploymentPkgs.callPackage ./machines.nix { }).machines;
     in
     builtins.listToAttrs (map
       (machine: {
@@ -56,18 +68,6 @@ let
             config = {
               allowUnfree = true;
             };
-
-            overlays = [
-              # Make nixpkgs-unstable available as subtree
-              (_: _: {
-                unstable = import inputs.nixpkgs-unstable {
-                  localSystem.system = machine.system;
-                  config = {
-                    allowUnfree = true;
-                  };
-                };
-              })
-            ];
           };
 
           # Build the machines
@@ -82,7 +82,7 @@ in
   machines)
   // {
   meta = {
-    nixpkgs = pkgs;
+    nixpkgs = deploymentPkgs;
 
     nodeNixpkgs = builtins.mapAttrs
       (_: machine: machine.nixpkgs)
@@ -90,7 +90,7 @@ in
 
     specialArgs = {
       # Inject the lib extensions
-      lib = (pkgs.lib.extend (import ./lib)).extend (import "${ipam}/lib");
+      lib = (deploymentPkgs.lib.extend (import ./lib)).extend (import "${ipam}/lib");
 
       # All available inputs
       inputs = (removeAttrs inputs [ "self" ]);
