@@ -4,6 +4,7 @@ with lib;
 
 {
   imports = [
+    ./dn42.nix
     ./web.nix
     ./mail.nix
     ./radicale.nix
@@ -19,12 +20,6 @@ with lib;
     dns.zones = config.dns.host.domain.parent.mkRecords {
       A = config.dns.host.ipv4;
       AAAA = config.dns.host.ipv6;
-    };
-
-    # Enable peering info for DN42 peers
-    peering.info = {
-      enable = true;
-      domains = [ "dn42" ];
     };
   };
 }

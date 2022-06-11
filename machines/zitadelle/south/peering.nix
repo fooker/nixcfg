@@ -165,6 +165,33 @@ in
           };
         };
       };
+
+      "mk16" = {
+        netdev = "peer.mk16";
+
+        local.port = 23427;
+        local.privkey = secrets.peering.privkeys."mk16";
+
+        remote.endpoint.host = "p2p-router.de";
+        remote.endpoint.port = 51271;
+        remote.pubkey = "Lcx03wDehPX72ql/r8wmReZK6jHP1VpX5TADgRp0nF0=";
+
+        transfer = {
+          ipv4.addr = "192.168.234.11";
+          ipv4.peer = "192.168.234.12";
+
+          ipv6.addr = "fe80::1";
+          ipv6.peer = "fe80::2";
+        };
+
+        domains = {
+          "dn42" = {
+            bgp = {
+              as = 4242422923;
+            };
+          };
+        };
+      };
     };
   };
 }

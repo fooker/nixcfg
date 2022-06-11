@@ -95,6 +95,7 @@ in
 
       import keep filtered;
       import limit 1000 action block;
+      import table;
       import filter {
         if net ~ [${toString (ip.network.prefixNetwork domain.ipv4)}+] then {
           print "[${domain.name}] Received local network from external: ", net, " from ", bgp_path.last;
@@ -139,6 +140,7 @@ in
 
       import keep filtered;
       import limit 1000 action block;
+      import table;
       import filter {
         if net ~ [${toString (ip.network.prefixNetwork domain.ipv6)}+] then {
           print "[${domain.name}] Received local network from external: ", net, " from ", bgp_path.last;
