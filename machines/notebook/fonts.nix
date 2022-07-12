@@ -29,14 +29,14 @@
       google-fonts
       inconsolata
       iosevka
-      liberationsansnarrow
+      liberation-sans-narrow
       liberation_ttf
       libertine
       mononoki
       montserrat
       nerdfonts
       norwester-font
-      opensans-ttf
+      open-sans
       powerline-fonts
       roboto
       sampradaya

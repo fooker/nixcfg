@@ -66,8 +66,6 @@
     support32Bit = true;
     zeroconf.discovery.enable = true;
 
-    extraModules = [ pkgs.pulseaudio-modules-bt ];
-
     package = pkgs.pulseaudioFull;
 
     daemon.config = {

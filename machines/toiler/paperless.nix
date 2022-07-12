@@ -32,9 +32,9 @@ in
   ];
 
   fileSystems."/mnt/docs" = {
-    device = "nas.dev.home.open-desk.net:/docs";
-    fsType = "nfs4";
-    options = [ "x-systemd.automount" "noauto" ];
+    device = "//nas.dev.home.open-desk.net/docs";
+    fsType = "cifs";
+    options = [ "x-systemd.automount" "noauto" "guest" ];
   };
 
   users = {

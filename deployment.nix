@@ -88,12 +88,14 @@ in
       (_: machine: machine.nixpkgs)
       machines;
 
-    specialArgs = {
-      # Inject the lib extensions
-      lib = (deploymentPkgs.lib.extend (import ./lib)).extend (import "${ipam}/lib");
+    nodeSpecialArgs = builtins.mapAttrs
+      (_: machine: {
+        # Inject the lib extensions
+        lib = (machine.nixpkgs.lib.extend (import ./lib)).extend (import "${ipam}/lib");
 
-      # All available inputs
-      inputs = (removeAttrs inputs [ "self" ]);
-    };
+        # All available inputs
+        inputs = (removeAttrs inputs [ "self" ]);
+      })
+      machines;
   };
 }

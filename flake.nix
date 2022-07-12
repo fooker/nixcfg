@@ -18,7 +18,7 @@
       type = "github";
       owner = "NixOS";
       repo = "nixpkgs";
-      ref = "nixos-21.11";
+      ref = "nixos-22.05";
     };
 
     flake-utils = {
@@ -31,7 +31,7 @@
       type = "github";
       owner = "rycee";
       repo = "home-manager";
-      ref = "release-21.11";
+      ref = "release-22.05";
 
       inputs = {
         nixpkgs.follows = "nixpkgs-notebook";
