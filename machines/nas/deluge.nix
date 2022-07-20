@@ -163,7 +163,7 @@ in
 
   boot.extraModulePackages = optional (versionOlder config.boot.kernelPackages.kernel.version "5.6") config.boot.kernelPackages.wireguard;
 
-  reverse-proxy.hosts = {
+  web.reverse-proxy = {
     "deluge" = {
       domains = [ "deluge.home.open-desk.net" ];
       target = "http://127.0.0.1:${ toString config.services.deluge.web.port }/";

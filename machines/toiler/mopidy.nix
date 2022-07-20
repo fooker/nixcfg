@@ -92,7 +92,7 @@ in
     };
   };
 
-  reverse-proxy.hosts = {
+  web.reverse-proxy = {
     "mopidy" = {
       domains = [ "mopidy.home.open-desk.net" ];
       target = "http://[::1]:6680";

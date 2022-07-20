@@ -12,7 +12,7 @@ in
     security.adminPassword = secrets.grafana.adminPassword;
   };
 
-  reverse-proxy.hosts = {
+  web.reverse-proxy = {
     "grafana" = {
       domains = [ config.services.grafana.domain ];
       target = "http://${ config.services.grafana.addr }:${ toString config.services.grafana.port }";

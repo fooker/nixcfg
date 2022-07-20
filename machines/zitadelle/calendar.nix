@@ -56,7 +56,7 @@ in
     };
   };
 
-  reverse-proxy.hosts = {
+  web.reverse-proxy = {
     "calendar" = {
       domains = [ "calendar.open-desk.net" ];
       target = "http://127.0.0.1:5232/";

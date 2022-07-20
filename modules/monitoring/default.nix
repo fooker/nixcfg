@@ -3,10 +3,6 @@
 with lib;
 
 {
-  imports = [
-    ./minion.nix
-  ];
-
   options.monitoring = {
     services = mkOption {
       type = types.listOf (types.submodule {

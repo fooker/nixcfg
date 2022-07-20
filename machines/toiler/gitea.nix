@@ -33,7 +33,7 @@
     }];
   };
 
-  reverse-proxy.hosts = {
+  web.reverse-proxy = {
     "git" = {
       domains = [ "git.home.open-desk.net" ];
       target = "http://[${config.services.gitea.httpAddress}]:${toString config.services.gitea.httpPort}";

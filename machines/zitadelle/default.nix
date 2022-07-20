@@ -7,7 +7,7 @@ with lib;
     ./dn42.nix
     ./web.nix
     ./mail.nix
-    ./radicale.nix
+    ./calendar.nix
   ];
 
   options = {

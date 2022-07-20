@@ -11,7 +11,7 @@
     "fs.inotify.max_user_watches" = 65536;
   };
 
-  reverse-proxy.hosts = {
+  web.reverse-proxy = {
     "jellyfin" = {
       domains = [ "jellyfin.home.open-desk.net" ];
       target = "http://127.0.0.1:8096";

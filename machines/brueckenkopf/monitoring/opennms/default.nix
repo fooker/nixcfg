@@ -87,7 +87,7 @@ in
     ]);
   };
 
-  reverse-proxy.hosts = {
+  web.reverse-proxy = {
     "opennms" = {
       domains = [ "opennms.open-desk.net" ];
       target = "http://127.0.0.1:8980";

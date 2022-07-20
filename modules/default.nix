@@ -8,7 +8,7 @@
     ./backup.nix
     ./platform/default.nix
     ./letsencrypt.nix
-    ./reverse-proxy.nix
+    ./web
     ./firewall.nix
     ./docker.nix
     ./builder.nix

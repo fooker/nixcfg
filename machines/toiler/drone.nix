@@ -130,7 +130,7 @@ in
     groups."drone-runner" = { };
   };
 
-  reverse-proxy.hosts = {
+  web.reverse-proxy = {
     "ci" = {
       domains = [ "ci.home.open-desk.net" ];
       target = "http://localhost:3030";

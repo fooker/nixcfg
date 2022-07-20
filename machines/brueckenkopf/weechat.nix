@@ -49,7 +49,7 @@ in
     after = [ "network.target" ];
   };
 
-  reverse-proxy.hosts = {
+  web.reverse-proxy = {
     "weechat" = {
       domains = [ "weechat.open-desk.net" ];
       target = "http://127.0.0.1:9000";

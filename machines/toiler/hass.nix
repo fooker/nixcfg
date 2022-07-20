@@ -36,7 +36,7 @@
     autoExtraComponents = true;
   };
 
-  reverse-proxy.hosts = {
+  web.reverse-proxy = {
     "hass" = {
       domains = [ "hass.home.open-desk.net" ];
       target = "http://[::1]:8123/";

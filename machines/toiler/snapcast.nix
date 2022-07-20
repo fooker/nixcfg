@@ -49,7 +49,7 @@ with lib;
     environment.HOME = "%t/snapclient";
   };
 
-  reverse-proxy.hosts = {
+  web.reverse-proxy = {
     "snapserver" = {
       domains = [ "sound.home.open-desk.net" ];
       target = "http://[::1]:${toString config.services.snapserver.http.port}";

@@ -99,7 +99,7 @@ in
     wantedBy = [ "multi-user.target" ];
   };
 
-  reverse-proxy.hosts = {
+  web.reverse-proxy = {
     "paperless" = {
       domains = [ "docs.home.open-desk.net" ];
       target = "http://localhost:${toString port}/";

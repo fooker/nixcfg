@@ -139,28 +139,10 @@ in
   };
 
   config = mkIf config.peering.info.enable {
-    services.nginx = {
-      enable = true;
-      virtualHosts = {
-        "peering-info" = {
-          serverName = config.dns.host.domain.toSimpleString;
-
-          forceSSL = true;
-
-          sslCertificate = config.letsencrypt.certs."peering-info".path.cert;
-          sslCertificateKey = config.letsencrypt.certs."peering-info".path.key;
-          sslTrustedCertificate = config.letsencrypt.certs."peering-info".path.fullchain;
-
-          inherit root;
-        };
-      };
-    };
-
-    letsencrypt.certs = {
+    web.apps = {
       "peering-info" = {
         domains = [ config.dns.host.domain.toSimpleString ];
-        owner = "nginx";
-        trigger = "${pkgs.systemd}/bin/systemctl reload nginx.service";
+        inherit root;
       };
     };
   };
