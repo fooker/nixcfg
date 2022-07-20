@@ -261,7 +261,7 @@ with lib;
 
         config = {
           local.pubkey = builtins.readFile (pkgs.runCommandNoCCLocal "peering-${name}.crt" { } ''
-            echo '${ config.local.privkey }' | ${ pkgs.wireguard }/bin/wg pubkey > $out
+            echo '${ config.local.privkey }' | ${ pkgs.wireguard-tools }/bin/wg pubkey > $out
           '');
         };
       }));
