@@ -1,0 +1,18 @@
+diff --git a/src/Makefile b/src/Makefile
+index d39806f80..ea2b481d7 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -336,13 +336,6 @@ else
+     endef
+ endif
+ 
+-# Alpine OS doesn't have support for the execinfo backtrace library we use for debug, so we provide an alternate implementation using libwunwind.
+-OS := $(shell cat /etc/os-release | grep ID= | head -n 1 | cut -d'=' -f2)
+-ifeq ($(OS),alpine)
+-    FINAL_CXXFLAGS+=-DUNW_LOCAL_ONLY
+-    FINAL_LIBS += -lunwind
+-endif
+-
+ 
+ REDIS_CC=$(QUIET_CC)$(CC) $(FINAL_CFLAGS)
+ REDIS_CXX=$(QUIET_CC)$(CXX) $(FINAL_CXXFLAGS)

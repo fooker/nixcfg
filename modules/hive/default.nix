@@ -65,5 +65,6 @@ with lib;
     ./peering.nix
     ./mariadb.nix
     ./glusterfs.nix
+    ./keydb.nix
   ];
 }
