@@ -123,6 +123,8 @@ mkIf (domains != [ ]) {
         persist;
         learn;
 
+        metric 4096;
+
         ipv4 {
           table output_4;
           import none;
@@ -133,6 +135,8 @@ mkIf (domains != [ ]) {
       protocol kernel output_kernel_6 {
         persist;
         learn;
+
+        metric 4096;
 
         ipv6 {
           table output_6;
