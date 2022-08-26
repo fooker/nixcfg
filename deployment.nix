@@ -29,7 +29,7 @@ let
 
         tags = machine.tags
           ++ (genTags (init machine.id));
-      };
+      } // (machine.deployment or { });
 
       nix.distributedBuilds = true;
 
