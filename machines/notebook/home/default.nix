@@ -51,9 +51,9 @@
     magic-wormhole
 
     # Development
-    jetbrains.idea-ultimate
-    jetbrains.clion
-    jetbrains.pycharm-professional
+    unstable.jetbrains.idea-ultimate
+    unstable.jetbrains.clion
+    unstable.jetbrains.pycharm-professional
     vscodium
 
     # Comm
