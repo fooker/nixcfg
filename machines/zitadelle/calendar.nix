@@ -14,6 +14,8 @@ let
 
 in
 {
+  hive.glusterfs.volumes = [ "calendar" ];
+
   services.radicale = {
     enable = true;
 

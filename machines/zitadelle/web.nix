@@ -44,6 +44,7 @@ let
 
 in
 {
+  hive.glusterfs.volumes = [ "http" ];
 
   web.apps = mapAttrs
     (_: app: {
