@@ -63,7 +63,7 @@ with lib;
               { addr = "[::]"; port = 443; ssl = true; }
             ];
 
-            inherit (app) root;
+            root = mkDefault app.root;
 
             forceSSL = true;
             sslCertificate = config.letsencrypt.certs."${name}".path.cert;
