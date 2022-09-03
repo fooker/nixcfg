@@ -8,6 +8,7 @@ with lib;
     ./web.nix
     ./mail.nix
     ./calendar.nix
+    ./nextcloud.nix
   ];
 
   options = {

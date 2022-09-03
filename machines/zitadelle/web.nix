@@ -5,7 +5,7 @@ with lib;
 let
   apps = {
     "box" = {
-      domains = [ "box.open-desk.net" "frisch.cloud" "www.frisch.cloud" ];
+      domains = [ "box.open-desk.net" ];
       root = "/srv/http/box";
     };
 
