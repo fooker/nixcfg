@@ -42,11 +42,32 @@ in
     };
 
     extraApps = {
-      twofactor_totp = pkgs.fetchNextcloudApp {
+      twofactor_totp = pkgs.fetchNextcloudApp rec {
         name = "twofactor_totp";
         sha256 = "sha256-cRtpRs1s31l8xG84YkZIuR3C3pg2kQFNlrY2f5NTSBo=";
-        url = "https://github.com/nextcloud-releases/twofactor_totp/releases/download/v6.4.0/twofactor_totp-v6.4.0.tar.gz";
-        version = "0.6.9";
+        url = "https://github.com/nextcloud-releases/${name}/releases/download/v${version}/${name}-v${version}.tar.gz";
+        version = "6.4.0";
+      };
+
+      contacts = pkgs.fetchNextcloudApp rec {
+        name = "contacts";
+        sha256 = "sha256-Oo7EFKlXxAAFFPQZzrpOx+6dpBb78r/yPxpDs6Cgw04=";
+        url = "https://github.com/nextcloud-releases/${name}/releases/download/v${version}/${name}-v${version}.tar.gz";
+        version = "4.2.0";
+      };
+
+      calendar = pkgs.fetchNextcloudApp rec {
+        name = "calendar";
+        sha256 = "sha256-+LRGl9h40AQdWN9SW+NqGwTafAGwV07Af8nVs3pUCm0=";
+        url = "https://github.com/nextcloud-releases/${name}/releases/download/v${version}/${name}-v${version}.tar.gz";
+        version = "3.5.0";
+      };
+
+      tasks = pkgs.fetchNextcloudApp rec {
+        name = "tasks";
+        sha256 = "sha256-kXXUzzODi/qRi2NqtJyiS1GmLTx0kFAwtH1p0rCdnRM=";
+        url = "https://github.com/nextcloud/${name}/releases/download/v${version}/${name}.tar.gz";
+        version = "0.14.4";
       };
     };
   };
