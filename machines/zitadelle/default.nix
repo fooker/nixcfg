@@ -7,7 +7,6 @@ with lib;
     ./dn42.nix
     ./web.nix
     ./mail.nix
-    ./calendar.nix
     ./nextcloud.nix
   ];
 
