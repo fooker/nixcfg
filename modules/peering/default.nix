@@ -430,5 +430,23 @@ with lib;
           in
           listToAttrs (map mkDomain domains);
       };
+
+      assertions = [
+        # Ensure local peering ports are unique
+        (foldr
+          (peer: args@{ assertion, message ? null, acc ? { } }:
+            if !assertion
+            then args
+            else if hasAttr (toString peer.local.port) acc then {
+              assertion = false;
+              message = "${message}: Port ${toString peer.local.port} defined on ${peer.name} and ${getAttr key acc}";
+            } else {
+              assertion = true;
+              inherit message;
+              acc = acc // { "${toString peer.local.port}" = peer.name; };
+            })
+          { assertion = true; message = "Ports must be unique"; }
+          (attrValues config.peering.peers))
+      ];
     };
 }
