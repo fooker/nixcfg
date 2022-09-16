@@ -121,6 +121,7 @@
       type = "github";
       owner = "zhaofengli";
       repo = "colmena";
+      ref = "stable";
 
       inputs = {
         nixpkgs.follows = "nixpkgs";
