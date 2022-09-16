@@ -12,7 +12,6 @@ in
 
   mailserver = {
     enable = true;
-    debug = true;
 
     fqdn = config.dns.host.domain.toSimpleString;
 
