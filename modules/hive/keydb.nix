@@ -47,6 +47,9 @@ in
         "redis.service"
       ];
 
+      wants = [ "network-online.target" ];
+      after = [ "network-online.target" ];
+
       unitConfig = {
         StartLimitIntervalSec = 60;
       };
