@@ -5,7 +5,7 @@ let
     name = "parsecgaming-pkg";
     src = pkgs.fetchurl {
       url = "https://builds.parsecgaming.com/package/parsec-linux.deb";
-      sha256 = "1hfdzjd8qiksv336m4s4ban004vhv00cv2j461gc6zrp37s0fwhc";
+      hash = "sha256-DHIH9Bk3f8NeMESKzQDYcBMArFpEk2rG2HpGjJr8zcE=";
     };
     phases = [ "buildPhase" ];
     buildInputs = with pkgs; [ dpkg ];
@@ -32,6 +32,7 @@ let
       udev
       libva
       libxkbcommon
+      ffmpeg
       nas
       stdenv.cc.cc.lib
       vulkan-loader
