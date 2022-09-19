@@ -32,8 +32,6 @@
     port = 8123;
 
     config = import ./hass;
-
-    autoExtraComponents = true;
   };
 
   web.reverse-proxy = {

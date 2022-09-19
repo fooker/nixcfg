@@ -192,6 +192,33 @@ in
           };
         };
       };
+
+      "indigo" = {
+        netdev = "peer.indigo";
+
+        local.port = 23428;
+        local.privkey = secrets.peering.privkeys."indigo";
+
+        remote.endpoint.host = "booty.labmonkeys.space";
+        remote.endpoint.port = 51820;
+        remote.pubkey = "G+h5ho6X3C76HxGQw9ZoX3dpRCOspPe9F1vo49ullCg=";
+
+        transfer = {
+          ipv4.addr = "192.168.234.17";
+          ipv4.peer = "192.168.234.16";
+
+          ipv6.addr = "fe80::1";
+          ipv6.peer = "fe80::2";
+        };
+
+        domains = {
+          "dn42" = {
+            bgp = {
+              as = 4242422423;
+            };
+          };
+        };
+      };
     };
   };
 }
