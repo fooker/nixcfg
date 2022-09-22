@@ -314,13 +314,18 @@
 
       interfaces = {
         "ext" = {
-          mac = "52:54:6e:09:06:f3";
+          mac = "96:00:01:8b:36:09";
           satelite = {
             addresses = [
-              "37.120.172.185/22"
-              "2a03:4000:6:701e::/64"
+              "88.198.178.118/32"
+              "2a01:4f8:1c1c:43bb::/64"
             ];
-            gateways = [ "37.120.172.1" "fe80::1" ];
+            routes = [{
+              # Point to point route for default gateway
+              destination = "172.31.1.1/32";
+              gateway = null;
+            }];
+            gateways = [ "172.31.1.1" "fe80::1" ];
             dns = [ "1.0.0.1" "1.1.1.1" "2606:4700:4700::1111" "2606:4700:4700::1001" ];
           };
         };
@@ -334,13 +339,18 @@
 
       interfaces = {
         "ext" = {
-          mac = "52:54:5a:81:b4:b2";
+          mac = "96:00:01:8e:00:0d";
           satelite = {
             addresses = [
-              "37.120.172.177/22"
-              "2a03:4000:6:701d::/64"
+              "167.235.248.37/32"
+              "2a01:4f8:c012:38ee::/64"
             ];
-            gateways = [ "37.120.172.1" "fe80::1" ];
+            routes = [{
+              # Point to point route for default gateway
+              destination = "172.31.1.1/32";
+              gateway = null;
+            }];
+            gateways = [ "172.31.1.1" "fe80::1" ];
             dns = [ "1.0.0.1" "1.1.1.1" "2606:4700:4700::1111" "2606:4700:4700::1001" ];
           };
         };

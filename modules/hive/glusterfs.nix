@@ -87,7 +87,7 @@ with lib;
       inet.filter.input = {
         gluster = between [ "established" ] [ "drop" ] ''
           ip saddr { ${ concatMapStringsSep "," (node: toString node.address.ipv4) (attrValues config.hive.nodes) } }
-          tcp dport { 24007 - 24009, 49152 - 49154}
+          tcp dport { 24007, 24008, 49152 - 60999}
           accept
         '';
       };

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, path, ... }:
+{ config, lib, pkgs, path, name, ... }:
 
 with lib;
 {
@@ -123,7 +123,8 @@ with lib;
           ${pkgs.openssh}/bin/ssh-keygen \
             -N "" \
             -t ed25519 \
-            -f /var/lib/backup/id_backup
+            -f /var/lib/backup/id_backup \
+            -C "backup@${name}"
         fi
       '';
     };
