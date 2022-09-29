@@ -4,7 +4,7 @@
     trigger = [{
       platform = "sun";
       event = "sunset";
-      offset = "-01:00:00";
+      offset = "+01:00:00";
     }];
     action = [{
       service = "light.turn_on";
@@ -15,7 +15,7 @@
         ];
       };
       data = {
-        brightness_pct = 50;
+        brightness_pct = 40;
       };
     }];
   }
@@ -23,7 +23,7 @@
     alias = "Turn down Origami Lights at midnight";
     trigger = [{
       platform = "time";
-      at = "00:00:00";
+      at = "11:00:00";
     }];
     condition = [{
       condition = "state";
@@ -42,7 +42,7 @@
         ];
       };
       data = {
-        brightness_pct = 20;
+        brightness_pct = 10;
       };
     }];
   }
@@ -51,7 +51,7 @@
     trigger = [{
       platform = "sun";
       event = "sunrise";
-      offset = "+01:00:00";
+      offset = "-01:00:00";
     }];
     action = [{
       service = "light.turn_off";
