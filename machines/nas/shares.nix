@@ -34,6 +34,16 @@ in
         "path" = "/mnt/scanner";
         "read only" = false;
       };
+      "docs" = {
+        "browseable" = "no";
+        "guest ok" = "no";
+        "path" = "/mnt/docs";
+        "read only" = false;
+        "create mask" = "0644";
+        "directory mask" = "0755";
+        "force user" = "share";
+        "force group" = "share";
+      };
       "vault" = {
         "browseable" = "no";
         "guest ok" = "no";

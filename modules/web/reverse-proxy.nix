@@ -14,6 +14,12 @@ with lib;
           type = types.str;
           description = "Target to pass requests to";
         };
+
+        extraConfig = mkOption {
+          type = types.lines;
+          default = "";
+          description = "Additional config for the app";
+        };
       };
     }));
 
@@ -35,6 +41,8 @@ with lib;
             proxy_set_header Accept-Encoding "$http_accept_encoding";
           '';
         };
+
+        inherit (app) extraConfig;
       };
     })
     config.web.reverse-proxy;

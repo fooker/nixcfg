@@ -3,6 +3,8 @@
 with lib;
 
 let
+  secrets = import ./secrets.nix;
+
   qd = pkgs.callPackage ../../packages/qd.nix { inherit inputs; };
 
   driver = "fujitsu";
@@ -34,7 +36,17 @@ let
       --output scan.pdf \
       *.jpg
 
-      ${pkgs.openssh}/bin/scp -i ${config.deployment.keys."scanner-sshkey".path} ./scan.pdf scanner@nas.dev.home.open-desk.net:"$QD_JOB_ID.pdf"
+      ${pkgs.openssh}/bin/scp \
+        -i ${config.deployment.keys."scanner-sshkey".path} \
+        ./scan.pdf \
+        scanner@nas.dev.home.open-desk.net:"$QD_JOB_ID.pdf"
+
+      ${pkgs.curl}/bin/curl \
+        -v \
+        -u ${secrets.paperless.upload.username}:${secrets.paperless.upload.password} \
+        https://docs.home.open-desk.net//api/documents/post_document/ \
+        -X POST \
+        -F document=@scan.pdf
   '';
 
   scanbdConfigDir = pkgs.linkFarm "scanbd-conf" [
