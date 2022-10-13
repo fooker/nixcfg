@@ -28,13 +28,15 @@ let
     shopt -s failglob
 
     for PPM in *.ppm; do
-      ${pkgs.imagemagick}/bin/convert "$PPM" "''${PPM%.*}.jpg"
+      ${pkgs.imagemagick}/bin/convert \
+        "$PPM" \
+        "''${PPM%.*}.png"
     done
 
     ${pkgs.img2pdf}/bin/img2pdf \
       --verbose \
       --output scan.pdf \
-      *.jpg
+      *.png
 
       ${pkgs.openssh}/bin/scp \
         -i ${config.deployment.keys."scanner-sshkey".path} \
