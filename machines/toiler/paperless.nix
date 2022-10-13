@@ -22,6 +22,7 @@ with lib;
     extraConfig = {
       PAPERLESS_DBHOST = "/run/postgresql";
       PAPERLESS_OCR_LANGUAGE = "deu+eng";
+      PAPERLESS_OCR_CLEAN = "clean-final";
     };
   };
 
