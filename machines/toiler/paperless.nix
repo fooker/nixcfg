@@ -31,7 +31,7 @@ with lib;
       domains = [ "docs.home.open-desk.net" ];
       target = "http://${config.services.paperless.address}:${toString config.services.paperless.port}/";
       extraConfig = ''
-        client_max_body_size 128M;
+        client_max_body_size 512M;
       '';
     };
   };

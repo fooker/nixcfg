@@ -66,18 +66,6 @@
       };
     };
 
-    "scanner" = {
-      type = "Raspberry Pi 3 Model B+";
-      role = "2D-Scanner";
-      site = "home";
-
-      interfaces = {
-        "priv" = {
-          mac = "b8:27:eb:cb:20:ed";
-        };
-      };
-    };
-
     "photonic" = {
       type = "Raspberry Pi 3 Model B+";
       role = "Home Automation";

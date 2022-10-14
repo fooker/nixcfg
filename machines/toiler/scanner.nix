@@ -13,42 +13,70 @@ let
     set -e -u -o pipefail
 
     # Scan the document
-    ${qd}/bin/qd -v -v -p /mnt/spool push \
+    ${qd}/bin/qd -v -v -p /var/spool/scanner push \
       ${pkgs.sane-frontends}/bin/scanadf \
         --device-name "$SCANBD_DEVICE" \
         --verbose \
         --output-file 'scan-%03d.ppm' \
         --resolution 300 \
         --mode 'Color' \
-        --source 'ADF Duplex'
+        --source 'ADF Duplex' \
+        --swcrop=yes --ald=yes
+  '';
+
+  uploadScriptPart = pkgs.writeShellScript "upload-part" ''
+    set -e -u -o pipefail
+    shopt -s failglob
+
+    echo "Processing Part: $1" 1>&2
+
+    ${pkgs.netpbm}/bin/pnmtops \
+      -nosetpage \
+      -equalpixels \
+      -dpi=300 \
+      -noturn \
+      "$1" \
+    > "$1.ps"
+    
+    ${pkgs.ghostscript}/bin/ps2pdf \
+      "$1.ps" \
+      "$1.pdf"
+    
+    echo "$1.pdf"
   '';
 
   uploadScript = pkgs.writeShellScript "upload" ''
     set -e -u -o pipefail
     shopt -s failglob
 
-    for PPM in *.ppm; do
-      ${pkgs.imagemagick}/bin/convert \
-        "$PPM" \
-        "''${PPM%.*}.png"
-    done
+    INPUT=( $(find . -name "scan-*.ppm") )
 
-    ${pkgs.img2pdf}/bin/img2pdf \
-      --verbose \
-      --output scan.pdf \
-      *.png
+    if [[ ''${#INPUT[@]} == 0 ]]; then
+      echo "No input";
+      exit 0
+    fi
 
-      ${pkgs.openssh}/bin/scp \
-        -i ${config.deployment.keys."scanner-sshkey".path} \
-        ./scan.pdf \
-        scanner@nas.dev.home.open-desk.net:"$QD_JOB_ID.pdf"
+    echo "Processing: ''${INPUT[@]}"
+    FILES=( $(
+      printf "%s\0" "''${INPUT[@]}" \
+      | xargs -0 -n1 -P4 ${uploadScriptPart} 
+    ) )
 
-      ${pkgs.curl}/bin/curl \
-        -v \
-        -u ${secrets.paperless.upload.username}:${secrets.paperless.upload.password} \
-        https://docs.home.open-desk.net//api/documents/post_document/ \
-        -X POST \
-        -F document=@scan.pdf
+    echo "Unifying ''${FILES[@]} ..."
+    ${pkgs.poppler_utils}/bin/pdfunite ''${FILES[@]} "$QD_JOB_ID.pdf"
+
+    ${pkgs.openssh}/bin/scp \
+      -i ${config.deployment.keys."scanner-sshkey".path} \
+      "$QD_JOB_ID.pdf" \
+      scanner@nas.dev.home.open-desk.net:"$QD_JOB_ID.pdf"
+
+    ${pkgs.curl}/bin/curl \
+      -v \
+      --show-error --fail \
+      -u ${secrets.paperless.upload.username}:${secrets.paperless.upload.password} \
+      https://docs.home.open-desk.net//api/documents/post_document/ \
+      -X POST \
+      -F document=@"$QD_JOB_ID.pdf"
   '';
 
   scanbdConfigDir = pkgs.linkFarm "scanbd-conf" [
@@ -158,23 +186,6 @@ let
 
 in
 {
-  # Workaround to build on (currently) broken aarch64
-  nixpkgs.overlays = [
-    (_: super: rec {
-      python38 = super.python38.override {
-        packageOverrides = _: super: {
-          pikepdf = super.pikepdf.overrideAttrs (_: {
-            doCheck = false;
-            doInstallCheck = false;
-          });
-        };
-      };
-
-      python38Packages = python38.pkgs;
-    })
-  ];
-
-
   # Allow scanning over network
   boot.kernelModules = [ "nf_conntrack_sane" ];
 
@@ -263,11 +274,11 @@ in
   };
 
   # Retry uploading regulary
-  systemd.services."upload" = {
+  systemd.services."scanner-upload" = {
     description = "Upload scans for further processing";
 
     unitConfig = {
-      RequiresMountsFor = "/mnt/spool";
+      RequiresMountsFor = "/var/spool/scanner";
     };
 
     serviceConfig = {
@@ -280,7 +291,7 @@ in
       StandardOutput = "journal";
       StandardError = "journal";
 
-      ExecStart = "${qd}/bin/qd -v -v -p /mnt/spool daemon ${uploadScript}";
+      ExecStart = "${qd}/bin/qd -v -v -p /var/spool/scanner daemon ${uploadScript}";
     };
 
     wantedBy = [ "multi-user.target" ];
@@ -289,8 +300,8 @@ in
   # Add upload target to known hosts
   services.openssh.knownHosts = {
     "nas" = {
-      hostNames = [ "nas.dev.home.open-desk.net" "172.23.200.130" ];
-      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ58kj0PhHZThJ00tXLwNCFfK8o4RArFcNqtWfaXWto3";
+      hostNames = [ "nas.dev.home.open-desk.net" ];
+      publicKey = readFile ../nas/gathered/ssh_host_ed25519_key.pub;
     };
   };
 
