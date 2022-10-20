@@ -28,10 +28,6 @@
           device = "amp";
           interface = "priv";
         };
-        "172.23.200.134" = {
-          device = "scanner";
-          interface = "priv";
-        };
         "172.23.200.135" = {
           device = "photonic";
           interface = "priv";
@@ -77,10 +73,6 @@
         };
         "fd79:300d:6056:100::4" = {
           device = "amp";
-          interface = "priv";
-        };
-        "fd79:300d:6056:100::5" = {
-          device = "scanner";
           interface = "priv";
         };
         "fd79:300d:6056:100::6" = {
@@ -216,6 +208,11 @@
           device = "raketensilo";
           interface = "int";
         };
+
+        "172.23.200.37" = {
+          device = "win10";
+          interface = "int";
+        };
       };
     };
 
@@ -243,6 +240,11 @@
 
         "fd79:300d:6056:1::3" = {
           device = "raketensilo";
+          interface = "int";
+        };
+
+        "fd79:300d:6056:1::4" = {
+          device = "win10";
           interface = "int";
         };
       };
