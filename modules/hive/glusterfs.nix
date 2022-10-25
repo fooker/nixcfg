@@ -42,8 +42,9 @@ with lib;
           '';
           RemainAfterExit = true;
         };
-        after = [ "glusterd.service" ];
+        wants = [ "network-online.target" ];
         requires = [ "glusterd.service" ];
+        after = [ "glusterd.service" "network-online.target" ];
       };
     } //
     (listToAttrs (map
@@ -69,8 +70,9 @@ with lib;
         before = [ "srv-${volume}.mount" ];
         requiredBy = [ "srv-${volume}.mount" ];
         partOf = [ "srv-${volume}.mount" ];
-        after = [ "glusterd.service" "gluster-peers.service" ];
+        wants = [ "network-online.target" ];
         requires = [ "glusterd.service" "gluster-peers.service" ];
+        after = [ "glusterd.service" "gluster-peers.service" "network-online.target" ];
       })
       config.hive.glusterfs.volumes));
 
@@ -79,7 +81,7 @@ with lib;
         device = "localhost:/${volume}";
         fsType = "glusterfs";
         noCheck = true;
-        options = [ "noatime,_netdev" ];
+        options = [ "noatime" "_netdev" ];
       })
       config.hive.glusterfs.volumes);
 
