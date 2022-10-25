@@ -244,6 +244,12 @@
       };
     };
 
+    "win10" = {
+      type = "Virtual Server";
+      role = "Server";
+      site = "hs";
+    };
+
     "builder-intel" = {
       type = "Virtual Server";
       role = "Server";
