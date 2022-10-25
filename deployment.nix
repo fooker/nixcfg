@@ -4,7 +4,9 @@
 }@inputs:
 
 let
-  deploymentPkgs = import nixpkgs { };
+  deploymentPkgs = import nixpkgs {
+    localSystem.system = "x86_64-linux";
+  };
 
   mkMachine = machine: { lib, ... }:
     with lib;

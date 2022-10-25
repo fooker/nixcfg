@@ -4,6 +4,13 @@
       type = "github";
       owner = "NixOS";
       repo = "nixpkgs";
+      ref = "nixos-22.05";
+    };
+
+    nixpkgs-bunker = {
+      type = "github";
+      owner = "NixOS";
+      repo = "nixpkgs";
       ref = "nixos-21.11";
     };
 
@@ -29,7 +36,7 @@
 
     home-manager = {
       type = "github";
-      owner = "rycee";
+      owner = "nix-community";
       repo = "home-manager";
       ref = "release-22.05";
 
