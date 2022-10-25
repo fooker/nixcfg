@@ -72,6 +72,12 @@ in
     };
   };
 
+  systemd.services."nextcloud-setup" = {
+    unitConfig = {
+      RequiresMountsFor = config.services.nextcloud.datadir;
+    };
+  };
+
   web.apps."nextcloud" = {
     inherit domains;
   };
