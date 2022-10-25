@@ -97,8 +97,8 @@
     enable = true;
     extraBackends = [ pkgs.sane-airscan ];
     netConf = ''
-      ${toString network.devices."scanner".interfaces."priv".address.ipv4.address}
-      ${toString network.devices."scanner".interfaces."priv".address.ipv6.address}
+      ${toString network.devices."toiler".interfaces."priv".address.ipv4.address}
+      ${toString network.devices."toiler".interfaces."priv".address.ipv6.address}
     '';
   };
 
