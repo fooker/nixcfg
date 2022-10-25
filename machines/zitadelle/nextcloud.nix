@@ -44,30 +44,51 @@ in
     extraApps = {
       twofactor_totp = pkgs.fetchNextcloudApp rec {
         name = "twofactor_totp";
-        sha256 = "sha256-cRtpRs1s31l8xG84YkZIuR3C3pg2kQFNlrY2f5NTSBo=";
+        sha256 = "sha256-Wa2P6tpp75IxCsTG4B5DQ8+iTzR7yjKBi4ZDBcv+AOI=";
         url = "https://github.com/nextcloud-releases/${name}/releases/download/v${version}/${name}-v${version}.tar.gz";
-        version = "6.4.0";
+        version = "6.4.1";
       };
 
       contacts = pkgs.fetchNextcloudApp rec {
         name = "contacts";
-        sha256 = "sha256-Oo7EFKlXxAAFFPQZzrpOx+6dpBb78r/yPxpDs6Cgw04=";
+        sha256 = "sha256-GTiyZsUHBXPgQ17DHAihmt2W/ZnAjDwfgwnujkRwk6A=";
         url = "https://github.com/nextcloud-releases/${name}/releases/download/v${version}/${name}-v${version}.tar.gz";
-        version = "4.2.0";
+        version = "4.2.2";
       };
 
       calendar = pkgs.fetchNextcloudApp rec {
         name = "calendar";
-        sha256 = "sha256-+LRGl9h40AQdWN9SW+NqGwTafAGwV07Af8nVs3pUCm0=";
+        sha256 = "sha256-Sw3yZ3unK/kx2gqEiPM4k3ojgy1RHs62Dpba13lAoY0=";
         url = "https://github.com/nextcloud-releases/${name}/releases/download/v${version}/${name}-v${version}.tar.gz";
-        version = "3.5.0";
+        version = "3.5.1";
+      };
+
+      mail = pkgs.fetchNextcloudApp rec {
+        name = "mail";
+        sha256 = "sha256-CLJ0SOpDM9flsqT9Nwn2XhntK8EHKqw03kKETdX6aJA=";
+        url = "https://github.com/nextcloud-releases/${name}/releases/download/v${version}/${name}-v${version}.tar.gz";
+        version = "1.14.1";
       };
 
       tasks = pkgs.fetchNextcloudApp rec {
         name = "tasks";
-        sha256 = "sha256-kXXUzzODi/qRi2NqtJyiS1GmLTx0kFAwtH1p0rCdnRM=";
+        sha256 = "sha256-/foxaKyA6u8+LeUAnu4Co2msyNNd/YKD0fJUI73zxTI=";
         url = "https://github.com/nextcloud/${name}/releases/download/v${version}/${name}.tar.gz";
-        version = "0.14.4";
+        version = "0.14.5";
+      };
+
+      news = pkgs.fetchNextcloudApp rec {
+        name = "news";
+        sha256 = "sha256-lVF4H9v7bSw8137lfq4PsVg8e1TpcgvJVQU/UVQfSoY=";
+        url = "https://github.com/nextcloud/${name}/releases/download/${version}/${name}.tar.gz";
+        version = "19.0.0";
+      };
+
+      groupfolders = pkgs.fetchNextcloudApp rec {
+        name = "groupfolders";
+        sha256 = "sha256-RHkvpAWH4HbKbM4ZoUy1HCzydVdw2SYQJvzO02sZEVQ=";
+        url = "https://github.com/nextcloud/${name}/releases/download/v${version}/${name}.tar.gz";
+        version = "12.0.2";
       };
     };
   };
