@@ -68,14 +68,12 @@ in
   };
 
   # Disable default redis impl as we use keydb server
-  # services.redis.servers.rspamd.enable = mkForce false;
-  services.redis.enable = mkForce false;
-
-  # systemd.services.keydb = {
-  #   aliases = [
-  #     "redis-rspamd.service"
-  #   ];
-  # };
+  services.redis.servers.rspamd.enable = mkForce false;
+  systemd.services.keydb = {
+    aliases = [
+      "redis-rspamd.service"
+    ];
+  };
 
   services.dovecot2.mailPlugins.globally.enable = [ "zlib" "notify" "replication" ];
   services.dovecot2.extraConfig = ''

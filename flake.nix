@@ -39,20 +39,12 @@
       owner = "nix-community";
       repo = "home-manager";
       ref = "release-22.05";
-
-      inputs = {
-        nixpkgs.follows = "nixpkgs-notebook";
-      };
     };
 
     nixos-mailserver = {
       type = "git";
       url = "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver.git";
-      ref = "nixos-21.11";
-
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-      };
+      ref = "nixos-22.05";
     };
 
     ipinfo = {
@@ -118,20 +110,12 @@
       type = "github";
       owner = "cachix";
       repo = "pre-commit-hooks.nix";
-
-      inputs = {
-        flake-utils.follows = "flake-utils";
-      };
     };
 
     colmena = {
       type = "github";
       owner = "zhaofengli";
       repo = "colmena";
-
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-      };
     };
   };
 
