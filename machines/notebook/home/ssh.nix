@@ -22,20 +22,6 @@
         };
       };
 
-      "nixos-builder" = {
-        hostname = "172.23.200.35";
-        proxyJump = "root@brueckenkopf.dev.open-desk.net";
-        user = "root";
-        identitiesOnly = true;
-      };
-
-      "paradeplatz" = {
-        hostname = "172.23.200.34";
-        proxyJump = "root@brueckenkopf.dev.open-desk.net";
-        user = "root";
-        identitiesOnly = true;
-      };
-
       "br1" = {
         hostname = "192.168.254.3";
         proxyJump = "root@172.23.200.129";
