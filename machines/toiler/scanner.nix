@@ -49,7 +49,7 @@ let
     set -e -u -o pipefail
     shopt -s failglob
 
-    INPUT=( $(find . -name "scan-*.ppm") )
+    INPUT=( $(find . -name "scan-*.ppm" | sort) )
 
     if [[ ''${#INPUT[@]} == 0 ]]; then
       echo "No input";
@@ -59,7 +59,8 @@ let
     echo "Processing: ''${INPUT[@]}"
     FILES=( $(
       printf "%s\0" "''${INPUT[@]}" \
-      | xargs -0 -n1 -P4 ${uploadScriptPart} 
+      | xargs -0 -n1 -P4 ${uploadScriptPart} \
+      | sort
     ) )
 
     echo "Unifying ''${FILES[@]} ..."
