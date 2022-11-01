@@ -1,6 +1,6 @@
 {
   target = {
-    host = "nixos-builder";
+    host = "intel.builder.dev.hs.open-desk.net";
     user = "root";
   };
 

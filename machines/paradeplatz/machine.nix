@@ -1,6 +1,6 @@
 {
   target = {
-    host = "paradeplatz";
+    host = "paradeplatz.dev.hs.open-desk.net";
     user = "root";
   };
 

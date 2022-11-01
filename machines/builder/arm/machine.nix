@@ -1,6 +1,6 @@
 {
   target = {
-    host = "130.61.143.36";
+    host = "arm.builder.dev.open-desk.net";
     user = "root";
   };
 
