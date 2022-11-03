@@ -6,8 +6,6 @@
 
     emptyRepo = true;
     autoMount = true;
-
-    apiAddress = "/ip4/10.200.100.2/tcp/5001";
   };
 
   firewall.rules = dag: with dag; {
