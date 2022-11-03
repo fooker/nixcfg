@@ -21,6 +21,13 @@
       ref = "nixpkgs-unstable";
     };
 
+    nixpkgs-router = {
+      type = "github";
+      owner = "NixOS";
+      repo = "nixpkgs";
+      ref = "nixpkgs-unstable";
+    };
+
     nixpkgs-notebook = {
       type = "github";
       owner = "NixOS";

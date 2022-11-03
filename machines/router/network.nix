@@ -105,8 +105,9 @@ in
           UseDNS = false;
           UseNTP = false;
 
-          ForceDHCPv6PDOtherInformation = true;
-          PrefixDelegationHint = 56;
+          WithoutRA = "solicit";
+
+          PrefixDelegationHint = "::/56";
         };
       };
     };
@@ -148,10 +149,12 @@ in
           ];
 
           networkConfig = {
-            DHCPv6PrefixDelegation = true;
+            DHCPPrefixDelegation = true;
+            IPv6SendRA = true;
 
             IPv6DuplicateAddressDetection = 1;
             IPv6PrivacyExtensions = false;
+            IPv6AcceptRA = false;
 
             DNS = "${toString config.ipv4.address}";
             Domains = [
@@ -169,8 +172,10 @@ in
           };
 
           dhcpV6PrefixDelegationConfig = {
+            UplinkInterface = "ppp0";
             Assign = true;
             Announce = true;
+            SubnetId = config.vlan;
           };
         };
       };
