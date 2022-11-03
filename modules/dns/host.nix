@@ -1,4 +1,4 @@
-{ config, lib, id, device, ... }:
+{ config, lib, id, device, path, ... }:
 
 with lib;
 
@@ -70,6 +70,13 @@ with lib;
       (optionalAttrs (config.dns.host.ipv6 != null) {
         AAAA = config.dns.host.ipv6;
       })
+      //
+      {
+        includes = [
+          "${path}/gathered/ssh_host_rsa_key.sshfp.zone"
+          "${path}/gathered/ssh_host_ed25519_key.sshfp.zone"
+        ];
+      }
     ));
   };
 }

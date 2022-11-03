@@ -3,7 +3,7 @@
 set -euo pipefail
 
 declare -a MACHINES
-if [[ "${1}" != "" ]]; then
+if [[ "${1:-}" != "" ]]; then
 	MACHINES=( "${1}" )
 else
 	mapfile -t MACHINES < <(cd machines && find . -name 'machine.nix' -printf '%P\0' | xargs -0 dirname)
@@ -24,4 +24,14 @@ for MACHINE in "${MACHINES[@]}"; do
 		"${TARGET}:/var/lib/backup/id_backup.pub" \
 		"${MACHINE_DIR}/gathered"
 	
+	ssh-keygen \
+		-r "@" \
+		-f machines/notebook/gathered/ssh_host_rsa_key.pub \
+		> "${MACHINE_DIR}/gathered/ssh_host_rsa_key.sshfp.zone"
+	
+	ssh-keygen \
+		-r "@" \
+		-f machines/notebook/gathered/ssh_host_ed25519_key.pub \
+		> "${MACHINE_DIR}/gathered/ssh_host_ed25519_key.sshfp.zone"
+
 done
