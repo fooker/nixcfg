@@ -21,46 +21,9 @@ in
     trusted_proxies = "::1";
   };
 
-  mqtt = {
-    broker = "127.0.0.1";
-    port = 1883;
-    client_id = "hass";
-    discovery = true;
-    discovery_prefix = "homeassistant";
-  };
-
-  esphome = { };
-
-  denonavr = { };
-
-  ipp = { };
-
-  discovery = { };
-
-  xiaomi_miio = { };
-
-  mullvad = { };
-
-  mjpeg = { };
-
   spotify = {
     client_id = secrets.spotify.client.id;
     client_secret = secrets.spotify.client.secret;
-  };
-
-  camera = [
-    {
-      platform = "mjpeg";
-      name = "prusa";
-      mjpeg_url = "http://prusa.home.open-desk.net/webcam?action=stream";
-      still_image_url = "http://prusa.home.open-desk.net/webcam?action=snapshot";
-    }
-  ];
-
-  octoprint = {
-    host = "prusa.home.open-desk.net";
-    api_key = secrets.prusa.api_key;
-    bed = true;
   };
 
   media_player = [

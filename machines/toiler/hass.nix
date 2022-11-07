@@ -32,12 +32,63 @@
     port = 8123;
 
     config = import ./hass;
+
+    extraComponents = [
+      "default_config"
+      "lovelace"
+      "mqtt"
+      "esphome"
+      "denonavr"
+      "ipp"
+      "discovery"
+      "mjpeg"
+      "spotify"
+      "media_player"
+      "vacuum"
+      "xiaomi_miio"
+      "weather"
+      "octoprint"
+    ];
+  };
+
+  services.udev.extraRules = ''
+    SUBSYSTEM=="tty", ENV{ID_VENDOR_ID}=="10c4", ENV{ID_MODEL_ID}=="ea60", ENV{ID_SERIAL_SHORT}="00_12_4B_00_25_9A_E3_4A", SYMLINK+="zigbee"
+  '';
+
+  services.zigbee2mqtt = {
+    enable = true;
+    settings = {
+      permit_join = false;
+
+      frontend = {
+        port = 8034;
+        host = "::1";
+        url = "https://zigbee.home.open-desk.net";
+      };
+
+      homeassistant = true;
+      availability = true;
+
+      serial = {
+        port = "/dev/zigbee";
+      };
+
+      mqtt = {
+        server = "mqtt://localhost:1883";
+        base_topic = "frisch/home/zigbee";
+        client_id = "zigbee2mqtt";
+      };
+    };
   };
 
   web.reverse-proxy = {
     "hass" = {
       domains = [ "hass.home.open-desk.net" ];
       target = "http://[::1]:8123/";
+    };
+    "zigbee" = {
+      domains = [ "zigbee.home.open-desk.net" ];
+      target = "http://[::1]:8034";
     };
   };
 
@@ -102,5 +153,6 @@
   backup.paths = [
     config.services.home-assistant.configDir
     config.services.mosquitto.dataDir
+    config.services.zigbee2mqtt.dataDir
   ];
 }
