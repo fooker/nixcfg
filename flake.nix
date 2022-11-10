@@ -7,13 +7,6 @@
       ref = "nixos-22.05";
     };
 
-    nixpkgs-bunker = {
-      type = "github";
-      owner = "NixOS";
-      repo = "nixpkgs";
-      ref = "nixos-21.11";
-    };
-
     nixpkgs-unstable = {
       type = "github";
       owner = "NixOS";

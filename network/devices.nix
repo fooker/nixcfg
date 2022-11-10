@@ -288,13 +288,18 @@
 
       interfaces = {
         "ext" = {
-          mac = "52:54:10:e9:1b:37";
+          mac = "96:00:01:a7:28:6c";
           satelite = {
             addresses = [
-              "37.120.161.15/22"
-              "2a03:4000:6:30f2::/64"
+              "65.21.148.248/32"
+              "2a01:4f9:c010:79da::/64"
             ];
-            gateways = [ "37.120.160.1" "fe80::1" ];
+            routes = [{
+              # Point to point route for default gateway
+              destination = "172.31.1.1/32";
+              gateway = null;
+            }];
+            gateways = [ "172.31.1.1" "fe80::1" ];
             dns = [ "1.0.0.1" "1.1.1.1" "2606:4700:4700::1111" "2606:4700:4700::1001" ];
           };
         };

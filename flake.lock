@@ -292,22 +292,6 @@
         "type": "indirect"
       }
     },
-    "nixpkgs-bunker": {
-      "locked": {
-        "lastModified": 1659446231,
-        "narHash": "sha256-hekabNdTdgR/iLsgce5TGWmfIDZ86qjPhxDg/8TlzhE=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "eabc38219184cc3e04a974fe31857d8e0eac098d",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-21.11",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs-notebook": {
       "locked": {
         "lastModified": 1667318659,
@@ -489,7 +473,6 @@
         "netns-proxy": "netns-proxy",
         "nixos-mailserver": "nixos-mailserver",
         "nixpkgs": "nixpkgs_5",
-        "nixpkgs-bunker": "nixpkgs-bunker",
         "nixpkgs-notebook": "nixpkgs-notebook",
         "nixpkgs-router": "nixpkgs-router",
         "nixpkgs-unstable": "nixpkgs-unstable",

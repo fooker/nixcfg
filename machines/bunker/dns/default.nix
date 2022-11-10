@@ -124,6 +124,10 @@ in
       ''
     ];
 
+    backup.paths = [
+      "/var/lib/knot"
+    ];
+
     deployment.keys = {
       "knot-key-acme-update" = {
         keyFile = "${path}/secrets/knot-key-acme-update.incl";

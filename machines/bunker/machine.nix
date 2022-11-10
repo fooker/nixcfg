@@ -1,6 +1,7 @@
 {
   target = {
-    host = "bunker.dev.open-desk.net";
+    # host = "bunker.dev.open-desk.net";
+    host = "65.21.148.248";
     user = "root";
   };
 
