@@ -72,7 +72,6 @@
     prusa-slicer
     virt-manager
     steam-run
-    unstable.gns3-gui
 
     # Xorg stuff
     xorg.xdriinfo

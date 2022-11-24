@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ pkgs, inputs, config, ... }:
 
 let
   username = "fooker";
@@ -18,6 +18,10 @@ in
       imports = [
         ./home
       ];
+    };
+
+    extraSpecialArgs = {
+      inherit (config._module.args) inputs network device;
     };
   };
 

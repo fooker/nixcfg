@@ -1,8 +1,6 @@
 { config, pkgs, network, ... }:
 
 {
-  boot.kernelPackages = pkgs.linuxPackages_5_10;
-
   boot.kernelParams = [
     "quiet"
     "i195.fastboot=1"

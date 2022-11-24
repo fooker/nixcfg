@@ -1,4 +1,4 @@
-{ ... }:
+{ network, ... }:
 
 {
   programs.ssh = {
@@ -9,55 +9,44 @@
 
     forwardAgent = true;
 
-    matchBlocks = {
-      "opennms" = {
-        hostname = "127.0.0.1";
-        port = 8101;
-        user = "admin";
-        checkHostIP = false;
-        extraOptions = {
-          "StrictHostKeyChecking" = "no";
-          "NoHostAuthenticationForLocalhost" = "yes";
-          "SetEnv" = "TERM=xterm";
+    matchBlocks =
+      let
+        mkManagementJumpDevice = name: config: {
+          "${name}" = {
+            hostname = toString network.devices."${name}".interfaces."mngt".address.ipv4.address;
+            proxyJump = "root@${toString network.devices."router".interfaces."priv".address.ipv4.address}";
+            user = "root";
+            identitiesOnly = true;
+          } // config;
         };
-      };
 
-      "br1" = {
-        hostname = "192.168.254.3";
-        proxyJump = "root@172.23.200.129";
-        user = "root";
-        identitiesOnly = true;
-        extraOptions = {
-          "KexAlgorithms" = "+diffie-hellman-group1-sha1";
-          "Ciphers" = "+aes256-cbc";
-          "HostKeyAlgorithms" = "+ssh-rsa";
+        ciscoConfig = {
+          extraOptions = {
+            "KexAlgorithms" = "+diffie-hellman-group1-sha1";
+            "Ciphers" = "+aes256-cbc";
+            "HostKeyAlgorithms" = "+ssh-rsa";
+          };
         };
-      };
-
-      "br2" = {
-        hostname = "192.168.254.4";
-        proxyJump = "root@172.23.200.129";
-        user = "root";
-        identitiesOnly = true;
-        extraOptions = {
-          "KexAlgorithms" = "+diffie-hellman-group1-sha1";
-          "Ciphers" = "+aes256-cbc";
-          "HostKeyAlgorithms" = "+ssh-rsa";
+      in
+      {
+        "opennms" = {
+          hostname = "127.0.0.1";
+          port = 8101;
+          user = "admin";
+          checkHostIP = false;
+          extraOptions = {
+            "StrictHostKeyChecking" = "no";
+            "NoHostAuthenticationForLocalhost" = "yes";
+            "SetEnv" = "TERM=xterm";
+          };
         };
-      };
-
-      "br3" = {
-        hostname = "192.168.254.5";
-        proxyJump = "root@172.23.200.129";
-        user = "root";
-        identitiesOnly = true;
-        extraOptions = {
-          "KexAlgorithms" = "+diffie-hellman-group1-sha1";
-          "Ciphers" = "+aes256-cbc";
-          "HostKeyAlgorithms" = "+ssh-rsa";
-        };
-      };
-    };
+      }
+      // (mkManagementJumpDevice "br1" ciscoConfig)
+      // (mkManagementJumpDevice "br2" ciscoConfig)
+      // (mkManagementJumpDevice "br3" ciscoConfig)
+      // (mkManagementJumpDevice "ap-downstairs" { })
+      // (mkManagementJumpDevice "ap-upstairs" { })
+    ;
 
     extraConfig = ''
       VerifyHostKeyDNS yes
