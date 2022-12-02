@@ -1,6 +1,3 @@
-let
-  secrets = import ../secrets.nix;
-in
 {
   default_config = { };
 
@@ -21,11 +18,6 @@ in
     trusted_proxies = "::1";
   };
 
-  spotify = {
-    client_id = secrets.spotify.client.id;
-    client_secret = secrets.spotify.client.secret;
-  };
-
   media_player = [
     {
       platform = "snapcast";
@@ -37,10 +29,14 @@ in
     }
   ];
 
-  automation = import ./automations;
-  script = [ ];
-  group = import ./groups.nix;
-  scene = import ./scenes.nix;
+  automation = "!include automations.yaml";
+  script = "!include scripts.yaml";
+
+  "group decl" = import ./groups.nix;
+  "group ui" = "!include groups.yaml";
+
+  "scene decl" = import ./scenes.nix;
+  "scene ui" = "!include scenes.yaml";
 
   switch = [
     {
