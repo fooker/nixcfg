@@ -6,16 +6,18 @@ in
 {
   services.grafana = {
     enable = true;
-    domain = "stats.open-desk.net";
+    settings = {
+      server.domain = "stats.open-desk.net";
 
-    security.adminUser = "root";
-    security.adminPassword = secrets.grafana.adminPassword;
+      security.adminUser = "root";
+      security.adminPassword = secrets.grafana.adminPassword;
+    };
   };
 
   web.reverse-proxy = {
     "grafana" = {
-      domains = [ config.services.grafana.domain ];
-      target = "http://${ config.services.grafana.addr }:${ toString config.services.grafana.port }";
+      domains = [ config.services.grafana.settings.server.domain ];
+      target = with config.services.grafana.settings.server; "http://${http_addr}:${toString http_port}";
     };
   };
 

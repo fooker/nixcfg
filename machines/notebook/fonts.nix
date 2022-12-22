@@ -7,7 +7,7 @@
       antialias = true;
       cache32Bit = true;
       defaultFonts = {
-        monospace = [ "Hack 10.5" ];
+        monospace = [ "Hack" ];
       };
     };
 

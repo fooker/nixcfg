@@ -11,8 +11,6 @@ let
 in
 {
   nix = {
-    buildCores = 8;
-
     buildMachines = concatMap
       (builder: map
         (system: {
@@ -34,7 +32,10 @@ in
       builders-use-substitutes = true
     '';
 
-    trustedUsers = lib.mkOptionDefault [ "fooker" ];
+    settings = {
+      cores = 8;
+      trusted-users = lib.mkOptionDefault [ "fooker" ];
+    };
   };
 
   deployment.keys = {

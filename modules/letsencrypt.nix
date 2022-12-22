@@ -76,7 +76,7 @@ in
 
   config = mkIf (config.letsencrypt.certs != { }) {
     security.acme = {
-      email = "hostmaster@open-desk.net";
+      defaults.email = "hostmaster@open-desk.net";
       acceptTerms = true;
 
       server = mkIf (!config.letsencrypt.production) "https://acme-staging-v02.api.letsencrypt.org/directory";

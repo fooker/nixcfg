@@ -8,7 +8,7 @@
   hardware.enableRedistributableFirmware = true;
 
   boot.preset = "grub";
-  boot.device = "/dev/vda";
+  boot.device = "/dev/sda";
 
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "ehci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
   boot.kernelModules = [ "kvm-intel" ];
@@ -16,13 +16,15 @@
   boot.initrd.luks.devices = {
     "nixos" = {
       device = "/dev/disk/by-label/nixos-crypt";
+      allowDiscards = true;
     };
   };
 
   fileSystems = {
     "/" = {
       device = "/dev/disk/by-label/nixos";
-      fsType = "ext4";
+      fsType = "btrfs";
+      options = [ "noatime" "discard" ];
       neededForBoot = true;
     };
     "/boot" = {
@@ -31,7 +33,8 @@
     };
     "/data" = {
       device = "/dev/disk/by-label/data";
-      fsType = "ext4";
+      fsType = "btrfs";
+      options = [ "noatime" "discard" ];
       encrypted = {
         enable = true;
         label = "data";
@@ -45,7 +48,7 @@
     label = "swap";
   }];
 
-  nix.maxJobs = lib.mkDefault 4;
+  nix.settings.max-jobs = lib.mkDefault 4;
 
   deployment.keys = {
     "luks-data-key" = {

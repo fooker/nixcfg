@@ -13,7 +13,6 @@
     videoDrivers = [
       "modesetting"
     ];
-    useGlamor = true;
 
     modules = with pkgs; [
       xorg.xf86inputlibinput

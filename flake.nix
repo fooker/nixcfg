@@ -4,17 +4,10 @@
       type = "github";
       owner = "NixOS";
       repo = "nixpkgs";
-      ref = "nixos-22.05";
+      ref = "nixos-22.11";
     };
 
     nixpkgs-unstable = {
-      type = "github";
-      owner = "NixOS";
-      repo = "nixpkgs";
-      ref = "nixpkgs-unstable";
-    };
-
-    nixpkgs-router = {
       type = "github";
       owner = "NixOS";
       repo = "nixpkgs";
@@ -25,7 +18,7 @@
       type = "github";
       owner = "NixOS";
       repo = "nixpkgs";
-      ref = "nixos-22.05";
+      ref = "nixos-22.11";
     };
 
     flake-utils = {
@@ -38,13 +31,13 @@
       type = "github";
       owner = "nix-community";
       repo = "home-manager";
-      ref = "release-22.05";
+      ref = "release-22.11";
     };
 
     nixos-mailserver = {
       type = "git";
       url = "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver.git";
-      ref = "nixos-22.05";
+      ref = "nixos-22.11";
     };
 
     ipinfo = {

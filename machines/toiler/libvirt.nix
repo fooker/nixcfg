@@ -8,4 +8,6 @@
     fsType = "nfs4";
     options = [ "x-systemd.automount" "noauto" ];
   };
+
+  security.polkit.enable = true;
 }

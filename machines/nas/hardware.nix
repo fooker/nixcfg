@@ -21,7 +21,7 @@ with lib;
 
   platform.cryptroot.enable = true;
 
-  nix.maxJobs = mkDefault 4;
+  nix.settings.max-jobs = mkDefault 4;
 
   services.udev.extraRules = ''
     ACTION=="add|change", SUBSYSTEM=="block", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="1", RUN+="${pkgs.smartmontools}/bin/smartctl -s apm,32 -s standby,60 /dev/%k"

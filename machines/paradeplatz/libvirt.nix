@@ -27,4 +27,6 @@
   boot.extraModprobeConfig = ''
     options vfio-pci ids=10de:1b06,10de:10ef
   '';
+
+  security.polkit.enable = true;
 }

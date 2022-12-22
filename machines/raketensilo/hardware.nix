@@ -21,7 +21,7 @@ with lib;
     label = "swap";
   }];
 
-  nix.maxJobs = mkDefault 4;
+  nix.settings.max-jobs = mkDefault 4;
 
   virtualisation.vmware.guest = {
     enable = true;
