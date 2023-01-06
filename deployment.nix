@@ -45,6 +45,15 @@ let
             };
           };
         })
+
+        # Patch lego to add some detailed logging
+        (_: super: {
+          lego = super.lego.overrideAttrs (attrs: rec {
+            patches = attrs.patches or [ ] ++ [
+              ./patches/lego-logging.patch
+            ];
+          });
+        })
       ];
 
       imports = [
