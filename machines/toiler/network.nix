@@ -69,6 +69,13 @@
           LinkLocalAddressing = "no";
         };
       };
+
+      "30-iot" = {
+        ipv6AcceptRAConfig = {
+          # Disable routing over IoT network as it does not provide internet access
+          UseGateway = false;
+        };
+      };
     };
   };
 }
