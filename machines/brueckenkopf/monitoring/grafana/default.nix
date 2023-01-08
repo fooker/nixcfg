@@ -8,6 +8,7 @@ in
     enable = true;
     settings = {
       server.domain = "stats.open-desk.net";
+      server.http_addr = "127.0.0.1";
 
       security.adminUser = "root";
       security.adminPassword = secrets.grafana.adminPassword;
