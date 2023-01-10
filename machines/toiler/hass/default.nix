@@ -1,3 +1,17 @@
+{ lib, ... }:
+
+with lib;
+
+let
+  importDir = path:
+    concatLists
+      (mapAttrsToList
+        (entry: type:
+          assert assertMsg (type == "regular") "${toString entry} is not a regular file";
+          (toFunction (import "${path}/${entry}")) { inherit lib; })
+        (builtins.readDir path));
+
+in
 {
   default_config = { };
 
@@ -29,33 +43,24 @@
     }
   ];
 
-  automation = "!include automations.yaml";
-  script = "!include scripts.yaml";
+  "automation desc" = importDir ./automations;
+  "automation ui" = "!include automations.yaml";
 
-  "group decl" = import ./groups.nix;
+  #"script desc" = importDir ./scripts;
+  "script ui" = "!include scripts.yaml";
+
+  "group decl" = importDir ./groups;
   "group ui" = "!include groups.yaml";
 
-  "scene decl" = import ./scenes.nix;
+  "scene decl" = importDir ./scenes;
   "scene ui" = "!include scenes.yaml";
 
   switch = [
     {
-      platform = "mqtt";
-
-      name = "Screen";
-      icon = "mdi:projector-screen";
-
-      command_topic = "frisch/home/esper/9e90e5/screen/set";
-      payload_on = "LOWER";
-      payload_off = "RAISE";
-
-      state_topic = "frisch/home/esper/9e90e5/screen";
-      state_on = "LOWER";
-      state_off = "RAISE";
-
-      availability_topic = "frisch/home/esper/9e90e5/status";
-      payload_available = "ONLINE";
-      payload_not_available = "OFFLINE";
+      platform = "flux";
+      lights = [
+        "light.office_light"
+      ];
     }
   ];
 }

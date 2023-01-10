@@ -1,9 +1,11 @@
+{ ... }:
+
 [
   {
     name = "Movie";
     entities = {
-      "switch.screen" = {
-        state = "on";
+      "cover.projector_screen" = {
+        state = "closed";
       };
       "switch.projector" = {
         state = "on";
@@ -18,8 +20,8 @@
   {
     name = "Gaming";
     entities = {
-      "switch.screen" = {
-        state = "on";
+      "cover.projector_screen" = {
+        state = "closed";
       };
       "switch.projector" = {
         state = "on";
@@ -34,8 +36,8 @@
   {
     name = "Music";
     entities = {
-      "switch.screen" = {
-        state = "off";
+      "cover.projector_screen" = {
+        state = "open";
       };
       "switch.projector" = {
         state = "off";

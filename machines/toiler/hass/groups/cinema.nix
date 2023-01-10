@@ -1,5 +1,7 @@
-{
-  cinema = {
+{ ... }:
+
+[
+  {
     name = "Cinema";
     entities = [
       "scene.movie"
@@ -13,5 +15,5 @@
     ];
     icon = "mdi:movie-open";
     all = false;
-  };
-}
+  }
+]

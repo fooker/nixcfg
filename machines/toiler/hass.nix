@@ -1,4 +1,4 @@
-{ config, pkgs, device, ... }:
+{ config, pkgs, device, lib, ... }:
 
 {
   services.mosquitto = {
@@ -6,7 +6,7 @@
 
     listeners = [
       {
-        address = "0.0.0.0";
+        address = "::";
         port = 1883;
 
         omitPasswordAuth = true;
@@ -31,7 +31,9 @@
     enable = true;
     port = 8123;
 
-    config = import ./hass;
+    config = import ./hass { inherit lib; };
+
+    package = pkgs.unstable.home-assistant;
 
     extraComponents = [
       "default_config"
