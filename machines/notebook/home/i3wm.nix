@@ -220,35 +220,27 @@ in
     };
   };
 
-  # xsession.pointerCursor = {
-  #   package = pkgs.  gnome3.adwaita-icon-theme;
-  #   name = "Adwaita";
-  # };
-
-  # xresources.properties = {
-  #   "Xft.dpi" = 144;
-  #   "Xft.autohint" = 0;
-  #   "Xft.lcdfilter" = "lcddefault";
-  #   "Xft.hintstyle" = "hintfull";
-  #   "Xft.hinting" = 1;
-  #   "Xft.antialias" = 1;
-  #   "Xft.rgba" = "rgb";
-  # };
-
   gtk = {
     enable = true;
 
     gtk3.extraConfig = {
       gtk-cursor-blink = false;
     };
-    # gtk4.extraConfig = {
-    #   gtk-cursor-blink = false;
-    # };
   };
 
-  home.packages = with pkgs; [
-    gnome3.adwaita-icon-theme
-  ];
+  home = {
+    packages = with pkgs; [
+      gnome3.adwaita-icon-theme
+    ];
+
+    pointerCursor = {
+      package = pkgs.gnome3.adwaita-icon-theme;
+      name = "Adwaita";
+      size = 16;
+      gtk.enable = true;
+      x11.enable = true;
+    };
+  };
 
   services.screen-locker = {
     enable = true;
