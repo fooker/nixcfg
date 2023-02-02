@@ -45,6 +45,8 @@ with lib;
     services.nginx = {
       enable = true;
 
+      package = pkgs.nginxQuic;
+
       recommendedGzipSettings = true;
       recommendedOptimisation = true;
       recommendedProxySettings = true;
@@ -62,6 +64,9 @@ with lib;
               { addr = "0.0.0.0"; port = 443; ssl = true; }
               { addr = "[::]"; port = 443; ssl = true; }
             ];
+
+            http2 = true;
+            http3 = true;
 
             root = mkDefault app.root;
 
@@ -110,10 +115,10 @@ with lib;
 
     firewall.rules = dag: with dag; {
       inet.filter.input = {
-        webapp = between [ "established" ] [ "drop" ] ''
-          tcp dport { 80, 443 }
-          accept
-        '';
+        webapp = between [ "established" ] [ "drop" ] [
+          "tcp dport { 80, 443 } accept"
+          "udp dport { 80, 443 } accept"
+        ];
       };
     };
 
