@@ -53,6 +53,7 @@
     # Development
     unstable.jetbrains.idea-ultimate
     unstable.jetbrains.clion
+    unstable.jetbrains.goland
     unstable.jetbrains.pycharm-professional
     vscodium
 
@@ -60,6 +61,7 @@
     tdesktop
     signal-desktop
     element-desktop
+    discord-ptb
     thunderbird
     mumble
     zoom-us
