@@ -8,7 +8,6 @@
 
     enableAutosuggestions = true;
     enableCompletion = true;
-    # enableVteIntegration = true;
 
     autocd = true;
 
@@ -23,11 +22,6 @@
       "...." = "../../..";
       "....." = "../../../..";
       "......" = "../../../../..";
-    };
-
-    oh-my-zsh = {
-      enable = true;
-      plugins = [ "sudo" ];
     };
 
     plugins = [
