@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   programs.git = {
     enable = true;
@@ -8,13 +6,10 @@
     userName = "Dustin Frisch";
 
     extraConfig = {
-      core = {
-        whitespace = "trailing-space,space-before-tab";
-      };
+      core.whitespace = "trailing-space,space-before-tab";
+      core.fsmonitor = true;
 
-      pull = {
-        rebase = true;
-      };
+      pull.rebase = true;
 
       init.defaultBranch = "main";
     };
