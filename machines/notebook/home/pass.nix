@@ -5,7 +5,6 @@
     enable = true;
 
     package = pkgs.pass-wayland.withExtensions (exts: [
-      exts.pass-audit
       exts.pass-checkup
       exts.pass-otp
       exts.pass-import
