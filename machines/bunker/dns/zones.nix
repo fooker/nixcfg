@@ -86,9 +86,6 @@ with lib;
             A = network.devices."printer".interfaces."priv".address.ipv4.address;
           };
         };
-
-        # Other legacy records
-        magnetico = { CNAME = "fliegerhorst.dev.open-desk.net."; };
       };
 
       org.open-desk = zone;
