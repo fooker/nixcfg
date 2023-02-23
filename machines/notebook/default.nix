@@ -98,6 +98,8 @@ in
 
   programs.mosh.enable = true;
 
+  programs.noisetorch.enable = true;
+
   systemd.packages = [ pkgs.blueman ];
 
   sound = {
