@@ -1,5 +1,5 @@
 {
-  services.ipfs = {
+  services.kubo = {
     enable = true;
 
     localDiscovery = false;
