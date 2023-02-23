@@ -31,7 +31,7 @@
     nixpkgs-raketensilo.follows = "nixpkgs-magnetico";
     nixpkgs-fliegerhorst.follows = "nixpkgs-magnetico";
 
-    flake-utils = {
+    utils = {
       type = "github";
       owner = "numtide";
       repo = "flake-utils";
@@ -135,10 +135,10 @@
     };
   };
 
-  outputs = { nixpkgs, flake-utils, pre-commit-hooks, colmena, ... }@inputs: {
+  outputs = { nixpkgs, utils, pre-commit-hooks, colmena, ... }@inputs: {
     colmena = import ./deployment.nix inputs;
 
-    devShell = flake-utils.lib.eachSystemMap flake-utils.lib.allSystems (system:
+    devShell = utils.lib.eachSystemMap utils.lib.allSystems (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
 
