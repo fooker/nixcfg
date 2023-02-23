@@ -55,6 +55,14 @@
         Option          "ScrollButton"          "2"
         Option          "ScrollMethod"          "button"
       ''
+      ''
+        Identifier      "Bastard Keyboards Charybdis Nano (3x5) Splinky"
+        MatchUSBID      "a8f8:1832"
+        MatchIsPointer  "true"
+        Driver          "libinput"
+        Option          "ScrollButton"          "2"
+        Option          "ScrollMethod"          "button"
+      ''
     ];
 
     updateDbusEnvironment = true;

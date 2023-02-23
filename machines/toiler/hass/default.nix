@@ -54,13 +54,4 @@ in
 
   "scene decl" = importDir ./scenes;
   "scene ui" = "!include scenes.yaml";
-
-  switch = [
-    {
-      platform = "flux";
-      lights = [
-        "light.office_light"
-      ];
-    }
-  ];
 }
