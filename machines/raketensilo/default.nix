@@ -6,6 +6,7 @@ in
     ./hardware.nix
     ./network.nix
     ./ipfs.nix
+    ./magnetico.nix
   ];
 
   server.enable = true;

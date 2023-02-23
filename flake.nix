@@ -21,6 +21,16 @@
       ref = "nixos-22.11";
     };
 
+    nixpkgs-magnetico = {
+      type = "github";
+      owner = "NixOS";
+      repo = "nixpkgs";
+      ref = "nixpkgs-unstable";
+    };
+
+    nixpkgs-raketensilo.follows = "nixpkgs-magnetico";
+    nixpkgs-fliegerhorst.follows = "nixpkgs-magnetico";
+
     flake-utils = {
       type = "github";
       owner = "numtide";
@@ -38,6 +48,19 @@
       type = "git";
       url = "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver.git";
       ref = "nixos-22.11";
+    };
+
+    magnetico = {
+      type = "git";
+      url = "git+ssh://git@git.darmstadt.ccc.de/btdht/mldht2elastic.git";
+      ref = "elasticsearch2";
+      flake = false;
+    };
+
+    magnetico-peers = {
+      type = "git";
+      url = "git+ssh://git@git.darmstadt.ccc.de/btdht/peers.git";
+      flake = false;
     };
 
     ipinfo = {
