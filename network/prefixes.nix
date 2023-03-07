@@ -251,21 +251,21 @@
     };
 
     # Lab Network @ University
-    "192.168.31.0/24" = {
+    "10.32.31.0/24" = {
       site = "hs";
 
       addresses = {
-        "192.168.31.28" = {
+        "10.32.31.29" = {
           device = "paradeplatz";
           interface = "lab";
         };
 
-        "192.168.31.93" = {
+        "10.32.31.28" = {
           device = "brueckenkopf";
           interface = "lab";
         };
 
-        "192.168.31.241" = {
+        "10.32.31.30" = {
           device = "raketensilo";
           interface = "lab";
         };
@@ -274,7 +274,7 @@
       routes = [
         {
           destination = "193.174.29.0/26";
-          gateway = "192.168.31.1";
+          gateway = "10.32.31.1";
         }
       ];
     };
