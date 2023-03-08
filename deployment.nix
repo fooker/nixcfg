@@ -54,6 +54,9 @@ let
             ];
           });
         })
+
+        # Let builders fetch sources directly instead of uploading
+        (self: super: (super.prefer-remote-fetch self super))
       ];
 
       imports = [
