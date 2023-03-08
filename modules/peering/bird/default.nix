@@ -124,6 +124,7 @@ mkIf (domains != [ ]) {
         learn;
 
         metric 4096;
+        merge paths on;
 
         ipv4 {
           table output_4;
@@ -137,6 +138,7 @@ mkIf (domains != [ ]) {
         learn;
 
         metric 4096;
+        merge paths on;
 
         ipv6 {
           table output_6;
