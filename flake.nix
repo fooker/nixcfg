@@ -126,12 +126,16 @@
       type = "github";
       owner = "cachix";
       repo = "pre-commit-hooks.nix";
+
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     colmena = {
       type = "github";
       owner = "zhaofengli";
       repo = "colmena";
+
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -145,12 +149,9 @@
         hooks = pre-commit-hooks.lib.${system}.run {
           src = ./.;
           hooks = {
-            nixpkgs-fmt.enable = true;
-            nix-linter.enable = true;
+            alejandra.enable = true;
+            statix.enable = true;
             shellcheck.enable = true;
-          };
-          settings = {
-            nix-linter.checks = [ "No-UnfortunateArgName" ];
           };
         };
       in
