@@ -70,11 +70,11 @@ let
 
   machines =
     let
-      machines = (deploymentPkgs.callPackage ./machines.nix { }).machines;
+      inherit (deploymentPkgs.callPackage ./machines.nix { }) machines;
     in
     builtins.listToAttrs (map
       (machine: {
-        name = machine.name;
+        inherit (machine) name;
         value = {
           # Find the nixpkgs path for the machine with the given name
           nixpkgs = import (inputs."nixpkgs-${machine.name}" or nixpkgs) {
@@ -108,7 +108,7 @@ in
         lib = (machine.nixpkgs.lib.extend (import ./lib)).extend (import "${ipam}/lib");
 
         # All available inputs
-        inputs = (removeAttrs inputs [ "self" ]);
+        inputs = removeAttrs inputs [ "self" ];
       })
       machines;
   };

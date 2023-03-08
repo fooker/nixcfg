@@ -17,7 +17,7 @@ let
           config = reservation.dhcp;
         })
         (attrValues address.prefix.reservations))
-      (interface.addresses))
+      interface.addresses)
     (attrValues device.interfaces);
 
   # All interfaces that have at least one prefix with a DHCP pool reservation

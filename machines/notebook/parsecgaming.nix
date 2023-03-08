@@ -53,7 +53,7 @@ let
 
     meta = {
       description = "Parsec Gaming Daemon";
-      homepage = https://www.parsecgaming.com/;
+      homepage = "https://www.parsecgaming.com/";
     };
   };
 

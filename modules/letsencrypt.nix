@@ -84,7 +84,7 @@ in
       certs = mapAttrs
         (_: cert: {
           domain = head cert.domains;
-          extraDomainNames = (tail cert.domains);
+          extraDomainNames = tail cert.domains;
 
           dnsProvider = "rfc2136";
           credentialsFile = pkgs.writeText "acme-credentials" ''

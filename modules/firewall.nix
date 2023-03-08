@@ -6,9 +6,9 @@ with lib;
   options.firewall =
     let
       mkTable = description: options: mkOption {
-        type = types.submodule ({
+        type = types.submodule {
           inherit options;
-        });
+        };
         inherit description;
         default = { };
       };
@@ -35,7 +35,7 @@ with lib;
       };
 
       rules = mkOption {
-        type = types.fnOf (types.submodule ({ ... }: {
+        type = types.fnOf (types.submodule {
           options = {
             ip = mkTable "internet (IPv4) address family netfilter table" {
               filter.prerouting = mkPrerouteChain;
@@ -87,7 +87,7 @@ with lib;
               filter.ingress = mkIngressChain;
             };
           };
-        }));
+        });
       };
     };
 

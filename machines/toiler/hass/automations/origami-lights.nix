@@ -1,5 +1,3 @@
-{ ... }:
-
 [
   {
     alias = "Origami Lights: Turn on at sunset";

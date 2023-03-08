@@ -100,7 +100,7 @@ with lib;
         mapAttrs
           (name: value: {
             inherit name;
-            data = value.data;
+            inherit (value) data;
             after = value.after ++ dagBefore dag name;
           })
           dag;

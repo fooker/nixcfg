@@ -1,5 +1,3 @@
-{ ... }:
-
 [
   {
     alias = "Media: Pause in Living room";

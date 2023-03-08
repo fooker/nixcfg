@@ -190,7 +190,7 @@ with lib;
           };
 
           transfer.ipv4 = mkOption {
-            type = types.nullOr (types.submodule ({
+            type = types.nullOr (types.submodule {
               options = {
                 addr = mkOption {
                   description = "Local IPv4 address";
@@ -202,11 +202,11 @@ with lib;
                   type = types.ip.address;
                 };
               };
-            }));
+            });
           };
 
           transfer.ipv6 = mkOption {
-            type = types.nullOr (types.submodule ({
+            type = types.nullOr (types.submodule {
               options = {
                 addr = mkOption {
                   description = "Local IPv6 address";
@@ -218,12 +218,12 @@ with lib;
                   type = types.ip.address;
                 };
               };
-            }));
+            });
           };
 
           domains = mkOption {
             description = "Routing Domains this peer participates in";
-            type = types.attrsOf (types.submodule ({
+            type = types.attrsOf (types.submodule {
               options = {
                 bgp = mkOption {
                   description = "Peer BGP configuration";
@@ -255,7 +255,7 @@ with lib;
                   });
                 };
               };
-            }));
+            });
           };
         };
 

@@ -7,7 +7,7 @@ with lib;
   ];
 
   options.web.apps = mkOption {
-    type = types.attrsOf (types.submodule ({
+    type = types.attrsOf (types.submodule {
       options = {
         domains = mkOption {
           type = types.nonEmptyListOf types.str;
@@ -32,7 +32,7 @@ with lib;
           default = { };
         };
       };
-    }));
+    });
 
     description = ''
       Virtual web application host
@@ -107,7 +107,7 @@ with lib;
 
     letsencrypt.certs = mapAttrs
       (_: app: {
-        domains = app.domains;
+        inherit (app) domains;
         owner = "nginx";
         trigger = "${pkgs.systemd}/bin/systemctl reload nginx.service";
       })

@@ -55,6 +55,6 @@ in
 
   services.fcgiwrap = {
     enable = true;
-    user = config.services.nginx.user;
+    inherit (config.services.nginx) user;
   };
 }

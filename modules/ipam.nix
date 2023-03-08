@@ -31,6 +31,6 @@ in
     };
 
     # Add a tag fir the side the device is located in
-    deployment.tags = (optional (device.site != null) "site-${device.site.name}");
+    deployment.tags = optional (device.site != null) "site-${device.site.name}";
   };
 }

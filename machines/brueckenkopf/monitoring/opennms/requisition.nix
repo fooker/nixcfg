@@ -7,7 +7,7 @@ let
 
   nodes' = mapAttrsToList
     (name: device: {
-      id = device.monitoring.id;
+      inherit (device.monitoring) id;
 
       label = name;
 

@@ -40,12 +40,12 @@ in
         {
           algorithm = "rsa";
           hash = "sha256";
-          fingerprint = fingerprint ("${path}/gathered/ssh_host_rsa_key.pub");
+          fingerprint = fingerprint "${path}/gathered/ssh_host_rsa_key.pub";
         }
         {
           algorithm = "ed25519";
           hash = "sha256";
-          fingerprint = fingerprint ("${path}/gathered/ssh_host_ed25519_key.pub");
+          fingerprint = fingerprint "${path}/gathered/ssh_host_ed25519_key.pub";
         }
       ];
     });

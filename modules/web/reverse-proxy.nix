@@ -3,7 +3,7 @@
 with lib;
 {
   options.web.reverse-proxy = mkOption {
-    type = types.attrsOf (types.submodule ({
+    type = types.attrsOf (types.submodule {
       options = {
         domains = mkOption {
           type = types.nonEmptyListOf types.str;
@@ -21,7 +21,7 @@ with lib;
           description = "Additional config for the app";
         };
       };
-    }));
+    });
 
     description = "Virtual reverse proxy hosts";
     default = { };

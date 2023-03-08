@@ -1,5 +1,3 @@
-{ ... }:
-
 [
   {
     alias = "Button: Turn off everything";

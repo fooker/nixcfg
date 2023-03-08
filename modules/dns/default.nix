@@ -3,7 +3,7 @@
 with lib;
 
 let
-  record = (import ./record.nix args);
+  record = import ./record.nix args;
 
   # Match every name that is all-upercase
   isRecord = name: (builtins.match "[A-Z]+" name) != null;
@@ -51,9 +51,7 @@ let
       loc: defs:
         mod.merge loc (map (def: def // { value = coerceVal def.value; }) defs);
 
-    emptyValue = mod.emptyValue;
-    getSubOptions = mod.getSubOptions;
-    getSubModules = mod.getSubModules;
+    inherit (mod) emptyValue getSubOptions getSubModules;
 
     substSubModules = m: coercedZoneSubmodule (mod.substSubModules m);
 

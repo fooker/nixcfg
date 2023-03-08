@@ -5,7 +5,7 @@ with lib;
 let
   secrets = import ./secrets.nix;
 
-  devices = secrets.syncthing.devices;
+  inherit (secrets.syncthing) devices;
 
   folders = mapAttrs
     (name: conf: {

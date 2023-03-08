@@ -86,7 +86,7 @@ with lib;
               };
           in
           {
-            name = iface.name;
+            inherit (iface) name;
 
             address = map toString config.addresses;
             gateway = map toString config.gateways;

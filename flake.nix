@@ -149,7 +149,7 @@
         hooks = pre-commit-hooks.lib.${system}.run {
           src = ./.;
           hooks = {
-            alejandra.enable = true;
+            nixpkgs-fmt.enable = true;
             statix.enable = true;
             shellcheck.enable = true;
           };

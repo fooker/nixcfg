@@ -15,7 +15,7 @@ let
     else reverseList (splitString "." s);
 
   mkDomain = { labels, absolute }:
-    setType "domain" (rec {
+    setType "domain" rec {
       inherit labels;
 
       isAbsolute = absolute;
@@ -28,7 +28,7 @@ let
         then
           mkDomain
             {
-              labels = (labels ++ sub.labels);
+              labels = labels ++ sub.labels;
               inherit absolute;
             }
         else sub;
@@ -37,7 +37,7 @@ let
       parent =
         assert labels != [ ];
         mkDomain {
-          labels = (init labels);
+          labels = init labels;
           inherit absolute;
         };
 
@@ -51,7 +51,7 @@ let
         else toSimpleString;
 
       __toString = self: self.toString;
-    });
+    };
 
 in
 rec {
@@ -89,11 +89,8 @@ rec {
     # Like types.uniq but merges equal definitions
     equi = type: mkOptionType rec {
       name = "equi";
-      inherit (type) description check;
+      inherit (type) description check emptyValue getSubOptions getSubModules;
       merge = mergeEqualOption;
-      emptyValue = type.emptyValue;
-      getSubOptions = type.getSubOptions;
-      getSubModules = type.getSubModules;
       substSubModules = m: equi (type.substSubModules m);
       functor = (defaultFunctor name) // { wrapped = type; };
     };

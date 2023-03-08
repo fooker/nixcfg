@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   services.udiskie = {
     automount = true;

@@ -43,7 +43,7 @@ in
             aliases)
           config.mailserver.domains);
 
-    forwards = secrets.mail.forwards;
+    inherit (secrets.mail) forwards;
 
     enableSubmission = true;
     enableSubmissionSsl = true;
@@ -118,7 +118,7 @@ in
   '';
 
   letsencrypt.certs.mail = {
-    domains = flatten ([
+    domains = flatten [
       "mx.open-desk.net"
       (concatMap
         (domain: [
@@ -128,7 +128,7 @@ in
         ])
         config.mailserver.domains)
       config.mailserver.fqdn
-    ]);
+    ];
     owner = "root";
     trigger = ''
       ${pkgs.systemd}/bin/systemctl reload dovecot2.service
@@ -213,14 +213,12 @@ in
       (nameValuePair "dkim-mail-${ domain }-key" {
         keyFile = toString ./secrets/dkim + "/${ domain }.mail.key";
         destDir = config.mailserver.dkimKeyDirectory;
-        user = config.services.opendkim.user;
-        group = config.services.opendkim.group;
+        inherit (config.services.opendkim) user group;
       })
       (nameValuePair "dkim-mail-${ domain }-txt" {
         keyFile = toString ./secrets/dkim + "/${ domain }.mail.txt";
         destDir = config.mailserver.dkimKeyDirectory;
-        user = config.services.opendkim.user;
-        group = config.services.opendkim.group;
+        inherit (config.services.opendkim) user group;
       })
     ])
     config.mailserver.domains

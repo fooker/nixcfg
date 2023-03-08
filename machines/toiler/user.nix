@@ -10,7 +10,7 @@ in
       createHome = true;
       isNormalUser = true;
 
-      hashedPassword = secrets.user.hashedPassword;
+      inherit (secrets.user) hashedPassword;
 
       openssh.authorizedKeys.keys = secrets.user.authorizedKeys;
 

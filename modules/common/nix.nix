@@ -36,8 +36,8 @@ with lib;
     # This allows update to the symlinks when updating nixpkgs without changes
     # to NIX_PATH, which requires a new session to bekome active.
     environment.etc.nixpkgs.source = pkgs.linkFarm "nixpkgs" [
-      { name = "nixpkgs"; path = pkgs.path; }
-      { name = "nixpkgs-unstable"; path = pkgs.unstable.path; }
+      { name = "nixpkgs"; inherit (pkgs) path; }
+      { name = "nixpkgs-unstable"; inherit (pkgs.unstable) path; }
     ];
 
     nix.nixPath = lib.mkForce [
@@ -48,11 +48,11 @@ with lib;
     nix.registry = {
       "nixpkgs" = {
         from = { type = "indirect"; id = "nixpkgs"; };
-        to = { type = "path"; path = (toString pkgs.path); };
+        to = { type = "path"; path = toString pkgs.path; };
       };
       "nixpkgs-unstable" = {
         from = { type = "indirect"; id = "nixpkgs-unstable"; };
-        to = { type = "path"; path = (toString pkgs.unstable.path); };
+        to = { type = "path"; path = toString pkgs.unstable.path; };
       };
     };
   };

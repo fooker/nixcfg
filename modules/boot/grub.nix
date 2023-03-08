@@ -13,7 +13,7 @@ with lib;
     boot.loader.grub = {
       enable = true;
       version = 2;
-      device = config.boot.device;
+      inherit (config.boot) device;
     };
   };
 }

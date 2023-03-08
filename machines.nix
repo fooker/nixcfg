@@ -22,7 +22,7 @@ with lib;
               inherit id path;
 
               # Build the name of the machine
-              name = "${concatStringsSep "-" (id)}";
+              name = "${concatStringsSep "-" id}";
             }
           )
         ]

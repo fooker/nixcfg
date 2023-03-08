@@ -94,7 +94,7 @@ with lib;
 
         encryption = {
           mode = "repokey";
-          passphrase = config.backup.passphrase;
+          inherit (config.backup) passphrase;
         };
 
         environment = {
