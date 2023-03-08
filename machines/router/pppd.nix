@@ -21,19 +21,27 @@ in
           
           user "${username}"
           password "${password}"
+        
+          mtu 1500
+          mru 1500
           
           lcp-echo-interval 15
           lcp-echo-failure 3
+          lcp-max-configure 10
 
           hide-password
 
-          asyncmap 0
+          default-asyncmap
 
           maxfail 0
           holdoff 5
 
           noauth
           noproxyarp
+          noaccomp
+
+          nomultilink
+          novj
 
           defaultroute
           persist
