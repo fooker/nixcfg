@@ -65,6 +65,7 @@
     thunderbird
     mumble
     zoom-us
+    teams
 
     # Remote Desktop
     parsecgaming
