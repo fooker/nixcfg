@@ -16,7 +16,7 @@ in
   };
 
   fileSystems."/mnt/cantina" = {
-    device = "//192.168.31.16/cantina";
+    device = "//10.32.30.95/cantina";
     fsType = "cifs";
     options = [
       "x-systemd.automount"
