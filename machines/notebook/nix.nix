@@ -18,7 +18,7 @@ in
           hostName = builder.dns.host.domain.toSimpleString;
           sshUser = "root";
           sshKey = config.deployment.keys."builder-sshkey".path;
-          speedFactor = if system == builder.nixpkgs.localSystem.system then 8 else 4;
+          speedFactor = if system == builder.nixpkgs.localSystem.system then 2 else 1;
           maxJobs = 8;
           supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
           mandatoryFeatures = [ ];
