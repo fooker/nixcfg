@@ -71,6 +71,23 @@
         "type": "github"
       }
     },
+    "dns": {
+      "inputs": {
+        "ipam": [
+          "ipam"
+        ]
+      },
+      "locked": {
+        "lastModified": 1682586858,
+        "narHash": "sha256-cI9cLIGqrRczMaLbLDJwltI6pcjWIS9HCHCE0FVPDxQ=",
+        "path": "/home/fooker/devl/dns.nix/",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/fooker/devl/dns.nix/",
+        "type": "path"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -179,8 +196,8 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1666708017,
-        "narHash": "sha256-5Mrs6aulc0to/h4VTCqN9zIApFhyv+Bd2tHQxlIyLmc=",
+        "lastModified": 1682362182,
+        "narHash": "sha256-YSzbctcrcTDMqOgHwf3gazJ+HTZ3wR3sp8BsY1n0Ut0=",
         "path": "/home/fooker/devl/ipam.nix/",
         "type": "path"
       },
@@ -389,9 +406,9 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1,
-        "narHash": "sha256-YrhVxwoofZSx/wLZ4GYET//8vS+uqWX572zvdmP/Etg=",
-        "path": "/nix/store/k7nw5nac3s4w3xiqibjzzbv94yzfn176-nixpkgs-notebook-src",
+        "lastModified": 0,
+        "narHash": "sha256-zCQ/9iFHzCW5JMYkkHMwgK1/1/kTMgCMHq4THPINpAU=",
+        "path": "/nix/store/0v3c43fqlq4fk4j5rpqkfxjpxj04dp7g-source",
         "type": "path"
       },
       "original": {
@@ -491,6 +508,7 @@
         "ate": "ate",
         "blog": "blog",
         "colmena": "colmena",
+        "dns": "dns",
         "home-manager": "home-manager",
         "ipam": "ipam",
         "ipinfo": "ipinfo",

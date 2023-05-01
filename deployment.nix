@@ -1,5 +1,6 @@
 { nixpkgs
 , ipam
+, dns
 , ...
 }@inputs:
 
@@ -63,6 +64,8 @@ let
         ./modules
         ./shared
         machine.path
+
+        dns.nixosModules.default
       ];
 
       system.stateVersion = machine.stateVersion;
@@ -105,7 +108,14 @@ in
     nodeSpecialArgs = builtins.mapAttrs
       (_: machine: {
         # Inject the lib extensions
-        lib = (machine.nixpkgs.lib.extend (import ./lib)).extend (import "${ipam}/lib");
+        lib = machine.nixpkgs.lib.foldl
+          (lib: lib.extend)
+          machine.nixpkgs.lib
+          [
+            (import ./lib)
+            ipam.lib
+            dns.lib
+          ];
 
         # All available inputs
         inputs = removeAttrs inputs [ "self" ];

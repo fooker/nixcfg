@@ -13,7 +13,7 @@
     ./docker.nix
     ./builder.nix
     ./hive/default.nix
-    ./dns/default.nix
+    ./dns/host.nix
     ./network.nix
     ./ipam.nix
     ./monitoring/default.nix

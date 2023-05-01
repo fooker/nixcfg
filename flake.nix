@@ -103,6 +103,12 @@
       path = "/home/fooker/devl/ipam.nix/";
     };
 
+    dns = {
+      type = "path";
+      path = "/home/fooker/devl/dns.nix/";
+      inputs.ipam.follows = "ipam";
+    };
+
     ate = {
       type = "github";
       owner = "andir";

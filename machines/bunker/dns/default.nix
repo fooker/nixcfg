@@ -1,33 +1,22 @@
-{ config, lib, pkgs, path, ... }:
+{ config, lib, pkgs, path, inputs, nodes, ... }:
 
 with lib;
 
 let
-  zones =
-    let
-      mkRecord = { domain, ttl, type, class, data }: concatStringsSep " " ([
-        (toString domain)
-        (toString ttl)
-        class
-        type
-      ] ++ data);
+  generator = pkgs.callPackage inputs.dns.generator {
+    configs = mapAttrsToList (_: node: node.config) nodes;
+  };
 
-      mkInclude = { domain, file }: "$INCLUDE \"${ file }\" ${ domain.toString }";
+  zones = map
+    (zone: {
+      inherit (zone) name;
 
-    in
-    map
-      (zone: {
-        inherit (zone) name;
+      notify = "inwx";
+      acl = [ "inwx_transfer" ] ++ optional ((last zone.name.labels) == "dyn") "acme_update";
 
-        notify = "inwx";
-        acl = [ "inwx_transfer" ] ++ optional ((last zone.name.labels) == "dyn") "acme_update";
-
-        file = pkgs.writeText "${ zone.name.toSimpleString }.zone" ''
-          ${ concatMapStringsSep "\n" mkRecord zone.records }
-          ${ concatMapStringsSep "\n" mkInclude zone.includes }
-        '';
-      })
-      config.dns.zoneList;
+      file = zone.zoneFile;
+    })
+    generator.zones;
 
 in
 {

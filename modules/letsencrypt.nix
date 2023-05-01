@@ -105,9 +105,9 @@ in
 
     dns.zones =
       let
-        domains = concatMap
+        domains = unique (concatMap
           (cert: cert.domains)
-          (attrValues config.letsencrypt.certs);
+          (attrValues config.letsencrypt.certs));
       in
       mkMerge (map
         (domain: (mkDomainAbsolute domain).mkRecords {
