@@ -31,6 +31,8 @@
     nixpkgs-raketensilo.follows = "nixpkgs-magnetico";
     nixpkgs-fliegerhorst.follows = "nixpkgs-magnetico";
 
+    nixpkgs-toiler.follows = "nixpkgs-unstable";
+
     utils = {
       type = "github";
       owner = "numtide";

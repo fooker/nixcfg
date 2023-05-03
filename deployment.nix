@@ -47,15 +47,6 @@ let
           };
         })
 
-        # Patch lego to add some detailed logging
-        (_: super: {
-          lego = super.lego.overrideAttrs (attrs: rec {
-            patches = attrs.patches or [ ] ++ [
-              ./patches/lego-logging.patch
-            ];
-          });
-        })
-
         # Let builders fetch sources directly instead of uploading
         (self: super: (super.prefer-remote-fetch self super))
       ];

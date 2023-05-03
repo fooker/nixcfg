@@ -33,7 +33,7 @@
 
     config = import ./hass { inherit lib; };
 
-    package = pkgs.unstable.home-assistant;
+    # package = pkgs.unstable.home-assistant;
 
     extraComponents = [
       "default_config"
