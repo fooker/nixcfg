@@ -1,6 +1,7 @@
 {
   programs.autorandr = {
     enable = true;
+    ignoreLid = true;
 
     profiles = {
       "mobile" = {

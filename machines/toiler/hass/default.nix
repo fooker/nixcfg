@@ -43,6 +43,13 @@ in
     }
   ];
 
+  input_boolean = {
+    heater_automation = {
+      name = "Enable heater automations";
+      icon = "mdi:thermostat-auto";
+    };
+  };
+
   "automation desc" = importDir ./automations;
   "automation ui" = "!include automations.yaml";
 
