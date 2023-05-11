@@ -5,7 +5,6 @@ in
   imports = [
     ./hardware.nix
     ./network.nix
-    ./ipfs.nix
     ./magnetico.nix
   ];
 
