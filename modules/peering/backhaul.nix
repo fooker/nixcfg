@@ -54,6 +54,12 @@ in
       type = types.bool;
       default = true;
     };
+
+    extraPeers = mkOption {
+      description = "List of additional peering nodes";
+      type = types.listOf (types.enum (attrNames (removeAttrs nodes [ name ])));
+      default = [ ];
+    };
   };
 
   config =
@@ -72,8 +78,13 @@ in
           # Backhaul must be enabled
           node.enable
 
-          # Either this node is a hub and we peer with everybody or we peer with all hubs
-          (config.peering.backhaul.hub || node.hub))
+          (
+            # Either this node is a hub and we peer with everybody or we peer with all hubs
+            config.peering.backhaul.hub || node.hub ||
+
+            # Either the node is contained in our extraPeers or we are contained in the nodes extra peers
+            (elem node.name config.peering.backhaul.extraPeers) || (elem name node.extraPeers)
+          ))
         others;
 
     in

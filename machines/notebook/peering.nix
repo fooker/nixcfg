@@ -13,11 +13,15 @@ in
 
       dn42.ipv4 = "172.23.200.127/32";
       dn42.ipv6 = "fd79:300d:6056:ffff::0/128";
+
+      extraPeers = [ "brueckenkopf" ];
     };
 
     peers = {
       "backhaul.znorth".local.privkey = secrets.peering.privkeys."backhaul.znorth";
       "backhaul.zsouth".local.privkey = secrets.peering.privkeys."backhaul.zsouth";
+
+      "backhaul.brkopf".local.privkey = secrets.peering.privkeys."backhaul.brkopf";
     };
   };
 }
