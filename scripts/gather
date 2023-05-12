@@ -18,10 +18,6 @@ for MACHINE in "${MACHINES[@]}"; do
 
 	mkdir -p "${MACHINE_DIR}/gathered"
 
-	scp \
-		"${TARGET}:/etc/ssh/ssh_host_rsa_key.pub" \
-		"${TARGET}:/etc/ssh/ssh_host_ed25519_key.pub" \
-		"${TARGET}:/var/lib/backup/id_backup.pub" \
-		"${MACHINE_DIR}/gathered"
+	ssh "${TARGET}" "/run/gather" | tar xv --dereference --directory "${MACHINE_DIR}/gathered"
 	
 done

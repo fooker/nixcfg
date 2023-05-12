@@ -127,5 +127,11 @@ with lib;
             -C "backup@${name}"
         fi
       '';
+
+      gather = {
+        "id_backup.pub" = {
+          file = "/var/lib/backup/id_backup.pub";
+        };
+      };
     };
 }

@@ -49,5 +49,14 @@ in
         }
       ];
     });
+
+    gather = {
+      "ssh_host_rsa_key.pub" = {
+        file = "/etc/ssh/ssh_host_rsa_key.pub";
+      };
+      "ssh_host_ed25519_key.pub" = {
+        file = "/etc/ssh/ssh_host_ed25519_key.pub";
+      };
+    };
   };
 }
