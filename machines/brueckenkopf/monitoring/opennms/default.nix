@@ -106,7 +106,7 @@ in
   '';
 
   backup = {
-    commands = ''${ config.services.postgresql.package }/bin/pg_dump --format tar --file postgres-opennms.tar opennms'';
+    commands = ''${pkgs.su}/bin/su postgres -c "${config.services.postgresql.package}/bin/pg_dump --format tar opennms" > ./postgres-opennms.tar'';
     paths = [
       "/etc/opennms"
       "/var/lib/opennms"
