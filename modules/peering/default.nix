@@ -135,7 +135,7 @@ with lib;
     peers = mkOption {
       description = "Peers";
       default = { };
-      type = types.attrsOf (types.submodule ({ name, config, ... }: {
+      type = types.attrsOf (types.submodule ({ name, ... }: {
         options = {
           name = mkOption {
             description = "Name of the peer";
@@ -153,11 +153,6 @@ with lib;
             description = "Local port";
             default = null;
             type = types.nullOr types.port;
-          };
-
-          local.privkey = mkOption {
-            description = "Local private key";
-            type = types.str;
           };
 
           local.pubkey = mkOption {
@@ -260,9 +255,7 @@ with lib;
         };
 
         config = {
-          local.pubkey = builtins.readFile (pkgs.runCommandNoCCLocal "peering-${name}.crt" { } ''
-            echo '${ config.local.privkey }' | ${ pkgs.wireguard-tools }/bin/wg pubkey > $out
-          '');
+          local.pubkey = builtins.readFile config.gather."peering-${name}".target;
         };
       }));
     };
@@ -270,11 +263,6 @@ with lib;
 
   config =
     let
-      writePrivateKey = peer: key: pkgs.writeTextFile {
-        name = "peering-${name}-${peer}.key";
-        text = key;
-      };
-
       mkPeerNetwork = peer: {
         netdevs."80-peering-peer-${peer.name}" = {
           netdevConfig = {
@@ -284,7 +272,7 @@ with lib;
           };
           wireguardConfig = {
             ListenPort = peer.local.port;
-            PrivateKeyFile = writePrivateKey peer.name peer.local.privkey;
+            PrivateKeyFile = "/var/lib/peering/keys/${peer.name}";
           };
           wireguardPeers = [{
             wireguardPeerConfig = {
@@ -379,6 +367,43 @@ with lib;
               (domain.netdev == null)) # Check if domain has associated local interface
             (attrValues config.peering.domains)))
       ]);
+
+      systemd.services."peering-genkeys" = {
+        enable = true;
+        serviceConfig = {
+          TimeoutStartSec = "infinity";
+          Restart = "on-failure";
+          RestartSec = "100ms";
+          User = "root";
+          Group = "systemd-network";
+          Type = "oneshot";
+          RemainAfterExit = true;
+        };
+        path = [ pkgs.wireguard-tools ];
+        script = ''
+          umask 137
+
+          mkdir -p /var/lib/peering/keys
+
+          ${concatMapStringsSep "\n" (peer: ''
+            [ -e "/var/lib/peering/keys/${peer.name}" ] || wg genkey > "/var/lib/peering/keys/${peer.name}"
+          '') (attrValues config.peering.peers)}
+        '';
+      };
+
+      systemd.services."systemd-networkd" = {
+        after = [ "peering-genkeys.service" ];
+        wants = [ "peering-genkeys.service" ];
+      };
+
+      gather = mapAttrs'
+        (name: peer: nameValuePair "peering-${name}" {
+          name = "peering/${peer.name}.pub";
+          command = pkgs.writeScript "gather-peer-${peer.name}" ''
+            ${pkgs.wireguard-tools}/bin/wg pubkey < "/var/lib/peering/keys/${peer.name}"
+          '';
+        })
+        config.peering.peers;
 
       firewall.rules = dag: with dag; {
         inet.filter.input =

@@ -16,12 +16,5 @@ in
 
       extraPeers = [ "brueckenkopf" ];
     };
-
-    peers = {
-      "backhaul.znorth".local.privkey = secrets.peering.privkeys."backhaul.znorth";
-      "backhaul.zsouth".local.privkey = secrets.peering.privkeys."backhaul.zsouth";
-
-      "backhaul.brkopf".local.privkey = secrets.peering.privkeys."backhaul.brkopf";
-    };
   };
 }

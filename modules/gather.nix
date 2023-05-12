@@ -1,4 +1,4 @@
-{ lib, pkgs, config, ... }:
+{ lib, pkgs, config, path, ... }:
 
 with lib;
 
@@ -38,7 +38,7 @@ in
     description = ''
 
     '';
-    type = types.attrsOf (types.submodule ({ name, ... }: {
+    type = types.attrsOf (types.submodule ({ name, config, ... }: {
       options = {
         name = mkOption {
           description = ''
@@ -63,6 +63,15 @@ in
           '';
           type = types.nullOr types.package;
           default = null;
+        };
+
+        target = mkOption {
+          description = ''
+            Target path to copy the gathered data to.
+          '';
+          type = types.str;
+          readOnly = true;
+          default = "${path}/gathered/${config.name}";
         };
       };
     }));

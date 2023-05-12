@@ -18,12 +18,6 @@ in
     };
 
     peers = {
-      "backhaul.zsouth".local.privkey = secrets.peering.privkeys."backhaul.zsouth";
-      "backhaul.bunker".local.privkey = secrets.peering.privkeys."backhaul.bunker";
-      "backhaul.router".local.privkey = secrets.peering.privkeys."backhaul.router";
-      "backhaul.notebook".local.privkey = secrets.peering.privkeys."backhaul.notebook";
-      "backhaul.brkopf".local.privkey = secrets.peering.privkeys."backhaul.brkopf";
-
       "backhaul.zsouth".domains = {
         "dn42" = {
           bgp = {
@@ -36,7 +30,6 @@ in
         netdev = "peer.cccda";
 
         local.port = 23420;
-        local.privkey = secrets.peering.privkeys."cccda";
 
         remote.endpoint.host = "core1.darmstadt.ccc.de";
         remote.endpoint.port = 43007;
@@ -63,7 +56,6 @@ in
         netdev = "peer.ffffm";
 
         local.port = 23422;
-        local.privkey = secrets.peering.privkeys."ffffm";
 
         remote.endpoint.host = "icvpn2.aixit.off.de.ffffm.net";
         remote.endpoint.port = 40106;
@@ -90,7 +82,6 @@ in
         netdev = "peer.maglab";
 
         local.port = 23421;
-        local.privkey = secrets.peering.privkeys."maglab";
 
         remote.endpoint.host = "lintillas.maglab.space";
         remote.endpoint.port = 42005;
@@ -117,7 +108,6 @@ in
         netdev = "peer.clerie";
 
         local.port = 23425;
-        local.privkey = secrets.peering.privkeys."clerie";
 
         remote.endpoint.host = "dn42-il-gw1.net.clerie.de";
         remote.endpoint.port = 51271;
@@ -143,7 +133,6 @@ in
         netdev = "peer.maraun";
 
         local.port = 23426;
-        local.privkey = secrets.peering.privkeys."maraun";
 
         remote.endpoint.host = "dn42-de.maraun.de";
         remote.endpoint.port = 21271;
@@ -170,7 +159,6 @@ in
         netdev = "peer.mk16";
 
         local.port = 23427;
-        local.privkey = secrets.peering.privkeys."mk16";
 
         remote.endpoint.host = "p2p-router.de";
         remote.endpoint.port = 51271;
@@ -197,7 +185,6 @@ in
         netdev = "peer.indigo";
 
         local.port = 23428;
-        local.privkey = secrets.peering.privkeys."indigo";
 
         remote.endpoint.host = "melee.labmonkeys.space";
         remote.endpoint.port = 51820;

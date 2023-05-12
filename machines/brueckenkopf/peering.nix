@@ -14,11 +14,5 @@ in
 
       netdev = "int";
     };
-
-    peers = {
-      "backhaul.znorth".local.privkey = secrets.peering.privkeys."backhaul.znorth";
-      "backhaul.zsouth".local.privkey = secrets.peering.privkeys."backhaul.zsouth";
-      "backhaul.notebook".local.privkey = secrets.peering.privkeys."backhaul.notebook";
-    };
   };
 }
