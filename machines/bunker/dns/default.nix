@@ -48,7 +48,7 @@ in
       enable = true;
 
       keyFiles = [
-        config.deployment.keys."knot-key-acme-update".path
+        config.sops.secrets."knot/acme/update".path
       ];
 
       extraConfig = ''
@@ -117,13 +117,10 @@ in
       "/var/lib/knot"
     ];
 
-    deployment.keys = {
-      "knot-key-acme-update" = {
-        keyFile = "${path}/secrets/knot-key-acme-update.incl";
-        destDir = "/etc/secrets";
-        user = "knot";
-        group = "knot";
-      };
+    sops.secrets."knot/acme/update" = {
+      format = "binary";
+      sopsFile = ../secrets/knot-key-acme-update.incl;
+      owner = "knot";
     };
 
     monitoring.services = map

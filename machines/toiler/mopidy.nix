@@ -1,8 +1,5 @@
-{ pkgs, ... }:
+{ pkgs, private, ... }:
 
-let
-  secrets = import ./secrets.nix;
-in
 {
   services.mopidy = {
     enable = true;
@@ -43,7 +40,7 @@ in
       enabled = true
       hostname = ::
       port = 6600
-      password = ${secrets.mopidy.mpd.password}
+      password = ${private.mpd.password}
       zeroconf = Mopidy MPD Server
 
       [file]

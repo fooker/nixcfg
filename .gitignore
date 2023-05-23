@@ -1,4 +1,5 @@
 /attic
-.pre-commit-config.yaml
+/.pre-commit-config.yaml
+/.sops.yaml
 .gcroots
 .direnv

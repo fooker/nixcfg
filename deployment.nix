@@ -1,6 +1,8 @@
 { nixpkgs
 , ipam
 , dns
+, sops
+, private
 , ...
 }@inputs:
 
@@ -24,6 +26,8 @@ let
       _module.args = {
         inherit machine;
         inherit (machine) path id;
+
+        private = import private;
       };
 
       deployment = {
@@ -54,10 +58,19 @@ let
       imports = [
         ./modules
         ./shared
+
         machine.path
 
+        sops.nixosModules.sops
         dns.nixosModules.default
       ];
+
+      sops = {
+        defaultSopsFile = lib.mkForce (machine.path + "/secrets.yaml");
+        defaultSopsFormat = "yaml";
+
+        age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+      };
 
       system.stateVersion = machine.stateVersion;
     };

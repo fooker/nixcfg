@@ -381,7 +381,7 @@ with lib;
         };
         path = [ pkgs.wireguard-tools ];
         script = ''
-          umask 137
+          umask 227
 
           mkdir -p /var/lib/peering/keys
 

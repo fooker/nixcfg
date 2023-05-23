@@ -130,12 +130,30 @@
       flake = false;
     };
 
+    nixago = {
+      type = "github";
+      owner = "nix-community";
+      repo = "nixago";
+
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "utils";
+    };
+
     pre-commit-hooks = {
       type = "github";
       owner = "cachix";
       repo = "pre-commit-hooks.nix";
 
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    sops = {
+      type = "github";
+      owner = "Mic92";
+      repo = "sops-nix";
+
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs-stable.follows = "nixpkgs";
     };
 
     colmena = {
@@ -145,16 +163,21 @@
 
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    private = {
+      url = "git+file:./private";
+      flake = false;
+    };
   };
 
-  outputs = { nixpkgs, utils, pre-commit-hooks, colmena, ... }@inputs: {
+  outputs = { nixpkgs, utils, ... }@inputs: {
     colmena = import ./deployment.nix inputs;
 
     devShell = utils.lib.eachSystemMap utils.lib.allSystems (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
 
-        hooks = pre-commit-hooks.lib.${system}.run {
+        pre-commit-hooks = inputs.pre-commit-hooks.lib.${system}.run {
           src = ./.;
           hooks = {
             nixpkgs-fmt.enable = true;
@@ -162,16 +185,23 @@
             shellcheck.enable = true;
           };
         };
+
+        sops-hooks = inputs.nixago.lib.${system}.make {
+          data = (pkgs.callPackage ./sops.nix { }).config;
+          output = ".sops.yaml";
+          format = "yaml";
+        };
       in
       pkgs.mkShell {
         buildInputs = [
-          colmena.defaultPackage.${system}
+          inputs.colmena.defaultPackage.${system}
         ] ++ (with pkgs; [
           bash
           gitAndTools.git
-          gitAndTools.transcrypt
           gnutar
           gzip
+          sops
+          age
           nixUnstable
           openssh
           drone-cli
@@ -180,7 +210,10 @@
           shellcheck
         ]);
 
-        inherit (hooks) shellHook;
+        shellHook = ''
+          ${pre-commit-hooks.shellHook}
+          ${sops-hooks.shellHook}
+        '';
       });
   };
 }

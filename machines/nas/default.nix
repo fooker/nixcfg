@@ -1,8 +1,6 @@
 { pkgs, inputs, ... }:
 
 let
-  secrets = import ./secrets.nix;
-
   mmv = pkgs.callPackage ../../packages/mmv.nix { inherit inputs; };
 in
 {
@@ -19,8 +17,6 @@ in
 
   server.enable = true;
   serial.enable = true;
-
-  backup.passphrase = secrets.backup.passphrase;
 
   dns.host = {
     realm = "home";

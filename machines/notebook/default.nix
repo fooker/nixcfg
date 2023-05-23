@@ -1,8 +1,5 @@
 { pkgs, ... }:
 
-let
-  secrets = import ./secrets.nix;
-in
 {
   imports = [
     ./hardware.nix
@@ -36,8 +33,6 @@ in
   time.timeZone = "Europe/Berlin";
 
   security.rtkit.enable = true;
-
-  backup.passphrase = secrets.backup.passphrase;
 
   services.openssh = {
     enable = true;

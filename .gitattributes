@@ -1,4 +1,4 @@
-/secrets.nix                   filter=crypt diff=crypt merge=crypt
-/secrets/**                    filter=crypt diff=crypt merge=crypt
-/machines/**/secrets.nix       filter=crypt diff=crypt merge=crypt
-/machines/**/secrets/**        filter=crypt diff=crypt merge=crypt
+/secrets.yaml                  diff=sopsdiffer
+/secrets/**                    diff=sopsdiffer
+/machines/**/secrets.yaml      diff=sopsdiffer
+/machines/**/secrets/**        diff=sopsdiffer

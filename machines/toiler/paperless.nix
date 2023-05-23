@@ -9,8 +9,7 @@ with lib;
     options = [
       "x-systemd.automount"
       "noauto"
-      "username=share"
-      "password=${nodes."nas".config.users.users."share".password}"
+      "credentials=${config.sops.secrets."mounts/vault/credentials".path}"
       "uid=${toString config.users.users.${config.services.paperless.user}.uid}"
     ];
   };
@@ -39,4 +38,6 @@ with lib;
   backup.paths = [
     config.services.paperless.dataDir
   ];
+
+  sops.secrets."mounts/vault/credentials" = { };
 }

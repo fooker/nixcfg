@@ -1,10 +1,8 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, inputs, private, ... }:
 
 with lib;
 
 let
-  secrets = import ./secrets.nix;
-
   netns-proxy = pkgs.callPackage ../../packages/netns-proxy.nix { inherit inputs; };
 
 in
@@ -29,9 +27,9 @@ in
         "Extractor"
       ];
       "listen_interface" = "";
-      "listen_ports" = [ secrets.deluge.wg.port secrets.deluge.wg.port ];
+      "listen_ports" = [ private.deluge.forwardedPort private.deluge.forwardedPort ];
       "listen_reuse_port" = true;
-      "outgoing_ports" = [ secrets.deluge.wg.port secrets.deluge.wg.port ];
+      "outgoing_ports" = [ private.deluge.forwardedPort private.deluge.forwardedPort ];
       "max_active_downloading" = 10;
       "max_active_limit" = 100;
       "max_active_seeding" = 100;
@@ -60,9 +58,7 @@ in
       "utpex" = true;
     };
 
-    authFile = pkgs.writeText "deluge-auth" ''
-      localclient:${secrets.deluge.auth.localclient}:10
-    '';
+    authFile = config.sops.secrets."deluge/auth".path;
 
     web = {
       enable = true;
@@ -116,19 +112,12 @@ in
         "${ pkgs.iproute }/bin/ip link set dev deluge netns deluge"
 
         "${ pkgs.iproute }/bin/ip -n deluge link set dev deluge up"
-        "${ pkgs.iproute }/bin/ip -n deluge addr add dev deluge ${ secrets.deluge.wg.address.ipv4 }"
-        "${ pkgs.iproute }/bin/ip -n deluge addr add dev deluge ${ secrets.deluge.wg.address.ipv6 }"
+        "${ pkgs.iproute }/bin/ip -n deluge addr add dev deluge ${private.deluge.wg.address.ipv4}"
+        "${ pkgs.iproute }/bin/ip -n deluge addr add dev deluge ${private.deluge.wg.address.ipv6}"
         "${ pkgs.iproute }/bin/ip -n deluge route replace 0.0.0.0/0 dev deluge table main"
         "${ pkgs.iproute }/bin/ip -n deluge route replace ::0/0 dev deluge table main"
 
-        ''${ pkgs.iproute }/bin/ip netns exec deluge \
-            ${ pkgs.wireguard-tools }/bin/wg set deluge \
-              private-key '${ pkgs.writeText "wg-key" secrets.deluge.wg.local.private-key }' \
-              peer '${ secrets.deluge.wg.remote.public-key }' \
-                endpoint '${ secrets.deluge.wg.remote.endpoint }' \
-                persistent-keepalive 10 \
-                allowed-ips 0.0.0.0/0,::0/0 \
-        ''
+        "${ pkgs.iproute }/bin/ip netns exec deluge ${ pkgs.wireguard-tools }/bin/wg setconf deluge ${config.sops.secrets."deluge/wg/config".path}"
       ];
 
       ExecStop = [
@@ -168,5 +157,11 @@ in
       domains = [ "deluge.home.open-desk.net" ];
       target = "http://127.0.0.1:${ toString config.services.deluge.web.port }/";
     };
+  };
+
+  sops.secrets."deluge/auth" = { };
+  sops.secrets."deluge/wg/config" = {
+    format = "binary";
+    sopsFile = ./secrets/deluge-wg.conf;
   };
 }

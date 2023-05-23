@@ -1,8 +1,5 @@
-{ nodes, ... }:
+{ nodes, config, ... }:
 
-let
-  secrets = import ./secrets.nix;
-in
 {
   fileSystems."/mnt/vault" = {
     device = "//nas.dev.home.open-desk.net/vault";
@@ -10,8 +7,7 @@ in
     options = [
       "x-systemd.automount"
       "noauto"
-      "username=share"
-      "password=${nodes."nas".config.users.users."share".password}"
+      "credentials=${config.sops.secrets."mounts/vault/credentials".path}"
     ];
   };
 
@@ -21,8 +17,10 @@ in
     options = [
       "x-systemd.automount"
       "noauto"
-      "username=${secrets.mounts.cantina.username}"
-      "password=${secrets.mounts.cantina.password}"
+      "credentials=${config.sops.secrets."mounts/cantina/credentials".path}"
     ];
   };
+
+  sops.secrets."mounts/vault/credentials" = { };
+  sops.secrets."mounts/cantina/credentials" = { };
 }

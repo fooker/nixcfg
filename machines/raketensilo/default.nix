@@ -1,6 +1,3 @@
-let
-  secrets = import ./secrets.nix;
-in
 {
   imports = [
     ./hardware.nix
@@ -9,8 +6,6 @@ in
   ];
 
   server.enable = true;
-
-  backup.passphrase = secrets.backup.passphrase;
 
   dns.host = {
     realm = "hs";

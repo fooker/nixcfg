@@ -31,17 +31,6 @@
       device = "/dev/disk/by-label/boot";
       fsType = "vfat";
     };
-    "/data" = {
-      device = "/dev/disk/by-label/data";
-      fsType = "btrfs";
-      options = [ "noatime" "discard" ];
-      encrypted = {
-        enable = true;
-        label = "data";
-        blkDev = "/dev/disk/by-label/data-crypt";
-        keyFile = "/mnt-root/${config.deployment.keys."luks-data-key".path}";
-      };
-    };
   };
 
   swapDevices = [{
@@ -49,13 +38,4 @@
   }];
 
   nix.settings.max-jobs = lib.mkDefault 4;
-
-  deployment.keys = {
-    "luks-data-key" = {
-      keyFile = "${path}/secrets/luks-data.key";
-      destDir = "/etc/secrets";
-      user = "root";
-      group = "root";
-    };
-  };
 }

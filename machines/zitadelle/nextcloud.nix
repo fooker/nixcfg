@@ -3,8 +3,6 @@
 with lib;
 
 let
-  secrets = import ./secrets.nix;
-
   domains = [
     "frisch.cloud"
     "www.frisch.cloud"
@@ -33,7 +31,7 @@ in
 
     config = {
       extraTrustedDomains = domains;
-      adminpassFile = config.deployment.keys."nextcloud.adminpass".path;
+      adminpassFile = config.sops.secrets."nextcloud/adminPassword".path;
 
       dbhost = "localhost:/run/mysqld/mysqld.sock";
       dbuser = "nextcloud";
@@ -128,10 +126,8 @@ in
     "/srv/nextcloud"
   ];
 
-  deployment.keys."nextcloud.adminpass" = {
-    text = secrets.nextcloud.adminPassword;
-    destDir = "/etc/secrets";
-    user = "nextcloud";
-    group = "nextcloud";
+  sops.secrets."nextcloud/adminPassword" = {
+    sopsFile = ./secrets.yaml;
+    owner = "nextcloud";
   };
 }

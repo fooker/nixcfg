@@ -2,10 +2,6 @@
 
 with lib;
 
-let
-  secrets = import ./secrets.nix;
-
-in
 {
   options = {
     backup.server.repos = mkOption {
@@ -53,16 +49,12 @@ in
       };
     };
 
-    backup.server.repos =
-      # Create repos for all defined nodes
-      (mapAttrsToList
-        (name: node: {
-          inherit name;
-          inherit (node.config.backup) publicKey extraPublicKeys;
-        })
-        nodes)
-
-      # Legacy repos
-      ++ secrets.backup.server.repos;
+    # Create repos for all defined nodes
+    backup.server.repos = mapAttrsToList
+      (name: node: {
+        inherit name;
+        inherit (node.config.backup) publicKey extraPublicKeys;
+      })
+      nodes;
   };
 }

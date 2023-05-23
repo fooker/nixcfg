@@ -4,7 +4,8 @@
     user = "root";
   };
 
-  tags = [ "prod" ];
+  # tags = [ "prod" ];
+  tags = [ ];
 
   system = "aarch64-linux";
 

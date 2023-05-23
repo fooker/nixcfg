@@ -18,16 +18,12 @@
 
   services.openvpn.servers.opennms = {
     autoStart = false;
-    config = "config ${config.deployment.keys."openvpn-opennms".path}";
+    config = "config ${config.sops.secrets."openvpn/opennms".path}";
   };
 
-  deployment.keys = {
-    "openvpn-opennms" = {
-      keyFile = toString ./secrets/opennms.ovpn;
-      destDir = "/etc/secrets";
-      user = "root";
-      group = "root";
-    };
+  sops.secrets."openvpn/opennms" = {
+    format = "binary";
+    sopsFile = ./secrets/opennms.ovpn;
   };
 
   firewall.rules = dag: with dag; {

@@ -1,8 +1,5 @@
 { config, ... }:
 
-let
-  secrets = import ./secrets.nix;
-in
 {
   imports = [
     ./hardware.nix
@@ -17,8 +14,6 @@ in
     enable = true;
     spouse = config.hive.nodes.zitadelle-north;
   };
-
-  backup.passphrase = secrets.backup.passphrase;
 
   dns.host = {
     interface = "ext";

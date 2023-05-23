@@ -3,8 +3,6 @@
 with lib;
 
 let
-  secrets = import ./secrets.nix;
-
   qd = pkgs.callPackage ../../packages/qd.nix { inherit inputs; };
 
   driver = "fujitsu";
@@ -67,14 +65,14 @@ let
     ${pkgs.poppler_utils}/bin/pdfunite ''${FILES[@]} "$QD_JOB_ID.pdf"
 
     ${pkgs.openssh}/bin/scp \
-      -i ${config.deployment.keys."scanner-sshkey".path} \
+      -i ${config.sops.secrets."scanner/sshKey".path} \
       "$QD_JOB_ID.pdf" \
       scanner@nas.dev.home.open-desk.net:"$QD_JOB_ID.pdf"
 
     ${pkgs.curl}/bin/curl \
       -v \
       --show-error --fail \
-      -u ${secrets.paperless.upload.username}:${secrets.paperless.upload.password} \
+      -u "$(cat "${config.sops.secrets."paperless/upload/username".path}"):$(cat "${config.sops.secrets."paperless/upload/password".path}")" \
       https://docs.home.open-desk.net//api/documents/post_document/ \
       -X POST \
       -F document=@"$QD_JOB_ID.pdf"
@@ -315,12 +313,19 @@ in
     };
   };
 
-  deployment.keys = {
-    "scanner-sshkey" = rec {
-      keyFile = "${path}/secrets/id_scanner";
-      destDir = "/etc/secrets/id_scanner";
-      user = "scanner";
-      group = "scanner";
-    };
+  sops.secrets."scanner/sshKey" = {
+    format = "binary";
+    sopsFile = ./secrets/id_scanner;
+    owner = "scanner";
+    group = "scanner";
+  };
+
+  sops.secrets."paperless/upload/username" = { };
+  sops.secrets."paperless/upload/password" = { };
+
+  gather."id_scanner.pub" = {
+    command = pkgs.writeScript "gather-scanner-sshKey" ''
+      ${pkgs.openssh}/ssh-keygen -y -f "${config.sops.secrets."scanner/sshKey".path}"
+    '';
   };
 }

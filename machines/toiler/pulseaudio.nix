@@ -59,6 +59,7 @@ in
     after = [ "snapserver.service" ];
     requires = [ "snapserver.service" ];
     environment.PULSE_RUNTIME_PATH = "/run/pulse";
+    environment.PULSE_LATENCY_MSEC = toString 60;
     serviceConfig = {
       Type = "notify";
       ExecStart = "${getBin package}/bin/pulseaudio --daemonize=no --log-level=debug --system -n --file=${configFile}";

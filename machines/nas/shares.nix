@@ -1,10 +1,9 @@
-let
-  secrets = import ./secrets.nix;
-in
+{ config, ... }:
+
 {
   users = {
     users."share" = {
-      inherit (secrets.users."share") password;
+      passwordFile = config.sops.secrets."users/share/password".path;
 
       isSystemUser = true;
       group = "share";
@@ -87,5 +86,9 @@ in
         ''ip6 saddr { fd79:300d:6056:100::/64, fd79:300d:6056:ffff::0/128 } udp dport { 137, 138 } accept''
       ];
     };
+  };
+
+  sops.secrets."users/share/password" = {
+    neededForUsers = true;
   };
 }

@@ -1,10 +1,8 @@
-{ lib, pkgs, network, nodes, ... }:
+{ lib, pkgs, network, nodes, config, ... }:
 
 with lib;
 
 let
-  secrets = import ../../secrets.nix;
-
   nodes' = mapAttrsToList
     (name: device: {
       inherit (device.monitoring) id;
@@ -74,7 +72,7 @@ in
     script = ''
       ${pkgs.curl}/bin/curl \
         -v \
-        -u "deploy:${secrets.opennms.deploy.password}" \
+        -u "deploy:$(cat "${config.sops.secrets."opennms/deploy/password".path}")" \
         -X POST \
         -H 'Content-type: application/xml' \
         -d @${requisition} \
@@ -82,7 +80,7 @@ in
 
         ${pkgs.curl}/bin/curl \
           -v \
-          -u "deploy:${secrets.opennms.deploy.password}" \
+          -u "deploy:$(cat "${config.sops.secrets."opennms/deploy/password".path}")" \
           -X PUT \
           http://localhost:8980/opennms/rest/requisitions/nixos/import
     '';
@@ -99,4 +97,6 @@ in
     target = "nixos-requisition.xml";
     source = requisition;
   };
+
+  sops.secrets."opennms/deploy/password" = { };
 }

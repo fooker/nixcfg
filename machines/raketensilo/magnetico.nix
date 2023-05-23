@@ -1,8 +1,6 @@
 { pkgs, inputs, config, device, ... }:
 
 let
-  secrets = import ./secrets.nix;
-
   peers = import inputs.magnetico-peers;
 
 in
@@ -21,7 +19,7 @@ in
     vpn = {
       network = "192.168.200.0/24";
 
-      privateKeyFile = config.deployment.keys."magnetico-vpn-key".path;
+      privateKeyFile = config.sops.secrets."magnetico/vpn/privateKey".path;
 
       inherit peers;
     };
@@ -33,14 +31,6 @@ in
 
   dns.zones = {
     net.open-desk.magnetico.data = { AAAA = device.interfaces.ext.address.ipv6.address; };
-  };
-
-  deployment.keys."magnetico-vpn-key" = {
-    text = secrets.magnetico.vpn.privateKey;
-    destDir = "/etc/secrets";
-    user = "root";
-    group = "systemd-network";
-    permissions = "0640";
   };
 
   firewall.rules = dag: with dag; {
@@ -58,4 +48,6 @@ in
       ];
     };
   };
+
+  sops.secrets."magnetico/vpn/privateKey" = { };
 }

@@ -29,7 +29,7 @@ with lib;
 
     users.users."root" = {
       openssh.authorizedKeys.keys = [
-        (builtins.readFile ../machines/notebook/secrets/id_builder.pub)
+        (builtins.readFile ../machines/notebook/gathered/id_builder.pub)
       ];
     };
   };

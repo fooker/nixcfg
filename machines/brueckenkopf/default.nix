@@ -1,6 +1,5 @@
-let
-  secrets = import ./secrets.nix;
-in
+{ config, ... }:
+
 {
   imports = [
     ./hardware.nix
@@ -13,8 +12,6 @@ in
 
   server.enable = true;
 
-  backup.passphrase = secrets.backup.passphrase;
-
   dns.host.interface = "ext";
 
   fileSystems."/mnt/cantina" = {
@@ -23,8 +20,9 @@ in
     options = [
       "x-systemd.automount"
       "noauto"
-      "username=${secrets.mounts.cantina.username}"
-      "password=${secrets.mounts.cantina.password}"
+      "credentials=${config.sops.secrets."mounts/cantina/credentials".path}"
     ];
   };
+
+  sops.secrets."mounts/cantina/credentials" = { };
 }

@@ -1,4 +1,4 @@
-{ lib, path, nodes, config, ... }:
+{ lib, pkgs, path, nodes, config, ... }:
 
 with lib;
 
@@ -17,7 +17,7 @@ in
           inherit system;
           hostName = builder.dns.host.domain.toSimpleString;
           sshUser = "root";
-          sshKey = config.deployment.keys."builder-sshkey".path;
+          sshKey = config.sops.secrets."builder/sshKey".path;
           speedFactor = if system == builder.nixpkgs.localSystem.system then 2 else 1;
           maxJobs = 8;
           supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
@@ -38,12 +38,16 @@ in
     };
   };
 
-  deployment.keys = {
-    "builder-sshkey" = rec {
-      keyFile = "${path}/secrets/id_builder";
-      destDir = "/etc/secrets";
-      user = "root";
-      group = "nixbld";
-    };
+  sops.secrets."builder/sshKey" = {
+    format = "binary";
+    sopsFile = ./secrets/id_builder;
+    group = "nixbld";
+  };
+
+  gather."builder-sshkey" = {
+    name = "id_builder.pub";
+    command = pkgs.writeScript "gather-builder-sshkey" ''
+      ${pkgs.openssh}/ssh-keygen -y -f "${config.sops.secrets."builder/sshKey".path}"
+    '';
   };
 }

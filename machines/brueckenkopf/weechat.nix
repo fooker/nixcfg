@@ -1,8 +1,6 @@
-{ config, pkgs, ... }:
+{ config, pkgs, private, ... }:
 
 let
-  secrets = import ./secrets.nix;
-
   weechat = pkgs.weechat.override {
     configure = { availablePlugins, ... }: {
       plugins = with availablePlugins; [ python perl ];
@@ -31,7 +29,7 @@ in
     groups.weechat = { };
   };
 
-  networking.extraHosts = secrets.extraHosts;
+  networking.extraHosts = private.weechat.extraHosts;
 
   systemd.services.weechat = {
     environment.WEECHAT_HOME = config.users.users."weechat".home;

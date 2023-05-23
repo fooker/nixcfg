@@ -1,18 +1,15 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, private, ... }:
 
 with lib;
 
-let
-  secrets = import ./secrets.nix;
-in
 {
   services.snapserver.streams = {
     "spotify" = {
       type = "librespot";
       location = "${pkgs.librespot}/bin/librespot";
       query = {
-        username = "${secrets.spotify.username}";
-        password = "${secrets.spotify.password}";
+        username = "${private.spotify.username}";
+        password = "${private.spotify.password}";
         devicename = "toiler";
         bitrate = "320";
         normalize = "true";

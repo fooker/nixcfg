@@ -1,6 +1,3 @@
-let
-  secrets = import ./secrets.nix;
-in
 {
   peering = {
     routerId = "37.120.161.15";

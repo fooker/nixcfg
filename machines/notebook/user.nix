@@ -1,9 +1,5 @@
 { pkgs, inputs, config, ... }:
 
-let
-  username = "fooker";
-  secrets = import ./secrets.nix;
-in
 {
   imports = [
     "${inputs.home-manager}/nixos"
@@ -14,7 +10,7 @@ in
 
     verbose = true;
 
-    users."${username}" = {
+    users."fooker" = {
       imports = [
         ./home
       ];
@@ -25,11 +21,14 @@ in
     };
   };
 
-  users.users."${username}" = {
-    inherit (secrets.users.fooker) hashedPassword;
+  users.users."fooker" = {
     isNormalUser = true;
     uid = 1000;
+
     shell = pkgs.zsh;
+
+    passwordFile = config.sops.secrets."users/fooker/password".path;
+
     extraGroups = [
       "wheel"
       "audio"
@@ -46,5 +45,9 @@ in
 
   backup.extraPublicKeys = {
     "fooker" = ''ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK2nkarN0+uSuP5sGwDCb9KRu+FCjO/+da4VypGanPUZ'';
+  };
+
+  sops.secrets."users/fooker/password" = {
+    neededForUsers = true;
   };
 }

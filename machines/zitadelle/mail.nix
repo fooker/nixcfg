@@ -1,10 +1,7 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, inputs, private, ... }:
 
 with lib;
 
-let
-  secrets = import ./secrets.nix;
-in
 {
   imports = [
     (import inputs.nixos-mailserver)
@@ -22,7 +19,7 @@ in
       "schoen-und-gut.org"
     ];
 
-    loginAccounts = secrets.mail.accounts;
+    loginAccounts = private.mail.accounts;
 
     extraVirtualAliases =
       let
@@ -43,7 +40,7 @@ in
             aliases)
           config.mailserver.domains);
 
-    inherit (secrets.mail) forwards;
+    inherit (private.mail) forwards;
 
     enableSubmission = true;
     enableSubmissionSsl = true;
@@ -65,6 +62,11 @@ in
     dkimSelector = "mail";
 
     mailDirectory = "/data/mail";
+
+    redis = {
+      address = "127.0.0.1";
+      port = 6379;
+    };
   };
 
   # Disable default redis impl as we use keydb server
@@ -110,7 +112,7 @@ in
     replication_max_conns = 10
 
     doveadm_port = 22025
-    doveadm_password = '${ secrets.dovecot.doveadm.password }'
+    doveadm_password = <${config.sops.secrets."mail/doveadm/password".path}
 
     plugin {
       mail_replica = tcp:[${ config.hive.spouse.address.ipv6 }]:22025
@@ -188,7 +190,11 @@ in
           TXT = "v=spf1 mx -all";
 
           # DKIM record
-          includes = [ (./secrets/dkim/. + "/${ domain }.mail.txt") ];
+          # TODO: Use a selector per server?
+          includes = [ ./secrets/dkim/${"${domain}.mail.txt"} ];
+          # _domainkey.mail = {
+          #   TXT = "v=DKIM1; k=rsa; p=${builtins.readFile ./gathered/mail/dkim/${domain}.pub}";
+          # };
 
           # DMARK record
           _dmarc = {
@@ -208,27 +214,27 @@ in
     "/var/sieve"
   ];
 
-  deployment.keys = listToAttrs (concatMap
+  sops.secrets = (listToAttrs (concatMap
     (domain: [
-      (nameValuePair "dkim-mail-${ domain }-key" {
-        keyFile = toString ./secrets/dkim + "/${ domain }.mail.key";
-        destDir = config.mailserver.dkimKeyDirectory;
-        inherit (config.services.opendkim) user group;
-      })
-      (nameValuePair "dkim-mail-${ domain }-txt" {
-        keyFile = toString ./secrets/dkim + "/${ domain }.mail.txt";
-        destDir = config.mailserver.dkimKeyDirectory;
-        inherit (config.services.opendkim) user group;
+      (nameValuePair "dkim/${domain}/mail" {
+        format = "binary";
+        sopsFile = ./secrets/dkim + "/${domain}.mail.key";
+        path = "/etc/secrets/dkim/${domain}.mail.key";
       })
     ])
     config.mailserver.domains
-  );
+  )) // {
+    "mail/doveadm/password" = {
+      sopsFile = ./secrets.yaml;
+    };
+  };
 
-  systemd.services."opendkim" = mkMerge (map
-    (domain: {
-      requires = [ "dkim-mail-${domain}-key-key.service" ];
-      bindsTo = [ "dkim-mail-${domain}-key-key.service" ];
-      partOf = [ "dkim-mail-${domain}-key-key.service" ];
+  gather = listToAttrs (map
+    (domain: nameValuePair "dkim-${domain}-mail" {
+      name = "dkim/${domain}.mail.pub";
+      command = pkgs.writeScript "gather-dkim-${domain}" ''
+        ${pkgs.openssl}/bin/openssl rsa -in ${config.sops.secrets."dkim/${domain}/mail".path} -pubout -outform PEM | head -n -1 | tail -n +2
+      '';
     })
     config.mailserver.domains);
 }

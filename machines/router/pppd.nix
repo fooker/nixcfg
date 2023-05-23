@@ -1,10 +1,7 @@
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 
-let
-  secrets = import ./secrets.nix;
-in
 {
   services.pppd = {
     enable = true;
@@ -18,9 +15,8 @@ in
           plugin rp-pppoe.so dsl
           
           linkname uplink
-          
-          user "${username}"
-          password "${password}"
+
+          file ${config.sops.secrets."pppd/auth".path}
         
           mtu 1500
           mru 1500
@@ -91,4 +87,6 @@ in
       OnCalendar = "*-*-* 05:00:00";
     };
   };
+
+  sops.secrets."pppd/auth" = { };
 }

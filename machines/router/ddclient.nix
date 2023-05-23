@@ -1,11 +1,8 @@
 { lib, path, config, ... }:
 
 with lib;
-let
-  secrets = import ./secrets.nix;
-in
 {
-  services.ddclient = with secrets.ddclient.basis;  {
+  services.ddclient = {
     enable = true;
 
     interval = "5min";
@@ -14,18 +11,13 @@ in
 
     server = "ddserver.org";
 
-    username = "${username}";
-    passwordFile = config.deployment.keys."ddclient-password".path;
+    username = "fooker";
+    passwordFile = config.sops.secrets."ddserver/password".path;
 
-    domains = [ "${domain}" ];
+    domains = [ "basis.ddserver.org" ];
 
     use = "if, if=ppp0";
   };
 
-  deployment.keys = {
-    "ddclient-password" = rec {
-      keyFile = "${path}/secrets/ddclient";
-      destDir = "/etc/secrets";
-    };
-  };
+  sops.secrets."ddserver/password" = { };
 }

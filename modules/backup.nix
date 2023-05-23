@@ -41,13 +41,6 @@ with lib;
       default = { };
     };
 
-    passphrase = mkOption {
-      type = types.str;
-      description = ''
-        The passphrase the backups are encrypted with.
-      '';
-    };
-
     paths = mkOption {
       type = with types; coercedTo str lib.singleton (listOf str);
       description = ''
@@ -94,7 +87,9 @@ with lib;
 
         encryption = {
           mode = "repokey";
-          inherit (config.backup) passphrase;
+          passCommand = ''
+            cat ${config.sops.secrets."backup/passphrase".path};
+          '';
         };
 
         environment = {
@@ -127,6 +122,10 @@ with lib;
             -C "backup@${name}"
         fi
       '';
+
+      sops.secrets."backup/passphrase" = {
+        sopsFile = "${path}/secrets.yaml";
+      };
 
       gather = {
         "id_backup.pub" = {

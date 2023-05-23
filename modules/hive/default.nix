@@ -63,6 +63,7 @@ with lib;
 
   imports = [
     ./peering.nix
+    ./data.nix
     ./mariadb.nix
     ./glusterfs.nix
     ./keydb.nix

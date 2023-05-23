@@ -18,6 +18,5 @@ for MACHINE in "${MACHINES[@]}"; do
 
 	mkdir -p "${MACHINE_DIR}/gathered"
 
-	ssh "${TARGET}" "/run/gather" | tar xv --dereference --directory "${MACHINE_DIR}/gathered"
-	
+	ssh "${TARGET}" "/run/gather" | tar xv --dereference --directory "${MACHINE_DIR}/gathered" || true
 done
