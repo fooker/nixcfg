@@ -159,7 +159,9 @@ in
     };
   };
 
-  sops.secrets."deluge/auth" = { };
+  sops.secrets."deluge/auth" = {
+    owner = "deluge";
+  };
   sops.secrets."deluge/wg/config" = {
     format = "binary";
     sopsFile = ./secrets/deluge-wg.conf;
