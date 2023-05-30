@@ -111,6 +111,11 @@
       inputs.ipam.follows = "ipam";
     };
 
+    gather = {
+      type = "path";
+      path = "/home/fooker/devl/gather.nix/";
+    };
+
     ate = {
       type = "github";
       owner = "andir";

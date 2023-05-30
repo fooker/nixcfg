@@ -42,21 +42,23 @@ with lib;
           {
             algorithm = "rsa";
             hash = "sha256";
-            fingerprint = fingerprint /${path}/gathered/ssh_host_rsa_key.pub;
+            fingerprint = fingerprint config.gather.parts."ssh/hostKey/rsa".path;
           }
           {
             algorithm = "ed25519";
             hash = "sha256";
-            fingerprint = fingerprint /${path}/gathered/ssh_host_ed25519_key.pub;
+            fingerprint = fingerprint config.gather.parts."ssh/hostKey/ed25519".path;
           }
         ];
     });
 
-    gather = {
-      "ssh_host_rsa_key.pub" = {
+    gather.parts = {
+      "ssh/hostKey/rsa" = {
+        name = "ssh_host_rsa_key.pub";
         file = "/etc/ssh/ssh_host_rsa_key.pub";
       };
-      "ssh_host_ed25519_key.pub" = {
+      "ssh/hostKey/ed25519" = {
+        name = "ssh_host_ed25519_key.pub";
         file = "/etc/ssh/ssh_host_ed25519_key.pub";
       };
     };

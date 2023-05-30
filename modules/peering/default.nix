@@ -255,7 +255,7 @@ with lib;
         };
 
         config = {
-          local.pubkey = builtins.readFile config.gather."peering-${name}".target;
+          local.pubkey = fileContents config.gather.parts."peering/${name}".path;
         };
       }));
     };
@@ -396,10 +396,10 @@ with lib;
         wants = [ "peering-genkeys.service" ];
       };
 
-      gather = mapAttrs'
-        (name: peer: nameValuePair "peering-${name}" {
+      gather.parts = mapAttrs'
+        (name: peer: nameValuePair "peering/${name}" {
           name = "peering/${peer.name}.pub";
-          command = pkgs.writeScript "gather-peer-${peer.name}" ''
+          command = ''
             ${pkgs.wireguard-tools}/bin/wg pubkey < "/var/lib/peering/keys/${peer.name}"
           '';
         })

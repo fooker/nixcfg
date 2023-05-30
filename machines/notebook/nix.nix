@@ -44,10 +44,10 @@ in
     group = "nixbld";
   };
 
-  gather."builder-sshkey" = {
+  gather.parts."builder/sshKey" = {
     name = "id_builder.pub";
-    command = pkgs.writeScript "gather-builder-sshkey" ''
-      ${pkgs.openssh}/ssh-keygen -y -f "${config.sops.secrets."builder/sshKey".path}"
+    command = ''
+      ${pkgs.openssh}/bin/ssh-keygen -y -f "${config.sops.secrets."builder/sshKey".path}"
     '';
   };
 }

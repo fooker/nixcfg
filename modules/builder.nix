@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, nodes, ... }:
 
 with lib;
 
@@ -29,7 +29,7 @@ with lib;
 
     users.users."root" = {
       openssh.authorizedKeys.keys = [
-        (builtins.readFile ../machines/notebook/gathered/id_builder.pub)
+        (fileContents nodes."notebook".config.gather.parts."builder/sshKey".path)
       ];
     };
   };

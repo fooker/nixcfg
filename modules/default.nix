@@ -1,6 +1,5 @@
 {
   imports = [
-    ./gather.nix
     ./common/default.nix
     ./boot/default.nix
     ./server.nix

@@ -1,6 +1,7 @@
 { nixpkgs
 , ipam
 , dns
+, gather
 , sops
 , private
 , ...
@@ -23,6 +24,17 @@ let
 
     in
     {
+      imports = [
+        ./modules
+        ./shared
+
+        machine.path
+
+        sops.nixosModules.sops
+        dns.nixosModules.default
+        gather.nixosModules.default
+      ];
+
       _module.args = {
         inherit machine;
         inherit (machine) path id;
@@ -55,21 +67,16 @@ let
         (self: super: (super.prefer-remote-fetch self super))
       ];
 
-      imports = [
-        ./modules
-        ./shared
-
-        machine.path
-
-        sops.nixosModules.sops
-        dns.nixosModules.default
-      ];
-
       sops = {
         defaultSopsFile = lib.mkForce (machine.path + "/secrets.yaml");
         defaultSopsFormat = "yaml";
 
         age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+      };
+
+      gather = {
+        target = name: "${machine.relPath}/gathered/${name}";
+        root = ./.;
       };
 
       system.stateVersion = machine.stateVersion;

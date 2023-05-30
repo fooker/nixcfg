@@ -210,6 +210,18 @@
         "type": "github"
       }
     },
+    "gather": {
+      "locked": {
+        "lastModified": 1685483967,
+        "narHash": "sha256-zxEd0XPpfyq+1XblgVCYAsrVsj3hqLuo2sFYbh7xYgo=",
+        "path": "/home/fooker/devl/gather.nix/",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/fooker/devl/gather.nix/",
+        "type": "path"
+      }
+    },
     "gitignore": {
       "inputs": {
         "nixpkgs": [

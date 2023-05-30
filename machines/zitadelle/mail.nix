@@ -193,7 +193,7 @@ with lib;
           # TODO: Use a selector per server?
           includes = [ ./secrets/dkim/${"${domain}.mail.txt"} ];
           # _domainkey.mail = {
-          #   TXT = "v=DKIM1; k=rsa; p=${builtins.readFile ./gathered/mail/dkim/${domain}.pub}";
+          #   TXT = "v=DKIM1; k=rsa; p=${fileContents config.gathered.parts."dkim/${domain}/mail".path}";
           # };
 
           # DMARK record
@@ -229,10 +229,10 @@ with lib;
     };
   };
 
-  gather = listToAttrs (map
-    (domain: nameValuePair "dkim-${domain}-mail" {
+  gather.parts = listToAttrs (map
+    (domain: nameValuePair "dkim/${domain}/mail" {
       name = "dkim/${domain}.mail.pub";
-      command = pkgs.writeScript "gather-dkim-${domain}" ''
+      command = ''
         ${pkgs.openssl}/bin/openssl rsa -in ${config.sops.secrets."dkim/${domain}/mail".path} -pubout -outform PEM | head -n -1 | tail -n +2
       '';
     })

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, path, inputs, ... }:
+{ config, lib, pkgs, path, inputs, nodes, ... }:
 
 with lib;
 
@@ -300,7 +300,7 @@ in
   services.openssh.knownHosts = {
     "nas" = {
       hostNames = [ "nas.dev.home.open-desk.net" ];
-      publicKey = readFile ../nas/gathered/ssh_host_ed25519_key.pub;
+      publicKey = fileContents nodes."nas".config.gather.parts."ssh/hostKey/ed25519".path;
     };
   };
 
@@ -323,9 +323,10 @@ in
   sops.secrets."paperless/upload/username" = { };
   sops.secrets."paperless/upload/password" = { };
 
-  gather."id_scanner.pub" = {
-    command = pkgs.writeScript "gather-scanner-sshKey" ''
-      ${pkgs.openssh}/ssh-keygen -y -f "${config.sops.secrets."scanner/sshKey".path}"
+  gather.parts."scanner/sshKey" = {
+    name = "id_scanner.pub";
+    command = ''
+      ${pkgs.openssh}/bin/ssh-keygen -y -f "${config.sops.secrets."scanner/sshKey".path}"
     '';
   };
 }

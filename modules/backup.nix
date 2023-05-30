@@ -110,7 +110,7 @@ with lib;
 
       backup.paths = [ "/etc" "/root" ];
 
-      backup.publicKey = mkDefault (fileContents "${path}/gathered/id_backup.pub");
+      backup.publicKey = mkDefault (fileContents config.gather.parts."backup/sshKey".path);
 
       system.activationScripts."backup-sshkey" = ''
         if ! [ -f "/var/lib/backup/id_backup" ]; then
@@ -127,8 +127,9 @@ with lib;
         sopsFile = "${path}/secrets.yaml";
       };
 
-      gather = {
-        "id_backup.pub" = {
+      gather.parts = {
+        "backup/sshKey" = {
+          name = "id_backup.pub";
           file = "/var/lib/backup/id_backup.pub";
         };
       };
