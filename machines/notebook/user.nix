@@ -1,4 +1,11 @@
-{ pkgs, inputs, config, ... }:
+{ pkgs
+, config
+, inputs
+, machine
+, device
+, network
+, ...
+}:
 
 {
   imports = [
@@ -17,7 +24,7 @@
     };
 
     extraSpecialArgs = {
-      inherit (config._module.args) inputs network device;
+      inherit inputs machine device network;
     };
   };
 

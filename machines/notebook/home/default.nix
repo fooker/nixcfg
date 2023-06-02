@@ -14,9 +14,6 @@
   home.packages = with pkgs; [
     ate
 
-    direnv
-    lorri
-
     # Sound and media
     pavucontrol
     ponymix
@@ -89,7 +86,7 @@
     ./git.nix
     ./gpg.nix
     ./i3wm.nix
-    ./lorri.nix
+    ./direnv.nix
     ./nextcloud.nix
     ./pass.nix
     ./redshift.nix
