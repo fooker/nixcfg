@@ -1,5 +1,17 @@
 {
-  networking.wireless.iwd.enable = true;
+  networking.networkmanager = {
+    enable = true;
+    firewallBackend = "nftables";
+    unmanaged = [
+      "interface-name:en-raw"
+      "interface-name:dn42"
+      "interface-name:peer.*"
+      "interface-name:virbr*"
+      "interface-name:docker*"
+      "interface-name:br-*"
+    ];
+    dns = "systemd-resolved";
+  };
 
   boot.kernel.sysctl = {
     "net.ipv4.conf.all.ignore_routes_with_linkdown" = 1;
