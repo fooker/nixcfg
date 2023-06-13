@@ -3,6 +3,7 @@
     ./hardware.nix
     ./network.nix
     ./magnetico.nix
+    ./dashboard.nix
   ];
 
   server.enable = true;

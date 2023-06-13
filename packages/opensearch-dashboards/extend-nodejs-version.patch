@@ -1,0 +1,14 @@
+diff --git a/package.json b/package.json
+index 7c9bced..163d654 100644
+--- a/package.json
++++ b/package.json
+@@ -23,6 +23,6 @@
+     "url": "https://github.com/opensearch-project/opensearch-dashboards.git"
+   },
+   "engines": {
+-    "node": "^14.20.1"
++    "node": ">=14.20.1 <19"
+   }
+-}
+\ No newline at end of file
++}

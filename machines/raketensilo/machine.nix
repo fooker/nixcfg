@@ -4,7 +4,7 @@
     user = "root";
   };
 
-  tags = [ "prod" ];
+  tags = [ "prod" "magnetico" ];
 
   system = "x86_64-linux";
 

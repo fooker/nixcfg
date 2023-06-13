@@ -17,16 +17,12 @@ in
     enable = true;
 
     vpn = {
-      network = "192.168.200.0/24";
-
       privateKeyFile = config.sops.secrets."magnetico/vpn/privateKey".path;
 
       inherit peers;
     };
 
     data.enable = true;
-
-    crawler.enable = true;
   };
 
   dns.zones = {
@@ -49,5 +45,7 @@ in
     };
   };
 
-  sops.secrets."magnetico/vpn/privateKey" = { };
+  sops.secrets."magnetico/vpn/privateKey" = {
+    owner = "systemd-network";
+  };
 }
