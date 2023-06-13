@@ -244,6 +244,26 @@
       };
     };
 
+    "fliegerhorst" = {
+      type = "Virtual Server";
+      role = "Server";
+      site = null;
+
+      interfaces = {
+        "ext" = {
+          mac = "00:50:56:3c:4e:1b";
+          satelite = {
+            addresses = [
+              "193.34.144.95/25"
+              "2a02:c205:3002:2452::1/64"
+            ];
+            gateways = [ "193.34.144.1" "fe80::1" ];
+            dns = [ "1.0.0.1" "1.1.1.1" "2606:4700:4700::1111" "2606:4700:4700::1001" ];
+          };
+        };
+      };
+    };
+
     "win10" = {
       type = "Virtual Server";
       role = "Server";
