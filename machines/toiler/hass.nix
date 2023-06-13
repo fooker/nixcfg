@@ -29,7 +29,6 @@
 
   services.home-assistant = {
     enable = true;
-    port = 8123;
 
     config = import ./hass { inherit lib; };
 

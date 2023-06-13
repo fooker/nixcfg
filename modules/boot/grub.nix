@@ -12,7 +12,6 @@ with lib;
   config = mkIf (config.boot.preset == "grub") {
     boot.loader.grub = {
       enable = true;
-      version = 2;
       inherit (config.boot) device;
     };
   };

@@ -4,7 +4,7 @@
       type = "github";
       owner = "NixOS";
       repo = "nixpkgs";
-      ref = "nixos-22.11";
+      ref = "nixos-23.05";
     };
 
     nixpkgs-unstable = {
@@ -18,7 +18,7 @@
       type = "github";
       owner = "NixOS";
       repo = "nixpkgs";
-      ref = "nixos-22.11";
+      ref = "nixos-23.05";
     };
 
     nixpkgs-magnetico = {
@@ -43,13 +43,13 @@
       type = "github";
       owner = "nix-community";
       repo = "home-manager";
-      ref = "release-22.11";
+      ref = "release-23.05";
     };
 
     nixos-mailserver = {
       type = "git";
       url = "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver.git";
-      ref = "nixos-22.11";
+      ref = "nixos-23.05";
     };
 
     magnetico = {
@@ -211,7 +211,7 @@
           openssh
           drone-cli
           nixpkgs-fmt
-          nix-linter
+          statix
           shellcheck
         ]);
 

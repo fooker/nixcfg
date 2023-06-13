@@ -13,7 +13,9 @@ with lib;
   config = mkIf config.server.enable {
     services.openssh = {
       enable = true;
-      passwordAuthentication = false;
+      settings = {
+        PasswordAuthentication = false;
+      };
     };
 
     firewall.rules = dag: with dag; {

@@ -3,17 +3,25 @@
 {
   services.gitea = {
     enable = true;
-    domain = "git.home.open-desk.net";
-
-    rootUrl = "https://git.home.open-desk.net/";
-
-    cookieSecure = true;
-    disableRegistration = true;
 
     lfs.enable = true;
 
-    httpPort = 4000;
-    httpAddress = "::1";
+    settings = {
+      server = {
+        ROOT_URL = "https://git.home.open-desk.net/";
+        HTTP_PORT = 4000;
+        HTTP_ADDR = "::1";
+        DOMAIN = "git.home.open-desk.net";
+      };
+
+      service = {
+        DISABLE_REGISTRATION = true;
+      };
+
+      session = {
+        COOKIE_SECURE = true;
+      };
+    };
 
     database = {
       type = "postgres";
@@ -36,7 +44,7 @@
   web.reverse-proxy = {
     "git" = {
       domains = [ "git.home.open-desk.net" ];
-      target = "http://[${config.services.gitea.httpAddress}]:${toString config.services.gitea.httpPort}";
+      target = "http://[${config.services.gitea.settings.server.HTTP_ADDR}]:${toString config.services.gitea.settings.server.HTTP_PORT}";
     };
   };
 

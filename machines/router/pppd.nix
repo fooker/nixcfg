@@ -12,7 +12,7 @@ with lib;
         autostart = true;
 
         config = with secrets.ppp.uplink; ''
-          plugin rp-pppoe.so dsl
+          plugin pppoe.so dsl
           
           linkname uplink
 
@@ -36,7 +36,6 @@ with lib;
           noproxyarp
           noaccomp
 
-          nomultilink
           novj
 
           defaultroute

@@ -53,7 +53,7 @@ with lib;
 
     virusScanning = true;
 
-    certificateScheme = 1; # Manual certificate management
+    certificateScheme = "manual";
     certificateFile = config.letsencrypt.certs.mail.path.cert;
     keyFile = config.letsencrypt.certs.mail.path.key;
 
