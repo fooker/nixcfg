@@ -100,6 +100,13 @@
       flake = false;
     };
 
+    padwatch = {
+      type = "github";
+      owner = "fooker";
+      repo = "padwatch";
+      flake = false;
+    };
+
     ipam = {
       type = "path";
       path = "/home/fooker/devl/ipam.nix/";

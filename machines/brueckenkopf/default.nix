@@ -8,6 +8,7 @@
     ./mosh.nix
     ./weechat.nix
     ./monitoring
+    ./padwatch.nix
   ];
 
   server.enable = true;
