@@ -212,8 +212,8 @@
     },
     "gather": {
       "locked": {
-        "lastModified": 1685483967,
-        "narHash": "sha256-zxEd0XPpfyq+1XblgVCYAsrVsj3hqLuo2sFYbh7xYgo=",
+        "lastModified": 1685626022,
+        "narHash": "sha256-5jGnDZef/d8BSHifqTT/KCuF6e9MTJb5q8g9FouD+Kc=",
         "path": "/home/fooker/devl/gather.nix/",
         "type": "path"
       },
@@ -716,6 +716,7 @@
         "blog": "blog",
         "colmena": "colmena",
         "dns": "dns",
+        "gather": "gather",
         "home-manager": "home-manager",
         "ipam": "ipam",
         "ipinfo": "ipinfo",

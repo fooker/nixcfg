@@ -16,7 +16,5 @@ for MACHINE in "${MACHINES[@]}"; do
 	TARGET="$(nix eval --raw --impure --expr "(with import \"${MACHINE_DIR}/machine.nix\"; \"\${target.user}@\${target.host}\")")"
 	echo "Target: ${TARGET}"
 
-	mkdir -p "${MACHINE_DIR}/gathered"
-
-	ssh "${TARGET}" "/run/gather" | tar xv --dereference --directory "${MACHINE_DIR}/gathered" || true
+	ssh "${TARGET}" "/run/gather" | tar xv --dereference --directory "$(pwd)" || true
 done
