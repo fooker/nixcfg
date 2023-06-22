@@ -13,6 +13,7 @@ in
     ./syncthing.nix
     ./backup.nix
     ./scanner.nix
+    ./c3sets.nix
   ];
 
   server.enable = true;

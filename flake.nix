@@ -107,6 +107,12 @@
       flake = false;
     };
 
+    c3sets-radio = {
+      type = "git";
+      url = "https://git.maglab.space/fooker/c3sets-radio.git";
+      flake = false;
+    };
+
     ipam = {
       type = "path";
       path = "/home/fooker/devl/ipam.nix/";
