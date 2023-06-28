@@ -195,6 +195,12 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
 
+        colmena = inputs.colmena.defaultPackage.${system}.overrideAttrs (final: prev: {
+          patchs = (prev.patches or [ ]) ++ [
+            ./patches/colmena-disable-ssh-master.patch
+          ];
+        });
+
         pre-commit-hooks = inputs.pre-commit-hooks.lib.${system}.run {
           src = ./.;
           hooks = {
@@ -212,7 +218,7 @@
       in
       pkgs.mkShell {
         buildInputs = [
-          inputs.colmena.defaultPackage.${system}
+          colmena
         ] ++ (with pkgs; [
           bash
           gitAndTools.git

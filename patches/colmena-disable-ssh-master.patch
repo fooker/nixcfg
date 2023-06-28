@@ -1,0 +1,13 @@
+diff --git a/src/nix/host/ssh.rs b/src/nix/host/ssh.rs
+index 1622007..5824494 100644
+--- a/src/nix/host/ssh.rs
++++ b/src/nix/host/ssh.rs
+@@ -345,6 +345,8 @@ impl Ssh {
+             "StrictHostKeyChecking=accept-new",
+             "-o",
+             "BatchMode=yes",
+             "-T",
++            "-o", "ControlMaster=no",
++            "-o", "ControlPath=/var/empty/non-existant",
+         ]
+         .iter()
