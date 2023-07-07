@@ -150,6 +150,13 @@
       flake = false;
     };
 
+    hass-solarman = {
+      type = "github";
+      owner = "StephanJoubert";
+      repo = "home_assistant_solarman";
+      flake = false;
+    };
+
     nixago = {
       type = "github";
       owner = "nix-community";

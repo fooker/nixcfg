@@ -1,4 +1,4 @@
-{ config, pkgs, device, lib, ... }:
+{ config, pkgs, lib, inputs, device, ... }:
 
 {
   services.mosquitto = {
@@ -6,7 +6,6 @@
 
     listeners = [
       {
-        address = "::";
         port = 1883;
 
         omitPasswordAuth = true;
@@ -49,12 +48,18 @@
       "xiaomi_miio"
       "weather"
       "octoprint"
+      "wled"
     ];
   };
 
   services.udev.extraRules = ''
     SUBSYSTEM=="tty", ENV{ID_VENDOR_ID}=="10c4", ENV{ID_MODEL_ID}=="ea60", ENV{ID_SERIAL_SHORT}="00_12_4B_00_25_9A_E3_4A", SYMLINK+="zigbee"
   '';
+
+  systemd.tmpfiles.rules = [
+    "C /var/lib/hass/custom_components/solarman - - - - ${inputs.hass-solarman}/custom_components/solarman"
+    "Z /var/lib/hass/custom_components 770 hass hass - -"
+  ];
 
   services.zigbee2mqtt = {
     enable = true;
