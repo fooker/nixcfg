@@ -5,6 +5,7 @@
 
   services.blueman-applet.enable = true;
   services.pasystray.enable = true;
+  services.network-manager-applet.enable = true;
 
   home.keyboard = {
     layout = "de";
@@ -12,8 +13,6 @@
   };
 
   home.packages = with pkgs; [
-    ate
-
     # Sound and media
     pavucontrol
     ponymix
@@ -30,6 +29,8 @@
     libreoffice
     vorta
     unstable.obsidian
+    wdisplays
+    wlr-randr
 
     # CLI tools
     ripgrep
@@ -66,30 +67,23 @@
 
     # Remote Desktop
     parsecgaming
+    moonlight-qt
     remmina
 
     # Others
     prusa-slicer
     virt-manager
     steam-run
-
-    # Xorg stuff
-    xorg.xdriinfo
-    xorg.xkill
   ];
 
   imports = [
-    ./autorandr.nix
     ./bat.nix
-    ./dunst.nix
     ./firefox.nix
     ./git.nix
     ./gpg.nix
-    ./i3wm.nix
     ./direnv.nix
     ./nextcloud.nix
     ./pass.nix
-    ./redshift.nix
     ./retro.nix
     ./scripts.nix
     ./skim.nix
@@ -100,6 +94,8 @@
     ./vim.nix
     ./vorta.nix
     ./zsh.nix
+
+    ./desktop
   ];
 
   home.stateVersion = "21.03";

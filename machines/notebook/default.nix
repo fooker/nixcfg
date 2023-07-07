@@ -8,11 +8,9 @@
     ./user.nix
     ./docker.nix
     ./fonts.nix
-    ./ate.nix
     ./postgresql.nix
     ./parsecgaming.nix
     ./opennms.nix
-    ./xserver.nix
     ./peering.nix
     ./mounts.nix
     ./libvirt.nix
@@ -66,9 +64,22 @@
     ];
   };
 
-  services.autorandr = {
+  programs.light.enable = true;
+
+  xdg.portal = {
     enable = true;
-    defaultTarget = "mobile";
+
+    wlr.enable = true;
+    wlr.settings = {
+      screencast = {
+        max_fps = 30;
+
+        chooser_type = "simple";
+        chooser_cmd = "${pkgs.slurp}/bin/slurp -f %o -or";
+      };
+    };
+
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
 
   services.udev = {
@@ -135,7 +146,6 @@
 
   # No delay for failed login
   security.pam.services.login.nodelay = true;
-  security.pam.services.i3lock.nodelay = true;
-  security.pam.services.i3lock-color.nodelay = true;
+  security.pam.services.swaylock.nodelay = true;
   security.pam.services.xscreensaver.nodelay = true;
 }

@@ -8,6 +8,7 @@
       "x-systemd.automount"
       "noauto"
       "credentials=${config.sops.secrets."mounts/vault/credentials".path}"
+      "uid=fooker"
     ];
   };
 

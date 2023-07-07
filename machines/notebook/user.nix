@@ -47,6 +47,7 @@
       "docker"
       "wireshark"
       "libvirtd"
+      "networkmanager"
     ];
   };
 

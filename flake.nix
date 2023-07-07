@@ -46,6 +46,15 @@
       ref = "release-23.05";
     };
 
+    stylix = {
+      type = "github";
+      owner = "danth";
+      repo = "stylix";
+
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+
     nixos-mailserver = {
       type = "git";
       url = "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver.git";
@@ -127,13 +136,6 @@
     gather = {
       type = "path";
       path = "/home/fooker/devl/gather.nix/";
-    };
-
-    ate = {
-      type = "github";
-      owner = "andir";
-      repo = "ate";
-      flake = false;
     };
 
     blog = {

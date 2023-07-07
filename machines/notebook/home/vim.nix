@@ -8,7 +8,7 @@
     withPython3 = true;
 
     plugins = [
-      pkgs.python37Packages.editorconfig
+      pkgs.python3Packages.editorconfig
       pkgs.vimPlugins.lightline-vim
       pkgs.vimPlugins.ale
       pkgs.vimPlugins.gitgutter

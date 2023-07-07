@@ -1,5 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
+let
+  berkeley-mono-nerd-font = pkgs.callPackage "${inputs.private}/berkeley-mono-nerd-font/default.nix" { };
+in
 {
   fonts = {
     fontconfig = {
@@ -7,7 +10,7 @@
       antialias = true;
       cache32Bit = true;
       defaultFonts = {
-        monospace = [ "Hack" ];
+        monospace = [ "BerkeleyMono Nerd Font" ];
       };
     };
 
@@ -15,6 +18,8 @@
 
     enableDefaultFonts = true;
     fonts = with pkgs; [
+      berkeley-mono-nerd-font
+
       hack-font
       noto-fonts
       symbola
@@ -26,7 +31,6 @@
       comic-relief
       crimson
       dejavu_fonts
-      google-fonts
       inconsolata
       iosevka
       liberation-sans-narrow
