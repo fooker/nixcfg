@@ -4,7 +4,7 @@
     ipam = true;
 
     interfaces = {
-      "lab-raw" = "44:8a:5b:a6:04:04";
+      "lab-raw" = "00:d8:61:c6:16:6c";
     };
   };
 
