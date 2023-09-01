@@ -1,11 +1,11 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 
 with lib;
 
 {
   services.postgresql = {
     enable = true;
-    package = mkForce pkgs.postgresql_12;
+    package = pkgs.postgresql_14;
   };
 
   backup = {

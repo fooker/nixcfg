@@ -17,13 +17,23 @@ with lib;
   services.paperless = {
     enable = true;
     package = pkgs.paperless-ngx;
+    
     mediaDir = "/mnt/docs";
+    
     extraConfig = {
       PAPERLESS_DBHOST = "/run/postgresql";
       PAPERLESS_OCR_LANGUAGE = "deu+eng";
       PAPERLESS_OCR_CLEAN = "clean-final";
+      PAPERLESS_CONVERT_TMPDIR = "/var/lib/paperless/tmp";
+      PAPERLESS_WORKER_TIMEOUT = "3600";
     };
+
+    consumptionDirIsPublic = true;
   };
+
+  systemd.services.paperless-scheduler.after = ["mnt-docs.mount"];
+  systemd.services.paperless-consumer.after = ["mnt-docs.mount"];
+  systemd.services.paperless-web.after = ["mnt-docs.mount"];
 
   web.reverse-proxy = {
     "paperless" = {
@@ -33,6 +43,16 @@ with lib;
         client_max_body_size 512M;
       '';
     };
+  };
+
+  services.postgresql = {
+    ensureDatabases = [ "paperless" ];
+    ensureUsers = [{
+      name = "paperless";
+      ensurePermissions = {
+        "DATABASE paperless" = "ALL PRIVILEGES";
+      };
+    }];
   };
 
   backup.paths = [

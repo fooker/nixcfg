@@ -2,6 +2,7 @@
   imports = [
     ./hardware.nix
     ./network.nix
+    ./postgresql.nix
     ./jellyfin.nix
     ./snapcast.nix
     ./pulseaudio.nix
@@ -25,6 +26,8 @@
     enable = true;
     publish.enable = true;
     publish.userServices = true;
+    publish.addresses = true;
+
   };
 
   firewall.rules = dag: with dag; {

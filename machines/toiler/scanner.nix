@@ -69,13 +69,7 @@ let
       "$QD_JOB_ID.pdf" \
       scanner@nas.dev.home.open-desk.net:"$QD_JOB_ID.pdf"
 
-    ${pkgs.curl}/bin/curl \
-      -v \
-      --show-error --fail \
-      -u "$(cat "${config.sops.secrets."paperless/upload/username".path}"):$(cat "${config.sops.secrets."paperless/upload/password".path}")" \
-      https://docs.home.open-desk.net//api/documents/post_document/ \
-      -X POST \
-      -F document=@"$QD_JOB_ID.pdf"
+    mv -v "$QD_JOB_ID.pdf" "${config.services.paperless.consumptionDir}"
   '';
 
   scanbdConfigDir = pkgs.linkFarm "scanbd-conf" [
@@ -197,6 +191,7 @@ in
       createHome = true;
 
       group = "scanner";
+      extraGroups = [ "avahi" "lp" ];
     };
     groups.scanner = {
       gid = config.ids.gids.scanner;
@@ -217,6 +212,9 @@ in
       StandardInput = "null";
       StandardOutput = "journal";
       StandardError = "journal";
+
+      User = "root";
+      Group = "scanner";
 
       ExecStart = "${scanbd}/bin/scanbd -f -c ${scanbdConfig}";
     };
@@ -248,9 +246,12 @@ in
   systemd.sockets."scanbm" = {
     description = "Scanner Service";
 
+    listenStreams = [ "0.0.0.0:6566" "[::]:6566" ];
+    
     socketConfig = {
-      ListenStream = 6566;
+      BindIPv6Only = "ipv6-only";
       Accept = "yes";
+      MaxConnections = 64;
     };
 
     wantedBy = [ "sockets.target" ];
@@ -304,6 +305,8 @@ in
     };
   };
 
+  networking.firewall.connectionTrackingModules = [ "sane" ];
+
   firewall.rules = dag: with dag; {
     inet.filter.input = {
       sane = between [ "established" ] [ "drop" ] [
@@ -319,9 +322,6 @@ in
     owner = "scanner";
     group = "scanner";
   };
-
-  sops.secrets."paperless/upload/username" = { };
-  sops.secrets."paperless/upload/password" = { };
 
   gather.parts."scanner/sshKey" = {
     name = "id_scanner.pub";
