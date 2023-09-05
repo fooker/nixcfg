@@ -87,9 +87,7 @@ with lib;
 
         encryption = {
           mode = "repokey";
-          passCommand = ''
-            cat ${config.sops.secrets."backup/passphrase".path};
-          '';
+          passCommand = ''cat ${config.sops.secrets."backup/passphrase".path}'';
         };
 
         environment = {
