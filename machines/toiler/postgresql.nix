@@ -10,7 +10,7 @@ with lib;
 
   backup = {
     commands = map
-      (database: ''${ config.services.postgresql.package }/bin/pg_dump --format tar --file postgres-${ database }.tar ${ database }'')
+      (database: ''${pkgs.su}/bin/su postgres -c "${config.services.postgresql.package}/bin/pg_dump --format tar ${database}" > postgres-${database}.tar'')
       config.services.postgresql.ensureDatabases;
   };
 }
