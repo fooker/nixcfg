@@ -23,6 +23,23 @@ in
     };
 
     data.enable = true;
+
+    web.enable = true;
+  };
+
+  web.apps."magnetico" = {
+    domains = [ "magnetico.open-desk.net" ];
+
+    config = {
+      locations."/api/" = {
+        proxyPass = "http://127.0.0.1:${toString config.magnetico.web.port}/api/";
+        proxyWebsockets = true;
+
+        extraConfig = ''
+          add_header 'Access-Control-Allow-Origin' '*';
+        '';
+      };
+    };
   };
 
   dns.zones = {
