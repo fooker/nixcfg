@@ -31,8 +31,6 @@
 
     config = import ./hass { inherit lib; };
 
-    # package = pkgs.unstable.home-assistant;
-
     extraComponents = [
       "default_config"
       "lovelace"
@@ -40,7 +38,6 @@
       "esphome"
       "denonavr"
       "ipp"
-      "discovery"
       "mjpeg"
       "spotify"
       "media_player"

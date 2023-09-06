@@ -63,8 +63,9 @@
 
     magnetico = {
       type = "git";
-      url = "git+ssh://git@git.darmstadt.ccc.de/btdht/mldht2elastic.git";
-      ref = "elasticsearch2";
+      url = "https://git.darmstadt.ccc.de/btdht/magnetico.nix.git";
+      ref = "main";
+      submodules = true;
       flake = false;
     };
 
