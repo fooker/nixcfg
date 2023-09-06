@@ -67,7 +67,9 @@ with lib;
           let
             config =
               if iface.satelite != null
-              then iface.satelite
+              then iface.satelite // {
+                satelite = true;
+              }
               else {
                 addresses = map
                   (addr: addr.withPrefix)
@@ -83,6 +85,7 @@ with lib;
                 routes = concatMap
                   (addr: addr.prefix.routes)
                   iface.addresses;
+                satelite = false;
               };
           in
           {
@@ -91,6 +94,8 @@ with lib;
             address = map toString config.addresses;
             gateway = map toString config.gateways;
             dns = map toString config.dns;
+
+            networkConfig.IPv6AcceptRA = false;
 
             routes = map
               (route: {
