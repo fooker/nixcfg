@@ -1,6 +1,6 @@
 {
   target = {
-    host = "172.23.200.130";
+    host = "nas.dev.home.open-desk.net";
     user = "root";
   };
 

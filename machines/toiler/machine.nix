@@ -1,6 +1,6 @@
 {
   target = {
-    host = "172.23.200.131";
+    host = "toiler.dev.home.open-desk.net";
     user = "root";
   };
 
