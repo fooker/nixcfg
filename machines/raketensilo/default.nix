@@ -1,4 +1,4 @@
-{
+{ pkgs, ... }: {
   imports = [
     ./hardware.nix
     ./network.nix
@@ -12,4 +12,8 @@
     realm = "hs";
     interface = "int";
   };
+
+  environment.systemPackages = with pkgs; [
+    jq
+  ];
 }

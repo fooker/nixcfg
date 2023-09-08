@@ -31,6 +31,12 @@ in
     domains = [ "magnetico.open-desk.net" ];
 
     config = {
+      listenAddresses = [
+        device.interfaces.ext.address.ipv4.address
+        device.interfaces.ext.address.ipv6.address
+      ];
+
+      root = config.magnetico.web.frontend.path;
       locations."/api/" = {
         proxyPass = "http://127.0.0.1:${toString config.magnetico.web.port}/api/";
         proxyWebsockets = true;

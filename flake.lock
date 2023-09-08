@@ -381,11 +381,11 @@
     "magnetico": {
       "flake": false,
       "locked": {
-        "lastModified": 1693988495,
-        "narHash": "sha256-fNUCT+AfM/waxljN3g8Ac2rugc1kxVVNQYH+d8aJMWs=",
-        "ref": "main",
-        "rev": "d72b7d114c4b7c25465d308f050c3892ba354880",
-        "revCount": 2,
+        "lastModified": 1694176069,
+        "narHash": "sha256-czs5g6EQ8i4dcNA++OheFjpe35Sw4Ooy25QkPg04Wv0=",
+        "ref": "refs/heads/main",
+        "rev": "a729f09f5b73c58773c430871b079b3fda5ef8f5",
+        "revCount": 4,
         "submodules": true,
         "type": "git",
         "url": "https://git.darmstadt.ccc.de/btdht/magnetico.nix.git"
