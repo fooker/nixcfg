@@ -1,6 +1,7 @@
 { nixpkgs
 , ipam
 , dns
+, nftables
 , gather
 , sops
 , private
@@ -32,6 +33,7 @@ let
 
         sops.nixosModules.sops
         dns.nixosModules.default
+        nftables.nixosModules.default
         gather.nixosModules.default
       ];
 
@@ -123,9 +125,9 @@ in
           (lib: lib.extend)
           machine.nixpkgs.lib
           [
-            (import ./lib)
             ipam.lib
             dns.lib
+            nftables.lib
           ];
 
         # All available inputs

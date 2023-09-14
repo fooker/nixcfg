@@ -139,6 +139,12 @@
       path = "/home/fooker/devl/gather.nix/";
     };
 
+    nftables = {
+      type = "path";
+      path = "/home/fooker/devl/nftables.nix/";
+      #inputs.ipam.follows = "ipam";
+    };
+
     blog = {
       type = "git";
       url = "https://git.home.open-desk.net/fooker/blog.git";

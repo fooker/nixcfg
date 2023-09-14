@@ -41,13 +41,15 @@
     };
 
     "prusa" = {
-      type = "Raspberry Pi 3 Model B+";
+      type = "Prusa MK4";
       role = "3D-Printer";
       site = "home";
 
       interfaces = {
         "priv" = {
-          mac = "b8:27:eb:38:ed:66";
+          mac = "10:9c:70:29:58:bd";
+
+          monitoring.services = [ "ICMP" ];
         };
       };
     };

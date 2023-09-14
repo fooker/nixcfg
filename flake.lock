@@ -445,6 +445,18 @@
         "type": "github"
       }
     },
+    "nftables": {
+      "locked": {
+        "lastModified": 1694267787,
+        "narHash": "sha256-VLKLoF0B69fk/VdpVGRyb7GMeYWBI8cfqGx0cGOdLYI=",
+        "path": "/home/fooker/devl/nftables.nix/",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/fooker/devl/nftables.nix/",
+        "type": "path"
+      }
+    },
     "nixago": {
       "inputs": {
         "flake-utils": [
@@ -847,6 +859,7 @@
         "magnetico-peers": "magnetico-peers",
         "mmv": "mmv",
         "netns-proxy": "netns-proxy",
+        "nftables": "nftables",
         "nixago": "nixago",
         "nixos-mailserver": "nixos-mailserver",
         "nixpkgs": "nixpkgs_4",
