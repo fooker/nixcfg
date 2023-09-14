@@ -40,6 +40,11 @@
             "SetEnv" = "TERM=xterm";
           };
         };
+
+        "10.32.47.1??" = {
+          proxyJump = "root@10.32.47.10";
+          identitiesOnly = true;
+        };
       }
       // (mkManagementJumpDevice "br1" ciscoConfig)
       // (mkManagementJumpDevice "br2" ciscoConfig)
