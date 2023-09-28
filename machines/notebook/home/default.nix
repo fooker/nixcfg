@@ -49,16 +49,16 @@
     magic-wormhole
 
     # Development
-    jetbrains.idea-ultimate
-    jetbrains.clion
-    jetbrains.goland
-    jetbrains.pycharm-professional
-    vscodium
+    unstable.jetbrains.idea-ultimate
+    unstable.jetbrains.clion
+    unstable.jetbrains.goland
+    unstable.jetbrains.pycharm-professional
+    unstable.vscodium
 
     # Comm
     tdesktop
     signal-desktop
-    element-desktop
+    element-desktop-wayland
     discord-ptb
     thunderbird
     mumble
@@ -71,7 +71,7 @@
     remmina
 
     # Others
-    prusa-slicer
+    unstable.prusa-slicer
     virt-manager
     steam-run
   ];
