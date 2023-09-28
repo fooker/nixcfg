@@ -1,4 +1,6 @@
-{ pkgs, inputs, config, device, ... }:
+{ pkgs, lib, inputs, config, device, ... }:
+
+with lib;
 
 let
   peers = import inputs.magnetico-peers;
@@ -36,7 +38,12 @@ in
         device.interfaces.ext.address.ipv6.address
       ];
 
-      root = config.magnetico.web.frontend.path;
+      locations."/" = {
+        root = config.magnetico.web.frontend.path;
+
+        tryFiles = "$uri $uri/ /index.html";
+      };
+
       locations."/api/" = {
         proxyPass = "http://127.0.0.1:${toString config.magnetico.web.port}/api/";
         proxyWebsockets = true;
