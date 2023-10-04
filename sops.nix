@@ -12,20 +12,21 @@ let
 
   inherit (callPackage ./machines.nix { }) machines;
 
-  sshToKey = name: path: runCommandNoCCLocal "sops-key-${name}.pub" { } ''
-    ${ssh-to-age}/bin/ssh-to-age < ${path} > $out
-  '';
+  sshToKey = name: path:
+    if builtins.pathExists path
+    then
+      runCommandNoCCLocal "sops-key-${name}.pub" { } ''
+        ${ssh-to-age}/bin/ssh-to-age < ${path} > $out
+      ''
+    else null;
 
-  machineKeys = listToAttrs (map
-    (machine:
-      let
-        keyFile = sshToKey "machine-${machine.name}" (machine.path + "/gathered/ssh_host_ed25519_key.pub");
-      in
-      {
-        inherit (machine) name;
-        value = removeSuffix "\n" (readFile keyFile);
-      })
-    machines);
+  machineKey = machine:
+    let
+      keyFile = sshToKey "machine-${machine.name}" /${machine.path}/gathered/ssh_host_ed25519_key.pub;
+    in
+    if keyFile != null
+    then removeSuffix "\n" (readFile keyFile)
+    else null;
 
   machine_rules =
     let
@@ -42,7 +43,11 @@ let
         concat [ ]
         (map # Build list of { <path> = <key> }
           (machine: listToAttrs (map
-            (path: nameValuePair path (singleton (getAttr machine.name machineKeys)))
+            (path:
+              let
+                key = machineKey machine;
+              in
+              nameValuePair path (optional (key != null) key))
             (paths machine)))
           machines);
 
@@ -63,7 +68,7 @@ in
     "creation_rules" = machine_rules ++ [{
       "relPath" = "^${escapeRegex "modules/secrets.yaml"}$";
       "key_groups" = [{
-        "age" = attrValues machineKeys;
+        "age" = remove null (map machineKey machines);
         "pgp" = [ adminKey ];
       }];
     }];
