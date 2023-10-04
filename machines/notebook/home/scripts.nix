@@ -12,10 +12,21 @@ let
 
     ${pkgs.mpv}/bin/mpv "$selected"
   '';
+
+  tmpsh = pkgs.writeScriptBin "tmpsh" ''
+    TMPSH="$(mktemp -d)"
+    trap 'rm -rf -- "$TMPSH"' EXIT
+
+    (
+      cd "$TMPSH"
+      exec "$SHELL"
+    )
+  '';
 in
 {
   home.packages = [
     weechat-connect
     c3radio
+    tmpsh
   ];
 }
