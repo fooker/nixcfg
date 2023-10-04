@@ -53,6 +53,7 @@
     unstable.jetbrains.clion
     unstable.jetbrains.goland
     unstable.jetbrains.pycharm-professional
+    unstable.jetbrains.rust-rover
     unstable.vscodium
 
     # Comm
