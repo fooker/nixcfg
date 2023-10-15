@@ -14,24 +14,21 @@
       ref = "nixpkgs-unstable";
     };
 
-    nixpkgs-notebook = {
-      type = "github";
-      owner = "NixOS";
-      repo = "nixpkgs";
-      ref = "nixos-23.05";
-    };
+    nixpkgs-notebook.follows = "nixpkgs";
 
-    nixpkgs-magnetico = {
-      type = "github";
-      owner = "NixOS";
-      repo = "nixpkgs";
-      ref = "nixpkgs-unstable";
-    };
+    nixpkgs-magnetico.follows = "nixpkgs-unstable";
 
     nixpkgs-raketensilo.follows = "nixpkgs-magnetico";
     nixpkgs-fliegerhorst.follows = "nixpkgs-magnetico";
 
     nixpkgs-toiler.follows = "nixpkgs-unstable";
+
+    nixos-hardware = {
+      type = "github";
+      owner = "NixOS";
+      repo = "nixos-hardware";
+      ref = "master";
+    };
 
     utils = {
       type = "github";
@@ -50,8 +47,9 @@
       type = "github";
       owner = "danth";
       repo = "stylix";
+      ref = "release-23.05";
 
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-notebook";
       inputs.home-manager.follows = "home-manager";
     };
 
@@ -248,6 +246,13 @@
           nixpkgs-fmt
           statix
           shellcheck
+        ] ++ [
+          (pkgs.vscode-with-extensions.override {
+            vscode = pkgs.vscodium;
+            vscodeExtensions = with pkgs.vscode-extensions; [
+              bbenoist.nix
+            ];
+          })
         ]);
 
         shellHook = ''
