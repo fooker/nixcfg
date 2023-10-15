@@ -64,7 +64,6 @@
     thunderbird
     mumble
     zoom-us
-    teams
 
     # Remote Desktop
     parsecgaming
@@ -76,6 +75,8 @@
     virt-manager
     steam-run
   ];
+
+  services.gnome-keyring.enable = true;
 
   imports = [
     ./bat.nix

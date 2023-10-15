@@ -14,9 +14,10 @@
     ./peering.nix
     ./mounts.nix
     ./libvirt.nix
+    ./greet.nix
   ];
 
-  networking.hostName = "ig-11";
+  networking.hostName = "r7-a7";
 
   i18n = {
     defaultLocale = "en_US.UTF-8";
@@ -79,7 +80,10 @@
       };
     };
 
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-wlr
+      xdg-desktop-portal-gtk
+    ];
   };
 
   services.udev = {

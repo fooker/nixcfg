@@ -3,9 +3,6 @@
 {
   boot.kernelParams = [
     "quiet"
-    "i195.fastboot=1"
-    "i915.enable_guc=2"
-    "i915.enable_fbc=1"
     "mitigations=off"
 
     # See https://iam.tj/prototype/enhancements/Windows-acpi_osi.html
@@ -13,17 +10,17 @@
     "acpi_osi=\"Windows 2015\""
   ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
 
-  boot.kernelModules = [ "kvm-intel" "i915" "acpi_call" ];
+  boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
+
+  boot.plymouth.enable = true;
 
   hardware.enableAllFirmware = true;
 
   hardware.cpu.intel.updateMicrocode = true;
-
-  hardware.nvidiaOptimus.disable = true;
 
   nixpkgs.config.packageOverrides = pkgs: {
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
@@ -56,33 +53,21 @@
   hardware.bluetooth = {
     enable = true;
     package = pkgs.bluezFull;
-    hsphfpd.enable = true;
-  };
-
-  hardware.pulseaudio = {
-    enable = true;
-    support32Bit = true;
-    zeroconf.discovery.enable = true;
-
-    package = pkgs.pulseaudioFull;
-
-    daemon.config = {
-      avoid-resampling = "yes";
-      alternate-sample-rate = 88200;
-      default-fragment-size-msec = 125;
-      default-fragments = 2;
-      default-sample-channels = 2;
-      default-sample-format = "s32le";
-      default-sample-rate = 96000;
-      enable-lfe-remixing = "no";
-      realtime-scheduling = "yes";
-      resample-method = "speex-float-10";
-    };
   };
 
   sound = {
     enable = true;
     mediaKeys.enable = true;
+  };
+
+  hardware.pulseaudio.enable = false;
+
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    wireplumber.enable = true;
   };
 
   services.udev.packages = with pkgs; [
@@ -130,28 +115,10 @@
   };
 
   swapDevices = [{
-    device = "/dev/disk/by-uuid/8807b3fe-4359-4d80-b8a0-b85b98693859";
+    device = "/dev/disk/by-uuid/4df4becf-494f-4839-94da-6255655733ab";
   }];
 
   services.hardware.bolt.enable = true;
 
-  powerManagement.cpuFreqGovernor = "performance";
-
-  services.tlp = {
-    enable = true;
-    settings = {
-      "CPU_SCALING_GOVERNOR_ON_AC" = "powersave";
-      "CPU_SCALING_GOVERNOR_ON_BAT" = "powersave";
-
-      "START_CHARGE_THRESH_BAT0" = 60;
-      "STOP_CHARGE_THRESH_BAT0" = 100;
-
-      "WIFI_PWR_ON_AC" = false;
-      "WIFI_PWR_ON_BAT" = false;
-    };
-  };
-
-  services.throttled = {
-    enable = true;
-  };
+  powerManagement.cpuFreqGovernor = "powersave";
 }

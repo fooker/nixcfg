@@ -2,29 +2,29 @@
 
 let
   passmenu = pkgs.writeShellScript "passmenu" ''
-        shopt -s nullglob globstar
+    shopt -s nullglob globstar
 
-        typeit=0
-        if [[ $1 == "--type" ]]; then
-          typeit=1
-          shift
-        fi
+    typeit=0
+    if [[ $1 == "--type" ]]; then
+      typeit=1
+      shift
+    fi
 
-        prefix=''${PASSWORD_STORE_DIR-~/.password-store}
+    prefix=''${PASSWORD_STORE_DIR-~/.password-store}
 
-        password_files=( "$prefix"/**/*.gpg )
-        password_files=( "''${password_files[@]#"$prefix"/}" )
-        password_files=( "''${password_files[@]%.gpg}" )
+    password_files=( "$prefix"/**/*.gpg )
+    password_files=( "''${password_files[@]#"$prefix"/}" )
+    password_files=( "''${password_files[@]%.gpg}" )
 
-        password="$(printf '%s\n' "''${password_files[@]}" | "${pkgs.bemenu}/bin/bemenu" "$@")"
+    password="$(printf '%s\n' "''${password_files[@]}" | "${pkgs.bemenu}/bin/bemenu" "$@")"
 
-        [[ -n "$password" ]] || exit
+    [[ -n "$password" ]] || exit
 
-        if [[ $typeit -eq 0 ]]; then
-    	    ${pkgs.pass}/bin/pass show "$password" | { IFS= read -r pass; printf %s "$pass"; } | ${pkgs.wl-clipboard}/bin/wl-copy
-        else
-    	    ${pkgs.pass}/bin/pass show "$password" | { IFS= read -r pass; printf %s "$pass"; } | ${pkgs.wtype}/bin/wtype -
-        fi
+    if [[ $typeit -eq 0 ]]; then
+      ${pkgs.pass}/bin/pass show "$password" | { IFS= read -r pass; printf %s "$pass"; } | ${pkgs.wl-clipboard}/bin/wl-copy
+    else
+      ${pkgs.pass}/bin/pass show "$password" | { IFS= read -r pass; printf %s "$pass"; } | ${pkgs.wtype}/bin/wtype -
+    fi
   '';
 
 in
@@ -62,7 +62,7 @@ in
           "xkb_variant" = "nodeadkeys";
         };
 
-        "2:10:TPPS\/2_Elan_TrackPoint" = {
+        "2:10:TPPS\/2_Synaptics_TrackPoint" = {
           "accel_profile" = "adaptive";
           "pointer_accel" = "-0.4";
         };

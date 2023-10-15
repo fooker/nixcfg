@@ -23,23 +23,17 @@
     links = {
       "00-en" = {
         matchConfig = {
-          MACAddress = "00:2b:67:5f:55:13";
+          MACAddress = "74:5d:22:b8:62:c5";
           Type = "ether";
         };
         linkConfig = {
           Name = "en";
         };
       };
-
-      "00-wl" = {
-        matchConfig = {
-          MACAddress = "cc:f9:e4:f4:90:11";
-          Type = "wlan";
-        };
-        linkConfig = {
-          Name = "wl";
-        };
-      };
     };
+
+    wait-online.enable = false;
   };
+
+  systemd.services.systemd-networkd-wait-online.enable = false;
 }
