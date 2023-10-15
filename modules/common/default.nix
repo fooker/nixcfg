@@ -7,4 +7,6 @@
     ./ssh.nix
     ./system.nix
   ];
+
+  users.mutableUsers = false;
 }
