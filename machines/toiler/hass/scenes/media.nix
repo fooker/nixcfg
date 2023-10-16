@@ -1,6 +1,21 @@
 [
   {
-    name = "Movie";
+    name = "Media: Off";
+    entities = {
+      "cover.projector_screen" = {
+        state = "open";
+      };
+      "switch.projector" = {
+        state = "off";
+      };
+      "media_player.amp" = {
+        state = "off";
+      };
+    };
+  }
+
+  {
+    name = "Media: Movie";
     entities = {
       "cover.projector_screen" = {
         state = "closed";
@@ -16,7 +31,7 @@
   }
 
   {
-    name = "Gaming";
+    name = "Media: Gaming";
     entities = {
       "cover.projector_screen" = {
         state = "closed";
@@ -32,7 +47,7 @@
   }
 
   {
-    name = "Music";
+    name = "Media: Music";
     entities = {
       "cover.projector_screen" = {
         state = "open";

@@ -1,80 +1,92 @@
+{ lib, ... }:
+
+with lib;
+
+let
+  devices = [
+    # volume_eating
+    {
+      device_id = "d7b4aace221d17b0d572c959c4240846";
+      discovery_id = "0x94deb8fffea9a7ad";
+    }
+
+    # volume_living
+    {
+      device_id = "26e095816cb80f1de7674ac31846b45e";
+      discovery_id = "0x94deb8fffe63fd40";
+    }
+  ];
+
+  # Living Room
+  area_id = "f08ba942ab384e1e9e42c7550b0c058e";
+
+  mkTrigger = event: device: {
+    platform = "device";
+    domain = "mqtt";
+    inherit (device) device_id;
+    type = "action";
+    subtype = event;
+    discovery_id = "${device.discovery_id} action_${event}";
+  };
+
+  mkAutomation = { alias, event, action }: {
+    alias = "Media: ${alias} in Living room";
+    trigger = map
+      (mkTrigger event)
+      devices;
+    inherit action;
+    mode = "single";
+  };
+
+  mkMediaPlayerAction = action: singleton {
+    service = "media_player.${action}";
+    target.area_id = area_id;
+  };
+
+in
 [
-  {
-    alias = "Media: Pause in Living room";
-    trigger = [
-      {
-        platform = "device";
-        domain = "mqtt";
-        device_id = "6379f7a0249af7538fd07fdf59d75d96";
-        type = "action";
-        subtype = "play_pause";
-        discovery_id = "0x84b4dbfffe60782b action_play_pause";
-      }
-      {
-        platform = "device";
-        domain = "mqtt";
-        device_id = "51e72fc22ffdeea1817a736ec6133bba";
-        type = "action";
-        subtype = "play_pause";
-        discovery_id = "0x84b4dbfffe60781f action_play_pause";
-      }
-    ];
+  (mkAutomation {
+    alias = "Pause";
+    event = "play_pause";
+    action = mkMediaPlayerAction "media_play_pause";
+  })
+
+  (mkAutomation {
+    alias = "Volume down";
+    event = "volume_down";
+    action = mkMediaPlayerAction "volume_down";
+  })
+  (mkAutomation {
+    alias = "Volume up";
+    event = "voluem_up";
+    action = mkMediaPlayerAction "voluem_up";
+  })
+
+  (mkAutomation {
+    alias = "Skip next";
+    event = "track_next";
+    action = mkMediaPlayerAction "media_next_track";
+  })
+  (mkAutomation {
+    alias = "Skip previous";
+    event = "track_previous";
+    action = mkMediaPlayerAction "media_previous_track";
+  })
+
+  (mkAutomation {
+    alias = "Scene Off";
+    event = "dots_1_long_press";
     action = [{
-      service = "media_player.media_play_pause";
-      target.area_id = "f08ba942ab384e1e9e42c7550b0c058e";
+      service = "scene.turn_on";
+      target.entity_id = "scene.media_off";
     }];
-    mode = "single";
-  }
-  {
-    alias = "Media: Volume down in Living Room";
-    trigger = [
-      {
-        platform = "device";
-        domain = "mqtt";
-        device_id = "6379f7a0249af7538fd07fdf59d75d96";
-        type = "action";
-        subtype = "play_pause";
-        discovery_id = "0x84b4dbfffe60782b action_rotate_left";
-      }
-      {
-        platform = "device";
-        domain = "mqtt";
-        device_id = "51e72fc22ffdeea1817a736ec6133bba";
-        type = "action";
-        subtype = "play_pause";
-        discovery_id = "0x84b4dbfffe60781f action_rotate_left";
-      }
-    ];
+  })
+  (mkAutomation {
+    alias = "Scene Movie";
+    event = "dots_2_long_press";
     action = [{
-      service = "media_player.volume_down";
-      target.area_id = "f08ba942ab384e1e9e42c7550b0c058e";
+      service = "scene.turn_on";
+      target.entity_id = "scene.media_movie";
     }];
-    mode = "single";
-  }
-  {
-    alias = "Media: Volume up in Living Room";
-    trigger = [
-      {
-        platform = "device";
-        domain = "mqtt";
-        device_id = "6379f7a0249af7538fd07fdf59d75d96";
-        type = "action";
-        subtype = "play_pause";
-        discovery_id = "0x84b4dbfffe60782b action_rotate_right";
-      }
-      {
-        platform = "device";
-        domain = "mqtt";
-        device_id = "51e72fc22ffdeea1817a736ec6133bba";
-        type = "action";
-        subtype = "play_pause";
-        discovery_id = "0x84b4dbfffe60781f action_rotate_right";
-      }
-    ];
-    action = [{
-      service = "media_player.volume_up";
-      target.area_id = "f08ba942ab384e1e9e42c7550b0c058e";
-    }];
-    mode = "single";
-  }
+  })
 ]

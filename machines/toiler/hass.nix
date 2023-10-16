@@ -44,7 +44,7 @@
       "vacuum"
       "xiaomi_miio"
       "weather"
-      "octoprint"
+      "prusalink"
       "wled"
     ];
   };
