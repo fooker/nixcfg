@@ -66,7 +66,7 @@
     zoom-us
 
     # Remote Desktop
-    parsecgaming
+    unstable.parsec-bin
     moonlight-qt
     remmina
 
@@ -84,6 +84,7 @@
     ./git.nix
     ./gpg.nix
     ./direnv.nix
+    ./mail.nix
     ./nextcloud.nix
     ./pass.nix
     ./retro.nix

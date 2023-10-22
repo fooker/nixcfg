@@ -1,5 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
+let
+  path = "/home/fooker/docs/passwords";
+in
 {
   programs.password-store = {
     enable = true;
@@ -12,12 +15,18 @@
     ]);
 
     settings = {
-      PASSWORD_STORE_DIR = "$HOME/docs/passwords";
+      PASSWORD_STORE_DIR = path;
     };
   };
 
-  services.password-store-sync = {
+  services.git-sync = {
     enable = true;
+    repositories = {
+      "password" = {
+        inherit path;
+        uri = "git+ssh://gitea@git.home.open-desk.net:fooker/pass.git";
+      };
+    };
   };
 
   programs.browserpass = {

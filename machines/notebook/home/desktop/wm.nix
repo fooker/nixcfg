@@ -64,7 +64,7 @@ in
 
         "2:10:TPPS\/2_Synaptics_TrackPoint" = {
           "accel_profile" = "adaptive";
-          "pointer_accel" = "-0.4";
+          "pointer_accel" = "-0.6";
         };
 
         "type:pointer" = {

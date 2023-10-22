@@ -9,7 +9,6 @@
     ./docker.nix
     ./fonts.nix
     ./postgresql.nix
-    ./parsecgaming.nix
     ./opennms.nix
     ./peering.nix
     ./mounts.nix

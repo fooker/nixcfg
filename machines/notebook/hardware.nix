@@ -52,7 +52,6 @@
 
   hardware.bluetooth = {
     enable = true;
-    package = pkgs.bluezFull;
   };
 
   sound = {
@@ -121,4 +120,7 @@
   services.hardware.bolt.enable = true;
 
   powerManagement.cpuFreqGovernor = "powersave";
+
+  services.tlp.enable = true;
+  services.thinkfan.enable = true;
 }

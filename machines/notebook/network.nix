@@ -1,7 +1,6 @@
 {
   networking.networkmanager = {
     enable = true;
-    firewallBackend = "nftables";
     unmanaged = [
       "interface-name:dn42"
       "interface-name:peer.*"

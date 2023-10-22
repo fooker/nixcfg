@@ -8,7 +8,7 @@
           {
             criteria = "eDP-1";
             status = "enable";
-            mode = "2880x1800@90.001";
+            mode = "2880x1800@60.001";
             scale = 1.4;
           }
         ];
@@ -67,7 +67,7 @@
           {
             criteria = "eDP-1";
             status = "enable";
-            mode = "2880x1800@90.001";
+            mode = "2880x1800@60.001";
             position = "0,1080";
             scale = 1.4;
           }
