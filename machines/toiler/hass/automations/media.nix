@@ -58,8 +58,8 @@ in
   })
   (mkAutomation {
     alias = "Volume up";
-    event = "voluem_up";
-    action = mkMediaPlayerAction "voluem_up";
+    event = "volume_up";
+    action = mkMediaPlayerAction "volume_up";
   })
 
   (mkAutomation {
