@@ -170,6 +170,15 @@ in
       workspace 5 output DP-2-2
       workspace 6 output DP-2-2
     '';
+
+    extraSessionCommands = ''
+      export WLR_DRM_NO_MODIFIERS=1
+
+      export SDL_VIDEODRIVER=wayland
+      export MOZ_ENABLE_WAYLAND=1
+
+      export _JAVA_AWT_WM_NONREPARENTING=1
+    '';
   };
 
   gtk = {

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 let
   sway-run = pkgs.writeShellScript "sway-run" ''
@@ -12,7 +12,8 @@ let
       --unit=sway \
       systemd-cat \
         --identifier=sway \
-        ${pkgs.sway}/bin/sway \
+        ${config.home-manager.users.fooker.wayland.windowManager.sway.package}/bin/sway \
+        --verbose \
         $@
   '';
 in
