@@ -41,6 +41,8 @@
       owner = "nix-community";
       repo = "home-manager";
       ref = "release-23.05";
+
+      inputs.nixpkgs.follows = "nixpkgs-notebook";
     };
 
     stylix = {
@@ -140,7 +142,6 @@
     nftables = {
       type = "path";
       path = "/home/fooker/devl/nftables.nix/";
-      #inputs.ipam.follows = "ipam";
     };
 
     blog = {
