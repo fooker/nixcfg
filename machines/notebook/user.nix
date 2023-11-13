@@ -48,6 +48,7 @@
       "wireshark"
       "libvirtd"
       "networkmanager"
+      "wireshark"
     ];
   };
 

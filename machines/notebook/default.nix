@@ -109,6 +109,8 @@
 
   programs.noisetorch.enable = true;
 
+  programs.wireshark.enable = true;
+
   systemd.packages = [ pkgs.blueman ];
 
   sound = {

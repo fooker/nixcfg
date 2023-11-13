@@ -2,7 +2,7 @@
 
 {
   fileSystems."/mnt/vault" = {
-    device = "//nas.dev.home.open-desk.net/vault";
+    device = "//${nodes."nas".config.dns.host.ipv4}/vault";
     fsType = "cifs";
     options = [
       "x-systemd.automount"
