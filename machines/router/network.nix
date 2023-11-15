@@ -226,4 +226,6 @@ in
         '';
       };
     };
+
+  networking.firewall.connectionTrackingModules = [ "sip" ];
 }
