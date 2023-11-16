@@ -1,4 +1,4 @@
-{ lib, device, network, ... }:
+{ lib, config, device, network, ... }:
 
 with lib;
 
@@ -216,6 +216,19 @@ in
           meta oifname { guest, iot }
           accept
         '';
+
+        filter-priv = between [ "established" ] [ "peering-dn42" ] [
+          ''
+            ip saddr != { ${concatMapStringsSep "," toString config.peering.domains.dn42.exports.ipv4} }
+            meta oifname { priv }
+            drop
+          ''
+          ''
+            ip6 saddr != { ${concatMapStringsSep "," toString config.peering.domains.dn42.exports.ipv6} }
+            meta oifname { priv }
+            drop
+          ''
+        ];
       };
 
       inet.filter.input = {
