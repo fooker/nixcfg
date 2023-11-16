@@ -115,6 +115,10 @@
           device = "br3";
           interface = "mngt";
         };
+        "192.168.254.8" = {
+          device = "phone";
+          interface = "mngt";
+        };
         "192.168.254.16" = {
           device = "ap-downstairs";
           interface = "mngt";

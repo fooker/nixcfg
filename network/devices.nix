@@ -150,6 +150,20 @@
       };
     };
 
+    "phone" = {
+      type = "Cisco SPA112";
+      role = "SIP";
+      site = "home";
+
+      interfaces = {
+        "mngt" = {
+          mac = "00:e1:6d:b8:3c:53";
+
+          monitoring.services = [ "ICMP" "SNMP" ];
+        };
+      };
+    };
+
     "ap-downstairs" = {
       type = "Aruba AP11";
       role = "WiFi AP";
