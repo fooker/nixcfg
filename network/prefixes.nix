@@ -20,10 +20,6 @@
           device = "toiler";
           interface = "priv";
         };
-        "172.23.200.132" = {
-          device = "prusa";
-          interface = "priv";
-        };
         "172.23.200.133" = {
           device = "amp";
           interface = "priv";
@@ -35,6 +31,10 @@
 
         "172.23.200.160" = {
           device = "printer";
+          interface = "priv";
+        };
+        "172.23.200.161" = {
+          device = "prusa";
           interface = "priv";
         };
       };
@@ -65,10 +65,6 @@
         };
         "fd79:300d:6056:100::2" = {
           device = "toiler";
-          interface = "priv";
-        };
-        "fd79:300d:6056:100::3" = {
-          device = "prusa";
           interface = "priv";
         };
         "fd79:300d:6056:100::4" = {
