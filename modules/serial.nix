@@ -6,8 +6,8 @@ with lib;
     enable = mkEnableOption "Serial Console";
 
     unit = mkOption {
-      type = types.int;
-      default = 0;
+      type = types.str;
+      default = "S0";
       description = "Serial Unit to use";
     };
   };
@@ -20,7 +20,7 @@ with lib;
     '';
 
     boot.kernelParams = mkIf config.serial.enable [
-      "console=ttyS${toString config.serial.unit},115200n8"
+      "console=tty${toString config.serial.unit},115200n8"
     ];
   };
 }

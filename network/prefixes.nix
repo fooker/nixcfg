@@ -20,6 +20,10 @@
           device = "toiler";
           interface = "priv";
         };
+        "172.23.200.132" = {
+          device = "schilderhaus";
+          interface = "priv";
+        };
         "172.23.200.133" = {
           device = "amp";
           interface = "priv";
@@ -65,6 +69,10 @@
         };
         "fd79:300d:6056:100::2" = {
           device = "toiler";
+          interface = "priv";
+        };
+        "fd79:300d:6056:100::3" = {
+          device = "schilderhaus";
           interface = "priv";
         };
         "fd79:300d:6056:100::4" = {

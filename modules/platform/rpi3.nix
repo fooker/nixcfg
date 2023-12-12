@@ -55,6 +55,6 @@ with lib;
 
     documentation.enable = false;
 
-    serial.unit = 1;
+    serial.unit = "S1";
   };
 }

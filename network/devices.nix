@@ -54,6 +54,18 @@
       };
     };
 
+    "schilderhaus" = {
+      type = "Raspberry Pi 4";
+      role = "Multimedia";
+      site = "home";
+
+      interfaces = {
+        "priv" = {
+          mac = "dc:a6:32:1d:d8:f8";
+        };
+      };
+    };
+
     "amp" = {
       type = "Denon AVR-X3000";
       role = "Multimedia";
