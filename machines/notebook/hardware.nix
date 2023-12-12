@@ -6,8 +6,8 @@
     "mitigations=off"
 
     # See https://iam.tj/prototype/enhancements/Windows-acpi_osi.html
-    "acpi_osi=!"
-    "acpi_osi=\"Windows 2015\""
+    #"acpi_osi=!"
+    #"acpi_osi=\"Windows 2015\""
   ];
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -35,13 +35,11 @@
     extraPackages = with pkgs; [
       intel-media-driver
       vaapiIntel
-      vaapiVdpau
       libvdpau-va-gl
     ];
 
     extraPackages32 = with pkgs.pkgsi686Linux; [
       vaapiIntel
-      vaapiVdpau
       libvdpau-va-gl
     ];
   };
@@ -123,6 +121,13 @@
 
   powerManagement.cpuFreqGovernor = "powersave";
 
-  services.tlp.enable = true;
-  services.thinkfan.enable = true;
+  #services.tlp.enable = true;
+  services.power-profiles-daemon.enable = true;
+  services.thinkfan = {
+    enable = true;
+    levels = [
+      [ 0 0 55 ]
+      [ "level auto" 50 32767 ]
+    ];
+  };
 }
