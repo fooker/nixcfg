@@ -59,7 +59,7 @@ let
           service = "climate.set_temperature";
           target.entity_id = "climate.heater_${device}";
           data = {
-            hvac_mode = "auto";
+            hvac_mode = "heat";
             inherit temperature;
           };
         }];
