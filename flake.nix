@@ -21,6 +21,7 @@
     nixpkgs-raketensilo.follows = "nixpkgs-magnetico";
     nixpkgs-fliegerhorst.follows = "nixpkgs-magnetico";
 
+    nixpkgs-router.follows = "nixpkgs-unstable";
     nixpkgs-toiler.follows = "nixpkgs-unstable";
 
     nixpkgs-schilderhaus.follows = "nixpkgs-unstable";

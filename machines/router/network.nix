@@ -109,6 +109,16 @@ in
 
           PrefixDelegationHint = "::/56";
         };
+
+        cakeConfig = {
+          Parent = "root";
+          Bandwidth = "35M";
+          CompensationMode = "ptm";
+          FlowIsolationMode = "dual-src-host";
+          NAT = true;
+          PriorityQueueingPreset = "diffserv8";
+          AckFilter = "aggressive";
+        };
       };
     };
   }] ++ (mapAttrsToList
