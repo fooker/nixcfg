@@ -154,6 +154,8 @@
     "fs.inotify.max_user_watches" = 524288;
   };
 
+  services.gnome.gnome-keyring.enable = true;
+
   # No delay for failed login
   security.pam.services.login.nodelay = true;
   security.pam.services.swaylock.nodelay = true;
