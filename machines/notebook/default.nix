@@ -91,6 +91,11 @@
 
       # Training for keyboard
       SUBSYSTEM=="usb", ATTR{idVendor}=="3297", GROUP="dialout"
+
+      # Flash Support for Xiao M0
+      ATTRS{idVendor}=="2886", ENV{ID_MM_DEVICE_IGNORE}="1"
+      SUBSYSTEM=="usb", ATTRS{idVendor}=="2886", MODE="0666"
+      SUBSYSTEM=="tty", ATTRS{idVendor}=="2886", MODE="0666"
     '';
   };
 
