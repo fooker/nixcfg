@@ -23,6 +23,8 @@
 
     nixpkgs-toiler.follows = "nixpkgs-unstable";
 
+    nixpkgs-schilderhaus.follows = "nixpkgs-unstable";
+
     nixos-hardware = {
       type = "github";
       owner = "NixOS";
