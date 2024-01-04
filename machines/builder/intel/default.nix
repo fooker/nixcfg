@@ -2,6 +2,7 @@
   imports = [
     ./hardware.nix
     ./network.nix
+    ./hydra.nix
   ];
 
   server.enable = true;

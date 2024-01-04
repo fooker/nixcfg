@@ -203,8 +203,12 @@
     };
   };
 
-  outputs = { nixpkgs, utils, ... }@inputs: {
+  outputs = { self, nixpkgs, utils, colmena, ... }@inputs: {
     colmena = import ./deployment.nix inputs;
+
+    hydraJobs = {
+      deployment = (colmena.lib.makeHive self.colmena).toplevel;
+    };
 
     devShell = utils.lib.eachSystemMap utils.lib.allSystems (system:
       let

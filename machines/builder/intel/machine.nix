@@ -8,5 +8,5 @@
 
   system = "x86_64-linux";
 
-  stateVersion = "19.09";
+  stateVersion = "23.05";
 }
