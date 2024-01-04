@@ -23,6 +23,8 @@ in
 
       dhcpcd.enable = false;
 
+      useNetworkd = true;
+
       firewall = {
         enable = true;
         allowPing = true;

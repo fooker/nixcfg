@@ -11,10 +11,10 @@ buildGoModule rec {
     owner = "drone-runners";
     repo = "drone-runner-docker";
     rev = "00b690ce8c9aa020b816bc47dae3be9fdef89294";
-    sha256 = "1l76r3sqk21jv380123yv72nnk7ghim54kiplbbskc64mvjv5d14";
+    hash = "sha256-JLSy5a7EsKnXojdOUmqE70xrxdl+iADQ2DKIifXI5tA=";
   };
 
-  vendorSha256 = "15lpdliqz129yq5zgzjvndwdxngxa96g0ska4zkny7ycb3vwq0xm";
+  vendorHash = "sha256-tQPM91jMH2/nJ2pq8ExS/dneeLNb/vcL9kmEjyNtl5Y=";
 
   meta = with lib; {
     description = "Drone pipeline runner that executes builds inside Docker containers";

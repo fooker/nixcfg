@@ -1,5 +1,6 @@
 { pkgs
 , config
+, nodes
 , inputs
 , machine
 , device
@@ -24,7 +25,7 @@
     };
 
     extraSpecialArgs = {
-      inherit inputs machine device network;
+      inherit nodes inputs machine device network;
     };
   };
 
@@ -34,7 +35,7 @@
 
     shell = pkgs.zsh;
 
-    passwordFile = config.sops.secrets."users/fooker/password".path;
+    hashedPasswordFile = config.sops.secrets."users/fooker/password".path;
 
     extraGroups = [
       "wheel"

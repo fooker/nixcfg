@@ -51,7 +51,7 @@ in
         config.sops.secrets."knot/acme/update".path
       ];
 
-      extraConfig = ''
+      settingsFile = pkgs.writeText "knot.conf" ''
         server:
           listen: [ "0.0.0.0@53", "::@53" ]
 

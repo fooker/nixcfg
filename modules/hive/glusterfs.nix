@@ -41,10 +41,13 @@ with lib;
             ${pkgs.glusterfs}/bin/gluster peer status
           '';
           RemainAfterExit = true;
+
+          Restart = "on-failure";
+          RestartSec = "1s";
         };
         wants = [ "network-online.target" ];
-        requires = [ "glusterd.service" ];
-        after = [ "glusterd.service" "network-online.target" ];
+        bindsTo = [ "glusterd.service" "glustereventsd.service" ];
+        after = [ "glusterd.service" "glustereventsd.service" "network-online.target" ];
       };
     } //
     (listToAttrs (map

@@ -17,9 +17,9 @@ with lib;
   services.paperless = {
     enable = true;
     package = pkgs.paperless-ngx;
-    
+
     mediaDir = "/mnt/docs";
-    
+
     extraConfig = {
       PAPERLESS_DBHOST = "/run/postgresql";
       PAPERLESS_OCR_LANGUAGE = "deu+eng";
@@ -31,9 +31,9 @@ with lib;
     consumptionDirIsPublic = true;
   };
 
-  systemd.services.paperless-scheduler.after = ["mnt-docs.mount"];
-  systemd.services.paperless-consumer.after = ["mnt-docs.mount"];
-  systemd.services.paperless-web.after = ["mnt-docs.mount"];
+  systemd.services.paperless-scheduler.after = [ "mnt-docs.mount" ];
+  systemd.services.paperless-consumer.after = [ "mnt-docs.mount" ];
+  systemd.services.paperless-web.after = [ "mnt-docs.mount" ];
 
   web.reverse-proxy = {
     "paperless" = {
@@ -49,9 +49,7 @@ with lib;
     ensureDatabases = [ "paperless" ];
     ensureUsers = [{
       name = "paperless";
-      ensurePermissions = {
-        "DATABASE paperless" = "ALL PRIVILEGES";
-      };
+      ensureDBOwnership = true;
     }];
   };
 

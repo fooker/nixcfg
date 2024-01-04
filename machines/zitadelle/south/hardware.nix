@@ -8,7 +8,7 @@
   hardware.enableRedistributableFirmware = true;
 
   boot.preset = "grub";
-  boot.device = "/dev/sda";
+  boot.device = "/dev/disk/by-path/pci-0000:00:04.0-scsi-0:0:0:0";
 
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "ehci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
   boot.kernelModules = [ "kvm-intel" ];

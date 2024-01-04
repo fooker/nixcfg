@@ -29,8 +29,6 @@ in
       redis = true;
     };
 
-    enableBrokenCiphersForSSE = false;
-
     config = {
       extraTrustedDomains = domains;
       adminpassFile = config.sops.secrets."nextcloud/adminPassword".path;

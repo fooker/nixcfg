@@ -1,4 +1,6 @@
-{ pkgs, inputs, ... }:
+{ pkgs, lib, inputs, ... }:
+
+with lib;
 
 {
   programs.home-manager.enable = true;

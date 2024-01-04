@@ -4,7 +4,7 @@
       type = "github";
       owner = "NixOS";
       repo = "nixpkgs";
-      ref = "nixos-23.05";
+      ref = "nixos-23.11";
     };
 
     nixpkgs-unstable = {
@@ -20,8 +20,6 @@
 
     nixpkgs-raketensilo.follows = "nixpkgs-magnetico";
     nixpkgs-fliegerhorst.follows = "nixpkgs-magnetico";
-
-    nixpkgs-toiler.follows = "nixpkgs-unstable";
 
     nixpkgs-schilderhaus.follows = "nixpkgs-unstable";
 
@@ -42,7 +40,7 @@
       type = "github";
       owner = "nix-community";
       repo = "home-manager";
-      ref = "release-23.05";
+      ref = "release-23.11";
 
       inputs.nixpkgs.follows = "nixpkgs-notebook";
     };
@@ -60,7 +58,7 @@
     nixos-mailserver = {
       type = "git";
       url = "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver.git";
-      ref = "nixos-23.05";
+      ref = "nixos-23.11";
     };
 
     magnetico = {

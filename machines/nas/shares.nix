@@ -3,7 +3,7 @@
 {
   users = {
     users."share" = {
-      passwordFile = config.sops.secrets."users/share/password".path;
+      hashedPasswordFile = config.sops.secrets."users/share/password".path;
 
       isSystemUser = true;
       group = "share";

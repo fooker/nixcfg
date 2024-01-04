@@ -13,7 +13,7 @@ with lib;
     # Living on the edge
     nix.package = pkgs.unstable.nixUnstable;
     nix.extraOptions = ''
-      experimental-features = nix-command flakes
+      experimental-features = nix-command flakes auto-allocate-uids configurable-impure-env
     '';
 
     # Take out the trash

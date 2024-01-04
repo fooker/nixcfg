@@ -16,8 +16,8 @@ in
 
     fontDir.enable = true;
 
-    enableDefaultFonts = true;
-    fonts = with pkgs; [
+    enableDefaultPackages = true;
+    packages = with pkgs; [
       berkeley-mono-nerd-font
 
       hack-font

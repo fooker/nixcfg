@@ -73,7 +73,6 @@ in
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      PrivateNetwork = true;
 
       ExecStartPre = [
         "-${ pkgs.iproute }/bin/ip netns delete deluge"
@@ -81,9 +80,8 @@ in
 
       ExecStart = [
         "${ pkgs.iproute }/bin/ip netns add deluge"
-        "${ pkgs.iproute }/bin/ip -n deluge link set lo up"
 
-        "${ pkgs.iproute }/bin/ip link add dev deluge type veth peer "
+        "${ pkgs.iproute }/bin/ip -n deluge link set lo up"
       ];
 
       ExecStop = [
