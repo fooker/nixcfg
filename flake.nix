@@ -124,24 +124,28 @@
     };
 
     ipam = {
-      type = "path";
-      path = "/home/fooker/devl/ipam.nix/";
+      type = "github";
+      owner = "fooker";
+      repo = "ipam.nix";
     };
 
     dns = {
-      type = "path";
-      path = "/home/fooker/devl/dns.nix/";
+      type = "github";
+      owner = "fooker";
+      repo = "dns.nix";
       inputs.ipam.follows = "ipam";
     };
 
     gather = {
-      type = "path";
-      path = "/home/fooker/devl/gather.nix/";
+      type = "github";
+      owner = "fooker";
+      repo = "gather.nix";
     };
 
     nftables = {
-      type = "path";
-      path = "/home/fooker/devl/nftables.nix/";
+      type = "github";
+      owner = "fooker";
+      repo = "nftables.nix";
     };
 
     blog = {
