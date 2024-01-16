@@ -51,48 +51,63 @@ in
         config.sops.secrets."knot/acme/update".path
       ];
 
-      settingsFile = pkgs.writeText "knot.conf" ''
-        server:
-          listen: [ "0.0.0.0@53", "::@53" ]
+      settings = {
+        server = {
+          listen = [ "0.0.0.0@53" "::@53" ];
+        };
 
-        remote:
-          - id: "inwx"
-            address: [ "185.181.104.96@53", "2a0a:c980::53@53" ]
+        remote = [
+          {
+            id = "inwx";
+            address = [ "185.181.104.96@53" "2a0a:c980::53@53" ];
+          }
+        ];
 
-        acl:
-          - id: inwx_transfer
-            address: [ "185.181.104.96", "2a0a:c980::53" ]
-            action: transfer
+        acl = [
+          {
+            id = "inwx_transfer";
+            address = [ "185.181.104.96" "2a0a:c980::53" ];
+            action = "transfer";
+          }
 
-          - id: acme_update
-            address: [ "127.0.0.1", "::1", "172.23.200.0/24", "fd79:300d:6056::/48" ]
-            action: update
-            update-type: TXT
-            key: [ acme_update ]
+          {
+            id = "acme_update";
+            address = [ "127.0.0.1" "::1" "172.23.200.0/24" "fd79:300d:6056::/48" ];
+            action = "update";
+            update-type = "TXT";
+            key = [ "acme_update" ];
+          }
+        ];
 
-        policy:
-          - id: default
-            algorithm: ed25519
-            cds-cdnskey-publish: always
+        policy = [
+          {
+            id = "default";
+            algorithm = "ed25519";
+            cds-cdnskey-publish = "always";
+          }
+        ];
 
-        template:
-          - id: default
-            semantic-checks: true
-            zonefile-sync: -1
-            zonefile-load: difference-no-serial
-            serial-policy: dateserial
-            journal-content: all
-            dnssec-signing: on
-            dnssec-policy: default
+        template = [
+          {
+            id = "default";
+            semantic-checks = true;
+            zonefile-sync = -1;
+            zonefile-load = "difference-no-serial";
+            serial-policy = "dateserial";
+            journal-content = "all";
+            dnssec-signing = "on";
+            dnssec-policy = "default";
+          }
+        ];
 
-        zone:
-        ${ concatMapStringsSep "\n" (zone: ''
-          - domain: "${ zone.name.toSimpleString }"
-            notify: ${ zone.notify }
-            acl: [ ${ concatStringsSep ", " zone.acl } ]
-            file: "/etc/knot/zones/${ zone.name.toSimpleString }.zone"
-        '') zones }
-      '';
+        zone = map
+          (zone: {
+            inherit (zone) notify acl;
+            domain = zone.name.toSimpleString;
+            file = "/etc/knot/zones/${ zone.name.toSimpleString }.zone";
+          })
+          zones;
+      };
     };
 
     firewall.rules = dag: with dag; {
