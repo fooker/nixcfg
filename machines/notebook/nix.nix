@@ -33,7 +33,6 @@ in
     '';
 
     settings = {
-      cores = 8;
       trusted-users = lib.mkOptionDefault [ "fooker" ];
     };
   };
