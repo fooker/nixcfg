@@ -45,4 +45,10 @@
     fsType = "cifs";
     options = [ "x-systemd.automount" "noauto" "guest" ];
   };
+
+  fileSystems."/mnt/downloads" = {
+    device = "//nas.dev.home.open-desk.net/downloads";
+    fsType = "cifs";
+    options = [ "x-systemd.automount" "noauto" "guest" ];
+  };
 }

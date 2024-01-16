@@ -44,7 +44,11 @@
       zeroconf = Mopidy MPD Server
 
       [file]
-      enabled = false
+      enabled = true
+      media_dirs =
+              /mnt/media/music|Music
+              /mnt/downloads/c3sets|c3sets
+      follow_symlinks = true
 
       [local]
       enabled = true
