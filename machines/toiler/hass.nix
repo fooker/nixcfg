@@ -47,6 +47,10 @@
       "prusalink"
       "wled"
     ];
+
+    customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
+      mini-media-player
+    ];
   };
 
   services.udev.extraRules = ''
