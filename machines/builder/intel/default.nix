@@ -9,7 +9,7 @@
 
   builder = {
     enable = true;
-    emulatedSystems = [ "aarch64-linux" ];
+    emulatedSystems = [ "aarch64-linux" "armv7l-linux" ];
   };
 
   dns.host = {
