@@ -148,14 +148,49 @@ in
     };
   };
 
-  boot.extraModulePackages = optional (versionOlder config.boot.kernelPackages.kernel.version "5.6") config.boot.kernelPackages.wireguard;
+  services.radarr = {
+    enable = true;
+  };
+
+  services.sonarr = {
+    enable = true;
+  };
+
+  services.jackett = {
+    enable = true;
+  };
+
+  users.users."deluge".extraGroups = [ "share" ];
+  users.users."radarr".extraGroups = [ "share" ];
+  users.users."sonarr".extraGroups = [ "share" ];
 
   web.reverse-proxy = {
     "deluge" = {
       domains = [ "deluge.home.open-desk.net" ];
       target = "http://127.0.0.1:${ toString config.services.deluge.web.port }/";
     };
+    "radarr" = {
+      domains = [ "radarr.home.open-desk.net" ];
+      target = "http://127.0.0.1:7878/";
+    };
+    "sonarr" = {
+      domains = [ "sonarr.home.open-desk.net" ];
+      target = "http://127.0.0.1:8989/";
+    };
+    "jackett" = {
+      domains = [ "jackett.home.open-desk.net" ];
+      target = "http://127.0.0.1:9117/";
+    };
   };
+
+  boot.extraModulePackages = optional (versionOlder config.boot.kernelPackages.kernel.version "5.6") config.boot.kernelPackages.wireguard;
+
+  backup.paths = [
+    config.services.radarr.dataDir
+    config.services.sonarr.dataDir
+    config.services.lidarr.dataDir
+    config.services.jackett.dataDir
+  ];
 
   sops.secrets."deluge/auth" = {
     owner = "deluge";
