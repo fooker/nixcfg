@@ -46,7 +46,8 @@ in
         mail
         tasks
         news
-        groupfolders;
+        groupfolders
+        forms;
     };
     extraAppsEnable = true;
   };
