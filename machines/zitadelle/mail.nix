@@ -187,7 +187,7 @@ with lib;
           };
 
           # SPF record
-          TXT = "v=spf1 mx -all";
+          TXT = "v=spf1 mx a:mail.${domain} a:smtp:${domain} a:mail.open-desk.net -all";
 
           # DKIM record
           # TODO: Use a selector per server?
