@@ -403,5 +403,18 @@
         };
       };
     };
+
+    "pv-inverter" = {
+      type = "Deye SUN600G3-EU-230";
+      role = "Microinverter";
+      site = "home";
+
+      interfaces = {
+        "iot" = {
+          mac = "E8:FD:F8:93:10:3C";
+        };
+      };
+    };
+
   };
 }

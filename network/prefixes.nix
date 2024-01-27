@@ -178,6 +178,10 @@
           device = "toiler";
           interface = "iot";
         };
+        "192.168.0.15" = {
+          device = "pv-inverter";
+          interface = "iot";
+        };
       };
 
       reservations = {
