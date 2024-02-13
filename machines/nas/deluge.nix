@@ -25,14 +25,15 @@ in
       "download_location" = "/mnt/downloads/incoming";
       "enabled_plugins" = [
         "Extractor"
+        "Label"
       ];
       "listen_interface" = "";
       "listen_ports" = [ private.deluge.forwardedPort private.deluge.forwardedPort ];
       "listen_reuse_port" = true;
       "outgoing_ports" = [ private.deluge.forwardedPort private.deluge.forwardedPort ];
       "max_active_downloading" = 10;
-      "max_active_limit" = 100;
-      "max_active_seeding" = 100;
+      "max_active_limit" = 200;
+      "max_active_seeding" = 200;
       "max_connections_global" = 200;
       "max_connections_per_second" = 20;
       "max_connections_per_torrent" = -1;
@@ -143,6 +144,16 @@ in
     after = [ "deluge-netns.service" ];
     bindsTo = [ "deluge-netns.service" ];
 
+    path = with pkgs; [
+      unrar
+      p7zip
+      unzip
+      xz
+      gnutar
+      lzma
+      bzip2
+    ];
+
     serviceConfig = {
       NetworkNamespacePath = "/var/run/netns/deluge";
     };
@@ -156,6 +167,10 @@ in
     enable = true;
   };
 
+  services.lidarr = {
+    enable = true;
+  };
+
   services.jackett = {
     enable = true;
   };
@@ -163,6 +178,7 @@ in
   users.users."deluge".extraGroups = [ "share" ];
   users.users."radarr".extraGroups = [ "share" ];
   users.users."sonarr".extraGroups = [ "share" ];
+  users.users."lidarr".extraGroups = [ "share" ];
 
   web.reverse-proxy = {
     "deluge" = {
@@ -176,6 +192,10 @@ in
     "sonarr" = {
       domains = [ "sonarr.home.open-desk.net" ];
       target = "http://127.0.0.1:8989/";
+    };
+    "lidarr" = {
+      domains = [ "lidarr.home.open-desk.net" ];
+      target = "http://127.0.0.1:8686/";
     };
     "jackett" = {
       domains = [ "jackett.home.open-desk.net" ];
