@@ -55,7 +55,7 @@
       media_dir = /mnt/media/music
 
       [m3u]
-      enabled = false
+      enabled = true
 
       [somafm]
       enabled = true
@@ -64,16 +64,16 @@
     '';
   };
 
-  systemd.timers.mopidy-scan = {
-    wantedBy = [ "timers.target" ];
-    timerConfig.OnCalendar = [ "*-*-* 05:00:00" ];
+  systemd.services.mopidy-scan = {
+    startAt = "5:00";
   };
 
-  systemd.services.mopidy.unitConfig = {
-    RequiresMountsFor = "/mnt/media";
+  systemd.services.mopidy = {
+    after = [ "snapserver.service" ];
+    unitConfig = {
+      RequiresMountsFor = "/mnt/media";
+    };
   };
-
-  systemd.services.mopidy.after = [ "snapserver.service" ];
 
   services.snapserver.streams = {
     "mopidy" = {
@@ -81,6 +81,13 @@
       location = "/run/snapserver/mopidy";
       codec = "pcm";
     };
+  };
+
+  systemd.services.c3sets-playlist = {
+    script = ''
+      find /mnt/downloads/c3sets/by-id -type f > /var/lib/mopidy/.local/share/mopidy/m3u/c3sets.m3u8
+    '';
+    startAt = "7:00";
   };
 
   firewall.rules = dag: with dag; {
