@@ -20,6 +20,7 @@
 
   i18n = {
     defaultLocale = "en_US.UTF-8";
+    supportedLocales = [ "de_DE.UTF-8/UTF-8" ];
   };
 
   console = {
@@ -153,6 +154,7 @@
   boot.kernel.sysctl = {
     # Required by IDEA
     "fs.inotify.max_user_watches" = 524288;
+    "fs.inotify.max_user_instances" = 512;
   };
 
   services.gnome.gnome-keyring.enable = true;
