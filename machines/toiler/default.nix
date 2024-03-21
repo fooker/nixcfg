@@ -8,8 +8,8 @@
     ./pulseaudio.nix
     ./mopidy.nix
     ./spotifyd.nix
-    ./gitea.nix
-    ./drone.nix
+    ./forgejo.nix
+    ./woodpecker.nix
     ./scanner.nix
     ./paperless.nix
     ./hass.nix

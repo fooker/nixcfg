@@ -3,10 +3,6 @@
 with lib;
 
 let
-  package = pkgs.pulseaudio.override {
-    zeroconfSupport = true;
-  };
-
   configFile = pkgs.writeTextFile {
     name = "default.pa";
     text = ''
@@ -25,8 +21,6 @@ let
       load-module module-always-sink
 
       load-module module-intended-roles
-
-      load-module module-suspend-on-idle
 
       load-module module-filter-heuristics
       load-module module-filter-apply
@@ -62,13 +56,13 @@ in
     environment.PULSE_LATENCY_MSEC = toString 60;
     serviceConfig = {
       Type = "notify";
-      ExecStart = "${getBin package}/bin/pulseaudio --daemonize=no --log-level=debug --system -n --file=${configFile}";
+      ExecStart = "${getBin pkgs.pulseaudioFull}/bin/pulseaudio --daemonize=no --log-level=debug --system -n --file=${configFile}";
       Restart = "on-failure";
       RestartSec = "500ms";
     };
   };
 
-  services.dbus.packages = [ package ];
+  services.dbus.packages = [ pkgs.pulseaudioFull ];
 
   services.snapserver.streams = {
     "pulse" = {

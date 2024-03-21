@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  services.gitea = {
+  services.forgejo = {
     enable = true;
 
     lfs.enable = true;
@@ -25,16 +25,16 @@
 
     database = {
       type = "postgres";
-      name = "gitea";
-      user = "gitea";
+      name = "forgejo";
+      user = "forgejo";
       socket = "/var/run/postgresql";
     };
   };
 
   services.postgresql = {
-    ensureDatabases = [ "gitea" ];
+    ensureDatabases = [ "forgejo" ];
     ensureUsers = [{
-      name = "gitea";
+      name = "forgejo";
       ensureDBOwnership = true;
     }];
   };
@@ -42,24 +42,24 @@
   web.reverse-proxy = {
     "git" = {
       domains = [ "git.home.open-desk.net" ];
-      target = "http://[${config.services.gitea.settings.server.HTTP_ADDR}]:${toString config.services.gitea.settings.server.HTTP_PORT}";
+      target = "http://[${config.services.forgejo.settings.server.HTTP_ADDR}]:${toString config.services.forgejo.settings.server.HTTP_PORT}";
     };
   };
 
   backup = {
     paths = [
-      config.services.gitea.stateDir
+      config.services.forgejo.stateDir
     ];
 
     commands = [
       (
         let
-          gitea-dump = pkgs.writeScript "gitea-dump" ''
-            export USER=${ config.services.gitea.user };
-            export HOME=${ config.services.gitea.stateDir };
-            export GITEA_WORK_DIR=${ config.services.gitea.stateDir };
+          forgejo-dump = pkgs.writeScript "forgejo-dump" ''
+            export USER=${ config.services.forgejo.user };
+            export HOME=${ config.services.forgejo.stateDir };
+            export FORGEJO_WORK_DIR=${ config.services.forgejo.stateDir };
       
-            ${ pkgs.gitea }/bin/gitea dump \
+            ${pkgs.forgejo}/bin/forgejo dump \
               --verbose \
               --database postgres \
               --type tar \
@@ -67,10 +67,10 @@
           '';
         in
         ''
-          ${ pkgs.sudo }/bin/sudo \
-            --user ${ config.services.gitea.user } \
-            ${ gitea-dump } \
-            > gitea-dump.tar
+          ${pkgs.sudo}/bin/sudo \
+            --user ${config.services.forgejo.user} \
+            ${forgejo-dump} \
+            > forgejo-dump.tar
         ''
       )
     ];
