@@ -28,16 +28,25 @@
           Type = "ether";
         };
         linkConfig = {
-          Name = "en";
+          Name = "en-port";
         };
       };
-      "00-en-dock" = {
+      "00-en-dock-home" = {
         matchConfig = {
           MACAddress = "38:7c:76:1a:89:f0";
           Type = "ether";
         };
         linkConfig = {
-          Name = "en";
+          Name = "en-dock";
+        };
+      };
+      "00-en-dock-work" = {
+        matchConfig = {
+          MACAddress = "38:7c:76:1a:8a:79";
+          Type = "ether";
+        };
+        linkConfig = {
+          Name = "en-dock";
         };
       };
     };
