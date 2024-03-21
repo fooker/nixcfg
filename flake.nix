@@ -55,6 +55,16 @@
       inputs.home-manager.follows = "home-manager";
     };
 
+    nixvim = {
+      type = "github";
+      owner = "nix-community";
+      repo = "nixvim";
+      ref = "nixos-23.11";
+
+      inputs.nixpkgs.follows = "nixpkgs-notebook";
+      inputs.home-manager.follows = "home-manager";
+    };
+
     nixos-mailserver = {
       type = "git";
       url = "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver.git";

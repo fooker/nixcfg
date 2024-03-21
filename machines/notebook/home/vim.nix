@@ -1,33 +1,44 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
-  programs.neovim = {
+  imports = [
+    inputs.nixvim.homeManagerModules.nixvim
+  ];
+
+  programs.nixvim = {
     enable = true;
 
     vimAlias = true;
-    withPython3 = true;
+    viAlias = true;
 
-    plugins = [
-      pkgs.python3Packages.editorconfig
-      pkgs.vimPlugins.lightline-vim
-      pkgs.vimPlugins.ale
-      pkgs.vimPlugins.gitgutter
-      pkgs.vimPlugins.vim-nix
-      pkgs.vimPlugins.rust-vim
-      pkgs.vimPlugins.vim-unimpaired
+    options = {
+      number = true;
+
+      tabstop = 2;
+      shiftwidth = 2;
+      expandtab = true;
+
+      mouse = "a";
+
+      ignorecase = true;
+
+      cursorline = true;
+    };
+
+    plugins = {
+      lightline.enable = true;
+      gitgutter.enable = true;
+      #lint.enable = true;
+      ledger.enable = true;
+      nix.enable = true;
+      treesitter.enable = true;
+    };
+
+    extraPlugins = with pkgs.vimPlugins; [
+      rust-vim
+      ale
+      vim-unimpaired
     ];
-    extraConfig = ''
-      set nu
-      set ignorecase
-      set mouse=a
-
-      set undodir=~/.cache/vim/
-      set undofile
-      set undolevels=100
-      set undoreload=1000
-
-      set cursorline
-      hi CursorLine cterm=NONE ctermbg=238 ctermfg=NONE
-    '';
   };
 }
+
