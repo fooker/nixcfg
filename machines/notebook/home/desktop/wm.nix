@@ -194,13 +194,5 @@ in
       gnome3.adwaita-icon-theme
       swaynotificationcenter
     ];
-
-    pointerCursor = {
-      package = pkgs.gnome3.adwaita-icon-theme;
-      name = "Adwaita";
-      size = 10;
-      gtk.enable = true;
-      x11.enable = true;
-    };
   };
 }

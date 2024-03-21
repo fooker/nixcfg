@@ -32,6 +32,12 @@ with lib;
       };
     };
 
+    cursor = {
+      package = pkgs.gnome3.adwaita-icon-theme;
+      name = "Adwaita";
+      size = 10;
+    };
+
     targets.swaylock.useImage = false;
     targets.waybar.enableRightBackColors = true;
   };

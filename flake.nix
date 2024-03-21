@@ -49,7 +49,7 @@
       type = "github";
       owner = "danth";
       repo = "stylix";
-      ref = "release-23.05";
+      ref = "release-23.11";
 
       inputs.nixpkgs.follows = "nixpkgs-notebook";
       inputs.home-manager.follows = "home-manager";
