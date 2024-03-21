@@ -16,7 +16,7 @@ in
 {
   options = {
     ipam.extends = mkOption {
-      type = types.attrsOf (types.coercedTo (types.uniq types.anything) toList (types.listOf (types.uniq types.anything)));
+      type = types.attrsOf (types.coercedTo (types.uniq types.raw) toList (types.listOf (types.uniq types.raw)));
       description = ''
         Extension moduest to the IPAM declarations.
       '';
