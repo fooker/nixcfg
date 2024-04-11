@@ -4,6 +4,9 @@
   services.forgejo = {
     enable = true;
 
+    user = "git";
+    group = "git";
+
     lfs.enable = true;
 
     settings = {
@@ -25,8 +28,8 @@
 
     database = {
       type = "postgres";
-      name = "forgejo";
-      user = "forgejo";
+      name = "git";
+      user = "git";
       socket = "/var/run/postgresql";
     };
   };
@@ -45,6 +48,18 @@
       target = "http://[${config.services.forgejo.settings.server.HTTP_ADDR}]:${toString config.services.forgejo.settings.server.HTTP_PORT}";
     };
   };
+
+  users.users."git" = {
+    isSystemUser = true;
+
+    home = config.services.forgejo.stateDir;
+    useDefaultShell = true;
+
+    group = "git";
+
+  };
+
+  users.groups."git" = { };
 
   backup = {
     paths = [
