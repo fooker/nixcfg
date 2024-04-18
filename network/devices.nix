@@ -411,7 +411,7 @@
 
       interfaces = {
         "iot" = {
-          mac = "E8:FD:F8:93:10:3C";
+          mac = "e8:fd:f8:93:10:3c";
         };
       };
     };
