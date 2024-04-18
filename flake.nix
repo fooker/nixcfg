@@ -259,7 +259,6 @@
           gzip
           sops
           age
-          nixUnstable
           openssh
           drone-cli
           nixpkgs-fmt
