@@ -11,9 +11,8 @@ with lib;
 
   config = mkIf config.common.nix.enable {
     # Living on the edge
-    nix.package = pkgs.unstable.nixUnstable;
     nix.extraOptions = ''
-      experimental-features = nix-command flakes auto-allocate-uids configurable-impure-env
+      experimental-features = nix-command flakes auto-allocate-uids
     '';
 
     # Take out the trash
