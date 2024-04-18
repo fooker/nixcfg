@@ -121,13 +121,8 @@
 
   powerManagement.cpuFreqGovernor = "powersave";
 
-  #services.tlp.enable = true;
-  services.power-profiles-daemon.enable = true;
+  services.tlp.enable = true;
   services.thinkfan = {
     enable = true;
-    levels = [
-      [ 0 0 55 ]
-      [ "level auto" 50 32767 ]
-    ];
   };
 }
