@@ -106,16 +106,16 @@
       };
     };
 
-    "modem" = {
-      type = "DrayTek Vigor 130";
-      role = "DSL Modem";
+    "gpon" = {
+      type = "fs.com GPON-ONU-34-20BI";
+      role = "GPON";
       site = "home";
 
       interfaces = {
         "mngt" = {
-          mac = "00:1d:aa:87:58:ac";
+          mac = "00:06:b5:07:e5:f0";
 
-          monitoring.services = [ "ICMP" "SNMP" ];
+          monitoring.services = [ "ICMP" ];
         };
       };
     };

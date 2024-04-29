@@ -103,10 +103,6 @@
           device = "router";
           interface = "mngt";
         };
-        "192.168.254.2" = {
-          device = "modem";
-          interface = "mngt";
-        };
         "192.168.254.3" = {
           device = "br1";
           interface = "mngt";
@@ -117,6 +113,10 @@
         };
         "192.168.254.5" = {
           device = "br3";
+          interface = "mngt";
+        };
+        "192.168.254.6" = {
+          device = "gpon";
           interface = "mngt";
         };
         "192.168.254.8" = {
