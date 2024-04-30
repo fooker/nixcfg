@@ -61,7 +61,14 @@
 
   users.groups."git" = { };
 
-  backup = {
+  backup.jobs."forgejo" = {
+    targets = [
+      "default"
+      {
+        name = "borgbase";
+        options.user = "f8f391dk";
+      }
+    ];
     paths = [
       config.services.forgejo.stateDir
     ];
@@ -74,7 +81,7 @@
             export HOME=${ config.services.forgejo.stateDir };
             export FORGEJO_WORK_DIR=${ config.services.forgejo.stateDir };
       
-            ${pkgs.forgejo}/bin/forgejo dump \
+            ${pkgs.forgejo}/bin/gitea dump \
               --verbose \
               --database postgres \
               --type tar \

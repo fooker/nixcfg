@@ -24,7 +24,9 @@
   ];
 
   boot.kernelModules = [
-    "vfio-pci" "vfio" "vfio-iommu-type1"
+    "vfio-pci"
+    "vfio"
+    "vfio-iommu-type1"
   ];
 
   boot.extraModprobeConfig = ''
@@ -34,7 +36,7 @@
 
   security.polkit.enable = true;
 
-  backup.paths = [
+  backup.jobs."libvirt".paths = [
     "/var/lib/libvirt"
   ];
 }

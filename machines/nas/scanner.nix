@@ -18,7 +18,16 @@
 
   users.groups."scanner" = { };
 
-  backup.paths = [
-    config.users.users."scanner".home
-  ];
+  backup.jobs."scanner" = {
+    targets = [
+      "default"
+      {
+        name = "borgbase";
+        options.user = "x04xd3q0";
+      }
+    ];
+    paths = [
+      config.users.users."scanner".home
+    ];
+  };
 }

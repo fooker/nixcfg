@@ -129,7 +129,7 @@ in
         })
         domains);
 
-    backup.paths = [
+    backup.jobs."letsencrypt".paths = [
       "/var/lib/acme"
     ];
 

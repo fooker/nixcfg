@@ -3,133 +3,177 @@
 with lib;
 {
   options.backup = {
-    repo = {
-      user = mkOption {
-        type = types.str;
-        description = ''
-          User with which to store the backup.
-        '';
-      };
+    targets = mkOption {
+      type = types.attrsOf (types.fnOf (types.fnOf (types.submodule ({ name, ... }: {
+        options = {
+          name = mkOption {
+            type = types.str;
+            description = ''
+              Name of the target.
+            '';
+            default = name;
+            readOnly = true;
+          };
 
-      host = mkOption {
-        type = types.str;
-        description = ''
-          Host on which to store the backup.
-        '';
-      };
+          host = mkOption {
+            type = types.str;
+            description = ''
+              Host on which to store the backup.
+            '';
+          };
 
-      fingerprint = mkOption {
-        type = types.str;
-        description = ''
-          SSH fingerprint of the backup storage host.
-        '';
-      };
-    };
+          fingerprint = mkOption {
+            type = types.str;
+            description = ''
+              SSH fingerprint of the backup storage host.
+            '';
+          };
 
-    publicKey = mkOption {
-      type = types.str;
-      description = ''
-        Public SSH key used by the backup client.
-      '';
-    };
+          user = mkOption {
+            type = types.str;
+            description = ''
+              User with which to store the backup.
+            '';
+          };
 
-    extraPublicKeys = mkOption {
-      type = types.attrsOf types.str;
-      description = ''
-        Additional public SSH keys.
-      '';
+          path = mkOption {
+            type = types.str;
+            description = ''
+              Path of the repository
+            '';
+          };
+        };
+      }))));
       default = { };
     };
 
-    paths = mkOption {
-      type = with types; coercedTo str lib.singleton (listOf str);
-      description = ''
-        Path(s) to back up.
-      '';
-      default = [ ];
-    };
+    jobs = mkOption {
+      type = types.attrsOf (types.submodule ({ name, ... }: {
+        options = {
+          name = mkOption {
+            type = types.str;
+            description = ''
+              Name of the job.
+            '';
+            default = name;
+            readOnly = true;
+          };
 
-    commands = mkOption {
-      type = with types; coercedTo str lib.singleton (listOf str);
-      description = ''
-        Command(s) to include into backup.
-      '';
-      default = [ ];
-    };
+          targets = mkOption {
+            type = types.listOf
+              (types.coercedTo
+                (types.types.enum (attrNames config.backup.targets))
+                (name: { inherit name; options = { }; })
+                (types.submodule {
+                  options = {
+                    name = mkOption {
+                      type = types.types.enum (attrNames config.backup.targets);
+                      description = ''
+                        Name of the target
+                      '';
+                    };
 
-    defaultPaths = mkOption {
-      type = types.bool;
-      default = true;
+                    options = mkOption {
+                      type = types.anything;
+                      description = ''
+                        Target-specific options
+                      '';
+                    };
+                  };
+                }));
+            description = ''
+              Target backup servers to create a backup on.
+            '';
+            default = [ "default" ];
+          };
+
+          paths = mkOption {
+            type = with types; coercedTo str lib.singleton (listOf str);
+            description = ''
+              Path(s) to back up.
+            '';
+            default = [ ];
+          };
+
+          commands = mkOption {
+            type = with types; coercedTo str lib.singleton (listOf str);
+            description = ''
+              Command(s) to include into backup.
+            '';
+            default = [ ];
+          };
+        };
+      }));
+      default = { };
     };
   };
 
-  config =
-    let
-      # Create a standalone bash script for each command
-      scripts = map
-        (pkgs.writeShellScript "backup-script")
-        config.backup.commands;
+  config = {
+    services.borgbackup.jobs = listToAttrs (concatLists (mapAttrsToList
+      (_: job: map
+        (target: nameValuePair "${job.name}-${target.name}" (
+          let
+            target' = config.backup.targets.${target.name} job target.options;
+            #(target.options // {
+            #  inherit job;
+            #});
 
-    in
-    {
-      services.openssh.knownHosts.backup = {
-        hostNames = [ config.backup.repo.host ];
-        publicKey = config.backup.repo.fingerprint;
-      };
+            known-hosts = pkgs.writeText "known_hosts" ''
+              ${target'.host} ${target'.fingerprint}
+            '';
+          in
+          {
+            repo = "${target'.user}@${target'.host}:${target'.path}";
 
-      services.borgbackup.jobs.system = {
-        repo = with config.backup.repo; "${user}@${host}:system";
+            doInit = true;
 
-        doInit = true;
+            archiveBaseName = "${name}-${job.name}";
+            dateFormat = "+%Y-%m-%dT%H:%M";
 
-        archiveBaseName = "system";
-        dateFormat = "+%Y-%m-%dT%H:%M";
+            encryption = {
+              mode = "repokey";
+              passCommand = ''cat ${config.sops.secrets."backup/passphrase".path}'';
+            };
 
-        encryption = {
-          mode = "repokey";
-          passCommand = ''cat ${config.sops.secrets."backup/passphrase".path}'';
-        };
+            environment = {
+              "BORG_RSH" = "ssh -i /var/lib/backup/id_backup -o UserKnownHostsFile=${known-hosts} -o StrictHostKeyChecking=yes";
+            };
 
-        environment = {
-          "BORG_RSH" = "ssh -i /var/lib/backup/id_backup";
-        };
+            paths = job.paths ++ [ "." ];
 
-        paths = config.backup.paths ++ [ "." ];
+            readWritePaths = [ "/tmp" ];
 
-        readWritePaths = [ "/tmp" ];
+            preHook = ''
+              mkdir /tmp/backup-$archiveName
+              cd /tmp/backup-$archiveName
+  
+              ${concatMapStringsSep "\n" (pkgs.writeShellScript "backup-script") job.commands}
+            '';
+          }
+        ))
+        job.targets)
+      config.backup.jobs));
 
-        preHook = ''
-          mkdir /tmp/backup-$archiveName
-          cd /tmp/backup-$archiveName
+    system.activationScripts."backup-sshkey" = ''
+      if ! [ -f "/var/lib/backup/id_backup" ]; then
+        mkdir -pv /var/lib/backup
+        ${pkgs.openssh}/bin/ssh-keygen \
+          -N "" \
+          -t ed25519 \
+          -f /var/lib/backup/id_backup \
+          -C "backup@${name}"
+      fi
+    '';
 
-          ${concatStringsSep "\n" scripts}
-        '';
-      };
+    sops.secrets."backup/passphrase" = {
+      sopsFile = "${path}/secrets.yaml";
+    };
 
-      backup.paths = [ "/etc" "/root" ];
-
-      backup.publicKey = mkDefault (fileContents config.gather.parts."backup/sshKey".path);
-
-      system.activationScripts."backup-sshkey" = ''
-        if ! [ -f "/var/lib/backup/id_backup" ]; then
-          mkdir -pv /var/lib/backup
-          ${pkgs.openssh}/bin/ssh-keygen \
-            -N "" \
-            -t ed25519 \
-            -f /var/lib/backup/id_backup \
-            -C "backup@${name}"
-        fi
-      '';
-
-      sops.secrets."backup/passphrase" = {
-        sopsFile = "${path}/secrets.yaml";
-      };
-
-      gather.parts = {
-        "backup/sshKey" = {
-          name = "id_backup.pub";
-          file = "/var/lib/backup/id_backup.pub";
-        };
+    gather.parts = {
+      "backup/sshKey" = {
+        name = "id_backup.pub";
+        file = "/var/lib/backup/id_backup.pub";
       };
     };
+  };
 }

@@ -107,7 +107,7 @@
     };
   };
 
-  backup.paths = [
+  backup.jobs."mopidy".paths = [
     "/var/lib/mopidy"
   ];
 }

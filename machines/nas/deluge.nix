@@ -205,7 +205,7 @@ in
 
   boot.extraModulePackages = optional (versionOlder config.boot.kernelPackages.kernel.version "5.6") config.boot.kernelPackages.wireguard;
 
-  backup.paths = [
+  backup.jobs."servarr".paths = [
     config.services.radarr.dataDir
     config.services.sonarr.dataDir
     config.services.lidarr.dataDir

@@ -62,9 +62,21 @@ in
     inherit domains;
   };
 
-  backup.paths = [
-    "/srv/nextcloud"
-  ];
+  backup.jobs."nextcloud" = {
+    targets = [
+      "default"
+      {
+        name = "borgbase";
+        options.user = "d7bov4v2";
+      }
+    ];
+    paths = [
+      "/srv/nextcloud"
+    ];
+    commands = [
+      "${pkgs.mariadb}/bin/mariabackup --backup --target-dir=./database --user=root --databases='nextcloud'"
+    ];
+  };
 
   sops.secrets."nextcloud/adminPassword" = {
     sopsFile = ./secrets.yaml;

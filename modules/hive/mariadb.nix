@@ -70,7 +70,7 @@ with lib;
         };
       };
 
-    backup.commands = [
+    backup.jobs."mariadb".commands = [
       "${pkgs.mariadb}/bin/mariabackup --backup --target-dir=./mariadb --user=root"
     ];
   };

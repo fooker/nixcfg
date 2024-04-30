@@ -119,18 +119,20 @@ in
       };
     };
 
-    backup.commands = [
-      ''
-        mkdir knot
-        ${ pkgs.lmdb }/bin/mdb_dump '/var/lib/knot/journal' -f knot/journal.dump
-        ${ pkgs.lmdb }/bin/mdb_dump '/var/lib/knot/timers'  -f knot/timers.dump
-        ${ pkgs.lmdb }/bin/mdb_dump '/var/lib/knot/keys'    -f knot/keys.dump    -a
-      ''
-    ];
+    backup.jobs."dns" = {
+      commands = [
+        ''
+          mkdir knot
+          ${ pkgs.lmdb }/bin/mdb_dump '/var/lib/knot/journal' -f knot/journal.dump
+          ${ pkgs.lmdb }/bin/mdb_dump '/var/lib/knot/timers'  -f knot/timers.dump
+          ${ pkgs.lmdb }/bin/mdb_dump '/var/lib/knot/keys'    -f knot/keys.dump    -a
+        ''
+      ];
 
-    backup.paths = [
-      "/var/lib/knot"
-    ];
+      paths = [
+        "/var/lib/knot"
+      ];
+    };
 
     sops.secrets."knot/acme/update" = {
       format = "binary";

@@ -53,9 +53,22 @@ with lib;
     }];
   };
 
-  backup.paths = [
+  backup.jobs."paperless".paths = [
     config.services.paperless.dataDir
   ];
+
+  backup.jobs."docs" = {
+    targets = [
+      "default"
+      {
+        name = "borgbase";
+        options.user = "t2t8gmt1";
+      }
+    ];
+    paths = [
+      config.services.paperless.mediaDir
+    ];
+  };
 
   sops.secrets."mounts/vault/credentials" = { };
 }

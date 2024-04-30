@@ -8,7 +8,7 @@ with lib;
     package = pkgs.postgresql_14;
   };
 
-  backup = {
+  backup.jobs."postgresql" = {
     commands = map
       (database: ''${pkgs.su}/bin/su postgres -c "${config.services.postgresql.package}/bin/pg_dump --format tar ${database}" > postgres-${database}.tar'')
       config.services.postgresql.ensureDatabases;

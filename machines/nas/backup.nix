@@ -1,47 +1,43 @@
-{ pkgs, config, lib, nodes, ... }:
+{ pkgs, config, lib, nodes, private, ... }:
 
 with lib;
 
 {
   options = {
     backup.server.repos = mkOption {
-      type = types.listOf (types.submodule {
+      type = types.attrsOf (types.submodule ({ name, ... }: {
         options = {
           name = mkOption {
             type = types.str;
             description = "Name of the repository";
+            default = name;
+            readOnly = true;
           };
           publicKey = mkOption {
             type = types.str;
             description = "Public SSH key of the client using this repository";
           };
-          extraPublicKeys = mkOption {
-            type = types.attrsOf types.str;
-            description = "Additional public SSH keys";
-            default = { };
-          };
         };
-      });
+      }));
       description = "The backup repositories to provide";
     };
   };
 
   config = {
-    services.borgbackup.repos = listToAttrs (map
-      (repo: nameValuePair repo.name {
-        path = "/mnt/backups/borg/${ repo.name }";
+    services.borgbackup.repos = mapAttrs'
+      (_: repo: nameValuePair (replaceStrings [ "/" ] [ "-" ] repo.name) {
+        path = "/mnt/backups/borg/${repo.name}";
 
-        authorizedKeysAppendOnly = [ "${ repo.publicKey } ${ repo.name }" ]
-          ++ mapAttrsToList
-          (desc: publicKey: "${publicKey} ${repo.name}/${desc}")
-          repo.extraPublicKeys;
+        authorizedKeysAppendOnly = [
+          "${repo.publicKey} ${repo.name}"
+        ];
 
         allowSubRepos = true;
 
         user = "backup";
         group = "backup";
       })
-      config.backup.server.repos);
+      config.backup.server.repos;
 
     dns.zones = {
       net.open-desk.home.backup = {
@@ -49,14 +45,20 @@ with lib;
       };
     };
 
-    # Create repos for all defined nodes
-    backup.server.repos = mapAttrsToList
-      (name: node: {
-        inherit name;
-        inherit (node.config.backup) publicKey extraPublicKeys;
-      })
-      nodes;
-    
+    backup.server.repos = mkMerge [
+      # Create repos for all nodes having jobs with target "default"
+      (mapAttrs
+        (name: node: {
+          publicKey = fileContents node.config.gather.parts."backup/sshKey".path;
+        })
+        (filterAttrs
+          (name: node: any
+            (job: elem "default" job.targets)
+            (attrValues node.config.backup.jobs))
+          nodes))
+      private.backup.repos
+    ];
+
     systemd.services.backup-opennms-repos = {
       startAt = "3/4:00:00";
       script = ''

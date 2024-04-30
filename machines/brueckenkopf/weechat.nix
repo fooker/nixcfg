@@ -54,7 +54,7 @@ in
     };
   };
 
-  backup.paths = [
+  backup.jobs."weechat".paths = [
     config.users.users."weechat".home
   ];
 }

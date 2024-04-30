@@ -19,7 +19,7 @@
     };
   };
 
-  backup.paths = [
+  backup.jobs."grafana".paths = [
     config.services.grafana.dataDir
   ];
 

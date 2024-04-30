@@ -209,10 +209,19 @@ with lib;
         config.mailserver.domains))
     ];
 
-  backup.paths = [
-    "/data/mail"
-    "/var/sieve"
-  ];
+  backup.jobs."mail" = {
+    targets = [
+      "default"
+      {
+        name = "borgbase";
+        options.user = "r770975e";
+      }
+    ];
+    paths = [
+      "/data/mail"
+      "/var/sieve"
+    ];
+  };
 
   sops.secrets = (listToAttrs (concatMap
     (domain: [

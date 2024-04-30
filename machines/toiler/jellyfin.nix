@@ -28,7 +28,7 @@
     };
   };
 
-  backup.paths = [
+  backup.jobs."jellyfin".paths = [
     "/var/lib/jellyfin"
   ];
 }

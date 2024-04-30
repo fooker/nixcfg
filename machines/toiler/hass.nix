@@ -157,7 +157,7 @@
     };
   };
 
-  backup.paths = [
+  backup.jobs."hass".paths = [
     config.services.home-assistant.configDir
     config.services.mosquitto.dataDir
     config.services.zigbee2mqtt.dataDir
