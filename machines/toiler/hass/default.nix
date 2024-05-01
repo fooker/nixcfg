@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, private, ... }:
 
 with lib;
 
@@ -40,6 +40,7 @@ in
     {
       platform = "mpd";
       host = "127.0.0.1";
+      inherit (private.mpd) password;
     }
   ];
 

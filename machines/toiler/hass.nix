@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, device, ... }:
+{ config, pkgs, lib, inputs, device, private, ... }:
 
 {
   services.mosquitto = {
@@ -29,7 +29,7 @@
   services.home-assistant = {
     enable = true;
 
-    config = import ./hass { inherit lib; };
+    config = import ./hass { inherit lib private; };
 
     extraComponents = [
       "default_config"
