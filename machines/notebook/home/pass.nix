@@ -24,7 +24,7 @@ in
     repositories = {
       "password" = {
         inherit path;
-        uri = "git+ssh://gitea@git.home.open-desk.net:fooker/pass.git";
+        uri = "git+ssh://git@git.home.open-desk.net:fooker/pass.git";
       };
     };
   };
