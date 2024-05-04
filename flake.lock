@@ -1115,11 +1115,11 @@
     "private": {
       "flake": false,
       "locked": {
-        "lastModified": 1694697343,
-        "narHash": "sha256-WBkvtL66aCEJmJaaL8aDg8EqIeRXWjxjgXHTbuB1U18=",
+        "lastModified": 1713960839,
+        "narHash": "sha256-exSokcstgcPr9CiXwNpukRaEFsVoLZ47WDeQjMe7JlY=",
         "ref": "refs/heads/main",
-        "rev": "333c5234e1405b4e714ae3411bc0d28d8d11625b",
-        "revCount": 4,
+        "rev": "351101782ee224f46599270b85e5739b59689199",
+        "revCount": 5,
         "type": "git",
         "url": "file:./private"
       },
