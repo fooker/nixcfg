@@ -2,18 +2,87 @@
 
 with lib;
 
+let
+  fetchFileFromZip = { url, hash, file }: pkgs.runCommandNoCCLocal "wallpaper"
+    {
+      src = pkgs.fetchzip {
+        inherit url hash;
+        stripRoot = false;
+      };
+
+      inherit file;
+    } ''
+    cp "$src/$file" "$out"
+  '';
+
+  wallpapers = {
+    black = pkgs.fetchurl {
+      url = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/A_black_image.jpg/1280px-A_black_image.jpg";
+      hash = "sha256-m5G/qK4LQUo0Y+UapX1l5DGHwE+1MiEBufY5hVz9RUA=";
+    };
+
+    orange-dots = pkgs.fetchurl {
+      url = "https://images.pexels.com/photos/949587/pexels-photo-949587.jpeg";
+      hash = "sha256-Cgl0EuLzivw4ZxemW7HNdigeffBZ2VNGf2O7vBMKWr8=";
+    };
+
+    space-nebula = pkgs.fetchurl {
+      url = "https://uhdwallpapers.org/download/carina-nebula_665898/3840x2160/";
+      hash = "sha256-nXRTclm/wUYifuAQ8uarYHkdUFtRWIXMvaMfLdidrog=";
+    };
+
+    cartoon-nature-night = fetchFileFromZip {
+      url = "https://files.vecteezy.com/system/protected/files/013/455/493/vecteezy_cartoon-nature-night-time-landscape-background_13455493_171.zip";
+      hash = "sha256-A7eQHIBNtu7iu/bXrkHl7jA8I4LenIQUsAm2QRTNgaY=";
+      file = "vecteezy_cartoon-nature-night-time-landscape-background_13455493.jpg";
+    };
+
+    blue-city = pkgs.fetchurl {
+      url = "https://images.hdqwalls.com/wallpapers/architecture-buildings-city-5k-bl.jpg";
+      hash = "sha256-8gn3e1e8yHLzOhgI6D2gBKsoE0AmuJ2aZdY7VvauTRs=";
+    };
+
+    graffiti = pkgs.fetchurl {
+      url = "https://images.hdqwalls.com/wallpapers/abstract-vandalism-shapes-alive-ol.jpg";
+      hash = "sha256-JDzC5aaAMCdcIOMSYDf5j8NW+1KPFgDEFySXf0Mqtt8=";
+    };
+
+    isometric = pkgs.fetchurl {
+      url = "https://images.hdqwalls.com/wallpapers/isometric-abstract-5k-hj.jpg";
+      hash = "sha256-pJI8Nm4hK51r9/5AiMUm9htTNfjqappWfjl6owWgDm4=";
+    };
+
+    pirate = pkgs.fetchurl {
+      url = "https://images.hdqwalls.com/wallpapers/pirate-flag-scifi-city-5k-97.jpg";
+      hash = "sha256-9w9ZMkFfEIIF6WJQn69tOkvUv1k978BGhVZbAS+EHGM=";
+    };
+
+    balloon = pkgs.fetchurl {
+      url = "https://w.wallhaven.cc/full/ne/wallhaven-nem99o.jpg";
+      hash = "sha256-lhAzd7HycNQ/B5UMiEz8rmE5XhtWcEYdk3t743MZzM8=";
+    };
+
+    rainbow = pkgs.fetchurl {
+      url = "https://w.wallhaven.cc/full/0j/wallhaven-0j8775.jpg";
+      hash = "sha256-+fHLfGic5iLZ9NcdiEf9/uWTg/v8SkmGjsZw2JqEMkM=";
+    };
+
+    tent = pkgs.fetchurl {
+      url = "https://w.wallhaven.cc/full/rr/wallhaven-rrgmvm.jpg";
+      hash = "sha256-h017SOIBDrYj+EIFNcp02jHNhoBDdIZX6V2jtGKGrqw=";
+    };
+  };
+
+in
 {
   imports = [
     inputs.stylix.homeManagerModules.stylix
   ];
 
   stylix = {
-    image = pkgs.fetchurl {
-      url = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/A_black_image.jpg/1280px-A_black_image.jpg";
-      hash = "sha256-m5G/qK4LQUo0Y+UapX1l5DGHwE+1MiEBufY5hVz9RUA=";
-    };
+    image = wallpapers.black;
 
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/eighties.yaml";
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/dracula.yaml";
     polarity = "dark";
 
     fonts = {
@@ -38,8 +107,13 @@ with lib;
       size = 10;
     };
 
+    opacity = {
+      terminal = 0.9;
+    };
+
     targets.swaylock.useImage = false;
     targets.waybar.enableRightBackColors = true;
+    targets.bemenu.enable = true;
   };
 
   wayland.windowManager.sway.config = {
