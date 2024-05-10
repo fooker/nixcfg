@@ -28,9 +28,7 @@
     plugins = {
       lightline.enable = true;
       gitgutter.enable = true;
-      #lint.enable = true;
       ledger.enable = true;
-      nix.enable = true;
       treesitter.enable = true;
     };
 
