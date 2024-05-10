@@ -71,6 +71,11 @@ let
       url = "https://w.wallhaven.cc/full/rr/wallhaven-rrgmvm.jpg";
       hash = "sha256-h017SOIBDrYj+EIFNcp02jHNhoBDdIZX6V2jtGKGrqw=";
     };
+
+    neon = pkgs.fetchurl {
+      url = "https://images.unsplash.com/photo-1567400358510-f027b3196d5b";
+      hash = "sha256-hmubQfagwBhVxcetmObWd7lYyqP/qPOIaybP3eCEk5I=";
+    };
   };
 
 in
