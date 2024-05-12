@@ -12,20 +12,44 @@
 
   boot.kernelModules = [ "kvm-intel" ];
 
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-label/nixos";
-      fsType = "ext4";
-    };
-    "/boot" = {
-      device = "/dev/disk/by-label/boot";
-      fsType = "vfat";
+  disko.devices = {
+    disk."main" = {
+      device = "/dev/disk/by-id/nvme-nvme.1e4b-4153424a3533343130333031383632-4163657220535344204e3530303020325442-00000001";
+      type = "disk";
+      imageSize = "30G";
+      content = {
+        type = "gpt";
+        partitions = {
+          ESP = {
+            type = "EF00";
+            size = "100M";
+            label = "boot";
+            content = {
+              type = "filesystem";
+              format = "vfat";
+              mountpoint = "/boot";
+            };
+          };
+          swap = {
+            size = "8G";
+            label = "swap";
+            content = {
+              type = "swap";
+            };
+          };
+          root = {
+            size = "100%";
+            label = "root";
+            content = {
+              type = "filesystem";
+              format = "ext4";
+              mountpoint = "/";
+            };
+          };
+        };
+      };
     };
   };
-
-  swapDevices = [{
-    label = "swap";
-  }];
 
   nixpkgs.config.packageOverrides = pkgs: {
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };

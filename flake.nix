@@ -21,7 +21,12 @@
     nixpkgs-raketensilo.follows = "nixpkgs-magnetico";
     nixpkgs-fliegerhorst.follows = "nixpkgs-magnetico";
 
-    nixpkgs-schilderhaus.follows = "nixpkgs-unstable";
+    disko = {
+      type = "github";
+      owner = "nix-community";
+      repo = "disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nixos-hardware = {
       type = "github";
@@ -223,8 +228,25 @@
     hydraJobs = {
       deployment = (colmena.lib.makeHive self.colmena).toplevel;
     };
+  } // (utils.lib.eachDefaultSystem (system: {
 
-    devShell = utils.lib.eachSystemMap utils.lib.allSystems (system:
+
+    apps.pxe-installer =
+      let
+        hive = colmena.lib.makeHive self.colmena;
+
+        installer = node: nixpkgs.legacyPackages.${system}.callPackage ./pxe-installer.nix {
+          inherit node;
+        };
+      in
+      builtins.mapAttrs
+        (_: node: {
+          type = "app";
+          program = toString (installer node);
+        })
+        hive.nodes;
+
+    devShell =
       let
         pkgs = nixpkgs.legacyPackages.${system};
 
@@ -277,6 +299,6 @@
           ${pre-commit-hooks.shellHook}
           ${sops-hooks.shellHook}
         '';
-      });
-  };
+      };
+  }));
 }

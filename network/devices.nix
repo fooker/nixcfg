@@ -30,7 +30,7 @@
     };
 
     "toiler" = {
-      type = "Intel NUC6i5SYB";
+      type = "GEEKOM Mini IT13";
       role = "Server";
       site = "home";
 

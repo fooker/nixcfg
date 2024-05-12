@@ -4,7 +4,7 @@
     ipam = true;
 
     interfaces = {
-      "int" = "b8:ae:ed:7d:69:ab";
+      "int" = "38:f7:cd:c6:49:9f";
     };
   };
 
