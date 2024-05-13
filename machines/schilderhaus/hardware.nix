@@ -3,55 +3,69 @@
 with lib;
 
 {
-  imports = [
-    #"${inputs.nixos-hardware}/raspberry-pi/4"
-  ];
-
   hardware.enableRedistributableFirmware = true;
+  hardware.cpu.intel.updateMicrocode = true;
 
-  boot.preset = "none";
-  boot.loader.grub.enable = false;
-  boot.loader.generic-extlinux-compatible.enable = true;
+  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usbhid" "usb_storage" "sd_mod" "sdhci_pci" ];
+  boot.initrd.kernelModules = [ "i915" ];
 
-  # hardware = {
-  #   raspberry-pi."4" = {
-  #     apply-overlays-dtmerge.enable = true;
-  #     fkms-3d.enable = true;
-  #     #audio.enable = true;
-  #   };
+  boot.kernelModules = [ "kvm-intel" ];
 
-  #   deviceTree = {
-  #     enable = true;
-  #     #filter = mkForce "*-rpi-4-*.dtb";
-  #   };
-  # };
+  disko.devices = {
+    disk."main" = {
+      device = "/dev/disk/by-id/nvme-eui.002538515b1648ed";
+      type = "disk";
+      imageSize = "30G";
+      content = {
+        type = "gpt";
+        partitions = {
+          ESP = {
+            type = "EF00";
+            size = "100M";
+            label = "boot";
+            content = {
+              type = "filesystem";
+              format = "vfat";
+              mountpoint = "/boot";
+            };
+          };
+          swap = {
+            size = "8G";
+            label = "swap";
+            content = {
+              type = "swap";
+            };
+          };
+          root = {
+            size = "100%";
+            label = "root";
+            content = {
+              type = "filesystem";
+              format = "ext4";
+              mountpoint = "/";
+            };
+          };
+        };
+      };
+    };
+  };
 
-  boot.kernelPackages = pkgs.linuxKernel.packages.linux_6_6;
-
-  boot.initrd.availableKernelModules = [
-    "usbhid"
-    "usb_storage"
-    "vc4"
-    "pcie_brcmstb" # required for the pcie bus to work
-    "reset-raspberrypi" # required for vl805 firmware to load
-  ];
+  nixpkgs.config.packageOverrides = pkgs: {
+    vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
+  };
 
   hardware.opengl = {
     enable = true;
-    extraPackages = [ ];
+    driSupport = true;
+    extraPackages = with pkgs; [
+      vaapiIntel
+      vaapiVdpau
+      libvdpau-va-gl
+      intel-media-driver
+    ];
   };
 
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-label/NIXOS_SD";
-      fsType = "ext4";
-      options = [ "noatime" ];
-    };
+  nix.settings.max-jobs = lib.mkDefault 4;
 
-    "/boot/firmware" = {
-      device = "/dev/disk/by-label/FIRMWARE";
-      fsType = "vfat";
-      options = [ "nofail" "noauto" ];
-    };
-  };
+  powerManagement.cpuFreqGovernor = "powersave";
 }

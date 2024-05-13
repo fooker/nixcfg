@@ -55,13 +55,13 @@
     };
 
     "schilderhaus" = {
-      type = "Raspberry Pi 4";
+      type = "Intel NUC Gen 8";
       role = "Multimedia";
       site = "home";
 
       interfaces = {
         "priv" = {
-          mac = "dc:a6:32:1d:d8:f8";
+          mac = "b8:ae:ed:7d:69:ab";
         };
       };
     };

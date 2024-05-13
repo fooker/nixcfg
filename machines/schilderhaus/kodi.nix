@@ -1,12 +1,19 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, inputs, ... }:
 
 with lib;
 
 let
   kodi-with-plugins = pkgs.kodi-wayland.passthru.withPackages (kodiPkgs: with kodiPkgs; [
+    # Content providers
     jellyfin
     netflix
     youtube
+
+    # Metadata
+    trakt
+
+    # Gaming
+    libretro
   ]);
 
 in
@@ -15,6 +22,7 @@ in
     isNormalUser = true;
     extraGroups = [
       "video"
+      "audio"
       "tty"
     ];
   };
@@ -31,11 +39,6 @@ in
         ''
           iifname int
           tcp dport 8080
-          accept
-        ''
-        ''
-          iifname int
-          udp dport 8080
           accept
         ''
       ];

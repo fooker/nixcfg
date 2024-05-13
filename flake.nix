@@ -21,6 +21,8 @@
     nixpkgs-raketensilo.follows = "nixpkgs-magnetico";
     nixpkgs-fliegerhorst.follows = "nixpkgs-magnetico";
 
+    nixpkgs-schilderhaus.follows = "nixpkgs-unstable";
+
     disko = {
       type = "github";
       owner = "nix-community";
