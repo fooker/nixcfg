@@ -4,9 +4,9 @@
     user = "root";
   };
 
-  tags = [ "prod" "magnetico" ];
+  tags = [ "prod" "bitmagnet" ];
 
   system = "x86_64-linux";
 
-  stateVersion = "21.05";
+  stateVersion = "23.11";
 }

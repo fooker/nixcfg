@@ -16,10 +16,10 @@
 
     nixpkgs-notebook.follows = "nixpkgs";
 
-    nixpkgs-magnetico.follows = "nixpkgs-unstable";
+    nixpkgs-bitmagnet.follows = "nixpkgs-unstable";
 
-    nixpkgs-raketensilo.follows = "nixpkgs-magnetico";
-    nixpkgs-fliegerhorst.follows = "nixpkgs-magnetico";
+    nixpkgs-raketensilo.follows = "nixpkgs-bitmagnet";
+    nixpkgs-fliegerhorst.follows = "nixpkgs-bitmagnet";
 
     nixpkgs-schilderhaus.follows = "nixpkgs-unstable";
 
@@ -78,17 +78,15 @@
       ref = "nixos-23.11";
     };
 
-    magnetico = {
-      type = "git";
-      url = "https://git.darmstadt.ccc.de/btdht/magnetico.nix.git";
-      ref = "main";
-      submodules = true;
-      flake = false;
+    bitmagnet = {
+      type = "github";
+      owner = "fooker";
+      repo = "bitmagnet.nix";
     };
 
-    magnetico-peers = {
+    bitmagnet-peers = {
       type = "git";
-      url = "git+ssh://git@git.darmstadt.ccc.de/btdht/peers.git";
+      url = "git+ssh://git@git.maglab.space/fooker/bitmagnet-peers.git";
       flake = false;
     };
 

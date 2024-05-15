@@ -2,8 +2,7 @@
   imports = [
     ./hardware.nix
     ./network.nix
-    ./magnetico.nix
-    ./dashboard.nix
+    ./bitmagnet.nix
   ];
 
   server.enable = true;

@@ -170,6 +170,37 @@
         "type": "github"
       }
     },
+    "bitmagnet": {
+      "locked": {
+        "dirtyRev": "b56397f3dbad9a07fb67abcd72b1d0f2411b6c71-dirty",
+        "dirtyShortRev": "b56397f-dirty",
+        "lastModified": 1715722222,
+        "narHash": "sha256-5U9c+pyHGFN5CJvhs0fXRrdzHRZjXCAaP35z8VjbbH8=",
+        "type": "git",
+        "url": "file:///home/fooker/devl/bitmagnet.nix"
+      },
+      "original": {
+        "owner": "fooker",
+        "repo": "bitmagnet.nix",
+        "type": "github"
+      }
+    },
+    "bitmagnet-peers": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1715721926,
+        "narHash": "sha256-mK1h8kwgkLIl/l+2Z7HiRVDgCwBt/o6o15nEBpl67I8=",
+        "ref": "refs/heads/main",
+        "rev": "13e4163772eb00075b62203035062a940aea4b2d",
+        "revCount": 1,
+        "type": "git",
+        "url": "file:///home/fooker/devl/bitmagnet.peers"
+      },
+      "original": {
+        "type": "git",
+        "url": "git+ssh://git@git.maglab.space/fooker/bitmagnet-peers.git"
+      }
+    },
     "blobs": {
       "flake": false,
       "locked": {
@@ -633,41 +664,6 @@
         "owner": "fooker",
         "repo": "ipinfo",
         "type": "github"
-      }
-    },
-    "magnetico": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1704288445,
-        "narHash": "sha256-uuBXChSmJBQQ6zyik97jGVhLvZSWtQ1fc4xqpjo8Gjc=",
-        "ref": "main",
-        "rev": "1cb113eeba691b7f1e2c011df397e0f238edebf5",
-        "revCount": 5,
-        "submodules": true,
-        "type": "git",
-        "url": "https://git.darmstadt.ccc.de/btdht/magnetico.nix.git"
-      },
-      "original": {
-        "ref": "main",
-        "submodules": true,
-        "type": "git",
-        "url": "https://git.darmstadt.ccc.de/btdht/magnetico.nix.git"
-      }
-    },
-    "magnetico-peers": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1686693886,
-        "narHash": "sha256-veaqNQArz5hQKXf3efOwhVej6WImenJV8u6Qd1fzhBM=",
-        "ref": "refs/heads/main",
-        "rev": "d6c648e07147a1b0f122c833e0c6d4cb6ffcb547",
-        "revCount": 11,
-        "type": "git",
-        "url": "git+ssh://git@git.darmstadt.ccc.de/btdht/peers.git"
-      },
-      "original": {
-        "type": "git",
-        "url": "git+ssh://git@git.darmstadt.ccc.de/btdht/peers.git"
       }
     },
     "mmv": {
@@ -1166,6 +1162,8 @@
     },
     "root": {
       "inputs": {
+        "bitmagnet": "bitmagnet",
+        "bitmagnet-peers": "bitmagnet-peers",
         "blog": "blog",
         "c3sets-radio": "c3sets-radio",
         "colmena": "colmena",
@@ -1176,8 +1174,6 @@
         "home-manager": "home-manager",
         "ipam": "ipam",
         "ipinfo": "ipinfo",
-        "magnetico": "magnetico",
-        "magnetico-peers": "magnetico-peers",
         "mmv": "mmv",
         "netns-proxy": "netns-proxy",
         "nftables": "nftables",
@@ -1185,17 +1181,17 @@
         "nixos-hardware": "nixos-hardware",
         "nixos-mailserver": "nixos-mailserver",
         "nixpkgs": "nixpkgs_3",
-        "nixpkgs-fliegerhorst": [
-          "nixpkgs-magnetico"
-        ],
-        "nixpkgs-magnetico": [
+        "nixpkgs-bitmagnet": [
           "nixpkgs-unstable"
+        ],
+        "nixpkgs-fliegerhorst": [
+          "nixpkgs-bitmagnet"
         ],
         "nixpkgs-notebook": [
           "nixpkgs"
         ],
         "nixpkgs-raketensilo": [
-          "nixpkgs-magnetico"
+          "nixpkgs-bitmagnet"
         ],
         "nixpkgs-schilderhaus": [
           "nixpkgs-unstable"
