@@ -4,6 +4,7 @@
 , nftables
 , gather
 , sops
+, disko
 , private
 , ...
 }@inputs:
@@ -31,6 +32,7 @@ let
 
         machine.path
 
+        disko.nixosModules.disko
         sops.nixosModules.sops
         dns.nixosModules.default
         nftables.nixosModules.default
