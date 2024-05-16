@@ -35,9 +35,9 @@
   };
 
   services.postgresql = {
-    ensureDatabases = [ "forgejo" ];
+    ensureDatabases = [ "git" ];
     ensureUsers = [{
-      name = "forgejo";
+      name = "git";
       ensureDBOwnership = true;
     }];
   };
