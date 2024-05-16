@@ -17,6 +17,4 @@ with lib;
       path = "./repo";
     };
   };
-
-  backup.jobs."system".paths = [ "/etc" "/root" ];
 }
