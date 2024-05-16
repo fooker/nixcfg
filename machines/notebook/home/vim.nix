@@ -29,6 +29,7 @@
       lightline.enable = true;
       gitgutter.enable = true;
       ledger.enable = true;
+      nix.enable = true;
       treesitter.enable = true;
     };
 
