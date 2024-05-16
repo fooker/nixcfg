@@ -53,7 +53,7 @@ with lib;
         })
         (filterAttrs
           (name: node: any
-            (job: elem "default" job.targets)
+            (job: elem "default" (map (target: target.name) job.targets))
             (attrValues node.config.backup.jobs))
           nodes))
       private.backup.repos
