@@ -99,45 +99,6 @@
     };
   };
 
-  services.nginx = {
-    virtualHosts = {
-      "deploy" = {
-        serverName = "deploy.home.open-desk.net";
-        serverAliases = [ "deploy" ];
-        listen = [
-          { addr = toString device.interfaces.iot.address.ipv4.address; port = 80; }
-        ];
-        root = "/srv/http/deploy";
-      };
-    };
-  };
-
-  systemd.services.esper-heartbeat = {
-    after = [ "network.target" "mosquitto.service" ];
-    requires = [ "mosquitto.service" ];
-    description = "ESPer heartbeat";
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = ''${pkgs.mosquitto}/bin/mosquitto_pub \
-        -i 'esper-heartbeat' \
-        -h localhost \
-        -t 'frisch/home/esper/heartbeat' \
-        -n \
-      '';
-    };
-  };
-
-  systemd.timers.esper-heartbeat = {
-    wantedBy = [ "multi-user.target" ];
-    after = [ "network.target" "mosquitto.service" ];
-    requires = [ "mosquitto.service" ];
-    description = "ESPer heartbeat";
-    timerConfig = {
-      OnCalendar = "minutely";
-      Unit = "esper-heartbeat.service";
-    };
-  };
-
   environment.systemPackages = with pkgs; [ mosquitto ];
 
   firewall.rules = dag: with dag; {
