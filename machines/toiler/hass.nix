@@ -99,6 +99,33 @@
     };
   };
 
+  systemd.services.hasskey = {
+    enable = true;
+    wantedBy = [ "multi-user.target" ];
+    script =
+      let
+        inherit (inputs.hasskey.packages.${config.nixpkgs.system}) hasskey;
+        configFile = pkgs.writers.writeJSON "hasskey.config" {
+          home-assistant = {
+            url = "https://hass.home-open-desk.net/";
+            token.path = config.sops.secrets."hasskey/token".path;
+          };
+
+          devices = [
+            {
+              name = "zonk";
+              filter = {
+                ID_INPUT_KEYBOARD = "1";
+                ID_BUS = "bluetooth";
+                NAME = "ZONK Keyboard";
+              };
+            }
+          ];
+        };
+      in
+      "${hasskey}/bin/hasskey -v -v -v -v --config ${configFile}";
+  };
+
   environment.systemPackages = with pkgs; [ mosquitto ];
 
   firewall.rules = dag: with dag; {
@@ -123,4 +150,6 @@
     config.services.mosquitto.dataDir
     config.services.zigbee2mqtt.dataDir
   ];
+
+  sops.secrets."hasskey/token" = { };
 }

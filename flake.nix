@@ -138,6 +138,15 @@
       flake = false;
     };
 
+    hasskey = {
+      type = "github";
+      owner = "fooker";
+      repo = "hasskey";
+
+      inputs.flake-utils.follows = "utils";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     ipam = {
       type = "github";
       owner = "fooker";
