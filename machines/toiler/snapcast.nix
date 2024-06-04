@@ -8,7 +8,7 @@ with lib;
 
   services.snapserver = {
     enable = true;
-    codec = "flac";
+    codec = "pcm";
     tcp.enable = true;
     http = {
       enable = true;

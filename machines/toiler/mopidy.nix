@@ -1,5 +1,19 @@
 { pkgs, private, ... }:
 
+let
+  mopidy-musicbox-webclient-themed = pkgs.mopidy-musicbox-webclient.overrideAttrs (prev: {
+    postPatch = ''
+      for f in $(find mopidy_musicbox_webclient/static/ -type f -name '*.css'); do
+        sed -i \
+          -e "s|#2c3e50|#440071|gi" \
+          -e "s|#1abc9c|#b5007f|gi" \
+          -e "s|#16a085|#7d004f|gi" \
+          "$f"
+      done
+    '';
+  });
+in
+
 {
   services.mopidy = {
     enable = true;
@@ -7,7 +21,7 @@
       mopidy-mpd
       mopidy-local
       mopidy-somafm
-      mopidy-musicbox-webclient
+      mopidy-musicbox-webclient-themed
     ];
     configuration = ''
       [audio]
@@ -69,17 +83,19 @@
   };
 
   systemd.services.mopidy = {
-    after = [ "snapserver.service" ];
     unitConfig = {
       RequiresMountsFor = "/mnt/media";
     };
   };
 
+  systemd.tmpfiles.rules = [
+    "p+ /run/snapserver/mopidy 666 root root - -"
+  ];
+
   services.snapserver.streams = {
     "mopidy" = {
       type = "pipe";
       location = "/run/snapserver/mopidy";
-      codec = "pcm";
     };
   };
 

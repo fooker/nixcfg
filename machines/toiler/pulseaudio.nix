@@ -46,12 +46,14 @@ in
     };
   };
 
+  systemd.tmpfiles.rules = [
+    "p+ /run/snapserver/pulse 666 root root - -"
+  ];
+
   systemd.services.pulseaudio = {
     description = "PulseAudio System-Wide Server";
     wantedBy = [ "sound.target" ];
     before = [ "sound.target" ];
-    after = [ "snapserver.service" ];
-    requires = [ "snapserver.service" ];
     environment.PULSE_RUNTIME_PATH = "/run/pulse";
     environment.PULSE_LATENCY_MSEC = toString 60;
     serviceConfig = {
@@ -68,9 +70,6 @@ in
     "pulse" = {
       type = "pipe";
       location = "/run/snapserver/pulse";
-      query = {
-        mode = "create";
-      };
     };
   };
 
