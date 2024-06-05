@@ -30,6 +30,7 @@ in
 
     extraOptions = ''
       builders-use-substitutes = true
+      !include ${config.sops.secrets."nix/access-tokens".path}
     '';
 
     settings = {
@@ -41,6 +42,11 @@ in
     format = "binary";
     sopsFile = ./secrets/id_builder;
     group = "nixbld";
+  };
+
+  sops.secrets."nix/access-tokens" = {
+    format = "binary";
+    sopsFile = ./secrets/nix-access-tokens.conf;
   };
 
   gather.parts."builder/sshKey" = {
