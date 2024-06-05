@@ -146,5 +146,7 @@ in
         interfaces = "ext";
       })
       zones;
+
+    system.build.dns.zones = zones;
   };
 }
