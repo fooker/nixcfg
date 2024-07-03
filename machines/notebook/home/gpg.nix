@@ -1,9 +1,8 @@
-{
+{ pkgs, ... }: {
   services.gpg-agent = {
     enable = true;
 
-    #pinentryFlavor = "gtk2";
-    pinentryFlavor = "gnome3";
+    pinentryPackage = pkgs.pinentry-gnome3;
 
     enableSshSupport = true;
     enableScDaemon = false;

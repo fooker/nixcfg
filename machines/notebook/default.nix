@@ -51,7 +51,7 @@
 
   services.avahi = {
     enable = true;
-    nssmdns = true;
+    nssmdns4 = true;
   };
 
   programs.system-config-printer.enable = true;
@@ -67,32 +67,9 @@
 
   programs.light.enable = true;
 
-  xdg.portal = {
-    enable = true;
-
-    wlr.enable = true;
-    wlr.settings = {
-      screencast = {
-        max_fps = 30;
-
-        chooser_type = "simple";
-        chooser_cmd = "${pkgs.slurp}/bin/slurp -f %o -or";
-      };
-    };
-
-    config = {
-      common = {
-        default = "*";
-      };
-    };
-  };
-
   services.udev = {
     extraRules = ''
       SUBSYSTEM=="power_supply", ATTR{status}=="Discharging", ATTR{capacity}=="[0-5]", RUN+="${pkgs.systemd}/bin/systemctl hibernate"
-
-      # Training for keyboard
-      SUBSYSTEM=="usb", ATTR{idVendor}=="3297", GROUP="dialout"
 
       # Flash Support for Xiao M0
       ATTRS{idVendor}=="2886", ENV{ID_MM_DEVICE_IGNORE}="1"
@@ -163,4 +140,6 @@
   security.pam.services.login.nodelay = true;
   security.pam.services.swaylock.nodelay = true;
   security.pam.services.xscreensaver.nodelay = true;
+
+  environment.stub-ld.enable = false;
 }

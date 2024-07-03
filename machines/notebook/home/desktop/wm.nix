@@ -189,10 +189,21 @@ in
     };
   };
 
+  programs.bemenu.enable = true;
+
   home = {
     packages = with pkgs; [
       gnome3.adwaita-icon-theme
       swaynotificationcenter
     ];
+  };
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-wlr
+      xdg-desktop-portal-gtk
+    ];
+    config = { sway.default = [ "wlr" "gtk" ]; };
   };
 }

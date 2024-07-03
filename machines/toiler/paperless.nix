@@ -16,7 +16,6 @@ with lib;
 
   services.paperless = {
     enable = true;
-    package = pkgs.paperless-ngx;
 
     mediaDir = "/mnt/docs";
 

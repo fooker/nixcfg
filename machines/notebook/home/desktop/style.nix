@@ -85,9 +85,11 @@ in
   ];
 
   stylix = {
+    enable = true;
+
     image = wallpapers.black;
 
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/dracula.yaml";
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/tokyo-city-dark.yaml";
     polarity = "dark";
 
     fonts = {
@@ -117,7 +119,7 @@ in
     };
 
     targets.swaylock.useImage = false;
-    targets.waybar.enableRightBackColors = true;
+    targets.waybar.enable = false;
     targets.bemenu.enable = true;
   };
 

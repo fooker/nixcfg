@@ -10,13 +10,13 @@
 
 stdenv.mkDerivation rec {
   pname = "keydb";
-  version = "6.3.1";
+  version = "6.3.4";
 
   src = fetchFromGitHub {
     owner = "Snapchat";
     repo = "KeyDB";
     rev = "v${version}";
-    sha256 = "sha256-00Dx6GRAXVpJUXhu4kjsVCEsoN615vhGvc7+gViERqI=";
+    sha256 = "sha256-j6qgK6P3Fv+b6k9jwKQ5zW7XLkKbXXcmHKBCQYvwEIU=";
   };
 
   patches = [

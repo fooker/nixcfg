@@ -21,19 +21,19 @@
             status = "disable";
           }
           {
-            criteria = "Eizo Nanao Corporation EV2750 0x00007FE1";
+            criteria = "Eizo Nanao Corporation EV2750 0x045B2CE1";
             status = "enable";
             mode = "2560x1440@59.951";
             position = "0,0";
           }
           {
-            criteria = "Eizo Nanao Corporation EV2750 0x0000DF9D";
+            criteria = "Eizo Nanao Corporation EV2750 0x048B5C9D";
             status = "enable";
             mode = "2560x1440@59.951";
             position = "2560,0";
           }
           {
-            criteria = "Eizo Nanao Corporation EV2750 0x0000BD1A";
+            criteria = "Eizo Nanao Corporation EV2750 0x05299C1A";
             status = "enable";
             mode = "2560x1440@59.951";
             position = "5120,0";
@@ -48,7 +48,7 @@
             status = "disable";
           }
           {
-            criteria = "Eizo Nanao Corporation EV2750 0x00006BC4";
+            criteria = "Eizo Nanao Corporation EV2750 0x024329C4";
             status = "enable";
             mode = "2560x1440@59.951";
             position = "0,0";

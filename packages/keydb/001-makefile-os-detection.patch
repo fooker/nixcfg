@@ -1,8 +1,8 @@
 diff --git a/src/Makefile b/src/Makefile
-index d39806f80..ea2b481d7 100644
+index fc58b64f5..82fe1771c 100644
 --- a/src/Makefile
 +++ b/src/Makefile
-@@ -336,13 +336,6 @@ else
+@@ -354,14 +354,6 @@ else
      endef
  endif
  
@@ -10,6 +10,7 @@ index d39806f80..ea2b481d7 100644
 -OS := $(shell cat /etc/os-release | grep ID= | head -n 1 | cut -d'=' -f2)
 -ifeq ($(OS),alpine)
 -    FINAL_CXXFLAGS+=-DUNW_LOCAL_ONLY
+-	FINAL_CXXFLAGS+=-DALPINE
 -    FINAL_LIBS += -lunwind
 -endif
 -
