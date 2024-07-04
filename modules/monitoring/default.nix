@@ -43,9 +43,9 @@ with lib;
   };
 
   config = {
-    ipam.extends."device" = { name, ... }: {
-      options = {
-        monitoring = {
+    ipam.extends.device.monitoring = {
+      type = types.submodule ({ name, ... }: {
+        options = {
           id = mkOption {
             type = types.str;
             description = ''
@@ -55,12 +55,15 @@ with lib;
             default = name;
           };
         };
-      };
+      });
+      description = ''
+        Device specific monitoring settings.
+      '';
     };
 
-    ipam.extends."interface" = {
-      options = {
-        monitoring = {
+    ipam.extends.interface.monitoring = {
+      type = types.submodule {
+        options = {
           services = mkOption {
             type = types.listOf (types.coercedTo
               types.str
@@ -90,6 +93,9 @@ with lib;
           };
         };
       };
+      description = ''
+        Interface specific monitoring options.
+      '';
     };
   };
 }
