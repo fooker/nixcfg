@@ -4,6 +4,8 @@
   services.woodpecker-server = {
     enable = true;
 
+    package = pkgs.unstable.woodpecker-server;
+
     environment = {
       "WOODPECKER_HOST" = "https://ci.home.open-desk.net";
       "WOODPECKER_SERVER_ADDR" = "localhost:3030";
@@ -15,14 +17,14 @@
       "WOODPECKER_DATABASE_DATASOURCE" = "postgres:///woodpecker?host=/run/postgresql";
       "WOODPECKER_DATABASE_SECRET_FILE" = config.sops.secrets."woodpecker/database".path;
 
-      "WOODPECKER_GITEA" = "true";
-      "WOODPECKER_GITEA_SERVER" = "https://git.home.open-desk.net";
-      "WOODPECKER_GITEA_CLIENT_ID_FILE" = config.sops.secrets."woodpecker/forgejo/id".path;
-      "WOODPECKER_GITEA_CLIENT_SECRET_FILE" = config.sops.secrets."woodpecker/forgejo/secret".path;
+      "WOODPECKER_FORGEJO" = "true";
+      "WOODPECKER_FORGEJO_URL" = "https://git.home.open-desk.net";
+      "WOODPECKER_FORGEJO_CLIENT_FILE" = config.sops.secrets."woodpecker/forgejo/client".path;
+      "WOODPECKER_FORGEJO_SECRET_FILE" = config.sops.secrets."woodpecker/forgejo/secret".path;
 
       "WOODPECKER_BACKEND" = "local";
 
-      "WOODPECKER_RPC_SECRET_FILE" = config.sops.secrets."woodpecker/rpc".path;
+      "WOODPECKER_RPC_SECRET_FILE" = config.sops.secrets."woodpecker/rpc/secret".path;
     };
   };
 
@@ -48,7 +50,7 @@
   };
 
   sops.secrets."woodpecker/database" = { };
-  sops.secrets."woodpecker/forgejo/id" = { };
+  sops.secrets."woodpecker/forgejo/client" = { };
   sops.secrets."woodpecker/forgejo/secret" = { };
-  sops.secrets."woodpecker/rpc" = { };
+  sops.secrets."woodpecker/rpc/secret" = { };
 }
