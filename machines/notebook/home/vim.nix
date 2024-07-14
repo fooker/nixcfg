@@ -29,12 +29,21 @@
       lightline.enable = true;
       gitgutter.enable = true;
       ledger.enable = true;
-      nix.enable = true;
       treesitter.enable = true;
+      lsp-lines.enable = true;
+      lsp-format.enable = true;
+      lsp = {
+        enable = true;
+        servers = {
+          nil-ls.enable = true;
+          marksman.enable = true;
+          jsonls.enable = true;
+          yamlls.enable = true;
+        };
+      };
     };
 
     extraPlugins = with pkgs.vimPlugins; [
-      rust-vim
       ale
       vim-unimpaired
     ];
