@@ -1,3 +1,7 @@
+{ lib, ... }:
+
+with lib;
+
 {
   networking.networkmanager = {
     enable = true;
@@ -83,6 +87,13 @@
   };
 
   firewall.rules = dag: with dag; {
+    inet.filter.forward = {
+      bridge = before [ "drop" ] ''
+        iifname en
+        oifname en
+        accept
+      '';
+    };
     bridge.filter.forward = {
       accept = anywhere ''
         accept
