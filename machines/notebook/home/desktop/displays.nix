@@ -72,7 +72,7 @@
             scale = 1.4;
           }
           {
-            criteria = "LG Electronics W2442 0x0000279E";
+            criteria = "LG Electronics W2442 0x0005229E";
             status = "enable";
             mode = "1920x1080@59.934";
             position = "239,0";
