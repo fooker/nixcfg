@@ -47,6 +47,7 @@
         "dhcp" = {
           range = [ "172.23.200.160" "172.23.200.254" ];
           description = "DHCP clients";
+          dhcp.enable = true;
         };
       };
     };
@@ -137,6 +138,7 @@
         "dhcp" = {
           range = [ "192.168.254.128" "192.168.254.254" ];
           description = "DHCP clients";
+          dhcp.enable = true;
         };
       };
     };
@@ -159,6 +161,7 @@
         "dhcp" = {
           range = [ "203.0.113.16" "203.0.113.254" ];
           description = "DHCP clients";
+          dhcp.enable = true;
         };
       };
     };
@@ -189,7 +192,10 @@
           range = [ "192.168.0.16" "192.168.0.254" ];
           description = "DHCP clients";
 
-          dhcp.valid-lifetime = 31536000;
+          dhcp = {
+            enable = true;
+            valid-lifetime = 31536000;
+          };
         };
       };
     };

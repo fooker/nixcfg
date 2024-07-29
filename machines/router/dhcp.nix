@@ -7,7 +7,7 @@ let
   pools = concatMap
     (interface: concatMap
       (address: concatMap
-        (reservation: optional (address.address.version == 4 && reservation.dhcp != null) {
+        (reservation: optional (address.address.version == 4 && reservation.dhcp.enable) {
           inherit interface;
           inherit address;
 
@@ -108,6 +108,8 @@ in
   ipam.extends.reservation.dhcp = {
     type = types.nullOr (types.submodule ({ name, ... }: {
       options = {
+        enable = mkEnableOption "DHCP Pool";
+
         valid-lifetime = mkOption {
           type = types.nullOr types.ints.positive;
           description = ''
@@ -120,6 +122,6 @@ in
     description = ''
       DHCP reservations
     '';
-    default = null;
+    default = { };
   };
 }
