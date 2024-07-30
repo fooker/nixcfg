@@ -1,4 +1,6 @@
-{ config, pkgs, lib, inputs, device, private, ... }:
+{ config, pkgs, lib, inputs, device, network, private, ... }:
+
+with lib;
 
 {
   services.mosquitto = {
@@ -96,6 +98,13 @@
     "zigbee" = {
       domains = [ "zigbee.home.open-desk.net" ];
       target = "http://[::1]:8034";
+    };
+
+    # Reverse proxy prusa MK4 web interface to add SSL
+    # This is required to embed the web interface in hass with SSL enforcment in iframes
+    "prusa" = {
+      domains = [ "prusa.home.open-desk.net" ];
+      target = "http://${(head network.devices.prusa.effectiveAddresses).address}";
     };
   };
 
