@@ -10,6 +10,7 @@
     ./upnp.nix
     ./ddclient.nix
     ./peering.nix
+    ./phone.nix
   ];
 
   serial.enable = true;

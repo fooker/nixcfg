@@ -163,13 +163,15 @@
     };
 
     "phone" = {
-      type = "Cisco SPA112";
+      type = "Snom D713";
       role = "SIP";
       site = "home";
 
       interfaces = {
         "mngt" = {
-          mac = "00:e1:6d:b8:3c:53";
+          mac = "00:04:13:80:c3:10";
+
+          dhcp."tftp-server-name" = "https://snom.home.open-desk.net";
 
           monitoring.services = [ "ICMP" "SNMP" ];
         };

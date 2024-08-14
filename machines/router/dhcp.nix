@@ -84,6 +84,11 @@ in
               (address: optional (address.interface.mac != null) {
                 "hw-address" = address.interface.mac;
                 "ip-address" = toString address.address;
+                "option-data" = mapAttrsToList
+                  (name: data: {
+                    inherit name data;
+                  })
+                  address.interface.dhcp;
               })
               (attrValues pool.address.prefix.addresses);
           } // (optionalAttrs (pool.config.valid-lifetime != null) {
@@ -121,6 +126,14 @@ in
     }));
     description = ''
       DHCP reservations
+    '';
+    default = { };
+  };
+
+  ipam.extends.interface.dhcp = {
+    type = types.attrs;
+    description = ''
+      Interface specific DHCP option data
     '';
     default = { };
   };

@@ -16,7 +16,7 @@ in
 {
   options = {
     ipam.extends = mkOption {
-      type = types.attrsOf types.raw;
+      type = types.attrsOf (types.attrsOf types.raw);
       description = ''
         Extension modules for IPAM declarations.
       '';
