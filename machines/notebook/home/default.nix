@@ -68,7 +68,6 @@ with lib;
     zoom-us
 
     # Remote Desktop
-    unstable.parsec-bin
     moonlight-qt
     remmina
 
