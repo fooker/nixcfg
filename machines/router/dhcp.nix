@@ -109,32 +109,4 @@ in
       '';
     };
   };
-
-  ipam.extends.reservation.dhcp = {
-    type = types.nullOr (types.submodule ({ name, ... }: {
-      options = {
-        enable = mkEnableOption "DHCP Pool";
-
-        valid-lifetime = mkOption {
-          type = types.nullOr types.ints.positive;
-          description = ''
-            The lifetime of a DHCP lease.
-          '';
-          default = null;
-        };
-      };
-    }));
-    description = ''
-      DHCP reservations
-    '';
-    default = { };
-  };
-
-  ipam.extends.interface.dhcp = {
-    type = types.attrs;
-    description = ''
-      Interface specific DHCP option data
-    '';
-    default = { };
-  };
 }
