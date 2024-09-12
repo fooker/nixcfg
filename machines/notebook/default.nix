@@ -75,6 +75,18 @@
       ATTRS{idVendor}=="2886", ENV{ID_MM_DEVICE_IGNORE}="1"
       SUBSYSTEM=="usb", ATTRS{idVendor}=="2886", MODE="0666"
       SUBSYSTEM=="tty", ATTRS{idVendor}=="2886", MODE="0666"
+
+      # hidraw interface: Bluetooth (=0005), PS Move Motion Controller (=054c:03d5)
+      SUBSYSTEM=="hidraw", KERNELS=="0005:054C:03D5.*", MODE="0666"
+
+      # hidraw interface: USB (=0003), PS Move Motion Controller (=054c:03d5)
+      SUBSYSTEM=="hidraw", KERNELS=="0003:054C:03D5.*", MODE="0666"
+
+      # hidraw interface: Bluetooth (=0005), PS4 Move Motion Controller, CECH-ZCM2 (=054c:0c5e)
+      SUBSYSTEM=="hidraw", KERNELS=="0005:054C:0C5E.*", MODE="0666"
+
+      # hidraw interface: USB (=0003), PS4 Move Motion Controller, CECH-ZCM2 (=054c:0c5e)
+      SUBSYSTEM=="hidraw", KERNELS=="0003:054C:0C5E.*", MODE="0666"
     '';
   };
 
