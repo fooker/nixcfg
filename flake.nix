@@ -27,6 +27,7 @@
       type = "github";
       owner = "nix-community";
       repo = "disko";
+
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -76,6 +77,8 @@
       type = "git";
       url = "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver.git";
       ref = "nixos-24.05";
+
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     bitmagnet = {
@@ -151,12 +154,15 @@
       type = "github";
       owner = "fooker";
       repo = "ipam.nix";
+
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     dns = {
       type = "github";
       owner = "fooker";
       repo = "dns.nix";
+
       inputs.ipam.follows = "ipam";
     };
 
