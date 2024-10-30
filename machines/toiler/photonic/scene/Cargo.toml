@@ -1,0 +1,19 @@
+[package]
+name = "photonic"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+photonic = { git = "https://github.com/fooker/photonic.git" }
+photonic-effects = { git = "https://github.com/fooker/photonic.git" }
+photonic-audio = { git = "https://github.com/fooker/photonic.git" }
+photonic-output-net = { git = "https://github.com/fooker/photonic.git" }
+photonic-interface-cli = { git = "https://github.com/fooker/photonic.git" }
+photonic-interface-mqtt = { git = "https://github.com/fooker/photonic.git" }
+photonic-interface-restore = { git = "https://github.com/fooker/photonic.git" }
+
+anyhow = "1"
+tokio = "1"
+
+noise = "*"
+

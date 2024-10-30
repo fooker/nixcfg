@@ -98,6 +98,6 @@ with lib;
 
       io.adacta = zone;
 
-      jetzt.ak36 = zone;
+      live.photonic = zone;
     };
 }

@@ -1,0 +1,4 @@
+/target
+
+# nixago: ignore-linked-files
+/.sops.yaml
