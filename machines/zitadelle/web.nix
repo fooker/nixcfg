@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, ... }:
+{ lib, pkgs, inputs, ... }:
 
 with lib;
 
@@ -14,32 +14,6 @@ let
       root = pkgs.callPackage inputs.blog { };
     };
 
-    "schoen-und-gut" =
-      let
-        php = pkgs.php.buildEnv { };
-        site = pkgs.applyPatches {
-          name = "schoen-und-gut-patched";
-          src = inputs.schoen-und-gut;
-          postPatch = ''
-            sed -i '1s;^;#!${ php }/bin/php-cgi\n;' ./mail.php
-          '';
-        };
-      in
-      {
-        domains = [ "schoen-und-gut.org" "www.schoen-und-gut.org" ];
-        root = site;
-
-        config = {
-          locations."/mail.php" = {
-            extraConfig = ''
-              include ${pkgs.nginx}/conf/fastcgi.conf;
-              include ${pkgs.nginx}/conf/fastcgi_params;
-
-              fastcgi_pass unix:${config.services.fcgiwrap.socketAddress};
-            '';
-          };
-        };
-      };
   };
 
 in
@@ -52,9 +26,4 @@ in
       config = app.config or { };
     })
     apps;
-
-  services.fcgiwrap = {
-    enable = true;
-    inherit (config.services.nginx) user;
-  };
 }
