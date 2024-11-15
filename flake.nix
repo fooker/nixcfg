@@ -190,6 +190,13 @@
       flake = false;
     };
 
+    sofastroemer = {
+      type = "github";
+      owner = "fooker";
+      repo = "sofastroemer";
+      flake = false;
+    };
+
     hass-solarman = {
       type = "github";
       owner = "StephanJoubert";

@@ -14,6 +14,10 @@ let
       root = pkgs.callPackage inputs.blog { };
     };
 
+    "sofastroemer" = {
+      domains = [ "sofa.open-desk.net" ];
+      root = pkgs.callPackage "${inputs.sofastroemer}/frontend" { };
+    };
   };
 
 in
