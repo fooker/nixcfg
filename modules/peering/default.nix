@@ -230,6 +230,8 @@ with lib;
                         default = null;
                         type = types.nullOr types.ints.unsigned;
                       };
+
+                      multiprotocol = mkEnableOption "multiprotocol BGP support";
                     };
                   });
                 };

@@ -19,6 +19,7 @@
         "dn42" = {
           bgp = {
             as = null;
+            multiprotocol = true;
           };
         };
       };

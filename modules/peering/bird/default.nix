@@ -44,16 +44,16 @@ let
       ipv4 table ${domain.name}_4;
       ipv6 table ${domain.name}_6;
 
-      function ${domain.name}_exported_v4() {
+      function ${domain.name}_exported_v4() -> bool {
         return net ~ [ ${concatMapStringsSep "," (export: "${toString export}+") domain.exports.ipv4} ];
       }
-      function ${domain.name}_filtered_v4() {
+      function ${domain.name}_filtered_v4() -> bool {
         return net ~ [ ${concatStringsSep ", " domain.filters.ipv4} ];
       }
-      function ${domain.name}_exported_v6() {
+      function ${domain.name}_exported_v6() -> bool {
         return net ~ [ ${concatMapStringsSep ", " (export: "${toString export}+") domain.exports.ipv6} ];
       }
-      function ${domain.name}_filtered_v6() {
+      function ${domain.name}_filtered_v6() -> bool {
         return net ~ [ ${concatStringsSep ", " domain.filters.ipv6} ];
       }
 
