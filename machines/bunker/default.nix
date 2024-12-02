@@ -5,6 +5,7 @@
     ./peering.nix
     ./dns/default.nix
     ./syncthing.nix
+    ./vaultwarden.nix
   ];
 
   server.enable = true;

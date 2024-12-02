@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 
 let
   path = "/home/fooker/docs/passwords";
@@ -29,8 +29,12 @@ in
     };
   };
 
-  programs.browserpass = {
+  programs.rbw = {
     enable = true;
-    browsers = [ "firefox" ];
+    settings = {
+      base_url = "https://vault.open-desk.net";
+      email = "fooker@lab.sh";
+      pinentry = pkgs.pinentry-gnome3;
+    };
   };
 }
