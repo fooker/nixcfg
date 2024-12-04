@@ -31,7 +31,7 @@ in
 
     settings.bind = "[::1]:5005";
 
-    signKeyPath = "/var/lib/harmonia/${cacheDomain}.secret";
+    signKeyPaths = [ "/var/lib/harmonia/${cacheDomain}.secret" ];
   };
 
   systemd.services.nix-cache-key = {

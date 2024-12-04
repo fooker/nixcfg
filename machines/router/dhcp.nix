@@ -45,10 +45,12 @@ in
           "name" = "/var/lib/kea/dhcp4.leases";
         };
 
-        "subnet4" = map
-          (pool: {
+        "subnet4" = imap1
+          (i: pool: {
             "subnet" = toString pool.address.prefix.prefix;
             "interface" = pool.interface.name;
+
+            "id" = i;
 
             "option-data" = [
               {

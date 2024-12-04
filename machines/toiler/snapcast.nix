@@ -1,9 +1,6 @@
-{ lib, pkgs, config, ... }:
-
-with lib;
+{ pkgs, config, ... }:
 
 {
-  sound.enable = true;
   security.rtkit.enable = true;
 
   services.snapserver = {

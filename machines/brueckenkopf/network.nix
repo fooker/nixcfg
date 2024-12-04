@@ -8,17 +8,20 @@
     networks = {
       "30-ext" = {
         networkConfig = {
-          IPForward = "yes";
+          IPv4Forwarding = "yes";
+          IPv6Forwarding = "yes";
         };
       };
       "30-int" = {
         networkConfig = {
-          IPForward = "yes";
+          IPv4Forwarding = "yes";
+          IPv6Forwarding = "yes";
         };
       };
       "30-lab" = {
         networkConfig = {
-          IPForward = "yes";
+          IPv4Forwarding = "yes";
+          IPv6Forwarding = "yes";
         };
       };
     };

@@ -104,12 +104,12 @@ in
         applications = 10;
         terminal = 10;
         desktop = 10;
-        popups = 9;
+        popups = 10;
       };
     };
 
     cursor = {
-      package = pkgs.gnome3.adwaita-icon-theme;
+      package = pkgs.adwaita-icon-theme;
       name = "Adwaita";
       size = 10;
     };

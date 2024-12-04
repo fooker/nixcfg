@@ -193,7 +193,7 @@ in
 
   home = {
     packages = with pkgs; [
-      gnome3.adwaita-icon-theme
+      adwaita-icon-theme
       swaynotificationcenter
     ];
   };

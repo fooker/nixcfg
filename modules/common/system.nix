@@ -3,7 +3,10 @@
 with lib;
 {
   programs = {
-    vim.defaultEditor = true;
+    vim = {
+      enable = true;
+      defaultEditor = true;
+    };
 
     tmux = {
       enable = true;

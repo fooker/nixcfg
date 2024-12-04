@@ -13,26 +13,49 @@
 
   services.samba = {
     enable = true;
-    securityType = "user";
-    shares = {
+    settings = {
+      "global" = {
+        "security" = "user";
+
+        "guest account" = "nobody";
+        "map to guest" = "bad user";
+
+        "server multi channel support" = true;
+
+        "deadtime" = 30;
+
+        "use sendfile" = true;
+
+        "aio read size" = 1;
+        "aio write size" = 1;
+
+        "load printers" = false;
+        "printcap name" = "/dev/null";
+
+        "valid users" = "@share, nobody";
+      };
+
       "downloads" = {
         "browseable" = "yes";
         "guest ok" = "yes";
         "path" = "/mnt/downloads";
         "read only" = true;
       };
+
       "media" = {
         "browseable" = "yes";
         "guest ok" = "yes";
         "path" = "/mnt/media";
         "read only" = true;
       };
+
       "scanner" = {
         "browseable" = "yes";
         "guest ok" = "yes";
         "path" = "/mnt/scanner";
         "read only" = false;
       };
+
       "docs" = {
         "browseable" = "no";
         "guest ok" = "no";
@@ -43,6 +66,7 @@
         "force user" = "share";
         "force group" = "share";
       };
+
       "vault" = {
         "browseable" = "no";
         "guest ok" = "no";
@@ -54,25 +78,6 @@
         "force group" = "share";
       };
     };
-
-    extraConfig = ''
-      guest account = nobody
-      map to guest = bad user
-
-      server multi channel support = yes
-      
-      deadtime = 30
-      
-      use sendfile = yes
-      
-      aio read size = 1
-      aio write size = 1
-
-      load printers = no
-      printcap name = /dev/null
-
-      valid users = @share, nobody
-    '';
   };
 
   services.rpcbind.enable = true;

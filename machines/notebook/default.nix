@@ -109,14 +109,6 @@
 
   systemd.packages = [ pkgs.blueman ];
 
-  sound = {
-    enable = true;
-    mediaKeys = {
-      enable = true;
-      volumeStep = "5%";
-    };
-  };
-
   environment.systemPackages = with pkgs; [
     intel-gpu-tools
     libva-utils

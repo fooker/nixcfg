@@ -11,7 +11,7 @@
     vimAlias = true;
     viAlias = true;
 
-    options = {
+    opts = {
       number = true;
 
       tabstop = 2;
@@ -35,7 +35,7 @@
       lsp = {
         enable = true;
         servers = {
-          nil-ls.enable = true;
+          nil_ls.enable = true;
           marksman.enable = true;
           jsonls.enable = true;
           yamlls.enable = true;

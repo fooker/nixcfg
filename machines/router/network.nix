@@ -93,7 +93,8 @@ in
           IPv6AcceptRA = true;
           DHCP = "ipv6";
 
-          IPForward = "yes";
+          IPv4Forwarding = "yes";
+          IPv6Forwarding = "yes";
 
           IPv6PrivacyExtensions = "kernel";
           IPv6DuplicateAddressDetection = 1;
@@ -162,7 +163,8 @@ in
               "${name}.home.open-desk.net"
             ];
 
-            IPForward = "yes";
+            IPv4Forwarding = "yes";
+            IPv6Forwarding = "yes";
           };
 
           ipv6Prefixes = optional (hasAttr "ipv6" config) {

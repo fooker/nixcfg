@@ -99,14 +99,12 @@ with lib;
 
             routes = map
               (route: {
-                routeConfig = {
-                  "Destination" = route.destination;
-                } // (if (route.gateway != null) then {
-                  "Gateway" = route.gateway;
-                } else {
-                  "Scope" = "link";
-                });
-              })
+                "Destination" = route.destination;
+              } // (if (route.gateway != null) then {
+                "Gateway" = route.gateway;
+              } else {
+                "Scope" = "link";
+              }))
               (filter # Filter extra routes that are already directly attached via any other interface
                 (route: !(any
                   (address: ip.network.equals

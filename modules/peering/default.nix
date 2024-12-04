@@ -277,12 +277,10 @@ with lib;
             PrivateKeyFile = "/var/lib/peering/keys/${peer.name}";
           };
           wireguardPeers = [{
-            wireguardPeerConfig = {
-              Endpoint = mkIf (peer.remote.endpoint != null) "${peer.remote.endpoint.host}:${toString peer.remote.endpoint.port}";
-              AllowedIPs = "0.0.0.0/0, ::/0";
-              PublicKey = "${peer.remote.pubkey}";
-              PersistentKeepalive = 25;
-            };
+            Endpoint = mkIf (peer.remote.endpoint != null) "${peer.remote.endpoint.host}:${toString peer.remote.endpoint.port}";
+            AllowedIPs = "0.0.0.0/0, ::/0";
+            PublicKey = "${peer.remote.pubkey}";
+            PersistentKeepalive = 25;
           }];
         };
 
@@ -299,23 +297,20 @@ with lib;
             LinkLocalAddressing = "no";
             IPv6AcceptRA = false;
 
-            IPForward = "yes";
+            IPv4Forwarding = "yes";
+            IPv6Forwarding = "yes";
           };
           addresses =
             (optional (peer.transfer.ipv4 != null) {
-              addressConfig = {
-                Address = "${toString peer.transfer.ipv4.addr}/32";
-                Peer = "${toString peer.transfer.ipv4.peer}/32";
-                Scope = "link";
-              };
+              Address = "${toString peer.transfer.ipv4.addr}/32";
+              Peer = "${toString peer.transfer.ipv4.peer}/32";
+              Scope = "link";
             })
             ++
             (optional (peer.transfer.ipv6 != null) {
-              addressConfig = {
-                Address = "${toString peer.transfer.ipv6.addr}/128";
-                Peer = "${toString peer.transfer.ipv6.peer}/128";
-                Scope = "link";
-              };
+              Address = "${toString peer.transfer.ipv6.addr}/128";
+              Peer = "${toString peer.transfer.ipv6.peer}/128";
+              Scope = "link";
             });
         };
       };
@@ -336,18 +331,15 @@ with lib;
           networkConfig = {
             Description = "Domain ${domain.name}";
 
-            IPForward = "yes";
+            IPv4Forwarding = "yes";
+            IPv6Forwarding = "yes";
           };
           addresses = [
             {
-              addressConfig = {
-                Address = "${toString (ip.network.prefixNetwork domain.ipv4)}";
-              };
+              Address = "${toString (ip.network.prefixNetwork domain.ipv4)}";
             }
             {
-              addressConfig = {
-                Address = "${toString (ip.network.prefixNetwork domain.ipv6)}";
-              };
+              Address = "${toString (ip.network.prefixNetwork domain.ipv6)}";
             }
           ];
         };

@@ -76,17 +76,17 @@ in
       RemainAfterExit = true;
 
       ExecStartPre = [
-        "-${ pkgs.iproute }/bin/ip netns delete deluge"
+        "-${ pkgs.iproute2 }/bin/ip netns delete deluge"
       ];
 
       ExecStart = [
-        "${ pkgs.iproute }/bin/ip netns add deluge"
+        "${ pkgs.iproute2 }/bin/ip netns add deluge"
 
-        "${ pkgs.iproute }/bin/ip -n deluge link set lo up"
+        "${ pkgs.iproute2 }/bin/ip -n deluge link set lo up"
       ];
 
       ExecStop = [
-        "${ pkgs.iproute }/bin/ip netns delete deluge"
+        "${ pkgs.iproute2 }/bin/ip netns delete deluge"
       ];
     };
   };
@@ -101,26 +101,26 @@ in
       RemainAfterExit = true;
 
       ExecStartPre = [
-        "-${ pkgs.iproute }/bin/ip -n deluge link delete dev deluge"
+        "-${ pkgs.iproute2 }/bin/ip -n deluge link delete dev deluge"
       ];
 
       ExecStart = [
         "${ pkgs.kmod }/bin/modprobe wireguard"
 
-        "${ pkgs.iproute }/bin/ip link add dev deluge type wireguard"
-        "${ pkgs.iproute }/bin/ip link set dev deluge netns deluge"
+        "${ pkgs.iproute2 }/bin/ip link add dev deluge type wireguard"
+        "${ pkgs.iproute2 }/bin/ip link set dev deluge netns deluge"
 
-        "${ pkgs.iproute }/bin/ip -n deluge link set dev deluge up"
-        "${ pkgs.iproute }/bin/ip -n deluge addr add dev deluge ${private.deluge.wg.address.ipv4}"
-        "${ pkgs.iproute }/bin/ip -n deluge addr add dev deluge ${private.deluge.wg.address.ipv6}"
-        "${ pkgs.iproute }/bin/ip -n deluge route replace 0.0.0.0/0 dev deluge table main"
-        "${ pkgs.iproute }/bin/ip -n deluge route replace ::0/0 dev deluge table main"
+        "${ pkgs.iproute2 }/bin/ip -n deluge link set dev deluge up"
+        "${ pkgs.iproute2 }/bin/ip -n deluge addr add dev deluge ${private.deluge.wg.address.ipv4}"
+        "${ pkgs.iproute2 }/bin/ip -n deluge addr add dev deluge ${private.deluge.wg.address.ipv6}"
+        "${ pkgs.iproute2 }/bin/ip -n deluge route replace 0.0.0.0/0 dev deluge table main"
+        "${ pkgs.iproute2 }/bin/ip -n deluge route replace ::0/0 dev deluge table main"
 
-        "${ pkgs.iproute }/bin/ip netns exec deluge ${ pkgs.wireguard-tools }/bin/wg setconf deluge ${config.sops.secrets."deluge/wg/config".path}"
+        "${ pkgs.iproute2 }/bin/ip netns exec deluge ${ pkgs.wireguard-tools }/bin/wg setconf deluge ${config.sops.secrets."deluge/wg/config".path}"
       ];
 
       ExecStop = [
-        "${ pkgs.iproute }/bin/ip -n deluge link delete dev deluge"
+        "${ pkgs.iproute2 }/bin/ip -n deluge link delete dev deluge"
       ];
     };
 
@@ -150,7 +150,6 @@ in
       unzip
       xz
       gnutar
-      lzma
       bzip2
     ];
 
@@ -161,18 +160,22 @@ in
 
   services.radarr = {
     enable = true;
+    package = pkgs.unstable.radarr;
   };
 
   services.sonarr = {
     enable = true;
+    package = pkgs.unstable.sonarr;
   };
 
   services.lidarr = {
     enable = true;
+    package = pkgs.unstable.lidarr;
   };
 
   services.jackett = {
     enable = true;
+    package = pkgs.unstable.jackett;
   };
 
   users.users."deluge".extraGroups = [ "share" ];

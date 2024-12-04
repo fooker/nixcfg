@@ -30,7 +30,6 @@
 
   hardware.opengl = {
     enable = true;
-    driSupport32Bit = true;
 
     extraPackages = with pkgs; [
       intel-media-driver
@@ -55,11 +54,6 @@
 
     settings.General.Experimental = true;
     settings.General.Testing = true;
-  };
-
-  sound = {
-    enable = true;
-    mediaKeys.enable = true;
   };
 
   hardware.pulseaudio.enable = false;
