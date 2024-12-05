@@ -11,7 +11,7 @@ with lib;
         enable = true;
         autostart = true;
 
-        config = with secrets.ppp.uplink; ''
+        config = ''
           plugin pppoe.so dsl
           
           linkname uplink

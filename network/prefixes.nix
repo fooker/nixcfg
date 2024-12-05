@@ -29,7 +29,7 @@
           interface = "priv";
         };
         "172.23.200.135" = {
-          device = "photonic";
+          device = "win10";
           interface = "priv";
         };
 

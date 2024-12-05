@@ -298,6 +298,12 @@
       type = "Virtual Server";
       role = "Server";
       site = "hs";
+
+      interfaces = {
+        "priv" = {
+          mac = "52:54:00:06:57:9b";
+        };
+      };
     };
 
     "builder-intel" = {

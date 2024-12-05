@@ -9,6 +9,8 @@
       deviceId = 129;
 
       netdev = "priv";
+
+      extraPeers = [ "brueckenkopf" ];
     };
   };
 }

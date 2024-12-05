@@ -46,6 +46,21 @@ in
           LACPTransmitRate = "fast";
         };
       };
+
+      "45-priv-vx" = {
+        netdevConfig = {
+          Name = "priv-vx";
+          Kind = "vxlan";
+        };
+
+        vxlanConfig = {
+          VNI = 4789;
+          Remote = "172.23.200.34";
+          Local = "172.23.200.129";
+          DestinationPort = 4789;
+          Independent = true;
+        };
+      };
     };
 
     networks = {
@@ -110,6 +125,11 @@ in
 
           PrefixDelegationHint = "::/56";
         };
+      };
+
+      "45-priv-vx" = {
+        name = "priv-vx";
+        bridge = [ "priv" ];
       };
     };
   }] ++ (mapAttrsToList
@@ -237,6 +257,12 @@ in
         uplink-dhcpv6 = between [ "established" ] [ "drop" ] ''
           udp sport dhcpv6-server
           udp dport dhcpv6-client
+          accept
+        '';
+
+        priv-vx = between [ "established" ] [ "drop" ] ''
+          ip saddr 172.23.200.34
+          udp dport 4789
           accept
         '';
       };

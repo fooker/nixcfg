@@ -21,6 +21,9 @@ in
 
           advertise = true;
 
+          max_interval = "10s";
+          default_lifetime = "30s";
+
           managed = false;
           other_config = false;
 

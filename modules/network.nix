@@ -50,6 +50,13 @@ with lib;
     systemd.network = {
       enable = true;
 
+      config = {
+        networkConfig = {
+          IPv4Forwarding = true;
+          IPv6Forwarding = true;
+        };
+      };
+
       links = mapAttrs'
         (name: config: nameValuePair "00-${name}" {
           matchConfig = {
