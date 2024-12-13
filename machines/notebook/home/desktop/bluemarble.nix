@@ -10,7 +10,7 @@ let
     
     ${pkgs.curl}/bin/curl -sLf '${url}' \
     | ${pkgs.imagemagick}/bin/magick jpg:- \
-      -crop 0x0+0-80 \
+      -crop 0x0+0-580 \
       -resize 2880x1800 \
       -gravity center \
       -background black \
