@@ -68,12 +68,12 @@
     },
     "bitmagnet": {
       "locked": {
-        "dirtyRev": "aa6008ddf0319b36ecbe7f4f5a68d1661c0faabf-dirty",
-        "dirtyShortRev": "aa6008d-dirty",
-        "lastModified": 1715768752,
+        "lastModified": 1734089986,
         "narHash": "sha256-Go9SQMLqFkiYA7PgJdnN5RhSjKQTC5KXNZmP1g0O+TU=",
-        "type": "git",
-        "url": "file:///home/fooker/devl/bitmagnet.nix"
+        "owner": "fooker",
+        "repo": "bitmagnet.nix",
+        "rev": "8f75c2ea191af9304ea2319c2e7241280651b3f2",
+        "type": "github"
       },
       "original": {
         "owner": "fooker",
