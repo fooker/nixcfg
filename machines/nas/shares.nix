@@ -33,6 +33,8 @@
         "printcap name" = "/dev/null";
 
         "valid users" = "@share, nobody";
+
+        "mangled names" = false;
       };
 
       "downloads" = {
