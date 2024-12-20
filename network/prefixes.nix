@@ -80,10 +80,6 @@
           device = "amp";
           interface = "priv";
         };
-        "fd79:300d:6056:100::6" = {
-          device = "photonic";
-          interface = "priv";
-        };
 
         "fd79:300d:6056:100::1F" = {
           device = "printer";

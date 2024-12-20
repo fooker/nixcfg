@@ -80,18 +80,6 @@
       };
     };
 
-    "photonic" = {
-      type = "Raspberry Pi 3 Model B+";
-      role = "Home Automation";
-      site = "home";
-
-      interfaces = {
-        "priv" = {
-          mac = "b8:27:eb:3e:05:3c";
-        };
-      };
-    };
-
     "printer" = {
       type = "HP Color LaserJet MFP M281fdw";
       role = "2D-Printer";
