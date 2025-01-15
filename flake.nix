@@ -127,7 +127,9 @@
       type = "github";
       owner = "fooker";
       repo = "photonic";
-      flake = false;
+
+      inputs.flake-utils.follows = "utils";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     padwatch = {

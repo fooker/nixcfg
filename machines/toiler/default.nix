@@ -13,6 +13,7 @@
     ./scanner.nix
     ./paperless.nix
     ./hass.nix
+    ./photonic
   ];
 
   server.enable = true;

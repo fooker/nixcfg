@@ -1,6 +1,8 @@
+use std::env::var_os;
+use std::path::PathBuf;
 use std::time::Duration;
 
-use anyhow::Result;
+use anyhow::{Context, Result};
 use photonic::color::palette::{Hsl, IntoColor, Srgb, rgb::Rgb, FromColor};
 
 use photonic::{Scene, WithWhite, Rgbw, node::map::Map};
@@ -70,10 +72,11 @@ async fn main() -> Result<()> {
         target: "192.168.0.29:21324".parse()?,
     };
 
-    let mut scene = scene.run(brightness, output).await?;
+    let mut scene = scene.run(brightness, output).await
+        .context("Failed to build scene")?;
 
     let restore = photonic_interface_restore::Restore {
-        path: "/var/lib/photonic/state".into(),
+        path: PathBuf::from(var_os("STATE_DIRECTORY").expect("State directory missing")).join("state"),
         write_threshold: 5,
         write_timeout: Duration::from_secs(1),
     };
@@ -88,5 +91,6 @@ async fn main() -> Result<()> {
         .with_realm("frisch/home/photonic");
    scene.serve("MQTT", mqtt);
 
-   return Ok(scene.run(60).await?);
+   return Ok(scene.run(60).await
+       .context("Failed to run scene")?);
 }

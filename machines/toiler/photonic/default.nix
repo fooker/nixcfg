@@ -1,7 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 let
-  photonic-scene = pkgs.callPackage ./scene.nix { };
+  craneLib = inputs.photonic.craneLib.${pkgs.system};
+
+  photonic-scene = craneLib.callPackage ./scene.nix { };
 
 in
 {
@@ -11,7 +13,7 @@ in
     wantedBy = [ "multi-user.target" "network-online.target" ];
 
     serviceConfig = {
-      ExecStart = "${photonic-scene}/bin/photonic";
+      ExecStart = "${photonic-scene}/bin/photonic-scene";
 
       Restart = "always";
       RestartSec = 3;
