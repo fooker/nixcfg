@@ -59,7 +59,7 @@
       type = "github";
       owner = "danth";
       repo = "stylix";
-      ref = "master";
+      ref = "release-24.11";
 
       inputs.nixpkgs.follows = "nixpkgs-notebook";
       inputs.home-manager.follows = "home-manager";
@@ -229,7 +229,6 @@
       repo = "sops-nix";
 
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.nixpkgs-stable.follows = "nixpkgs";
     };
 
     colmena = {
@@ -248,17 +247,14 @@
 
   outputs = { self, nixpkgs, utils, colmena, ... }@inputs: {
     colmena = import ./deployment.nix inputs;
+    colmenaHive = colmena.lib.makeHive self.colmena;
 
-    hydraJobs = {
-      deployment = (colmena.lib.makeHive self.colmena).toplevel;
-    };
+    # hydraJobs = {
+    #   deployment = self.colmenaHive.toplevel;
+    # };
   } // (utils.lib.eachDefaultSystem (system: {
-
-
     apps.pxe-installer =
       let
-        hive = colmena.lib.makeHive self.colmena;
-
         installer = node: nixpkgs.legacyPackages.${system}.callPackage ./pxe-installer.nix {
           inherit node;
         };
@@ -268,9 +264,9 @@
           type = "app";
           program = toString (installer node);
         })
-        hive.nodes;
+        self.colmenaHive.nodes;
 
-    devShell =
+    devShells.default =
       let
         pkgs = nixpkgs.legacyPackages.${system};
 

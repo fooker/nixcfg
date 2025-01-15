@@ -16,6 +16,8 @@
     ./greet.nix
   ];
 
+  nix.package = pkgs.lix;
+
   networking.hostName = "r7-a7";
 
   i18n = {
