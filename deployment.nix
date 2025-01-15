@@ -65,6 +65,8 @@ let
               allowUnfree = true;
             };
           };
+
+          chaotic = inputs.chaotic.legacyPackages."${machine.system}";
         })
 
         # Let builders fetch sources directly instead of uploading

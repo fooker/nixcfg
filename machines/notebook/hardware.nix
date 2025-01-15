@@ -10,7 +10,7 @@
     #"acpi_osi=\"Windows 2015\""
   ];
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.chaotic.linuxPackages_cachyos;
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
@@ -26,6 +26,11 @@
 
   nixpkgs.config.packageOverrides = pkgs: {
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
+  };
+
+  services.scx = {
+    enable = true;
+    scheduler = "scx_bpfland";
   };
 
   hardware.opengl = {
