@@ -8,7 +8,7 @@ with lib;
       nameservers = [
         "ns.inwx.de."
         "ns2.inwx.de."
-        "ns3.inwx.de."
+        "ns3.inwx.eu."
       ];
 
       zone = {
