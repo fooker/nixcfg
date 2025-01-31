@@ -116,7 +116,7 @@ with lib;
         inherit (inputs.hasskey.packages.${config.nixpkgs.system}) hasskey;
         configFile = pkgs.writers.writeJSON "hasskey.config" {
           home-assistant = {
-            url = "https://hass.home-open-desk.net/";
+            url = "https://hass.home.open-desk.net/";
             token.path = config.sops.secrets."hasskey/token".path;
           };
 
@@ -127,6 +127,13 @@ with lib;
                 ID_INPUT_KEYBOARD = "1";
                 ID_BUS = "bluetooth";
                 NAME = "ZONK Keyboard";
+              };
+            }
+            {
+              name = "dumbpad";
+              filter = {
+                ID_INPUT_KEYBOARD = "1";
+                NAME = "imchipwood dumbpad Keyboard";
               };
             }
           ];
