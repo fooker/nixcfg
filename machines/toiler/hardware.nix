@@ -22,19 +22,12 @@
         partitions = {
           ESP = {
             type = "EF00";
-            size = "100M";
+            size = "1G";
             label = "boot";
             content = {
               type = "filesystem";
               format = "vfat";
               mountpoint = "/boot";
-            };
-          };
-          swap = {
-            size = "8G";
-            label = "swap";
-            content = {
-              type = "swap";
             };
           };
           root = {
