@@ -32,18 +32,6 @@ in
     trusted_proxies = "::1";
   };
 
-  media_player = [
-    {
-      platform = "snapcast";
-      host = "127.0.0.1";
-    }
-    {
-      platform = "mpd";
-      host = "127.0.0.1";
-      inherit (private.mpd) password;
-    }
-  ];
-
   input_boolean = {
     heater_automation = {
       name = "Enable heater automations";

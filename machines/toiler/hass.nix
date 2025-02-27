@@ -39,15 +39,19 @@ with lib;
       "mqtt"
       "esphome"
       "denonavr"
+      "apple_tv"
       "ipp"
       "mjpeg"
+      "mpd"
+      "snapcast"
       "spotify"
       "media_player"
       "vacuum"
-      "xiaomi_miio"
       "weather"
       "prusalink"
+      "upnp"
       "wled"
+      "zha"
     ];
 
     customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
