@@ -52,6 +52,7 @@ with lib;
 
     customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
       mini-media-player
+      valetudo-map-card
     ];
   };
 
