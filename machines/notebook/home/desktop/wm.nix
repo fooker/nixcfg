@@ -135,13 +135,15 @@ in
         "${modifier}+Return" = "exec ${pkgs.alacritty}/bin/alacritty";
         "${modifier}+Shift+Return" = "exec ${pkgs.alacritty}/bin/alacritty -e /run/wrappers/bin/sudo --shell";
 
-        "${modifier}+space" = "exec ${pkgs.bemenu}/bin/bemenu-run -i -l 10 -p 'Run:' -fn 'monospace'";
+        "${modifier}+Space" = "exec ${pkgs.bemenu}/bin/bemenu-run -i -l 10 -p 'Run:' -fn 'monospace'";
 
         "${modifier}+p" = "exec ${passmenu} -i -l 10 -p 'Password:' -fn 'monospace'";
         "${modifier}+Shift+p" = "exec ${passmenu} --type -i -l 10 -p 'Password:' -fn 'monospace'";
 
         "${modifier}+Shift+x" = "exec ${pkgs.systemd}/bin/loginctl lock-session";
         "${modifier}+Shift+l" = "exec ${pkgs.systemd}/bin/loginctl lock-session";
+
+        "${modifier}+Tab" = "exec ${pkgs.swaynotificationcenter}/bin/swaync-client -t";
 
         # Hot keys
         XF86MonBrightnessDown = "exec ${pkgs.light}/bin/light -U 10";
@@ -202,8 +204,16 @@ in
     enable = true;
     extraPortals = with pkgs; [
       xdg-desktop-portal-wlr
-      xdg-desktop-portal-gtk
     ];
-    config = { sway.default = [ "wlr" "gtk" ]; };
+    config = { sway.default = [ "wlr" ]; };
+  };
+
+  xdg.mime.enable = true;
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "x-scheme-handler/http" = "librewolf.desktop";
+      "x-scheme-handler/https" = "librewolf.desktop";
+    };
   };
 }
