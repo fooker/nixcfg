@@ -1,8 +1,12 @@
-{ pkgs, lib, inputs, ... }:
+{ pkgs, lib, ... }:
 
 with lib;
 
 {
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-25.9.0"
+  ];
+
   programs.home-manager.enable = true;
 
   services.blueman-applet.enable = true;
@@ -16,7 +20,7 @@ with lib;
 
   home.packages = with pkgs; [
     # Sound and media
-    pavucontrol
+    pwvucontrol
     ponymix
     playerctl
     spotify
@@ -61,11 +65,11 @@ with lib;
     # Comm
     tdesktop
     signal-desktop
-    element-desktop-wayland
+    element-desktop
+    fractal-next
     discord-ptb
     thunderbird
     mumble
-    zoom-us
 
     # Remote Desktop
     moonlight-qt
