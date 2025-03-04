@@ -4,13 +4,7 @@
   boot.kernelParams = [
     "quiet"
     "mitigations=off"
-
-    # See https://iam.tj/prototype/enhancements/Windows-acpi_osi.html
-    #"acpi_osi=!"
-    #"acpi_osi=\"Windows 2015\""
   ];
-
-  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
@@ -117,9 +111,25 @@
 
   services.hardware.bolt.enable = true;
 
-  powerManagement.cpuFreqGovernor = "powersave";
+  services.auto-cpufreq = {
+    enable = true;
+    settings = {
+      charger = {
+        governor = "performance";
+        energy_performance_preference = "performance";
+        platform_profile = "performance";
+        turbo = "auto";
+      };
 
-  services.tlp.enable = true;
+      battery = {
+        governor = "powersave";
+        energy_performance_preference = "power";
+        platform_profile = "low-power";
+        turbo = "auto";
+      };
+    };
+  };
+
   services.thinkfan = {
     enable = true;
   };
