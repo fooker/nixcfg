@@ -87,9 +87,10 @@ in
   stylix = {
     enable = true;
 
-    image = wallpapers.black;
+    image = config.lib.stylix.pixel "base00";
 
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/tokyo-city-dark.yaml";
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/tomorrow-night.yaml";
+
     polarity = "dark";
 
     fonts = {
@@ -115,12 +116,19 @@ in
     };
 
     opacity = {
-      terminal = 0.9;
+      terminal = 0.95;
     };
 
     targets.swaylock.useImage = false;
     targets.waybar.enable = false;
     targets.bemenu.enable = true;
+    targets.rofi.enable = true;
+    targets.nixvim = {
+      enable = true;
+      plugin = "base16-nvim";
+      transparentBackground.main = true;
+    };
+    targets.swaync.enable = true;
   };
 
   wayland.windowManager.sway.config = {
@@ -128,37 +136,37 @@ in
     colors = with config.lib.stylix.colors.withHashtag; mkForce {
       focused = rec {
         border = background;
-        background = base0A;
+        background = base0D;
         text = base00;
-        indicator = base0D;
+        indicator = base09;
         childBorder = border;
       };
       focusedInactive = rec{
         border = background;
         background = base05;
         text = base00;
-        indicator = base0B;
+        indicator = base0E;
         childBorder = border;
       };
       unfocused = rec {
         border = background;
         background = base03;
-        text = base05;
-        indicator = base0B;
+        text = base00;
+        indicator = base0E;
         childBorder = border;
       };
       urgent = rec {
         border = background;
         background = base09;
         text = base00;
-        indicator = base0B;
+        indicator = base0E;
         childBorder = border;
       };
       placeholder = rec {
         border = background;
         background = base01;
         text = base00;
-        indicator = base0B;
+        indicator = base0E;
         childBorder = border;
       };
     };
