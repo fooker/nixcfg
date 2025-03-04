@@ -23,6 +23,8 @@
       ignorecase = true;
 
       cursorline = true;
+
+      undofile = true;
     };
 
     plugins = {
@@ -32,6 +34,7 @@
       treesitter.enable = true;
       lsp-lines.enable = true;
       lsp-format.enable = true;
+      typst-vim.enable = true;
       lsp = {
         enable = true;
         servers = {
