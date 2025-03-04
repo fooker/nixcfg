@@ -1,5 +1,16 @@
 { pkgs, ... }:
 
+let
+  custom-ice = pkgs.writeShellScript "waybar-custom-ice" ''
+    if ! iw dev wlp0s20f3 link | grep 'SSID: WIFIonICE' > /dev/null; then
+      exit
+    fi
+
+    SPEED="$(${pkgs.curl}/bin/curl -s 'https://iceportal.de/api1/rs/status' -H 'Accept: application/json' | ${pkgs.jq}/bin/jq .speed)"
+
+    echo " 🚄 $SPEED km/h "
+  '';
+in
 {
   programs.waybar = {
     enable = true;
@@ -27,6 +38,7 @@
           "network#en"
           "battery"
           "tray"
+          "custom/ice"
           "clock"
         ];
 
@@ -106,6 +118,11 @@
         "tray" = {
           icon-size = 20;
           spacing = 5;
+        };
+
+        "custom/ice" = {
+          exec = custom-ice;
+          interval = 5;
         };
 
         "clock" = {
