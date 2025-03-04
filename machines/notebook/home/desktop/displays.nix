@@ -45,19 +45,22 @@
         outputs = [
           {
             criteria = "eDP-1";
-            status = "disable";
+            status = "enable";
+            mode = "2880x1800@60.001";
+            scale = 1.4;
+            position = "0,700";
           }
           {
-            criteria = "Eizo Nanao Corporation EV2750 0x024329C4";
+            criteria = "Philips Consumer Electronics Company PHL 240B7QPJ AU11913001819";
             status = "enable";
-            mode = "2560x1440@59.951";
-            position = "0,0";
+            mode = "1920x1200@59.950";
+            position = "2059,0";
           }
           {
-            criteria = "Philips Consumer Electronics Company PHL 272B7QPJ AU51919000301";
+            criteria = "Philips Consumer Electronics Company PHL 240B7QPJ AU11913002036";
             status = "enable";
-            mode = "2560x1440@59.951";
-            position = "2560,0";
+            mode = "1920x1200@59.950";
+            position = "3979,0";
           }
         ];
       };
