@@ -8,6 +8,7 @@
     ./style.nix
     ./terminal.nix
     ./wm.nix
+    ./rofi.nix
     ./bluemarble.nix
   ];
 }
