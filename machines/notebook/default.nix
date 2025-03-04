@@ -9,7 +9,7 @@
     ./docker.nix
     ./fonts.nix
     ./postgresql.nix
-    ./opennms.nix
+    ./work.nix
     ./peering.nix
     ./mounts.nix
     ./libvirt.nix
