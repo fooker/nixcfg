@@ -156,6 +156,41 @@ with lib;
         };
       };
 
+      "work" = {
+        address = "dustin.frisch@hlb.hs-fulda.de";
+
+        realName = "Dustin Frisch";
+
+        gpg = {
+          encryptByDefault = false;
+          signByDefault = true;
+          key = "3237CA7A1744B4DCE96B409FB4C3BF012D9B26BE";
+        };
+
+        imap = {
+          host = "imap.hs-fulda.de";
+          tls = {
+            enable = true;
+            useStartTls = true;
+          };
+        };
+
+        smtp = {
+          host = "smtp.hs-fulda.de";
+          tls = {
+            enable = true;
+            useStartTls = true;
+          };
+        };
+
+        userName = "fdhlb212";
+
+        thunderbird = {
+          enable = true;
+          profiles = [ "default" ];
+        };
+      };
+
       "opennms" = {
         address = "dustin@opennms.org";
         aliases = [ ];
