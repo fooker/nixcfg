@@ -56,8 +56,9 @@ with lib;
 
     # Development
     unstable.jetbrains.idea-ultimate
-    unstable.jetbrains.clion
-    unstable.jetbrains.goland
+    unstable.jetbrains.webstorm
+    # unstable.jetbrains.clion
+    # unstable.jetbrains.goland
     unstable.jetbrains.pycharm-professional
     unstable.jetbrains.rust-rover
     unstable.vscodium
