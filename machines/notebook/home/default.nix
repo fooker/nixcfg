@@ -3,6 +3,28 @@
 with lib;
 
 {
+  imports = [
+    ./bat.nix
+    ./firefox.nix
+    ./git.nix
+    ./gpg.nix
+    ./direnv.nix
+    ./mail.nix
+    ./nextcloud.nix
+    ./pass.nix
+    ./scripts.nix
+    ./skim.nix
+    ./sound.nix
+    ./ssh.nix
+    ./syncthing.nix
+    ./udiskie.nix
+    ./vim.nix
+    ./vorta.nix
+    ./zsh.nix
+
+    ./desktop
+  ];
+
   nixpkgs.config.permittedInsecurePackages = [
     "electron-25.9.0"
   ];
@@ -86,28 +108,6 @@ with lib;
     enable = true;
     components = [ "pkcs11" "secrets" "ssh" ];
   };
-
-  imports = [
-    ./bat.nix
-    ./firefox.nix
-    ./git.nix
-    ./gpg.nix
-    ./direnv.nix
-    ./mail.nix
-    ./nextcloud.nix
-    ./pass.nix
-    ./scripts.nix
-    ./skim.nix
-    ./sound.nix
-    ./ssh.nix
-    ./syncthing.nix
-    ./udiskie.nix
-    ./vim.nix
-    ./vorta.nix
-    ./zsh.nix
-
-    ./desktop
-  ];
 
   home.stateVersion = "21.03";
 }
