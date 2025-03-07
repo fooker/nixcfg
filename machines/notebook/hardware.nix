@@ -4,6 +4,10 @@
   boot.kernelParams = [
     "quiet"
     "mitigations=off"
+
+    # See https://iam.tj/prototype/enhancements/Windows-acpi_osi.html
+    "acpi_osi=!"
+    "acpi_osi=\"Linux\""
   ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "nvme" "usb_storage" "sd_mod" ];
