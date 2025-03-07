@@ -197,6 +197,7 @@ in
     packages = with pkgs; [
       adwaita-icon-theme
       swaynotificationcenter
+      wl-clipboard
     ];
   };
 

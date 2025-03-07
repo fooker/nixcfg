@@ -19,6 +19,7 @@
       expandtab = true;
 
       mouse = "a";
+      clipboard = "unnamed";
 
       ignorecase = true;
 
