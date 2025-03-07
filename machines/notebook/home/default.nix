@@ -95,7 +95,6 @@ with lib;
     ./mail.nix
     ./nextcloud.nix
     ./pass.nix
-    ./retro.nix
     ./scripts.nix
     ./skim.nix
     ./sound.nix
