@@ -212,9 +212,5 @@ in
   xdg.mime.enable = true;
   xdg.mimeApps = {
     enable = true;
-    defaultApplications = {
-      "x-scheme-handler/http" = "librewolf.desktop";
-      "x-scheme-handler/https" = "librewolf.desktop";
-    };
   };
 }
