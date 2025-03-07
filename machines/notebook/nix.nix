@@ -34,7 +34,7 @@ in
     '';
 
     settings = {
-      trusted-users = lib.mkOptionDefault [ "fooker" ];
+      trusted-users = [ "fooker" ];
     };
   };
 
