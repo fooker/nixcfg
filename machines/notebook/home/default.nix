@@ -11,6 +11,7 @@ with lib;
     ./direnv.nix
     ./mail.nix
     ./nextcloud.nix
+    ./nix.nix
     ./pass.nix
     ./scripts.nix
     ./skim.nix

@@ -18,6 +18,11 @@
 
     verbose = true;
 
+    sharedModules = [
+      inputs.sops.homeManagerModules.sops
+    ];
+
+
     users."fooker" = {
       imports = [
         ./home
