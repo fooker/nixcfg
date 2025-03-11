@@ -126,6 +126,9 @@ in
         # Close window
         "${modifier}+c" = "kill";
 
+        # Resize
+        "${modifier}+r" = "mode resize";
+
         # Reload and exit
         "${modifier}+w" = "reload";
         "${modifier}+Shift+w" = "restart";
@@ -152,6 +155,14 @@ in
         XF86AudioRaiseVolume = "exec ${pkgs.ponymix}/bin/ponymix increase 5";
         XF86AudioLowerVolume = "exec ${pkgs.ponymix}/bin/ponymix decrease 5";
         XF86AudioMute = "exec ${pkgs.ponymix}/bin/ponymix toggle";
+      };
+
+      modes.resize = {
+        "Left" = "resize shrink width 10 px";
+        "Down" = "resize grow height 10 px";
+        "Up" = "resize shrink height 10 px";
+        "Right" = "resize grow width 10 px";
+        "Return" = "mode default";
       };
 
       terminal = "${pkgs.alacritty}/bin/alacritty";
