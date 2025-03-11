@@ -11,15 +11,24 @@
     vimAlias = true;
     viAlias = true;
 
+    clipboard = {
+      register = "unnamedplus";
+      providers = {
+        wl-copy.enable = true;
+      };
+    };
+
     opts = {
       number = true;
 
       tabstop = 2;
       shiftwidth = 2;
       expandtab = true;
+      breakindent = true;
+
+      scrolloff = 5;
 
       mouse = "a";
-      clipboard = "unnamed";
 
       ignorecase = true;
 
@@ -39,12 +48,15 @@
       lsp = {
         enable = true;
         servers = {
-          nil_ls.enable = true;
+          #nil_ls.enable = true;
+          nixd.enable = true;
+          pylyzer.enable = true;
           marksman.enable = true;
           jsonls.enable = true;
           yamlls.enable = true;
         };
       };
+      nix.enable = true;
     };
 
     extraPlugins = with pkgs.vimPlugins; [
