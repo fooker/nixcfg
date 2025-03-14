@@ -48,15 +48,15 @@
       lsp = {
         enable = true;
         servers = {
-          #nil_ls.enable = true;
-          nixd.enable = true;
+          nil_ls.enable = true;
+          #nixd.enable = true;
           pylyzer.enable = true;
           marksman.enable = true;
           jsonls.enable = true;
           yamlls.enable = true;
         };
       };
-      nix.enable = true;
+      #nix.enable = true;
     };
 
     extraPlugins = with pkgs.vimPlugins; [
