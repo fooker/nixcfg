@@ -46,7 +46,7 @@ with lib;
       };
       "00-en-dock-work" = {
         matchConfig = {
-          MACAddress = "38:7c:76:1a:8a:79";
+          MACAddress = "8c:3b:4a:09:2e:38";
           Type = "ether";
         };
         linkConfig = {
