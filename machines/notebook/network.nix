@@ -11,8 +11,8 @@ with lib;
       "interface-name:virbr*"
       "interface-name:docker*"
       "interface-name:br-*"
-      "interface-name:en-port"
-      "interface-name:en-dock"
+      "interface-name:en-*"
+      "interface-name:en"
     ];
     dns = "systemd-resolved";
   };
