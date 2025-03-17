@@ -13,5 +13,9 @@
 
       extraPeers = [ "brueckenkopf" ];
     };
+
+    kernel.rejected.ipv4 = [
+      "10.0.0.0/8+"
+    ];
   };
 }

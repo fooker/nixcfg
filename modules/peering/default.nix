@@ -261,6 +261,21 @@ with lib;
         };
       }));
     };
+
+    kernel = {
+      rejected = {
+        ipv4 = mkOption {
+          description = "The IPv4 routes to *not* import by this node into the kernel";
+          default = null;
+          type = with types; nullOr (nonEmptyListOf nonEmptyStr);
+        };
+        ipv6 = mkOption {
+          description = "The IPv6 routes to *not* import by this node into the kernel";
+          default = null;
+          type = with types; nullOr (nonEmptyListOf nonEmptyStr);
+        };
+      };
+    };
   };
 
   config =

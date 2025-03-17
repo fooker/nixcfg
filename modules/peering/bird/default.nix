@@ -87,6 +87,10 @@ let
           krt_prefsrc = ${toString domain.ipv4.address};
           if net ~ [${toString (ip.network.prefixNetwork domain.ipv4)}+] then reject;
 
+          ${optionalString (config.peering.kernel.rejected.ipv4 != null) ''
+            if net ~ [ ${concatStringsSep ", " config.peering.kernel.rejected.ipv4} ] then reject;
+          ''}
+
           accept;
         };
       }
@@ -99,6 +103,10 @@ let
         export filter {
           krt_prefsrc = ${toString domain.ipv6.address};
           if net ~ [${toString (ip.network.prefixNetwork domain.ipv6)}+] then reject;
+
+          ${optionalString (config.peering.kernel.rejected.ipv6 != null) ''
+            if net ~ [ ${concatStringsSep ", " config.peering.kernel.rejected.ipv6} ] then reject;
+          ''}
 
           accept;
         };
