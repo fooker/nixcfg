@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, device, network, private, ... }:
+{ config, pkgs, lib, inputs, device, network, ... }:
 
 with lib;
 
@@ -31,7 +31,7 @@ with lib;
   services.home-assistant = {
     enable = true;
 
-    config = import ./hass { inherit lib private; };
+    config = import ./hass { inherit lib; };
 
     extraComponents = [
       "default_config"

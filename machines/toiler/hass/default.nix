@@ -1,4 +1,4 @@
-{ lib, private, ... }:
+{ lib, ... }:
 
 with lib;
 
