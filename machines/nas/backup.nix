@@ -70,5 +70,13 @@ with lib;
 
       path = with pkgs; [ bash git curl jq ];
     };
+
+    users = {
+      users."backup" = {
+        isSystemUser = true;
+        group = "backup";
+      };
+      groups."backup" = { };
+    };
   };
 }
