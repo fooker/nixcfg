@@ -10,6 +10,8 @@ let
 
 in
 {
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
   nix = {
     buildMachines = concatMap
       (builder: map
