@@ -157,7 +157,7 @@ with lib;
       };
 
       "work" = {
-        address = "dustin.frisch@hlb.hs-fulda.de";
+        address = "dustin.frisch@hs-fulda.de";
 
         realName = "Dustin Frisch";
 
@@ -185,41 +185,20 @@ with lib;
 
         userName = "fdhlb212";
 
-        thunderbird = {
-          enable = true;
-          profiles = [ "default" ];
-        };
-      };
+        signature.showSignature = "append";
+        signature.text = ''
+          Digitale Dienste
+          Hochschul-, Landes- und Stadtbibliothek Fulda
 
-      "opennms" = {
-        address = "dustin@opennms.org";
-        aliases = [ ];
+          Hochschule Fulda
+          University of Applied Sciences
+          Leipziger Str. 123
+          36037 Fulda
 
-        realName = "Dustin Frisch";
-
-        gpg = {
-          encryptByDefault = false;
-          signByDefault = true;
-          key = "3237CA7A1744B4DCE96B409FB4C3BF012D9B26BE";
-        };
-
-        imap = {
-          host = "mail.opennms.org";
-          tls = {
-            enable = true;
-            useStartTls = true;
-          };
-        };
-
-        smtp = {
-          host = "mail.opennms.org";
-          tls = {
-            enable = true;
-            useStartTls = true;
-          };
-        };
-
-        userName = "dustin@opennms.org";
+          mailto:dustin.frisch@hs-fulda.de
+          tel:+49-661-9640-9847
+          https://hs-fulda.de/hlsb
+        '';
 
         thunderbird = {
           enable = true;
