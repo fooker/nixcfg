@@ -41,22 +41,24 @@
       lightline.enable = true;
       gitgutter.enable = true;
       ledger.enable = true;
-      treesitter.enable = true;
-      lsp-lines.enable = true;
-      lsp-format.enable = true;
+      treesitter = {
+        enable = true;
+        settings.highlight.enable = true;
+      };
+      #lsp-lines.enable = true;
+      #lsp-format.enable = true;
       typst-vim.enable = true;
       lsp = {
         enable = true;
         servers = {
           nil_ls.enable = true;
-          #nixd.enable = true;
           pylyzer.enable = true;
           marksman.enable = true;
           jsonls.enable = true;
           yamlls.enable = true;
         };
       };
-      #nix.enable = true;
+      nix.enable = true;
     };
 
     extraPlugins = with pkgs.vimPlugins; [

@@ -69,7 +69,8 @@
       type = "github";
       owner = "nix-community";
       repo = "nixvim";
-      ref = "nixos-24.11";
+      #ref = "nixos-24.11";
+      ref = "main";
 
       inputs.nixpkgs.follows = "nixpkgs-notebook";
       inputs.home-manager.follows = "home-manager";
