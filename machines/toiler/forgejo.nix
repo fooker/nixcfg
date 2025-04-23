@@ -4,6 +4,8 @@
   services.forgejo = {
     enable = true;
 
+    package = pkgs.unstable.forgejo;
+
     user = "git";
     group = "git";
 

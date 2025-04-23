@@ -23,8 +23,6 @@
 
     nixpkgs-schilderhaus.follows = "nixpkgs-unstable";
 
-    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-
     disko = {
       type = "github";
       owner = "nix-community";
