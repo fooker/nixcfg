@@ -14,6 +14,7 @@ in
     ./backup.nix
     ./scanner.nix
     ./c3sets.nix
+    ./cast.nix
   ];
 
   server.enable = true;

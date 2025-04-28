@@ -36,13 +36,8 @@ with lib;
           proxyPass = app.target;
           proxyWebsockets = true;
 
-          # Workaround for https://github.com/NixOS/nixpkgs/pull/100708
-          extraConfig = ''
-            proxy_set_header Accept-Encoding "$http_accept_encoding";
-          '';
+          inherit (app) extraConfig;
         };
-
-        inherit (app) extraConfig;
       };
     })
     config.web.reverse-proxy;

@@ -48,6 +48,8 @@ with lib;
       package = pkgs.nginxQuic;
 
       recommendedGzipSettings = true;
+      recommendedZstdSettings = true;
+      recommendedBrotliSettings = true;
       recommendedOptimisation = true;
       recommendedProxySettings = true;
       recommendedTlsSettings = true;
