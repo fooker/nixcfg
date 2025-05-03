@@ -76,6 +76,7 @@ with lib;
       "redis-rspamd.service"
     ];
   };
+  systemd.services.rspamd.serviceConfig.SupplementaryGroups = mkForce [ ];
 
   services.dovecot2.mailPlugins.globally.enable = [ "zlib" "notify" "replication" ];
   services.dovecot2.extraConfig = ''
