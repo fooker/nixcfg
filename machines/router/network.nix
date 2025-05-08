@@ -31,6 +31,8 @@ in
       "int-r" = "00:0d:b9:34:db:e5";
       "dsl" = "00:0d:b9:34:db:e6";
     };
+
+    router = true;
   };
 
   systemd.network = mkMerge ([{

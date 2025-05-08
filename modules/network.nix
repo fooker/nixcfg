@@ -36,6 +36,8 @@ with lib;
       '';
       default = { };
     };
+
+    router = mkEnableOption "network router";
   };
 
   config = mkIf config.network.enable {
@@ -52,8 +54,8 @@ with lib;
 
       config = {
         networkConfig = {
-          IPv4Forwarding = true;
-          IPv6Forwarding = true;
+          IPv4Forwarding = config.network.router;
+          IPv6Forwarding = config.network.router;
         };
       };
 
