@@ -77,6 +77,10 @@
 
       "40-priv" = {
         name = "priv";
+
+        networkConfig = {
+          IPv6AcceptRA = false;
+        };
       };
 
       "45-priv-vx" = {
