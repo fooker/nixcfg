@@ -12,6 +12,12 @@ with lib;
       enable = true;
       terminal = "screen-256color";
       newSession = true;
+      keyMode = "vi";
+      historyLimit = 5000;
+      clock24 = true;
+      extraConfig = ''
+        mouse on
+      '';
     };
   };
 
