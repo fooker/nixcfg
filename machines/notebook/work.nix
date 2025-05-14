@@ -27,6 +27,19 @@
     ];
   };
 
+  fileSystems."/mnt/work/prog" = {
+    device = "//fileserver2.rz.hs-fulda.de/PROG";
+    fsType = "cifs";
+    options = [
+      "x-systemd.automount"
+      "noauto"
+      "credentials=${config.sops.secrets."mounts/work/credentials".path}"
+      "uid=fooker"
+      "gid=users"
+      "nodfs"
+    ];
+  };
+
   sops.secrets."mounts/work/credentials" = { };
 }
 
