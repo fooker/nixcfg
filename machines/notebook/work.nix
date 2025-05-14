@@ -1,4 +1,4 @@
-{ config, ... }:
+{ pkgs, lib, config, ... }:
 
 {
   fileSystems."/mnt/work/hlb" = {
@@ -39,6 +39,9 @@
       "nodfs"
     ];
   };
+
+  system.nssModules = [ pkgs.xhosts ];
+  system.nssDatabases.hosts = lib.mkOrder 100 [ "xhosts" ];
 
   sops.secrets."mounts/work/credentials" = { };
 }
