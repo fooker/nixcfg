@@ -67,8 +67,8 @@
       type = "github";
       owner = "nix-community";
       repo = "nixvim";
-      #ref = "nixos-24.11";
-      ref = "main";
+      ref = "nixos-24.11";
+      #ref = "main";
 
       inputs.nixpkgs.follows = "nixpkgs-notebook";
       inputs.home-manager.follows = "home-manager";
@@ -190,13 +190,6 @@
     schoen-und-gut = {
       type = "git";
       url = "https://git.home.open-desk.net/schoen-und-gut/website.git";
-      flake = false;
-    };
-
-    sofastroemer = {
-      type = "github";
-      owner = "fooker";
-      repo = "sofastroemer";
       flake = false;
     };
 

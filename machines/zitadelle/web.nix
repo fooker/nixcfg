@@ -13,11 +13,6 @@ let
       domains = [ "open-desk.org" "www.open-desk.org" ];
       root = pkgs.callPackage inputs.blog { };
     };
-
-    "sofastroemer" = {
-      domains = [ "sofa.open-desk.net" ];
-      root = pkgs.callPackage "${inputs.sofastroemer}/frontend" { };
-    };
   };
 
 in
