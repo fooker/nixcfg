@@ -1,0 +1,15 @@
+#!/usr/bin/env nix-shell
+#!nix-shell -i bash -p bash yq sops
+#shellcheck shell=bash
+
+set -euo pipefail
+
+yq '.creation_rules | .[] | .path_regex | select(. != null)' -r < .sops.yaml \
+    | while read -r EXPR; do
+  git ls-tree -r --full-name --name-only HEAD . \
+      | (grep -E "$EXPR" || true) \
+      | while read -r FILE; do
+    sops updatekeys "$FILE"   
+  done
+done
+
