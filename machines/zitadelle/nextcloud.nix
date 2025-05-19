@@ -29,8 +29,11 @@ in
       redis = true;
     };
 
+    settings = {
+      trusted_domains = domains;
+    };
+
     config = {
-      extraTrustedDomains = domains;
       adminpassFile = config.sops.secrets."nextcloud/adminPassword".path;
 
       dbhost = "localhost:/run/mysqld/mysqld.sock";

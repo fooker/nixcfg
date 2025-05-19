@@ -1,6 +1,4 @@
-{ pkgs, lib, nodes, network, ... }:
-
-with lib;
+{ pkgs, nodes, ... }:
 
 let
   rapz = pkgs.writeText "liquidsoap-rapz.liq" ''

@@ -94,13 +94,6 @@
       flake = false;
     };
 
-    ipinfo = {
-      type = "github";
-      owner = "fooker";
-      repo = "ipinfo";
-      flake = false;
-    };
-
     mmv = {
       type = "github";
       owner = "fooker";

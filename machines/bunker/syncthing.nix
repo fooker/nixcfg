@@ -15,7 +15,9 @@ in
     enable = true;
     openDefaultPorts = true;
 
-    inherit (private.syncthing) devices;
-    inherit folders;
+    settings = {
+      inherit (private.syncthing) devices;
+      inherit folders;
+    };
   };
 }

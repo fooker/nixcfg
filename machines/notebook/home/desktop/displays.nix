@@ -2,20 +2,26 @@
   services.kanshi = {
     enable = true;
 
-    profiles = {
-      "mobile" = {
-        outputs = [
+    settings = [
+      {
+        output.criteria = "eDP-1";
+        output.mode = "2880x1800@60.001";
+        output.scale = 1.4;
+      }
+
+      {
+        profile.name = "mobile";
+        profile.outputs = [
           {
             criteria = "eDP-1";
             status = "enable";
-            mode = "2880x1800@60.001";
-            scale = 1.4;
           }
         ];
-      };
+      }
 
-      "home" = {
-        outputs = [
+      {
+        profile.name = "home";
+        profile.outputs = [
           {
             criteria = "eDP-1";
             status = "disable";
@@ -39,10 +45,11 @@
             position = "5120,0";
           }
         ];
-      };
+      }
 
-      "work" = {
-        outputs = [
+      {
+        profile.name = "work";
+        profile.outputs = [
           {
             criteria = "eDP-1";
             status = "enable";
@@ -63,10 +70,11 @@
             position = "3979,0";
           }
         ];
-      };
+      }
 
-      "space-monitor" = {
-        outputs = [
+      {
+        profile.name = "space-monitor";
+        profile.outputs = [
           {
             criteria = "eDP-1";
             status = "enable";
@@ -81,7 +89,8 @@
             position = "239,0";
           }
         ];
-      };
-    };
+      }
+    ];
   };
 }
+

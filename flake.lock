@@ -775,22 +775,6 @@
         "type": "github"
       }
     },
-    "ipinfo": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1583711998,
-        "narHash": "sha256-zc73rXowb58FGnJk6KnvJkQXNzgvnmNNd2euZURq4QA=",
-        "owner": "fooker",
-        "repo": "ipinfo",
-        "rev": "706ecbb0cc15d9944f3f65e6318f33aa25e1d188",
-        "type": "github"
-      },
-      "original": {
-        "owner": "fooker",
-        "repo": "ipinfo",
-        "type": "github"
-      }
-    },
     "ixx": {
       "inputs": {
         "flake-utils": [
@@ -1305,7 +1289,6 @@
         "hasskey": "hasskey",
         "home-manager": "home-manager",
         "ipam": "ipam",
-        "ipinfo": "ipinfo",
         "mmv": "mmv",
         "netns-proxy": "netns-proxy",
         "nftables": "nftables",

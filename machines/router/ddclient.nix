@@ -16,7 +16,7 @@ with lib;
 
     domains = [ "basis.ddserver.org" ];
 
-    use = "if, if=ppp0";
+    usev4 = "ipv4, ipv4=ppp0";
   };
 
   sops.secrets."ddserver/password" = { };

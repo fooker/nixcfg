@@ -6,7 +6,7 @@
 
     defaultKeymap = "emacs";
 
-    enableAutosuggestions = true;
+    autosuggestion.enable = true;
     enableCompletion = true;
 
     autocd = true;

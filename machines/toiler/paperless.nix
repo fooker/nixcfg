@@ -19,7 +19,7 @@ with lib;
 
     mediaDir = "/mnt/docs";
 
-    extraConfig = {
+    settings = {
       PAPERLESS_DBHOST = "/run/postgresql";
       PAPERLESS_OCR_LANGUAGE = "deu+eng";
       PAPERLESS_OCR_CLEAN = "clean-final";

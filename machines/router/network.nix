@@ -190,9 +190,7 @@ in
           };
 
           ipv6Prefixes = optional (hasAttr "ipv6" config) {
-            ipv6PrefixConfig = {
-              Prefix = toString (ip.network.prefixNetwork config.ipv6);
-            };
+            Prefix = toString (ip.network.prefixNetwork config.ipv6);
           };
 
           dhcpV6PrefixDelegationConfig = {

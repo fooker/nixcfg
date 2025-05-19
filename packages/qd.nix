@@ -1,9 +1,9 @@
 { rustPlatform, inputs, ... }:
 
-rustPlatform.buildRustPackage rec {
+rustPlatform.buildRustPackage {
   name = "qd";
 
   src = inputs.qd;
 
-  cargoSha256 = "0vhijmcb6lfwp0xbxqadk8x5ifvkdcg13i65ziam7qlz8dypiqaf";
+  cargoHash = "sha256-TuF4fUOf4lNV/MXEER5rc7tYOppN4b46uNxRs1iVEW4=";
 }
