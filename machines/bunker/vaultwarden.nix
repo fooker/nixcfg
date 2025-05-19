@@ -29,17 +29,17 @@
     };
   };
 
-  backup.jobs."docs" = {
+  backup.jobs."vaultwarden" = {
     targets = [
       "default"
       {
         name = "borgbase";
-        options.user = "t2t8gmt1";
+        options.user = "vrcxny42";
       }
     ];
     commands = ''
-      ${pkgs.sqlite}/bin/sqlite3 /var/lib/bitwarden_rs/db.sqlite3 .backup db.sqlite3
-      cp /var/lib/bitwarden_rs/rsa_key.{der,pem,pub.der} .
+      ${pkgs.sqlite}/bin/sqlite3 /var/lib/bitwarden_rs/db.sqlite3 '.backup db.sqlite3'
+      cp /var/lib/bitwarden_rs/rsa_key.* .
       cp -r /var/lib/bitwarden_rs/attachments .
       cp -r /var/lib/bitwarden_rs/icon_cache .
     '';
