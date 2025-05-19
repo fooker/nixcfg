@@ -93,6 +93,7 @@ with lib;
     fractal-next
     discord-ptb
     thunderbird
+    rocketchat-desktop
     mumble
 
     # Remote Desktop
