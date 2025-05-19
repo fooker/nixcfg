@@ -80,6 +80,10 @@ with lib;
         dhcpV4Config = {
           RouteMetric = 300;
         };
+
+        ipv6AcceptRAConfig = {
+          RouteMetric = 300;
+        };
       };
     };
 
