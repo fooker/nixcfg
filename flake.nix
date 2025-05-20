@@ -77,7 +77,7 @@
     nixos-mailserver = {
       type = "git";
       url = "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver.git";
-      ref = "master";
+      ref = "nixos-24.11";
 
       inputs.nixpkgs.follows = "nixpkgs";
     };
