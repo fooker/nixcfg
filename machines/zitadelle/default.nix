@@ -1,6 +1,4 @@
-{ config, options, lib, ... }:
-
-with lib;
+{ config, options, ... }:
 
 {
   imports = [
@@ -9,6 +7,7 @@ with lib;
     ./mail.nix
     ./nextcloud.nix
     ./cast.nix
+    ./tandoor.nix
   ];
 
   options = {
