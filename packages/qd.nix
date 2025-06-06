@@ -5,5 +5,5 @@ rustPlatform.buildRustPackage {
 
   src = inputs.qd;
 
-  cargoHash = "sha256-TuF4fUOf4lNV/MXEER5rc7tYOppN4b46uNxRs1iVEW4=";
+  cargoHash = "sha256-4y0arj6x6l+DQ8G+cVOtAWeCXZ4qVvK2nD48oMwSas8=";
 }

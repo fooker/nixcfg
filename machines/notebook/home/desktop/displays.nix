@@ -4,22 +4,6 @@
 
     settings = [
       {
-        output.criteria = "eDP-1";
-        output.mode = "2880x1800@60.001";
-        output.scale = 1.4;
-      }
-
-      {
-        profile.name = "mobile";
-        profile.outputs = [
-          {
-            criteria = "eDP-1";
-            status = "enable";
-          }
-        ];
-      }
-
-      {
         profile.name = "home";
         profile.outputs = [
           {
@@ -29,7 +13,7 @@
           {
             criteria = "Eizo Nanao Corporation EV2750 0x045B2CE1";
             status = "enable";
-            mode = "2560x1440@59.951";
+            mode = "2560x1440@29.935";
             position = "0,0";
           }
           {
@@ -87,6 +71,19 @@
             status = "enable";
             mode = "1920x1080@59.934";
             position = "239,0";
+          }
+        ];
+      }
+
+      {
+        profile.name = "mobile";
+        profile.outputs = [
+          {
+            criteria = "eDP-1";
+            status = "enable";
+            mode = "2880x1800@60.001";
+            position = "0,0";
+            scale = 1.4;
           }
         ];
       }

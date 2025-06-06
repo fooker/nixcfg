@@ -5,6 +5,11 @@
     enable = true;
     package = pkgs.librewolf;
 
+    languagePacks = [
+      "en-GB"
+      "de"
+    ];
+
     settings = {
       "webgl.disabled" = false;
 

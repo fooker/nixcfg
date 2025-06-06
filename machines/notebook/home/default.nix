@@ -26,10 +26,6 @@ with lib;
     ./desktop
   ];
 
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-25.9.0"
-  ];
-
   programs.home-manager.enable = true;
 
   services.blueman-applet.enable = true;

@@ -11,7 +11,6 @@
       "jellyfin"
       "musicbrainz"
       "radiobrowser"
-      "slimproto"
       "snapcast"
       "spotify"
       "theaudiodb"

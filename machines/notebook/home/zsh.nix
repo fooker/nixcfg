@@ -32,7 +32,7 @@
       }
     ];
 
-    initExtra = ''
+    initContent = ''
       # Colorify the prompt
       autoload -U colors && colors
 

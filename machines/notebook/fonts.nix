@@ -38,7 +38,6 @@ in
       libertine
       mononoki
       montserrat
-      nerdfonts
       norwester-font
       open-sans
       powerline-fonts

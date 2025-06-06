@@ -230,7 +230,7 @@ with lib;
         format = "binary";
         sopsFile = ./secrets/dkim + "/${domain}.mail.key";
         path = "/etc/secrets/dkim/${domain}.mail.key";
-        owner = "opendkim";
+        owner = "rspamd";
       })
     ])
     config.mailserver.domains
