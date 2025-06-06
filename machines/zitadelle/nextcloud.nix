@@ -18,7 +18,7 @@ in
 
   services.nextcloud = {
     enable = true;
-    package = pkgs.nextcloud30; ## Dont forget to bump nexcloudPackages below
+    package = pkgs.nextcloud31; ## Dont forget to bump nexcloudPackages below
 
     datadir = "/srv/nextcloud";
 
@@ -43,7 +43,7 @@ in
     };
 
     extraApps = {
-      inherit (pkgs.nextcloud30Packages.apps)
+      inherit (pkgs.nextcloud31Packages.apps)
         contacts
         calendar
         mail
