@@ -20,11 +20,6 @@
 
   networking.hostName = "r7-a7";
 
-  i18n = {
-    defaultLocale = "en_US.UTF-8";
-    supportedLocales = [ "de_DE.UTF-8/UTF-8" ];
-  };
-
   console = {
     earlySetup = true;
     font = "${pkgs.terminus_font}/share/consolefonts/ter-u28n.psf.gz";
