@@ -63,6 +63,8 @@ with lib;
 
     mailDirectory = "/data/mail";
 
+    fullTextSearch.enable = true;
+
     redis = {
       address = "127.0.0.1";
       port = 6379;
