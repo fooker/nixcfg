@@ -7,7 +7,17 @@
     onShutdown = "shutdown";
 
     package = pkgs.unstable.libvirt;
-    qemu.package = pkgs.unstable.qemu;
+    qemu = {
+      package = pkgs.unstable.qemu;
+      swtpm = {
+        enable = true;
+        package = pkgs.unstable.swtpm;
+      };
+      ovmf = {
+        enable = true;
+        packages = [ pkgs.unstable.OVMFFull.fd ];
+      };
+    };
   };
 
   boot.kernelParams = [
