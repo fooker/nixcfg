@@ -8,8 +8,9 @@
     declarative = true;
     serverProperties = {
       server-port = 25565;
-      motd = "This is not the club of your choice";
+      motd = "Das sind nicht die Droiden die ihr sucht.";
 
+      level-name = "Überwelt";
       difficulty = "easy";
       gamemode = "creative";
       force-gamemode = true;
