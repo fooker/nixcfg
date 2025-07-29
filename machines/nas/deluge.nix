@@ -3,7 +3,7 @@
 with lib;
 
 let
-  netns-proxy = pkgs.callPackage ../../packages/netns-proxy.nix { inherit inputs; };
+  netns-proxy = pkgs.callPackage inputs.netns-proxy { };
 
 in
 {
@@ -205,8 +205,6 @@ in
       target = "http://127.0.0.1:9117/";
     };
   };
-
-  boot.extraModulePackages = optional (versionOlder config.boot.kernelPackages.kernel.version "5.6") config.boot.kernelPackages.wireguard;
 
   backup.jobs."servarr".paths = [
     config.services.radarr.dataDir
