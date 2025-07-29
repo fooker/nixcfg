@@ -118,7 +118,7 @@ in
     actions = [
       {
         action = "fan.toggle";
-        target.entity_id = "fan.fan_office";
+        target.area_id = "office";
       }
     ];
   })
