@@ -22,7 +22,6 @@ in
 
       hack-font
       noto-fonts
-      symbola
       anonymousPro
       arkpandora_ttf
       caladea

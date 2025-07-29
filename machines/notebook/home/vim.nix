@@ -62,7 +62,6 @@
     };
 
     extraPlugins = with pkgs.vimPlugins; [
-      ale
       vim-unimpaired
     ];
   };

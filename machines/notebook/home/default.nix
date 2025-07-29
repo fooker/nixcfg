@@ -67,6 +67,7 @@ with lib;
     jq
     unzip
     unrar
+    nom
 
     # Networking
     wireshark
