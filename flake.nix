@@ -23,6 +23,12 @@
 
     nixpkgs-schilderhaus.follows = "nixpkgs-unstable";
 
+    flake-parts = {
+      type = "github";
+      owner = "hercules-ci";
+      repo = "flake-parts";
+    };
+
     disko = {
       type = "github";
       owner = "nix-community";
@@ -36,12 +42,6 @@
       owner = "NixOS";
       repo = "nixos-hardware";
       ref = "master";
-    };
-
-    utils = {
-      type = "github";
-      owner = "numtide";
-      repo = "flake-utils";
     };
 
     home-manager = {
@@ -60,7 +60,6 @@
       ref = "release-25.05";
 
       inputs.nixpkgs.follows = "nixpkgs-notebook";
-      inputs.home-manager.follows = "home-manager";
     };
 
     nixvim = {
@@ -119,7 +118,6 @@
       owner = "fooker";
       repo = "photonic";
 
-      inputs.flake-utils.follows = "utils";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -141,7 +139,6 @@
       owner = "fooker";
       repo = "hasskey";
 
-      inputs.flake-utils.follows = "utils";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -198,13 +195,12 @@
       repo = "nixago";
 
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "utils";
     };
 
-    pre-commit-hooks = {
+    git-hooks-nix = {
       type = "github";
       owner = "cachix";
-      repo = "pre-commit-hooks.nix";
+      repo = "git-hooks.nix";
 
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -231,80 +227,23 @@
     };
   };
 
-  outputs = { self, nixpkgs, utils, colmena, ... }@inputs: {
-    colmena = import ./deployment.nix inputs;
-    colmenaHive = colmena.lib.makeHive self.colmena;
+  outputs = { flake-parts, ... }@inputs: (flake-parts.lib.mkFlake { inherit inputs; } ({
+    config,
+    withSystem,
+    moduleWithSystem,
+    ...
+  }: {
+    imports = [
+      inputs.git-hooks-nix.flakeModule
 
-    # hydraJobs = {
-    #   deployment = self.colmenaHive.toplevel;
-    # };
-  } // (utils.lib.eachDefaultSystem (system: {
-    apps.pxe-installer =
-      let
-        installer = node: nixpkgs.legacyPackages.${system}.callPackage ./pxe-installer.nix {
-          inherit node;
-        };
-      in
-      builtins.mapAttrs
-        (_: node: {
-          type = "app";
-          program = toString (installer node);
-        })
-        self.colmenaHive.nodes;
+      ./dev.nix
+      ./machines.nix
+      ./sops.nix
+      ./hive.nix
+    ];
 
-    devShells.default =
-      let
-        pkgs = nixpkgs.legacyPackages.${system};
-
-        colmena = inputs.colmena.defaultPackage.${system}.overrideAttrs (final: prev: {
-          patchs = (prev.patches or [ ]) ++ [
-            ./patches/colmena-disable-ssh-master.patch
-          ];
-        });
-
-        pre-commit-hooks = inputs.pre-commit-hooks.lib.${system}.run {
-          src = ./.;
-          hooks = {
-            nixpkgs-fmt.enable = true;
-            statix.enable = true;
-            shellcheck.enable = true;
-          };
-        };
-
-        sops-hooks = inputs.nixago.lib.${system}.make {
-          data = (pkgs.callPackage ./sops.nix { }).config;
-          output = ".sops.yaml";
-          format = "yaml";
-        };
-      in
-      pkgs.mkShell {
-        buildInputs = [
-          colmena
-        ] ++ (with pkgs; [
-          bash
-          gitAndTools.git
-          gnutar
-          gzip
-          sops
-          age
-          openssh
-          drone-cli
-          nixpkgs-fmt
-          statix
-          shellcheck
-        ] ++ [
-          (pkgs.vscode-with-extensions.override {
-            vscode = pkgs.vscodium;
-            vscodeExtensions = with pkgs.vscode-extensions; [
-              bbenoist.nix
-            ];
-          })
-        ]);
-
-        shellHook = ''
-          ${pre-commit-hooks.shellHook}
-          ${sops-hooks.shellHook}
-        '';
-      };
+    systems = [
+      "x86_64-linux"
+    ];
   }));
 }
