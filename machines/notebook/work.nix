@@ -1,7 +1,7 @@
 { pkgs, lib, config, ... }:
 
 {
-  fileSystems."/mnt/work/hlb" = {
+  fileSystems."/mnt/work/I" = {
     device = "//fileserver1.rz.hs-fulda.de/DATA2/HLB";
     fsType = "cifs";
     options = [
@@ -14,7 +14,7 @@
     ];
   };
 
-  fileSystems."/mnt/work/home" = {
+  fileSystems."/mnt/work/G" = {
     device = "//fileserver1.rz.hs-fulda.de/HOME2/HLB/fdhlb212";
     fsType = "cifs";
     options = [
@@ -27,7 +27,7 @@
     ];
   };
 
-  fileSystems."/mnt/work/prog" = {
+  fileSystems."/mnt/work/J" = {
     device = "//fileserver2.rz.hs-fulda.de/PROG";
     fsType = "cifs";
     options = [
