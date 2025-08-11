@@ -118,7 +118,7 @@ with lib;
     wantedBy = [ "multi-user.target" ];
     script =
       let
-        inherit (inputs.hasskey.packages.${config.nixpkgs.system}) hasskey;
+        inherit (inputs.hasskey.packages.${pkgs.system}) hasskey;
         configFile = pkgs.writers.writeJSON "hasskey.config" {
           home-assistant = {
             url = "https://hass.home.open-desk.net/";
