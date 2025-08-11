@@ -225,6 +225,15 @@
       url = "git+file:private";
       flake = false;
     };
+
+    work-utils = {
+      type = "gitlab";
+      host = "git.rz.hs-fulda.de";
+      owner = "fdhlb212";
+      repo = "personal-utils";
+
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { flake-parts, ... }@inputs: (flake-parts.lib.mkFlake { inherit inputs; } ({

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 let
   weechat-connect = pkgs.writeScriptBin "weechat-connect" ''
@@ -23,26 +23,7 @@ let
     )
   '';
 
-  telefonliste =
-    let
-      script = pkgs.fetchurl {
-        url = "https://gist.githubusercontent.com/fooker/db6948cb3c3551e5516dd6c875f6de05/raw/14e779c692ab928f7e652d2cfc0175707daedf73/telefonliste.py";
-        hash = "sha256-qaoADs77gNBfo5/TLf8n+bDlezSaat3/2h7mxSQHrnI=";
-      };
-    in
-    pkgs.writers.writePython3Bin "telefonliste"
-      {
-        flakeIgnore = [ "E265" ];
-        libraries = with pkgs.python3Packages; [
-          requests
-          pandas
-          openpyxl
-          click
-          unidecode
-          thefuzz
-        ];
-      }
-      script;
+  work-utils = inputs.work-utils.packages.${pkgs.system}.default;
 
 in
 {
@@ -50,6 +31,12 @@ in
     weechat-connect
     c3radio
     tmpsh
-    telefonliste
+    work-utils
   ];
+  
+  programs.zsh.initContent = ''
+    function work-cd() {
+      cd "$(${work-utils}/bin/work-dir "$*")"
+    }
+  '';
 }
