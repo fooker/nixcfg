@@ -13,15 +13,15 @@ with lib;
   firewall.rules = dag: with dag; {
     inet.filter.forward = {
       virt = before [ "drop" ] ''
-        iifname virbr0
+        iifname virbr*
         counter
         accept
       '';
     };
     inet.filter.input = {
       virt = between [ "established" ] [ "drop" ] [
-        ''iif virbr0 udp dport { 53, 67 } accept''
-        ''iif virbr0 tcp dport { 53, 67 } accept''
+        ''iifname virbr* udp dport { 53, 67 } accept''
+        ''iifname virbr* tcp dport { 53, 67 } accept''
       ];
     };
     inet.nat.postrouting = {
