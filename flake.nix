@@ -236,12 +236,7 @@
     };
   };
 
-  outputs = { flake-parts, ... }@inputs: (flake-parts.lib.mkFlake { inherit inputs; } ({
-    config,
-    withSystem,
-    moduleWithSystem,
-    ...
-  }: {
+  outputs = { flake-parts, ... }@inputs: flake-parts.lib.mkFlake { inherit inputs; } {
     imports = [
       inputs.git-hooks-nix.flakeModule
 
@@ -254,5 +249,5 @@
     systems = [
       "x86_64-linux"
     ];
-  }));
+  };
 }
