@@ -94,8 +94,6 @@ with lib;
 
       sh.lab = zone;
 
-      org.schoen-und-gut = zone;
-
       io.adacta = zone;
 
       live.photonic = zone;

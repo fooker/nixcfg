@@ -1318,7 +1318,6 @@
         "photonic": "photonic",
         "private": "private",
         "qd": "qd",
-        "schoen-und-gut": "schoen-und-gut",
         "sops": "sops",
         "stylix": "stylix",
         "work-utils": "work-utils"
@@ -1364,22 +1363,6 @@
         "owner": "oxalica",
         "repo": "rust-overlay",
         "type": "github"
-      }
-    },
-    "schoen-und-gut": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1698659811,
-        "narHash": "sha256-YoTreMa2BLb0Scp1FZiUWVbmAakV1MLZNzbiupJ+jSg=",
-        "ref": "refs/heads/master",
-        "rev": "be327d56e17ee7a82b2184b487ec5e5f13af9755",
-        "revCount": 3,
-        "type": "git",
-        "url": "https://git.home.open-desk.net/schoen-und-gut/website.git"
-      },
-      "original": {
-        "type": "git",
-        "url": "https://git.home.open-desk.net/schoen-und-gut/website.git"
       }
     },
     "sops": {

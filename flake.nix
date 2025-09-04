@@ -176,12 +176,6 @@
       flake = false;
     };
 
-    schoen-und-gut = {
-      type = "git";
-      url = "https://git.home.open-desk.net/schoen-und-gut/website.git";
-      flake = false;
-    };
-
     hass-solarman = {
       type = "github";
       owner = "StephanJoubert";

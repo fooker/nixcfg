@@ -16,7 +16,6 @@ with lib;
       "open-desk.net"
       "open-desk.org"
       "lab.sh"
-      "schoen-und-gut.org"
     ];
 
     loginAccounts = private.mail.accounts;
