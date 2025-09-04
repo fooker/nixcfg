@@ -205,6 +205,50 @@ with lib;
           profiles = [ "default" ];
         };
       };
+
+      "work-support" = {
+        address = "it-support-hlsb@hs-fulda.de";
+
+        realName = "HLSB IT-Support";
+
+        imap = {
+          host = "imap.hs-fulda.de";
+          tls = {
+            enable = true;
+            useStartTls = true;
+          };
+        };
+
+        smtp = {
+          host = "smtp.hs-fulda.de";
+          tls = {
+            enable = true;
+            useStartTls = true;
+          };
+        };
+
+        userName = "fdhlbsupport";
+
+        signature.showSignature = "append";
+        signature.text = ''
+          Digitale Dienste
+          Hochschul-, Landes- und Stadtbibliothek Fulda
+
+          Hochschule Fulda
+          University of Applied Sciences
+          Leipziger Str. 123
+          36037 Fulda
+
+          mailto:dustin.frisch@hs-fulda.de
+          tel:+49-661-9640-9847
+          https://hs-fulda.de/hlsb
+        '';
+
+        thunderbird = {
+          enable = true;
+          profiles = [ "default" ];
+        };
+      };
     };
   };
 
