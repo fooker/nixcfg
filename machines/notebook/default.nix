@@ -14,6 +14,7 @@
     ./mounts.nix
     ./libvirt.nix
     ./greet.nix
+    ./vikunja.nix
   ];
 
   nix.package = pkgs.lix;
