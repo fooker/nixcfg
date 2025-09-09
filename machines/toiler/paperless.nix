@@ -25,6 +25,7 @@ with lib;
       PAPERLESS_OCR_CLEAN = "clean-final";
       PAPERLESS_CONVERT_TMPDIR = "/var/lib/paperless/tmp";
       PAPERLESS_WORKER_TIMEOUT = "3600";
+      PAPERLESS_URL = "https://docs.home.open-desk.net";
     };
 
     consumptionDirIsPublic = true;
