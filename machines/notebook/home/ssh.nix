@@ -41,8 +41,8 @@
           };
         };
 
-        "10.32.47.1??" = {
-          proxyJump = "root@10.32.47.10";
+        "10.32.47.*" = {
+          proxyJump = "root@brueckenkopf.dev.open-desk.net";
           identitiesOnly = true;
         };
       }
