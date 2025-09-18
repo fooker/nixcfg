@@ -283,6 +283,11 @@
           device = "raketensilo";
           interface = "lab";
         };
+
+        "10.32.31.31" = {
+          device = "win10";
+          interface = "lab";
+        };
       };
 
       routes = [
