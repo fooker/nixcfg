@@ -59,18 +59,6 @@ with lib;
       private.backup.repos
     ];
 
-    systemd.services.backup-opennms-repos = {
-      startAt = "3/4:00:00";
-      script = ''
-        mkdir -p /mnt/backups/opennms
-        cd /mnt/backups/opennms
-
-        exec ${./backup-opennms-repos.sh}
-      '';
-
-      path = with pkgs; [ bash git curl jq ];
-    };
-
     users = {
       users."backup" = {
         isSystemUser = true;
