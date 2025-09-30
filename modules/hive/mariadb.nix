@@ -17,6 +17,9 @@ with lib;
       package = pkgs.mariadb;
 
       settings = {
+        mysqld = {
+          innodb_log_file_size = "512M";
+        };
         galera = {
           wsrep_on = "ON";
           wsrep_debug = "NONE";
