@@ -91,6 +91,7 @@ with lib;
     thunderbird
     rocketchat-desktop
     mumble
+    ucware-client
 
     # Remote Desktop
     moonlight-qt

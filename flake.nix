@@ -228,6 +228,15 @@
 
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    ucware-client = {
+      type = "gitlab";
+      host = "git.rz.hs-fulda.de";
+      owner = "fdhlb212";
+      repo = "ucware-client.nix";
+
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { flake-parts, ... }@inputs: flake-parts.lib.mkFlake { inherit inputs; } {
