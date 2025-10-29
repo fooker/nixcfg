@@ -139,4 +139,9 @@
   security.pam.services.xscreensaver.nodelay = true;
 
   environment.stub-ld.enable = false;
+
+  programs.steam = {
+    enable = true;
+    protontricks.enable = true;
+  };
 }
