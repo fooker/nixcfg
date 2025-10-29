@@ -112,6 +112,10 @@
 
   services.hardware.bolt.enable = true;
 
+  services.upower.enable = true;
+
+  services.fstrim.enable = true;
+
   services.auto-cpufreq = {
     enable = true;
     settings = {

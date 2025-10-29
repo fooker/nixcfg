@@ -67,6 +67,7 @@ with lib;
     jq
     unzip
     unrar
+    nix-output-monitor
 
     # Networking
     wireshark
