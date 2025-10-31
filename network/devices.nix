@@ -306,7 +306,7 @@
       };
     };
 
-    "builder-arm" = {
+    "builder-arm-oracle" = {
       type = "Virtual Server";
       role = "Server";
       site = null;
@@ -320,6 +320,25 @@
             ];
             gateways = [ "10.0.0.1" ];
             dns = [ "1.0.0.1" "1.1.1.1" "2606:4700:4700::1111" "2606:4700:4700::1001" ];
+          };
+        };
+      };
+    };
+
+    "builder-arm-hetzner" = {
+      type = "Virtual Server";
+      role = "Server";
+      site = null;
+
+      interfaces = {
+        "ext" = {
+          mac = "92:00:06:aa:14:da";
+          satelite = {
+            addresses = [
+              "2a01:4f8:c014:e26e::1/64"
+            ];
+            gateways = [ "fe80::1" ];
+            dns = [ "2606:4700:4700::1111" "2606:4700:4700::1001" ];
           };
         };
       };

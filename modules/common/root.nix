@@ -33,7 +33,7 @@ with lib;
     };
 
     sops.secrets."users/root/password" = {
-      sopsFile = ../../secrets.yaml;
+      sopsFile = ../../machines/secrets.yaml;
       neededForUsers = true;
     };
   };

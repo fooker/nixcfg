@@ -32,5 +32,8 @@ with lib;
         (fileContents nodes."notebook".config.gather.parts."builder/sshKey".path)
       ];
     };
+
+    # Building large packages on tmpfs fails due to low space
+    boot.tmp.useTmpfs = mkForce false;
   };
 }

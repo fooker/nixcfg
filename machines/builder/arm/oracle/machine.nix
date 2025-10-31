@@ -1,6 +1,6 @@
 {
   target = {
-    host = "arm.builder.dev.open-desk.net";
+    host = "oracle.arm.builder.dev.open-desk.net";
     user = "root";
   };
 
