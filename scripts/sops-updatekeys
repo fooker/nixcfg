@@ -9,7 +9,7 @@ yq '.creation_rules | .[] | .path_regex | select(. != null)' -r < .sops.yaml \
   git ls-tree -r --full-name --name-only HEAD . \
       | (grep -E "$EXPR" || true) \
       | while read -r FILE; do
-    sops updatekeys "$FILE"   
+    sops updatekeys "$FILE" -y
   done
 done
 
