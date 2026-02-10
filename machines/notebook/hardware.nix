@@ -20,7 +20,7 @@
   hardware.cpu.intel.updateMicrocode = true;
 
   nixpkgs.config.packageOverrides = pkgs: {
-    vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
+    intel-vaapi-driver = pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
   };
 
   hardware.graphics = {
@@ -28,13 +28,11 @@
 
     extraPackages = with pkgs; [
       intel-media-driver
-      vaapiIntel
-      libvdpau-va-gl
+      intel-vaapi-driver
     ];
 
     extraPackages32 = with pkgs.pkgsi686Linux; [
-      vaapiIntel
-      libvdpau-va-gl
+      intel-vaapi-driver
     ];
   };
 

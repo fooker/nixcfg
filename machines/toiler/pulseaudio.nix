@@ -66,12 +66,9 @@ in
 
   services.dbus.packages = [ pkgs.pulseaudioFull ];
 
-  services.snapserver.streams = {
-    "pulse" = {
-      type = "pipe";
-      location = "/run/snapserver/pulse";
-    };
-  };
+  services.snapserver.settings.stream.source = [
+    "pipe:///run/snapserver/pulse?name=pulse"
+  ];
 
   firewall.rules = dag: with dag; {
     inet.filter.input = {

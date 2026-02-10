@@ -24,14 +24,6 @@
       "......" = "../../../../..";
     };
 
-    plugins = [
-      {
-        name = "zsh-git-prompt";
-        src = pkgs.zsh-git-prompt;
-        file = "share/zsh-git-prompt/zshrc.sh";
-      }
-    ];
-
     initContent = ''
       # Colorify the prompt
       autoload -U colors && colors
@@ -46,7 +38,7 @@
       PROMPT+='%{%(!.%F{red}.%F{green})%B%}>%{%b%f%} '
 
       # Enable git prompt on right side
-      RPROMPT='$(git_super_status)'
+      RPROMPT='$(${pkgs.gitprompt-rs}/bin/gitpromtp-rs)'
 
       # Search only for first word
       bindkey '^[OA' up-line-or-search

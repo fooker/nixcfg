@@ -83,13 +83,11 @@
     '';
   };
 
-  services.logind = {
-    lidSwitch = "hybrid-sleep";
-    lidSwitchDocked = "ignore";
-    lidSwitchExternalPower = "ignore";
-    extraConfig = ''
-      HandlePowerKey=ignore
-    '';
+  services.logind.settings.Login = {
+    LidSwitch = "hybrid-sleep";
+    LidSwitchDocked = "ignore";
+    LidSwitchExternalPower = "ignore";
+    HandlePowerKey = "ignore";
   };
 
   programs.dconf.enable = true;
@@ -105,7 +103,6 @@
   environment.systemPackages = with pkgs; [
     intel-gpu-tools
     libva-utils
-    vdpauinfo
     blueman
     lm_sensors
 
@@ -113,10 +110,8 @@
 
     gnupg
 
-    gitAndTools.hub
-    gitAndTools.gitFull
-    gitAndTools.tig
-    gitAndTools.transcrypt
+    git
+    transcrypt
 
     magic-wormhole
 

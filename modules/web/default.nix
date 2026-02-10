@@ -45,8 +45,6 @@ with lib;
     services.nginx = {
       enable = true;
 
-      package = pkgs.nginxQuic;
-
       recommendedGzipSettings = true;
       recommendedBrotliSettings = true;
       recommendedOptimisation = true;

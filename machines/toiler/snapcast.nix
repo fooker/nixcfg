@@ -5,15 +5,18 @@
 
   services.snapserver = {
     enable = true;
-    codec = "pcm";
-    tcp.enable = true;
-    http = {
-      enable = true;
-      docRoot = "${pkgs.snapcast}/share/snapserver/snapweb/";
-    };
-    streams = {
-      # Start of with an empty set of streeams by default.
-      # Each sound source defines its own stream.
+    settings = {
+      tcp-control = {
+        enabled = true;
+      };
+      http = {
+        enabled = true;
+        docRoot = "${pkgs.snapcast}/share/snapserver/snapweb/";
+      };
+      stream.source = [
+        # Start of with an empty set of streams by default.
+        # Each sound source defines its own stream.
+      ];
     };
   };
 

@@ -6,6 +6,10 @@ with lib;
   virtualisation.libvirtd = {
     enable = true;
     allowedBridges = [ "en" ];
+    qemu = {
+      runAsRoot = true;
+      swtpm.enable = true;
+    };
   };
 
   security.polkit.enable = true;

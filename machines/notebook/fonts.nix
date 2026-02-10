@@ -49,7 +49,6 @@ in
       tempora_lgc
       terminus_font
       theano
-      ubuntu_font_family
       font-awesome_4
       font-awesome
     ];

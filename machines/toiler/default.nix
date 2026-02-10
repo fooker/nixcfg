@@ -7,7 +7,6 @@
     ./snapcast.nix
     ./pulseaudio.nix
     ./mopidy.nix
-    ./spotifyd.nix
     ./forgejo.nix
     ./woodpecker.nix
     ./scanner.nix

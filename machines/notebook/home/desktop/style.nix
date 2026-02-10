@@ -3,7 +3,7 @@
 with lib;
 
 let
-  fetchFileFromZip = { url, hash, file }: pkgs.runCommandNoCCLocal "wallpaper"
+  fetchFileFromZip = { url, hash, file }: pkgs.runCommandLocal "wallpaper"
     {
       src = pkgs.fetchzip {
         inherit url hash;

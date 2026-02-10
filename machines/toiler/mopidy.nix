@@ -23,59 +23,62 @@ in
       mopidy-somafm
       mopidy-musicbox-webclient-themed
     ];
-    configuration = ''
-      [audio]
-      mixer = none
-      output = audioresample ! audioconvert ! audio/x-raw,rate=48000,channels=2,format=S16LE ! filesink location=/run/snapserver/mopidy
-
-      [stream]
-      enabled = true
-      protocols =
+    settings = {
+      audio = {
+        mixer = "none";
+        output = "audioresample ! audioconvert ! audio/x-raw,rate=48000,channels=2,format=S16LE ! filesink location=/run/snapserver/mopidy";
+      };
+      file = {
+        enabled = true;
+        follow_symlinks = true;
+        media_dirs = ''${""}
+          /mnt/media/music|Music
+          /mnt/downloads/c3sets|c3sets
+        '';
+      };
+      http = {
+        csrf_protection = true;
+        default_app = "musicbox_webclient";
+        enabled = true;
+        hostname = "::1";
+        port = 6680;
+        zeroconf = "Mopidy HTTP Server";
+      };
+      local = {
+        enabled = true;
+        media_dir = "/mnt/media/music";
+      };
+      m3u = {
+        enabled = true;
+      };
+      mpd = {
+        enabled = true;
+        hostname = "::";
+        password = private.mpd.password;
+        port = 6600;
+        zeroconf = "Mopidy MPD Server";
+      };
+      musicbox_webclient = {
+        enabled = true;
+        musicbox = false;
+      };
+      somafm = {
+        enabled = true;
+        encoding = "aac";
+        quality = "highest";
+      };
+      stream = {
+        enabled = true;
+        protocols = ''
           http
           https
           mms
           rtmp
           rtmps
           rtsp
-
-      [http]
-      enabled = true
-      hostname = ::1
-      port = 6680
-      zeroconf = Mopidy HTTP Server
-      csrf_protection = true
-      default_app = musicbox_webclient
-
-      [musicbox_webclient]
-      enabled = true
-      musicbox = false
-
-      [mpd]
-      enabled = true
-      hostname = ::
-      port = 6600
-      password = ${private.mpd.password}
-      zeroconf = Mopidy MPD Server
-
-      [file]
-      enabled = true
-      media_dirs =
-              /mnt/media/music|Music
-              /mnt/downloads/c3sets|c3sets
-      follow_symlinks = true
-
-      [local]
-      enabled = true
-      media_dir = /mnt/media/music
-
-      [m3u]
-      enabled = true
-
-      [somafm]
-      enabled = true
-      encoding = aac
-      quality = highest
-    '';
+        '';
+      };
+    };
   };
 
   systemd.services.mopidy-scan = {
@@ -92,12 +95,9 @@ in
     "p+ /run/snapserver/mopidy 666 root root - -"
   ];
 
-  services.snapserver.streams = {
-    "mopidy" = {
-      type = "pipe";
-      location = "/run/snapserver/mopidy";
-    };
-  };
+  services.snapserver.settings.stream.source = [
+    "pipe:///run/snapserver/mopidy?name=mopidy"
+  ];
 
   systemd.services.c3sets-playlist = {
     script = ''

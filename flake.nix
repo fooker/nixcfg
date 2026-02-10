@@ -4,7 +4,7 @@
       type = "github";
       owner = "NixOS";
       repo = "nixpkgs";
-      ref = "nixos-25.05";
+      ref = "nixos-25.11";
     };
 
     nixpkgs-unstable = {
@@ -48,7 +48,7 @@
       type = "github";
       owner = "nix-community";
       repo = "home-manager";
-      ref = "release-25.05";
+      ref = "release-25.11";
 
       inputs.nixpkgs.follows = "nixpkgs-notebook";
     };
@@ -57,7 +57,7 @@
       type = "github";
       owner = "danth";
       repo = "stylix";
-      ref = "release-25.05";
+      ref = "release-25.11";
 
       inputs.nixpkgs.follows = "nixpkgs-notebook";
     };
@@ -66,7 +66,7 @@
       type = "github";
       owner = "nix-community";
       repo = "nixvim";
-      ref = "nixos-25.05";
+      ref = "nixos-25.11";
       #ref = "main";
 
       inputs.nixpkgs.follows = "nixpkgs-notebook";
@@ -75,7 +75,7 @@
     nixos-mailserver = {
       type = "git";
       url = "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver.git";
-      ref = "nixos-25.05";
+      ref = "nixos-25.11";
 
       inputs.nixpkgs.follows = "nixpkgs";
     };

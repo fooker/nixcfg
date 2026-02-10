@@ -13,10 +13,6 @@
         enable = true;
         package = pkgs.unstable.swtpm;
       };
-      ovmf = {
-        enable = true;
-        packages = [ pkgs.unstable.OVMFFull.fd ];
-      };
     };
   };
 

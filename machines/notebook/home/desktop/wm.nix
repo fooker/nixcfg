@@ -34,6 +34,8 @@ in
 
     systemd.enable = true;
 
+    wrapperFeatures.gtk = true;
+
     config = rec {
       modifier = "Mod4";
 
@@ -214,10 +216,15 @@ in
 
   xdg.portal = {
     enable = true;
+    config = {
+      common.default = "wlr";
+      sway.default = "wlr";
+    };
+    #wlr.enable = true;
     extraPortals = with pkgs; [
       xdg-desktop-portal-wlr
+      xdg-desktop-portal-gtk
     ];
-    config = { sway.default = [ "wlr" ]; };
   };
 
   xdg.mime.enable = true;

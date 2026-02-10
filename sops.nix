@@ -30,7 +30,7 @@ with lib;
         machineKey = machine:
           let
             path = /${machine.path}/gathered/ssh_host_ed25519_key.pub;
-            keyFile = pkgs.runCommandNoCCLocal "sops-key-${machine.name}.pub" { } ''
+            keyFile = pkgs.runCommandLocal "sops-key-${machine.name}.pub" { } ''
               ${pkgs.ssh-to-age}/bin/ssh-to-age < ${path} > $out
             '';
           in

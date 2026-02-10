@@ -46,10 +46,10 @@ in
       inherit (pkgs.unstable.nextcloud32Packages.apps)
         contacts
         calendar
-        mail
-#        tasks
+        tasks
         groupfolders
-        forms;
+        bookmarks
+        ;
     };
     extraAppsEnable = true;
   };

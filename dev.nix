@@ -7,7 +7,7 @@
         [ inputs'.colmena.packages.colmena ] ++
         (with pkgs; [
           bash
-          gitAndTools.git
+          git
           openssh
           gnutar
           gzip

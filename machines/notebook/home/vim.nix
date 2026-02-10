@@ -52,7 +52,7 @@
         enable = true;
         servers = {
           nil_ls.enable = true;
-          pylyzer.enable = true;
+#          pylyzer.enable = true;
           marksman.enable = true;
           jsonls.enable = true;
           yamlls.enable = true;

@@ -23,7 +23,7 @@ with lib;
     SSHFP =
       let
         # TODO: Use gather script, not IFD
-        fingerprint = file: fileContents (pkgs.runCommandNoCCLocal "" { } ''
+        fingerprint = file: fileContents (pkgs.runCommandLocal "" { } ''
           cat '${file}' \
             | awk '{print $2}' \
             | ${pkgs.openssl}/bin/openssl base64 -d -A \

@@ -80,10 +80,10 @@ with lib;
         url = "https://zigbee.home.open-desk.net";
       };
 
-      homeassistant = true;
       availability = true;
 
       serial = {
+        adapter = "zstack";
         port = "/dev/zigbee";
       };
 

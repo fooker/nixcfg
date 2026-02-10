@@ -62,7 +62,7 @@ let
     ) )
 
     echo "Unifying ''${FILES[@]} ..."
-    ${pkgs.poppler_utils}/bin/pdfunite ''${FILES[@]} "$QD_JOB_ID.pdf"
+    ${pkgs.poppler-utils}/bin/pdfunite ''${FILES[@]} "$QD_JOB_ID.pdf"
 
     ${pkgs.openssh}/bin/scp \
       -i ${config.sops.secrets."scanner/sshKey".path} \

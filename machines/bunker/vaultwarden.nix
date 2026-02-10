@@ -7,7 +7,7 @@
       DOMAIN = "https://vault.open-desk.net";
 
       SIGNUPS_ALLOWED = false;
-      INVITATIONS_ALLOWED = false;
+      INVITATIONS_ALLOWED = true;
 
       ROCKET_ADDRESS = "127.0.0.1";
       ROCKET_PORT = 8222;

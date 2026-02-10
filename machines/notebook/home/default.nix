@@ -44,6 +44,8 @@ with lib;
     playerctl
     spotify
     mpv
+    grim
+    slurp
 
     # GUI tools
     qalculate-gtk
@@ -53,9 +55,10 @@ with lib;
     unstable.inkscape
     libreoffice
     vorta
-    unstable.obsidian
+    obsidian
     wdisplays
     wlr-randr
+    wl-clipboard
 
     # CLI tools
     ripgrep
@@ -75,31 +78,30 @@ with lib;
     magic-wormhole
 
     # Development
-    unstable.jetbrains.idea-ultimate
+    unstable.jetbrains.idea
     unstable.jetbrains.webstorm
     # unstable.jetbrains.clion
     # unstable.jetbrains.goland
-    unstable.jetbrains.pycharm-professional
+    unstable.jetbrains.pycharm
     unstable.jetbrains.rust-rover
     unstable.vscodium
 
     # Comm
-    tdesktop
+    telegram-desktop
     signal-desktop
     element-desktop
-    fractal-next
+    fractal
     discord-ptb
     thunderbird
     rocketchat-desktop
     mumble
-    ucware-client
 
     # Remote Desktop
     moonlight-qt
     remmina
 
     # Others
-    unstable.prusa-slicer
+    prusa-slicer
     virt-manager
     steam-run
   ];
